@@ -1,4 +1,5 @@
 # GP
 Group Project
 
-In order to run tests, install phpunit - https://phpunit.de/manual/4.8/en/installation.html
+To run tests, execute the follwowing line:
+vendor/bin/phpunit UnitTest.php
