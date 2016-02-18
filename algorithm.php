@@ -11,8 +11,10 @@
 require('dbConnect.php');
 
 
-// sample query
-$query = "SELECT * FROM Animal LIMIT(25);";
+
+###########################################
+// SAMPLE QUERY
+$sql = "SELECT * FROM Animal LIMIT 25;";
 
 // execute query
 $result = $mysqli->query($sql);
@@ -20,12 +22,16 @@ $result = $mysqli->query($sql);
 // process result
 if ($result->num_rows > 0) {
     // output data of each row
+    echo '<pre>';
     while($row = $result->fetch_assoc()) {
-        echo $row . "<br>";
+        print_r($row);
     }
+    echo '</pre>';
 } else {
     echo "0 results";
 }
+###########################################
+
 
 
 // close connection
