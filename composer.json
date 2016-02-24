@@ -1,6 +1,5 @@
 {
     "require": {
-        "phpunit/phpunit": "4.8.*",
-        "phpunit/php-code-coverage": "^3"
+        "phpunit/phpunit": "4.8.*"
     }
 }
