@@ -15,6 +15,7 @@
 	    <exclude>
 		<directory>./vendor</directory>
 		<directory>./tests</directory>
+		<file>./coverage-checker.php</file>
 	    </exclude>
         </whitelist>
         <blacklist>
