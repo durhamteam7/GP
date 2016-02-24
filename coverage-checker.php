@@ -16,7 +16,7 @@ $metrics         = $xml->xpath('//metrics');
 $totalElements   = 0;
 $checkedElements = 0;
 
-printf( $metrics);
+print_r( $metrics);
 
 foreach ($metrics as $metric) {
     $totalElements   += (int) $metric['elements'];
