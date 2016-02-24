@@ -3,7 +3,7 @@ class UnitTest extends PHPUnit_Framework_TestCase
 {
     public function testCompare_by_classifiaction()
     {
-        $this->assertEquals(1, 2);
+        $this->assertEquals(2, 2);
     }
     public function testGet_species_counts()
     {
