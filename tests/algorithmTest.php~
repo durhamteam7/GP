@@ -7,12 +7,11 @@ class SwansonTest extends PHPUnit_Framework_TestCase
 {
 	
     // contains the object handle of the string class
-    var $s;
+    private $s;
 
     // constructor of the test suite
     function SwansonTest() {
-       $this->PHPUnit_Framework_TestCase();
-	$this->$s = new Swanson();
+	$this->s = new Swanson();
     }
     function tearDown() {
         // delete your instance
@@ -21,7 +20,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
 
     public function testCompare_by_classifiaction()
     {
-        $this->assertEquals($this->$s->get_species_counts(), 2);
+        $this->assertEquals($this->s->get_species_counts(), 2);
     }
     public function testGet_species_counts()
     {
