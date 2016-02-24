@@ -13,5 +13,5 @@ script:
   
 notifications:
   email:
-    on_failure: change # default: always
+    on_failure: change
 	
