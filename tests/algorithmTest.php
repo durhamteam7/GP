@@ -22,7 +22,12 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     {
 	$array = array(1, 2, 3, 4);
 	$array2 = array(2, 3, 4, 5);
-        $this->assertEquals(2, $this->s->compare_by_classifiaction($array,$array2));
+	$array3 = array(2, 9, 4, 1);
+
+
+        $this->assertLessThan(0, $this->s->compare_by_classifiaction($array,$array2));
+	$this->assertGreaterThan(0, $this->s->compare_by_classifiaction($array,$array2));
+	$this->assertEquals(0, $this->s->compare_by_classifiaction($array,$array3));
     }
     public function testGet_species_counts()
     {
