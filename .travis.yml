@@ -10,3 +10,11 @@ before_script:
 script:
   - phpunit
   - php coverage-checker.php clover.xml 75
+  
+notifications:
+  irc:
+    channels:
+      - "chat.freenode.net#durhamTeam7"
+    template:
+      - "%{repository} (%{commit}) : %{message} %{foo} "
+      - "Build details: %{build_url}"
