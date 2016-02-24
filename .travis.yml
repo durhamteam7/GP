@@ -7,4 +7,6 @@ php:
 before_script:
   - composer update --prefer-source
 
-script: phpunit UnitTest.php
+script: 
+	- phpunit UnitTest.php
+	- php coverage-checker.php clover.xml 75
