@@ -13,8 +13,8 @@
             <!-- this is the path of the files included in your clover report -->
             <directory suffix=".php">./</directory>
 	    <exclude>
-		<directory>./vendor</directory>
-		<directory>./tests</directory>
+		<directory suffix=".php">./vendor</directory>
+		<directory suffix=".php">./tests</directory>
 		<file>./coverage-checker.php</file>
 	    </exclude>
         </whitelist>

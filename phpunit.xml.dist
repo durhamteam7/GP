@@ -2,7 +2,7 @@
 <!-- works fine with PHPUnit-3.6.10 -->
 <phpunit>
 	<testsuites>
-    <testsuite name="money">
+    <testsuite name="algorithm">
       <directory>tests</directory>
     </testsuite>
   </testsuites>
