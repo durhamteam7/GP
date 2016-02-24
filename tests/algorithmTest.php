@@ -10,8 +10,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     var $s;
 
     // constructor of the test suite
-    function SwansonTest($name) {
-       $this->PHPUnit_Framework_TestCase($name);
+    function SwansonTest() {
 	$this->$s = new Swanson();
     }
     function tearDown() {
