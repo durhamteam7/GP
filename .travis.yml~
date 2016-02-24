@@ -11,6 +11,7 @@ script:
   - phpunit --colors --coverage-text
   - php coverage-checker.php clover.xml 75
   
-  
-email:
-    on_failure: [change]
+notifications:
+  email:
+    on_failure: change # default: always
+	
