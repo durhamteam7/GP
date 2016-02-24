@@ -7,6 +7,6 @@ php:
 before_script:
   - composer update --prefer-source
 
-script: 
-	- phpunit
-	- php coverage-checker.php clover.xml 75
+script:
+  - phpunit
+  - php coverage-checker.php clover.xml 75
