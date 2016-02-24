@@ -10,3 +10,7 @@ before_script:
 script:
   - phpunit --colors --coverage-text
   - php coverage-checker.php clover.xml 75
+  
+  
+email:
+    on_failure: [change]
