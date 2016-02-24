@@ -20,7 +20,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
 
     public function testCompare_by_classifiaction()
     {
-        $this->assertEquals($this->s->get_species_counts(), 2);
+        $this->assertEquals($this->s->compare_by_classifiaction(), 2);
     }
     public function testGet_species_counts()
     {
