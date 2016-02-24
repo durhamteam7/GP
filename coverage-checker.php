@@ -16,6 +16,8 @@ $metrics         = $xml->xpath('//metrics');
 $totalElements   = 0;
 $checkedElements = 0;
 
+echo $xml;
+
 foreach ($metrics as $metric) {
     $totalElements   += (int) $metric['elements'];
     $checkedElements += (int) $metric['coveredelements'];
@@ -33,7 +35,7 @@ if ($coverage < $percentage) {
     exit(1);
 }
 
-echo $totalElements." elements, ".$checkedElements." checked elements";
+echo $totalElements." elements, ".$checkedElements." checked elements - ";
 echo 'Code coverage is ' . $coverage . '% - OK!' . PHP_EOL;
 
 
