@@ -8,17 +8,17 @@
 
 
 // require database connection code
-require('dbConnect.php');
+//require('dbConnect.php');
 
 ###########################################
 // SAMPLE QUERY
-$sql = "SELECT * FROM Animal LIMIT 25;";
+//$sql = "SELECT * FROM Animal LIMIT 25;";
 
 // execute query
-$result = $mysqli->query($sql);
+//$result = $mysqli->query($sql);
 
 // process result
-if ($result->num_rows > 0) {
+/*if ($result->num_rows > 0) {
     // output data of each row
     echo '<pre>';
     while($row = $result->fetch_assoc()) {
@@ -27,7 +27,7 @@ if ($result->num_rows > 0) {
     echo '</pre>';
 } else {
     echo "0 results";
-}
+}*/
 ###########################################
 
 

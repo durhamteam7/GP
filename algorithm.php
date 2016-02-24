@@ -33,7 +33,7 @@
 
 
 // close connection
-$mysqli->close();
+//$mysqli->close();
 
 class Swanson{
 
