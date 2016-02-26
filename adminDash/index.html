@@ -1,0 +1,25 @@
+<html>
+<head>
+	<title>Admin Dashboard</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script src="app.js"></script>
+
+</head>
+
+<body ng-controller="MainController" ng-App="adminDash">
+	<h1>Admin Dashboard</h1>
+
+	{{var1}}
+
+	<div id="filters" ng-controller="FilterController">
+		Filters
+		{{var1}}
+	</div>
+	<div id="searchResults" ng-controller="SearchResultsController">search Results
+			{{var1}}
+	</div>
+</body>
+</html>
