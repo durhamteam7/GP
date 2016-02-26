@@ -3,13 +3,13 @@ var adminApp = angular.module('adminDash', []);
 
 
 adminApp.controller('MainController', ['$scope', function($scope) {
-  $scope.var1 = "in main";
+  $scope.results = [];
 }]);
 
 
 
 adminApp.controller('FilterController', ['$scope', function($scope) {
-  $scope.var1 = "in filter";
+  $scope.query = "in filter";
 }]);
 
 
