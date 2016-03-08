@@ -1,4 +1,3 @@
-
 <?php
 
 $servername = "mysql.dur.ac.uk";
