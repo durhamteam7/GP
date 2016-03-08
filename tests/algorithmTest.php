@@ -1,8 +1,8 @@
 <?php
 
 // import algorithm
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+echo __DIR__ . "\n";
+echo "../algorithm.php" . "\n";
 require_once("../algorithm.php");
 
 class SwansonTest extends PHPUnit_Framework_TestCase
