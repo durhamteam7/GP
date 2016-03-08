@@ -3,7 +3,7 @@
 <phpunit>
 	<testsuites>
     <testsuite name="algorithm">
-      <directory>tests</directory>
+      <directory>./</directory>
     </testsuite>
   </testsuites>
 
@@ -13,13 +13,11 @@
             <!-- this is the path of the files included in your clover report -->
             <directory suffix=".php">./</directory>
 	    <exclude>
-		<directory suffix=".php">./vendor</directory>
-		<directory suffix=".php">./tests</directory>
+		<directory suffix=".php">./</directory>
 		<file>./coverage-checker.php</file>
 	    </exclude>
         </whitelist>
         <blacklist>
-            <directory>./vendor</directory>
             <directory>./tests</directory>
         </blacklist>
     </filter>
