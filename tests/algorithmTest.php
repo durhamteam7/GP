@@ -3,7 +3,7 @@
 // import algorithm
 echo __DIR__ . "\n";
 echo "../algorithm.php" . "\n";
-require_once("../algorithm.php");
+require_once("algorithm.php");
 
 class SwansonTest extends PHPUnit_Framework_TestCase
 {
