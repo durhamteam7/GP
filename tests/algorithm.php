@@ -30,27 +30,35 @@
 }*/
 ###########################################
 
+/*
+class newTable {
+	$classification;
+	$evenness;
+	$fraction_support;
+	$fraction_blanks;
+}
+*/
 
 
 // close connection
-$mysqli->close();
+//$mysqli->close();
 
-class Swanson{
+class Swanson {
 
 	//compares two lists by looking at the first value from each
 	//negative if a[0]<b[0] zero if a[0]==b[0] else positive
-	function compare_by_classifiaction($a,$b)
+	function compare_by_classification($a,$b)
 	{
-		return $a[0]-$b[0];
+		return $a[0] - $b[0];
 	}
 
 	//return the number of species in classifications for a given subject
-	//input a list of classifications, wherein each classification is a list of soecies (with associated data)
+	//input a list of classifications, wherein each classification is a list of species (with associated data)
 	//output a list with the number of species per classificaition
 	function get_species_counts($scals)
 	{
-		$spp=array();
-		for($x=0; $x<count($scals); $x++)
+		$spp = array();
+		for($x = 0; $x < count($scals); $x++)
 		{
 			if ($scals[$x][0][10] != "")
 			{
@@ -77,7 +85,7 @@ class Swanson{
 	//output the pielou evenness indes or 0 for unanimous vote
 	function calculate_pielou($nlist)
 	{
-		if (count($nlist)<2)
+		if (count($nlist) < 2)
 		{
 			return 0;
 		}
@@ -86,24 +94,24 @@ class Swanson{
 		// neumerator
 		$sumList = array_sum($nlist);
 		$plist = array();
-		for($x=0; $x<$nlist; $x++)
+		for($x = 0; $x < $nlist; $x++)
 		{
-			$plist[] = $nlist[$x]/$sumList;
+			$plist[] = $nlist[$x] / $sumList;
 		}
 		$plnplist = array();
-		for($x=0; $x<$plist; $x++)
+		for($x = 0; $x < $plist; $x++)
 		{
-			$plnplist[] = $plist[$x]*log($plist[$x]);
+			$plnplist[] = $plist[$x] * log($plist[$x]);
 		}
 		$sumplnp = -array_sum($plnplist);
-		return $sumplnp/$lns;
+		return $sumplnp / $lns;
 	}
 
 	//choose the winners from the vote as the top vote-getters
 	//input the number of winners
 	//input a dictionary of votes
 	//output a list of the winning species
-	function choose_winners($numwin,$sppvotes)
+	function choose_winners($numwin, $sppvotes)
 	{
 
 	}
@@ -130,7 +138,7 @@ class Swanson{
 	//input total number of blanks
 	//input a list of classification lines,each of which is a list
 	//output a list containing statistics for each species provided
-	function winner_info($sppwinners,$numclass,$numblanks,$subject)
+	function winner_info($sppwinners, $numclass, $numblanks, $subject)
 	{
 	
 	}
@@ -139,7 +147,7 @@ class Swanson{
 	//input a list that contains classification lines from the flat file
 	//each classification line is itself a list, with each item in the list a datum from the input flat file
 	//no output
-	function process_subject($subject,$filewriter)
+	function process_subject($subject, $filewriter)
 	{
 
 	}
