@@ -1,8 +1,6 @@
 <?php
 
 // import algorithm
-echo __DIR__ . "\n";
-echo "../algorithm.php" . "\n";
 require_once("algorithm.php");
 
 class SwansonTest extends PHPUnit_Framework_TestCase
@@ -36,7 +34,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     {
         $scals = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
 
-        $this->assertEquals(10, $this->$s->get_species_counts($scals));
+        $this->assertEquals(10, $this->s->get_species_counts($scals));
     }
     public function testTally_spp_votes()
     {
