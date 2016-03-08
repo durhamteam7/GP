@@ -32,13 +32,14 @@ class SwansonTest extends PHPUnit_Framework_TestCase
 
     public function testGet_species_counts()
     {
-        $array = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "" => "animal")));
+        $array = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal")));
         $res = array();
         $res[] = 1;
-        $array2 = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "" => "")));
+        $array2 = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "")));
         $res2 = array();
         $res2[] = 0;
-        $array3 = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "" => "animal")), array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "" => "animal")));
+        $array3 = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal")),
+                              array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal")));
         $res3 = array();
         $res3[] = 2;
 
