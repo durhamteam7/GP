@@ -3,7 +3,7 @@
 $servername = "mysql.dur.ac.uk";
 $username = "nobody";
 $password = "";
-$db = "Cljdw32_team7";
+$db = "Cljdw32_MammalWeb";
 
 // Create connection
 $mysqli = new mysqli($servername, $username, $password, $db);
