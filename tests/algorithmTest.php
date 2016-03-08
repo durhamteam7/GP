@@ -1,7 +1,7 @@
 <?php
 
 // import algorithm
-include("../algorithm.php");
+require_once("algorithm.php");
 
 class SwansonTest extends PHPUnit_Framework_TestCase
 {
