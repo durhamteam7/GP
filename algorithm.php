@@ -53,7 +53,7 @@ class Swanson {
 	}
 
 	//return the number of species in classifications for a given subject
-	//input a list of classifications, wherein each classification is a list of soecies (with associated data)
+	//input a list of classifications, wherein each classification is a list of species (with associated data)
 	//output a list with the number of species per classificaition
 	function get_species_counts($scals)
 	{
