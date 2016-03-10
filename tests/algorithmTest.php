@@ -60,7 +60,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     public function testCalculate_pielou()
     {
         $array = array(0);
-        $this->assertEquals(0, $array);
+        $this->assertEquals(0, $this->s->calculate_pielou($array));
 
         $array2 = array(2, 3, 4, 2);
         $lns = log(4);
@@ -70,7 +70,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                           (2/11) * log(2/11));
         $r = -array_sum($plnplist);
         $res = $r / $lns;
-        $this->assertEquals($res, $array2);
+        $this->assertEquals($res, $this->s->calculate_pielou($array2));
 
         $array3 = array(2, 2, 2, 2);
         $lns2 = log(4);
@@ -80,7 +80,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                            (2/8) * log(2/8));
         $r2 = -array_sum($plnplist2);
         $res2 = $r2 / $lns2;
-        $this->assertEquals($res2, $array3);
+        $this->assertEquals($res2, $this->s->calculate_pielou($array3));
 
     }
     public function testChoose_winners()
