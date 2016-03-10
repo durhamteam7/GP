@@ -15,12 +15,13 @@
 	    <exclude>
 		<directory suffix=".php">./vendor</directory>
 		<directory suffix=".php">./tests</directory>
+        <file>./tests/algorithmTest.php</file>
 		<file>./coverage-checker.php</file>
 	    </exclude>
         </whitelist>
         <blacklist>
             <directory>./vendor</directory>
-            <directory>./tests</directory>
+            <file>./tests/algorithmTest.php</file>
         </blacklist>
     </filter>
     <logging>

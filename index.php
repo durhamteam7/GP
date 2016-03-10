@@ -6,7 +6,9 @@
 <body>
 
 <?php
-    require('algorithm.php');
+
+    require('tests/algorithm.php');
+
 ?>
 
 </body>

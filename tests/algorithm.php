@@ -60,7 +60,7 @@ class Swanson {
 		$spp = array();
 		for($x = 0; $x < count($scals); $x++)
 		{
-			if ($scals[$x][0][10] != "")
+			if ($scals[$x][0][10] != "") // number 10 refers to species in the array
 			{
 				$spp[] = count($scals[$x]);
 			}
@@ -94,12 +94,12 @@ class Swanson {
 		// neumerator
 		$sumList = array_sum($nlist);
 		$plist = array();
-		for($x = 0; $x < $nlist; $x++)
+		for($x=0; $x<count($nlist); $x++)
 		{
 			$plist[] = $nlist[$x] / $sumList;
 		}
 		$plnplist = array();
-		for($x = 0; $x < $plist; $x++)
+		for($x=0; $x<count($plist); $x++)
 		{
 			$plnplist[] = $plist[$x] * log($plist[$x]);
 		}
@@ -121,7 +121,33 @@ class Swanson {
 	//output a list giving the minimum, median and maximum bin
 	function calculate_num_animals($noa)
 	{
-
+		$nums = array();
+		$tens = array();
+		$meds = array();
+		$many = array();
+		for($x=0; $x<count($noa); $x++)
+		{
+			if($noa[$x] < 10)
+			{
+				$nums[] = $noa[$x];
+			}
+			elseif($noa[$x] == 10)
+			{
+				$tens[] = $noa[$x];
+			}
+			elseif($noa[$x] < 51)
+			{
+				$meds[] = $noa[$x];
+			}
+			else
+			{
+				$many[] = $noa[$x];
+			}
+		}
+		sort($nums);
+		$sorted_list = merge($nums, $tens, $meds, $many);
+		$median = ceil((count($sorted_list)+1)/2)-1;
+		return array($sorted_list[0],$sorted_list[$median],end($sorted_list));
 	}
 
 	//calculate the percentage of true items given a list of true and false
