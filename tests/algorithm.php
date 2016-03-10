@@ -60,7 +60,7 @@ class Swanson {
 		$spp = array();
 		for($x = 0; $x < count($scals); $x++)
 		{
-			if ($scals[$x][0][10] != "")
+			if ($scals[$x][0][10] != "") // number 10 refers to species in the array
 			{
 				$spp[] = count($scals[$x]);
 			}
