@@ -46,6 +46,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         */
 
         $this->assertEquals($res, $this->s->get_species_counts($array));
+        $this->assertEquals(array(1), $this->s->get_species_counts($array));
         //$this->assertEquals($res2, $this->s->get_species_counts($array2));
         //$this->assertEquals($res3, $this->s->get_species_counts($array3));
     }
