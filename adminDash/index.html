@@ -4,7 +4,11 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/2.10.2/rzslider.min.css
+"/>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.js"></script>
+  <script src="https://rawgit.com/rzajac/angularjs-slider/master/dist/rzslider.js"></script>
 	<script src="app.js"></script>
 
 </head>
@@ -33,11 +37,89 @@
 				   </label>
 				 </div>
 				 <b>Evenness</b><br>
+          
+        
+        
+
+             
+            
+            <rzslider rz-slider-model="minRangeSlider.minValue" rz-slider-high="minRangeSlider.maxValue" rz-slider-options="minRangeSlider.options"></rzslider>
+            <input type="number" step="0.1" ng-model="minRangeSlider.minValue" />
+            <input type="number" step="0.1" ng-model="minRangeSlider.maxValue" />
+            <br/>
+       
+        
+          
+
+          <style>
+
+          * {
+        margin: 0;
+        padding: 0;
+        }
+        
+        .field-title {
+            width: 100px;
+        }
+
+
+          </style>
+    
+    
+
+    
+
+    
+    
+
+    
+    
+
+         
+      
+
+
 				 <b>Num Species</b><br>
 				 <b>Location</b><br>
+         <!-- postcode, radius -->
+         <b>Users</b><br>
+         
+         <b>Gender</b><br>
+         <div class="checkbox">
+           <label>
+             <input type="checkbox"> Male
+           </label>
+         </div>
+         <div class="checkbox">
+           <label>
+             <input type="checkbox"> Female
+           </label>
+         </div>
+         <div class="checkbox">
+           <label>
+             <input type="checkbox"> Unknown
+           </label>
+         </div>
+         
+         <b>Age</b><br>
+         <b>Time Period</b><br>
+         <b>Site</b><br>
+         <b>Sequence</b><br>
+         <!-- checkboxes -->
+         <b>Habitat Type</b><br>
+         <b>Human Presence</b><br>
+         <!--tickbox yes -->
+         <b>Blank Images</b><br>
+         <div class="checkbox">
+           <label>
+             <input type="checkbox"> Show blank images
+           </label>
+         </div>
+         <b>Number of Classifications</b><br>
+         <b>Consensus/Manual Checking</b><br>
 
-         animal(species)
-         users
+        
+         <!-- users
          gender
          age
          time period (seconds if poss)
@@ -47,7 +129,7 @@
          human presence
          blank images
          number of classifications
-         concencus/mannual checking
+         concencus/mannual checking -->
 
          <!-- need a table of sites -->
          	</form>
