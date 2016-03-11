@@ -60,7 +60,7 @@ class Swanson {
 		$spp = array();
 		for($x = 0; $x < count($scals); $x++)
 		{
-			if ($scals[$x][0][10] != "")
+			if ($scals[$x][0][10] != "") // number 10 refers to species in the array
 			{
 				$spp[] = count($scals[$x]);
 			}
@@ -82,7 +82,7 @@ class Swanson {
 
 	//calculate the pielou evenness index
 	//input a list giving the distribution of votes
-	//output the pielou evenness indes or 0 for unanimous vote
+	//output the pielou evenness index or 0 for unanimous vote
 	function calculate_pielou($nlist)
 	{
 		if (count($nlist) < 2)
@@ -91,7 +91,7 @@ class Swanson {
 		}
 		// denominator
 		$lns = log(count($nlist));
-		// neumerator
+		// numerator
 		$sumList = array_sum($nlist);
 		$plist = array();
 		for($x=0; $x<count($nlist); $x++)
@@ -146,7 +146,7 @@ class Swanson {
 		}
 		sort($nums);
 		$sorted_list = merge($nums, $tens, $meds, $many);
-		$median = ceil((count($sorted_list)+1)/2)-1);
+		$median = ceil((count($sorted_list)+1)/2)-1;
 		return array($sorted_list[0],$sorted_list[$median],end($sorted_list));
 	}
 
