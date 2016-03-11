@@ -203,3 +203,5 @@ Number.prototype.padLZ = function(w) {
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
+
+console.log(OSGridToLatLong("NZ 27 41"));

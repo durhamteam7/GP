@@ -20,6 +20,8 @@ http://www.movable-type.co.uk/scripts/latlong-gridref-v1.html
 * convert geodesic co-ordinates to OS grid reference
 */
 
+var_dump(OSGridToLatLong("NZ 27 41"));
+
 function OSGridToLatLong($gridRef)
 {
  	$gr = gridrefLetToNum($gridRef);
@@ -87,7 +89,7 @@ function OSGridToLatLong($gridRef)
    $lat = $lat - $VII*$dE2 + $VIII*$dE4 - $IX*$dE6;
    $lon = $lon0 + $X*$dE - $XI*$dE3 + $XII*$dE5 - $XIIA*$dE7;
 
-   echo [rad2deg($lat), rad2deg($lon)];
+   return array(rad2deg($lat), rad2deg($lon));
 }
 
 /* 
@@ -119,8 +121,8 @@ function gridrefLetToNum($gridref)
    $gridref = str_replace(' ', '',substr($gridref, 2));
 
    // append numeric part of references to grid index:
-   $e += $gridref.slice(0, strlen($gridref)/2);
-   $n += $gridref.slice(strlen($gridref)/2);
+   $e += substr($gridref,0, strlen($gridref)/2);
+   $n += substr($gridref,strlen($gridref)/2);
 
    // normalise to 1m grid, rounding up to centre of grid square:
    switch (strlen($gridref)) {
@@ -129,7 +131,7 @@ function gridrefLetToNum($gridref)
    // 10-digit refs are already 1m
   	}
 
-  	return [$e, $n];
+  	return array($e, $n);
 }
 
 ?>
