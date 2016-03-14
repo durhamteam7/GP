@@ -171,7 +171,7 @@ class Swanson {
 		for($x=0; $x<count($sppwinners); $x++)
 		{
 			//the fraction of people who voted for this spp
-			$fracpeople = (0.0+$wppwinners[$x][1])/($numclass-$numblanks)
+			$fracpeople = (0.0+$wppwinners[$x][1])/($numclass-$numblanks);
 
 			$noa = array();
 			$stand = array();
