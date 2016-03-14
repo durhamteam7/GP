@@ -166,7 +166,47 @@ class Swanson {
 	//output a list containing statistics for each species provided
 	function winner_info($sppwinners, $numclass, $numblanks, $subject)
 	{
-	
+		//CAN'T TEST THIS FUNCTION YET AS USES ANOTHER FUNCTION THAT HASN'T BEEN ADDED YET
+		$info = array();
+		for($x=0; $x<count($sppwinners); $x++)
+		{
+			//the fraction of people who voted for this spp
+			$fracpeople = (0.0+$wppwinners[$x][1])/($numclass-$numblanks)
+
+			$noa = array();
+			$stand = array();
+			$rest = array();
+			$move = array();
+			$eat = array();
+			$interact = array();
+			$baby = array();
+			for($x=0; $y<count($subject); $y++)
+			{
+				if($subject[$y][10] == $sppwinners[$x][0])
+				{
+					$noa[] = $subject[$y][11];
+					$stand[] = $subject[$y][12];
+					$rest[] = $subject[$y][13];
+					$move[] = $subject[$y][14];
+					$eat[] = $subject[$y][15];
+					$interact[] = $subject[$y][16];
+					$baby[] = $subject[$y][17];
+				}
+			}
+
+			//get the number of animals
+			$numanimals = calculate_numanimals($noa);
+
+			$stand_frac = calculate_TF_perc($stand);
+			$rest_frac = calculate_TF_perc($rest);
+			$move_frac = calculate_TF_perc($move);
+			$eat_frac = calculate_TF_perc($eat);
+			$interact_frac = calculate_TF_perc($interact);
+			$baby_frac = calculate_TF_perc($baby);
+
+			$info[] = merge([$sppwinners[$x][0],$sppwinners[$x][0],$fracpeople],$numanimals,[$stand_frac,$rest_frac,$move_frac,$eat_frac,$interact_frac,$baby_frac]);
+		}
+		return info;
 	}
 
 	//process all the classifications for one subject and write the plurality consensus vote for that subject to the output file
