@@ -42,44 +42,40 @@
         
 
              
-            
-            <rzslider rz-slider-model="minRangeSlider.minValue" rz-slider-high="minRangeSlider.maxValue" rz-slider-options="minRangeSlider.options"></rzslider>
-            <input type="number" step="0.1" ng-model="minRangeSlider.minValue" />
-            <input type="number" step="0.1" ng-model="minRangeSlider.maxValue" />
-            <br/>
-       
-        
+            <div class="row">
+
+            <rzslider rz-slider-model="evennessSlider.minValue" rz-slider-high="evennessSlider.maxValue" rz-slider-options="evennessSlider.options"></rzslider>
+            <div class="col-md-6">
+            <input type="number" class="form-control" step="0.1" ng-model="evennessSlider.minValue" />
+          </div>
           
 
-          <style>
 
-          * {
-        margin: 0;
-        padding: 0;
-        }
-        
-        .field-title {
-            width: 100px;
-        }
-
-
-          </style>
+          <div class = "col-md-6">
+            <input type="number" class="form-control" step="0.1" ng-model="evennessSlider.maxValue" />
+          </div>
+          </div>
+            <br/>
     
-    
+     
 
-    
+				 <b>Number of Animals</b><br>
+         <div class="row">
 
-    
-    
-
-    
-    
-
-         
-      
+            <rzslider rz-slider-model="numAnimalsSlider.minValue" rz-slider-high="numAnimalsSlider.maxValue" rz-slider-options="numAnimalsSlider.options"></rzslider>
+            <div class="col-md-6">
+            <input type="number" class="form-control" step="0.1" ng-model="numAnimalsSlider.minValue" />
+          </div>
+          
 
 
-				 <b>Num Species</b><br>
+          <div class = "col-md-6">
+            <input type="number" class="form-control" step="0.1" ng-model="numAnimalsSlider.maxValue" />
+          </div>
+          </div>
+            <br/>
+
+
 				 <b>Location</b><br>
          <!-- postcode, radius -->
          <b>Users</b><br>
