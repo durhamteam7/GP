@@ -11,18 +11,17 @@ if ($_POST['q']){
 $q = '{"contains_human":false}';
 $jsonQ = json_decode($q,true);
 var_dump($jsonQ);
-echo "<br><br>";
 $result = getPhotoFromQuery($jsonQ);
 
 // process result
-
+echo 
 if ($result->num_rows > 0) {
 	// output data of each row
-	echo "[";
+	echo '<pre>';
 	while($row = $result->fetch_assoc()) {
-		  echo json_encode($row).",";
+		  print_r($row);
 	}
-	echo "]";
+		 echo '</pre>';
 	} else {
 		 echo "0 results";
 	}

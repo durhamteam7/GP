@@ -11,7 +11,7 @@ I offer these formulæ & scripts for free use and adaptation as my contribution 
 info-sphere from which I have received so much. You are welcome to re-use these scripts [under a simple attribution license, 
 without any warranty express or implied] provided solely that you retain my COPYRIGHT NOTICE and a link to this page.
 
-http://www.movable-type.co.uk/scripts/latlong-gridref-v1.html
+http://www.movable-type.co.uk/scripts/latlong-gridRef-v1.html
 */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 /*  Convert latitude/longitude <=> OS National Grid Reference points (c) Chris Veness 2005-2010   */
@@ -20,14 +20,33 @@ http://www.movable-type.co.uk/scripts/latlong-gridref-v1.html
 * convert geodesic co-ordinates to OS grid reference
 */
 
+var_dump(OSGridToLatLong(normaliseGridRef("NZ 27 41")));
+
+
+function normaliseGridRef($oldGridRef)
+{
+  //ASSUMING: both parts of ref are same length. Code ignores spaces.
+  $numbers = substr($oldGridRef, 2);
+  $numbers = str_replace(" ", "", $numbers);
+  $partOne = substr($numbers, 0, strlen($numbers)/2);
+  $partTwo = substr($numbers, strlen($numbers)/2);
+  for ($i = strlen($partOne); $i<5; $i++)
+  {
+    $partOne.='0';
+    $partTwo.='0';
+  }
+  $gridRef = substr($oldGridRef,0,2).$partOne.$partTwo;
+  return $gridRef;
+}
+
 function OSGridToLatLong($gridRef)
 {
- 	$gr = gridrefLetToNum($gridRef);
+ 	  $gr = gridRefLetToNum($gridRef);
   	$E = $gr[0];
   	$N = $gr[1];
 
   	$a = 6377563.396; 
- 	$b = 6356256.910;              // Airy 1830 major & minor semi-axes
+ 	  $b = 6356256.910;              // Airy 1830 major & minor semi-axes
   	$F0 = 0.9996012717;                             // NatGrid scale factor on central meridian
   	$lat0 = 49*M_PI/180; 
   	$lon0 = -2*M_PI/180;  // NatGrid true origin
@@ -87,7 +106,7 @@ function OSGridToLatLong($gridRef)
    $lat = $lat - $VII*$dE2 + $VIII*$dE4 - $IX*$dE6;
    $lon = $lon0 + $X*$dE - $XI*$dE3 + $XII*$dE5 - $XIIA*$dE7;
 
-   echo [rad2deg($lat), rad2deg($lon)];
+   return array(rad2deg($lat), rad2deg($lon));
 }
 
 /* 
@@ -95,13 +114,13 @@ function OSGridToLatLong($gridRef)
  *   returned co-ordinates are in metres, centred on grid square for conversion to lat/long
  *
  *   note that northern-most grid squares will give 7-digit northings
- *   no error-checking is done on gridref (bad input will give bad results or NaN)
+ *   no error-checking is done on gridRef (bad input will give bad results or NaN)
  */
-function gridrefLetToNum($gridref) 
+function gridRefLetToNum($gridRef) 
 {
 	// get numeric values of letter references, mapping A->0, B->1, C->2, etc:
-	$l1 = strtoupper(ord($gridref)) - ord('A');
-	$l2 = strtoupper(ord(substr($gridref, 1))) - ord('A');
+	$l1 = strtoupper(ord($gridRef)) - ord('A');
+	$l2 = strtoupper(ord(substr($gridRef, 1))) - ord('A');
 	// shuffle down letters after 'I' since 'I' is not used in grid:
   	if ($l1 > 7) 
 	{
@@ -116,20 +135,20 @@ function gridrefLetToNum($gridref)
    $n = (19-floor($l1/5)*5) - floor($l2/5);
 
    // skip grid letters to get numeric part of ref, stripping any spaces:
-   $gridref = str_replace(' ', '',substr($gridref, 2));
+   $gridRef = str_replace(' ', '',substr($gridRef, 2));
 
    // append numeric part of references to grid index:
-   $e += $gridref.slice(0, strlen($gridref)/2);
-   $n += $gridref.slice(strlen($gridref)/2);
+   $e += substr($gridRef,0, strlen($gridRef)/2);
+   $n += substr($gridRef,strlen($gridRef)/2);
 
    // normalise to 1m grid, rounding up to centre of grid square:
-   switch (strlen($gridref)) {
+   switch (strlen($gridRef)) {
   		case 6: $e += '50'; $n += '50'; break;
    	case 8: $e += '5'; $n += '5'; break;
    // 10-digit refs are already 1m
   	}
 
-  	return [$e, $n];
+  	return array($e, $n);
 }
 
 ?>
