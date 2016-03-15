@@ -13,7 +13,7 @@ adminApp.controller('MainController', ['$scope', function($scope) {
 adminApp.controller('FilterController', ['$scope', function($scope) {
 	$scope.query = "in filter";
    //Range slider config
-    $scope.minRangeSlider = {
+    $scope.evennessSlider = {
         minValue: 0,
         maxValue: 100,
         options: {
@@ -23,6 +23,30 @@ adminApp.controller('FilterController', ['$scope', function($scope) {
             precision: 1
         }
     };
+
+    $scope.numAnimalsSlider = {
+        minValue: 0,
+        maxValue: 20,
+        options: {
+            floor: 0,
+            ceil: 20,
+            step: 1,
+            precision: 1
+        }
+    };
+
+    $scope.numClassificationsSlider = {
+        minValue: 0,
+        maxValue: 30,
+        options: {
+            floor: 0,
+            ceil: 30,
+            step: 1,
+            precision: 1
+        }
+    };
+
+     
 
 
   $scope.funFunction = function(a){
