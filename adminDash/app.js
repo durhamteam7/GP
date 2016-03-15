@@ -35,6 +35,19 @@ adminApp.controller('FilterController', ['$scope', function($scope) {
         }
     };
 
+    $scope.numClassificationsSlider = {
+        minValue: 0,
+        maxValue: 30,
+        options: {
+            floor: 0,
+            ceil: 30,
+            step: 1,
+            precision: 1
+        }
+    };
+
+     
+
 
   $scope.funFunction = function(a){
 	alert(a);
