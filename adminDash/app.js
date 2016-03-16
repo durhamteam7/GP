@@ -1,4 +1,4 @@
-var adminApp = angular.module('adminDash', []);
+var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap']);
 
 
 
@@ -44,7 +44,46 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 
 adminApp.controller('FilterController', ['$scope', function($scope) {
 	$scope.query = "in filter";
+   //Range slider config
+    $scope.evennessSlider = {
+        minValue: 0,
+        maxValue: 100,
+        options: {
+            floor: 0,
+            ceil: 100,
+            step: 1,
+            precision: 1
+        }
+    };
 
+    $scope.numAnimalsSlider = {
+        minValue: 0,
+        maxValue: 20,
+        options: {
+            floor: 0,
+            ceil: 20,
+            step: 1,
+            precision: 1
+        }
+    };
+
+    $scope.numClassificationsSlider = {
+        minValue: 0,
+        maxValue: 30,
+        options: {
+            floor: 0,
+            ceil: 30,
+            step: 1,
+            precision: 1
+        }
+    };
+
+     
+
+
+  $scope.funFunction = function(a){
+	alert(a);
+	}
 }]);
 
 

@@ -67,4 +67,22 @@
     echo "\n";
     print_r($s->calculate_pielou($array3));
     echo "\n";
+
+    echo "calculate num animals index";
+    echo "\n";
+
+    $array = array();
+    $array2 = array(0);
+    $array3 = array(5, 2, 1, 4, 3);
+
+    $res = array(null, null, null);
+    $res2 = array(0, 0, 0);
+    $res3 = array(1, 3, 5);
+
+    print_r($s->calculate_num_animals($array));
+    print_r($res);
+    print_r($s->calculate_num_animals($array2));
+    print_r($res2);
+    print_r($s->calculate_num_animals($array3));
+    print_r($res3);
 ?>

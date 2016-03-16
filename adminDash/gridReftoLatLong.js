@@ -113,7 +113,7 @@ function OSGridToLatLong(gridRef) {
   lat = lat - VII*dE2 + VIII*dE4 - IX*dE6;
   var lon = lon0 + X*dE - XI*dE3 + XII*dE5 - XIIA*dE7;
 
-  return new LatLon(lat.toDeg(), lon.toDeg());
+  return [lat.toDeg(), lon.toDeg()];
 }
 
 
