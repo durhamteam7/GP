@@ -1,0 +1,184 @@
+<!--
+Use bootstrap columns to make a form on the left and the graph on the right
+
+form needs to handle chart type selection (dropdown), x value (and y value if appropriate), any other relevant options (look at data)
+
+line, scatter, pie, bar/column
+-->
+
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="http://bouil.github.io/angular-google-chart/ng-google-chart.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      
+      angular.module('google-chart-example', ['googlechart']).controller("MainCtrl", function ($scope) {
+
+    $scope.chartObject = {
+  "type": "AreaChart",
+  "displayed": false,
+  "data": {
+    "cols": [
+      {
+        "id": "month",
+        "label": "Month",
+        "type": "string",
+        "p": {}
+      },
+      {
+        "id": "laptop-id",
+        "label": "Laptop",
+        "type": "number",
+        "p": {}
+      },
+      {
+        "id": "desktop-id",
+        "label": "Desktop",
+        "type": "number",
+        "p": {}
+      },
+      {
+        "id": "server-id",
+        "label": "Server",
+        "type": "number",
+        "p": {}
+      },
+      {
+        "id": "cost-id",
+        "label": "Shipping",
+        "type": "number"
+      }
+    ],
+    "rows": [
+      {
+        "c": [
+          {
+            "v": "January"
+          },
+          {
+            "v": 19,
+            "f": "42 items"
+          },
+          {
+            "v": 12,
+            "f": "Ony 12 items"
+          },
+          {
+            "v": 7,
+            "f": "7 servers"
+          },
+          {
+            "v": 4
+          }
+        ]
+      },
+      {
+        "c": [
+          {
+            "v": "February"
+          },
+          {
+            "v": 13
+          },
+          {
+            "v": 1,
+            "f": "1 unit (Out of stock this month)"
+          },
+          {
+            "v": 12
+          },
+          {
+            "v": 2
+          }
+        ]
+      },
+      {
+        "c": [
+          {
+            "v": "March"
+          },
+          {
+            "v": 24
+          },
+          {
+            "v": 5
+          },
+          {
+            "v": 11
+          },
+          {
+            "v": 6
+          }
+        ]
+      }
+    ]
+  },
+  "options": {
+    "title": "Sales per month",
+    "isStacked": "true",
+    "fill": 20,
+    "displayExactValues": true,
+    "vAxis": {
+      "title": "Sales unit",
+      "gridlines": {
+        "count": 10
+      }
+    },
+    "hAxis": {
+      "title": "Date"
+    }
+  },
+  "formatters": {}
+}
+
+});
+    </script>
+  </head>
+  <body ng-app="google-chart-example" ng-controller="MainCtrl">
+    <div class="container">
+      <div class="page-header">
+        <h1>Please select the graph attributes</h1>
+      </div>
+       <div class="col-sm-4">
+        <div class="row">
+          <div class="form-group">
+            <label for="type" class="col-sm-2 control-label">Chart Type:</label>
+            <div class="col-sm-10">
+                <select class="form-control ng-pristine ng-valid" id="chartType" ng-model="chartObject.type" ng-change="chartSelectionChange()">
+                <option value="AreaChart">AreaChart</option>
+                <option value="PieChart">PieChart</option>
+                <option value="ColumnChart">ColumnChart</option>
+                <option value="LineChart">LineChart</option>
+                <option value="Table">Table</option>
+                <option value="BarChart">BarChart</option>
+            </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <label for="x-axis" class="col-sm-2 control-label">x-axis Label:</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="x-axis">
+                <option>-</option>
+                <option>Site</option>
+                <option>Species</option>
+                <option>Habitat</option>
+                <option>Time</option>
+              </select>
+            </div>
+          </div>
+      </div>
+        <div class="col-sm-8">
+          <div class="row">
+            <div google-chart chart="chartObject" style="{{cssStyle}}"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
