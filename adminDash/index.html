@@ -22,14 +22,9 @@
         <h1 class="h4">Filters</h1>
         <form>
           <b>Species</b><br>
-          <div class="checkbox">
+          <div class="checkbox" ng-repeat="s in species">
            <label>
-             <input type="checkbox"> Species 1
-           </label>
-         </div>
-         <div class="checkbox">
-           <label>
-             <input type="checkbox"> Species 2
+             <input type="checkbox" value="s.option_value"> {{s.option_name}}
            </label>
          </div>
          <b>Evenness</b><br>
