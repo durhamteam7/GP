@@ -10,23 +10,25 @@ if ($_POST['q']){
 //echo $q;
 $q = '{"contains_human":false}';
 $jsonQ = json_decode($q,true);
-var_dump($jsonQ);
-echo "<br><br>";
+//var_dump($jsonQ);
+//echo "<br><br>";
 $result = getPhotoFromQuery($jsonQ);
 
 // process result
 
+
 if ($result->num_rows > 0) {
 	// output data of each row
-	echo "[";
+	$outputString =  "[";
 	while($row = $result->fetch_assoc()) {
-		  echo json_encode($row).",";
+		  $outputString.= json_encode($row).",";
 	}
-	echo "]";
+	$outputString = rtrim($outputString, ",");
+	$outputString.= "]";
 	} else {
 		 echo "0 results";
 	}
-
+echo $outputString;
 
 function getPhotoFromQuery($query){
 
@@ -47,7 +49,7 @@ function getPhotoFromQuery($query){
 	
 	
 	$sql = "SELECT *
-	FROM Photo 
+	FROM Photo
 	WHERE ".$qString."
 	LIMIT 100;";
 
@@ -55,7 +57,7 @@ function getPhotoFromQuery($query){
 	$result = $mysqli->query($sql);
 	$mysqli->close();
 	
-	echo $sql;
+	//echo $sql;
 	return $result;
 
 }
