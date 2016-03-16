@@ -89,7 +89,13 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     }
     public function testCalculate_num_animals()
     {
-        $this->assertEquals(1, 2);
+        $array = array();
+        $array2 = array(0);
+        $array3 = array(5, 2, 1, 4, 3);
+
+        $this->assertEquals(array(), $this->s->calculate_num_animals($array));
+        $this->assertEquals(array(0, 0, 0), $this->s->calculate_num_animals($array2));
+        $this->assertEquals(array(5, 3, 1), $this->s->calculate_num_animals($array3));
     }
     public function testCalculate_TF_perc()
     {

@@ -145,7 +145,7 @@ class Swanson {
 			}
 		}
 		sort($nums);
-		$sorted_list = merge($nums, $tens, $meds, $many);
+		$sorted_list = array_merge($nums, $tens, $meds, $many);
 		$median = ceil((count($sorted_list)+1)/2)-1;
 		return array($sorted_list[0],$sorted_list[$median],end($sorted_list));
 	}
