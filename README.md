@@ -1,6 +1,12 @@
 # GP
 Group Project
 
+## Death by Modal Part 2
+> One Modal to rule them all,
+> One Modal to find them;
+> One Modal to bring them all
+> and in the darkness bind them.
+
 Algorithm is in tests/ directory
 
 ## Main idea of algorithm
