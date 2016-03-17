@@ -9,6 +9,8 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.js"></script>
   <script src="https://rawgit.com/rzajac/angularjs-slider/master/dist/rzslider.js"></script>
+  <script src="http://bouil.github.io/angular-google-chart/ng-google-chart.js"></script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script src="app.js"></script>
 
 </head>
@@ -218,11 +220,74 @@
       <h1 class="h4">Summary</h1>
       {{results.length}} results.
     </div>
-    <div class="well"> 
+    <div class="well" ng-controller="GraphsController"> 
       <h1 class="h4">Graphs</h1>
-      ooo pwetty sample graph
-      and option to make more graphs
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#graphModal">Open Graph Editor</button>
+    
+        <!-- Modal -->
+<div id="graphModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Graph Editor</h4>
+      </div>
+      <div class="modal-body">
+        
+        <div class="container">
+        <div class="row">
+          <div class="col-xs-4">
+            <div class= "row">
+              <div class="form-group">
+                <label for="type" class="col-sm-2 control-label">Chart Type:</label>
+                <div class="col-sm-10">
+                    <select class="form-control ng-pristine ng-valid" id="chartType" ng-model="chartObject.type" ng-change="chartSelectionChange()">
+                      <option ng-repeat="v in chartTypes" value="v">{{v}}</option>
+                    </select>
+                </div>
+              </div>
+            </div>
+            <div class= "row">
+              <div class="form-group">
+                <label for="x-axis" class="col-sm-2 control-label">x-axis Label:</label>
+                <div class="col-sm-10">
+                    <select class="form-control ng-pristine ng-valid" id="x-axis" ng-model="chartObject.label" ng-change="chartSelectionChange()">
+                      <option ng-repeat="v in variables" value="v">{{v}}</option>
+                    </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group">
+                <label for="y-axis" class="col-sm-2 control-label">y-axis Label:</label>
+                <div class="col-sm-10">
+                    <select class="form-control ng-pristine ng-valid" id="chartType" ng-model="chartObject.label" ng-change="chartSelectionChange()">
+                      <option>-</option>
+                      <option ng-repeat="v in variables" value="v">{{v}}</option>
+                    </select>
+                </div>
+              </div> 
+            </div> 
+          </div>
+          <div class="col-xs-8">
+            <div google-chart chart="chartObject" style="{{cssStyle}}"></div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
     </div>
+    </div>
+  </div>
+</div>
     <div class="well"> 
       <h1 class="h4">Export CSV</h1>
       CSV options
@@ -231,6 +296,11 @@
 
 
 </div>
+</div>
+
+
+
+  </div>
 </div>
 
 

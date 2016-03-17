@@ -1,4 +1,4 @@
-var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap']);
+var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart']);
 
 
 // Ajax Service
@@ -94,6 +94,64 @@ adminApp.controller('SummaryController', ['$scope', function($scope) {
 
 adminApp.controller('GraphsController', ['$scope', function($scope) {
 	$scope.var1 = "in search results";
+
+            $scope.chartTypes = ["AreaChart","PieChart","BarChart","ColumnChart","LineChart","Table"];
+        $scope.variables = ["Species","Evenness","Number of Animals"];
+
+    $scope.chartObject = {
+  "type": "AreaChart",
+  "displayed": false,
+  "data": {
+    "cols": [
+      {
+        "id": "month",
+        "label": "Month",
+        "type": "string",
+        "p": {}
+      }
+    ],
+    "rows": [
+      {
+        "c": [
+          {
+            "v": "January"
+          },
+          {
+            "v": 19,
+            "f": "42 items"
+          },
+          {
+            "v": 12,
+            "f": "Ony 12 items"
+          },
+          {
+            "v": 7,
+            "f": "7 servers"
+          },
+          {
+            "v": 4
+          }
+        ]
+      }
+    ]
+  },
+  "options": {
+    "title": "Sales per month",
+    "isStacked": "true",
+    "fill": 20,
+    "displayExactValues": true,
+    "vAxis": {
+      "title": "Sales unit",
+      "gridlines": {
+        "count": 10
+      }
+    },
+    "hAxis": {
+      "title": "Date"
+    }
+  },
+  "formatters": {}
+}
 }]);
 
 adminApp.controller('CSVController', ['$scope', function($scope) {
