@@ -105,11 +105,39 @@
          
          <b>Age</b><br>
          <!--Drop down junior, adult etc-->
+         <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Select an age
+          <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+          <li><a href="#">Junior</a></li>
+          <li><a href="#">Adult</a></li>                   
+          </ul>
+        </div>           
+          <br/>
 
-           
-            <br/>
+         <b>Date</b><br>
 
-         <b>Time Period</b><br>
+         <b>Time</b><br>
+         <div class="form-group">
+                <div class='input-group date' id='datetimepicker3'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                </div>
+            </div>
+        
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker3').datetimepicker({
+                    format: 'LT'
+                });
+            });
+        </script>
+         
+
+
+
          <b>Site</b><br>
          <b>Sequence</b><br>
          <!-- checkboxes -->

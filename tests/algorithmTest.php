@@ -25,13 +25,15 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     	$array2 = array(2, 3, 4, 5);
     	$array3 = array(2, 9, 4, 1);
 
-        $this->assertLessThan(0, $this->s->compare_by_classification($array,$array2));
-    	$this->assertGreaterThan(0, $this->s->compare_by_classification($array2,$array));
-    	$this->assertEquals(0, $this->s->compare_by_classification($array2,$array3));
+        $this->assertLessThan(0, $this->s->compare_by_classification($array, $array2));
+    	$this->assertGreaterThan(0, $this->s->compare_by_classification($array2, $array));
+    	$this->assertEquals(0, $this->s->compare_by_classification($array2, $array3));
     }
 
     public function testGet_species_counts()
     {
+        $empty_array = array();
+
         $array = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "")));
         $res = array(0);
 
@@ -48,6 +50,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $res4 = array(1, 2);
 
 
+        $this->assertEquals(array(), $this->s->get_species_counts($empty_array));
         $this->assertEquals($res, $this->s->get_species_counts($array));
         $this->assertEquals($res2, $this->s->get_species_counts($array2));
         $this->assertEquals($res3, $this->s->get_species_counts($array3));
@@ -59,6 +62,9 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     }
     public function testCalculate_pielou()
     {
+        $empty_array = array();
+        $this->assertEquals(0, $this->s->calculate_pielou($empty_array));
+
         $array = array(0);
         $this->assertEquals(0, $this->s->calculate_pielou($array));
 
@@ -80,7 +86,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                            (2/8) * log(2/8));
         $r2 = -array_sum($plnplist2);
         $res2 = $r2 / $lns2;
-        $this->assertEquals($res2, $this->s->calculate_pielou($array3));
+        $this->assertEquals(1, $this->s->calculate_pielou($array3));
 
     }
     public function testChoose_winners()
@@ -95,7 +101,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(array(), $this->s->calculate_num_animals($array));
         $this->assertEquals(array(0, 0, 0), $this->s->calculate_num_animals($array2));
-        $this->assertEquals(array(5, 3, 1), $this->s->calculate_num_animals($array3));
+        $this->assertEquals(array(1, 3, 5), $this->s->calculate_num_animals($array3));
     }
     public function testCalculate_TF_perc()
     {
