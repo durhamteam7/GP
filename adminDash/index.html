@@ -32,12 +32,9 @@
            <label>
              <input type="checkbox" value="s.option_value"> {{s.option_name}}
         </div>
-				 <b>Evenness</b><br>
-          
-        
-        
-
-             
+				 <b>Evenness</b><br>  
+              
+            
             <div class="row">
 
             <rzslider rz-slider-model="evennessSlider.minValue" rz-slider-high="evennessSlider.maxValue" rz-slider-options="evennessSlider.options"></rzslider>
@@ -49,6 +46,22 @@
 
           <div class = "col-md-6">
             <input type="number" class="form-control" step="0.1" ng-model="evennessSlider.maxValue" />
+          </div>
+          </div>
+            <br/>
+
+          <b>Number of Classifications</b><br>
+         <div class="row">
+
+            <rzslider rz-slider-model="numClassificationsSlider.minValue" rz-slider-high="numClassificationsSlider.maxValue" rz-slider-options="numClassificationsSlider.options"></rzslider>
+            <div class="col-md-6">
+            <input type="number" class="form-control" step="0.1" ng-model="numClassificationsSlider.minValue" />
+          </div>
+          
+
+
+          <div class = "col-md-6">
+            <input type="number" class="form-control" step="0.1" ng-model="numClassificationsSlider.maxValue" />
           </div>
           </div>
             <br/>
@@ -69,16 +82,7 @@
             <input type="number" class="form-control" step="0.1" ng-model="numAnimalsSlider.maxValue" />
           </div>
           </div>
-            <br/>
-
-
-				 <b>Location</b><br>
-         
-        
-         <label>Postcode:        
-         
-         <input type="text" class="form-control">
-       </label>     
+            <br/> 
        
 
      
@@ -158,7 +162,14 @@
                 });
             });
         </script>
+
+        <b>Location</b><br>
          
+        
+         <label>Postcode:        
+         
+         <input type="text" class="form-control">
+       </label>          
 
 
 
@@ -190,21 +201,7 @@
              <input type="checkbox"> Show blank images
            </label>
          </div>
-         <b>Number of Classifications</b><br>
-         <div class="row">
-
-            <rzslider rz-slider-model="numClassificationsSlider.minValue" rz-slider-high="numClassificationsSlider.maxValue" rz-slider-options="numClassificationsSlider.options"></rzslider>
-            <div class="col-md-6">
-            <input type="number" class="form-control" step="0.1" ng-model="numClassificationsSlider.minValue" />
-          </div>
-          
-
-
-          <div class = "col-md-6">
-            <input type="number" class="form-control" step="0.1" ng-model="numClassificationsSlider.maxValue" />
-          </div>
-          </div>
-            <br/>
+         
 
 
          <b>Consensus/Manual Checking</b><br>
