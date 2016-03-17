@@ -86,7 +86,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                            (2/8) * log(2/8));
         $r2 = -array_sum($plnplist2);
         $res2 = $r2 / $lns2;
-        $this->assertEquals(1, $this->s->calculate_pielou($array3));
+        $this->assertEquals(0, $this->s->calculate_pielou($array3));
 
     }
     public function testChoose_winners()
