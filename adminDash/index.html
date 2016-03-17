@@ -9,6 +9,8 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.js"></script>
   <script src="https://rawgit.com/rzajac/angularjs-slider/master/dist/rzslider.js"></script>
+  <script src="http://bouil.github.io/angular-google-chart/ng-google-chart.js"></script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script src="app.js"></script>
 
 </head>
@@ -30,12 +32,9 @@
            <label>
              <input type="checkbox" value="s.option_value"> {{s.option_name}}
         </div>
-				 <b>Evenness</b><br>
-          
-        
-        
-
-             
+				 <b>Evenness</b><br>  
+              
+            
             <div class="row">
 
             <rzslider rz-slider-model="evennessSlider.minValue" rz-slider-high="evennessSlider.maxValue" rz-slider-options="evennessSlider.options"></rzslider>
@@ -47,6 +46,22 @@
 
           <div class = "col-md-6">
             <input type="number" class="form-control" step="0.1" ng-model="evennessSlider.maxValue" />
+          </div>
+          </div>
+            <br/>
+
+          <b>Number of Classifications</b><br>
+         <div class="row">
+
+            <rzslider rz-slider-model="numClassificationsSlider.minValue" rz-slider-high="numClassificationsSlider.maxValue" rz-slider-options="numClassificationsSlider.options"></rzslider>
+            <div class="col-md-6">
+            <input type="number" class="form-control" step="0.1" ng-model="numClassificationsSlider.minValue" />
+          </div>
+          
+
+
+          <div class = "col-md-6">
+            <input type="number" class="form-control" step="0.1" ng-model="numClassificationsSlider.maxValue" />
           </div>
           </div>
             <br/>
@@ -67,22 +82,13 @@
             <input type="number" class="form-control" step="0.1" ng-model="numAnimalsSlider.maxValue" />
           </div>
           </div>
-            <br/>
-
-
-				 <b>Location</b><br>
-         
-        
-         <label>Postcode:        
-         
-         <input type="text" class="form-control">
-       </label>     
+            <br/> 
        
 
      
 
          
-         <b>Users</b><br>
+         
          
          <b>Gender</b><br>
          <div class="checkbox">
@@ -103,17 +109,41 @@
          
          <b>Age</b><br>
          <!--Drop down junior, adult etc-->
-         <div class="dropdown">
-          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Select an age
-          <span class="caret"></span></button>
-          <ul class="dropdown-menu">
-          <li><a href="#">Junior</a></li>
-          <li><a href="#">Adult</a></li>                   
-          </ul>
-        </div>           
+         <div class="checkbox">
+           <label>
+             <input type="checkbox"> Junior
+           </label>
+         </div>
+         <div class="checkbox">
+           <label>
+             <input type="checkbox"> Adult
+           </label>
+         </div>
+                   
           <br/>
 
          <b>Date</b><br>
+         <div class='col-md-6'>
+          <div class="form-group">
+            <div class='input-group date' id='datetimepicker6'>
+                <input type='text' class="form-control" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>
+            </div>
+            </div>
+          <div class='col-md-6'>
+          <div class="form-group">
+            <div class='input-group date' id='datetimepicker7'>
+                <input type='text' class="form-control" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+          </div>
+        </div>
+          
 
          <b>Time</b><br>
          <div class="form-group">
@@ -132,37 +162,46 @@
                 });
             });
         </script>
+
+        <b>Location</b><br>
          
+        
+         <label>Postcode:        
+         
+         <input type="text" class="form-control">
+       </label>          
 
 
 
-         <b>Site</b><br>
-         <b>Sequence</b><br>
+         
          <!-- checkboxes -->
          <b>Habitat Type</b><br>
+         <div class="checkbox">
+           <label>
+             <input type="checkbox"> Forest
+           </label>
+         </div>
+         <div class="checkbox">
+           <label>
+             <input type="checkbox"> Field
+           </label>
+         </div>
+
          <b>Human Presence</b><br>
          <!--tickbox yes -->
+          <div class="checkbox">
+           <label>
+             <input type="checkbox"> Yes
+           </label>
+         </div>
+
          <b>Blank Images</b><br>
          <div class="checkbox">
            <label>
              <input type="checkbox"> Show blank images
            </label>
          </div>
-         <b>Number of Classifications</b><br>
-         <div class="row">
-
-            <rzslider rz-slider-model="numClassificationsSlider.minValue" rz-slider-high="numClassificationsSlider.maxValue" rz-slider-options="numClassificationsSlider.options"></rzslider>
-            <div class="col-md-6">
-            <input type="number" class="form-control" step="0.1" ng-model="numClassificationsSlider.minValue" />
-          </div>
-          
-
-
-          <div class = "col-md-6">
-            <input type="number" class="form-control" step="0.1" ng-model="numClassificationsSlider.maxValue" />
-          </div>
-          </div>
-            <br/>
+         
 
 
          <b>Consensus/Manual Checking</b><br>
@@ -246,11 +285,74 @@
       <h1 class="h4">Summary</h1>
       {{results.length}} results.
     </div>
-    <div class="well"> 
+    <div class="well" ng-controller="GraphsController"> 
       <h1 class="h4">Graphs</h1>
-      ooo pwetty sample graph
-      and option to make more graphs
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#graphModal">Open Graph Editor</button>
+    
+        <!-- Modal -->
+<div id="graphModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Graph Editor</h4>
+      </div>
+      <div class="modal-body">
+        
+        <div class="container">
+        <div class="row">
+          <div class="col-xs-4">
+            <div class= "row">
+              <div class="form-group">
+                <label for="type" class="col-sm-2 control-label">Chart Type:</label>
+                <div class="col-sm-10">
+                    <select class="form-control ng-pristine ng-valid" id="chartType" ng-model="chartObject.type" ng-change="chartSelectionChange()">
+                      <option ng-repeat="v in chartTypes" value="v">{{v}}</option>
+                    </select>
+                </div>
+              </div>
+            </div>
+            <div class= "row">
+              <div class="form-group">
+                <label for="x-axis" class="col-sm-2 control-label">x-axis Label:</label>
+                <div class="col-sm-10">
+                    <select class="form-control ng-pristine ng-valid" id="x-axis" ng-model="chartObject.label" ng-change="chartSelectionChange()">
+                      <option ng-repeat="v in variables" value="v">{{v}}</option>
+                    </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group">
+                <label for="y-axis" class="col-sm-2 control-label">y-axis Label:</label>
+                <div class="col-sm-10">
+                    <select class="form-control ng-pristine ng-valid" id="chartType" ng-model="chartObject.label" ng-change="chartSelectionChange()">
+                      <option>-</option>
+                      <option ng-repeat="v in variables" value="v">{{v}}</option>
+                    </select>
+                </div>
+              </div> 
+            </div> 
+          </div>
+          <div class="col-xs-8">
+            <div google-chart chart="chartObject" style="{{cssStyle}}"></div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
     </div>
+    </div>
+  </div>
+</div>
     <div class="well"> 
       <h1 class="h4">Export CSV</h1>
       CSV options
@@ -259,6 +361,11 @@
 
 
 </div>
+</div>
+
+
+
+  </div>
 </div>
 
 

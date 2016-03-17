@@ -18,6 +18,9 @@ line, scatter, pie, bar/column
       
       angular.module('google-chart-example', ['googlechart']).controller("MainCtrl", function ($scope) {
 
+        $scope.chartTypes = ["AreaChart","PieChart","BarChart","ColumnChart","LineChart","Table"];
+        $scope.variables = ["Species","Evenness","Number of Animals"];
+
     $scope.chartObject = {
   "type": "AreaChart",
   "displayed": false,
@@ -28,29 +31,6 @@ line, scatter, pie, bar/column
         "label": "Month",
         "type": "string",
         "p": {}
-      },
-      {
-        "id": "laptop-id",
-        "label": "Laptop",
-        "type": "number",
-        "p": {}
-      },
-      {
-        "id": "desktop-id",
-        "label": "Desktop",
-        "type": "number",
-        "p": {}
-      },
-      {
-        "id": "server-id",
-        "label": "Server",
-        "type": "number",
-        "p": {}
-      },
-      {
-        "id": "cost-id",
-        "label": "Shipping",
-        "type": "number"
       }
     ],
     "rows": [
@@ -73,45 +53,6 @@ line, scatter, pie, bar/column
           },
           {
             "v": 4
-          }
-        ]
-      },
-      {
-        "c": [
-          {
-            "v": "February"
-          },
-          {
-            "v": 13
-          },
-          {
-            "v": 1,
-            "f": "1 unit (Out of stock this month)"
-          },
-          {
-            "v": 12
-          },
-          {
-            "v": 2
-          }
-        ]
-      },
-      {
-        "c": [
-          {
-            "v": "March"
-          },
-          {
-            "v": 24
-          },
-          {
-            "v": 5
-          },
-          {
-            "v": 11
-          },
-          {
-            "v": 6
           }
         ]
       }
@@ -139,46 +80,48 @@ line, scatter, pie, bar/column
     </script>
   </head>
   <body ng-app="google-chart-example" ng-controller="MainCtrl">
-    <div class="container">
-      <div class="page-header">
-        <h1>Please select the graph attributes</h1>
-      </div>
-       <div class="col-sm-4">
+    <div class="page-header">
+      <h1>Please select the graph attributes</h1>
+    </div>
+      <div class="container">
         <div class="row">
-          <div class="form-group">
-            <label for="type" class="col-sm-2 control-label">Chart Type:</label>
-            <div class="col-sm-10">
-                <select class="form-control ng-pristine ng-valid" id="chartType" ng-model="chartObject.type" ng-change="chartSelectionChange()">
-                <option value="AreaChart">AreaChart</option>
-                <option value="PieChart">PieChart</option>
-                <option value="ColumnChart">ColumnChart</option>
-                <option value="LineChart">LineChart</option>
-                <option value="Table">Table</option>
-                <option value="BarChart">BarChart</option>
-            </select>
+          <div class="col-xs-4">
+            <div class= "row">
+              <div class="form-group">
+                <label for="type" class="col-sm-2 control-label">Chart Type:</label>
+                <div class="col-sm-10">
+                    <select class="form-control ng-pristine ng-valid" id="chartType" ng-model="chartObject.type" ng-change="chartSelectionChange()">
+                      <option ng-repeat="v in chartTypes" value="v">{{v}}</option>
+                    </select>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="form-group">
-            <label for="x-axis" class="col-sm-2 control-label">x-axis Label:</label>
-            <div class="col-sm-10">
-                <select class="form-control" id="x-axis">
-                <option>-</option>
-                <option>Site</option>
-                <option>Species</option>
-                <option>Habitat</option>
-                <option>Time</option>
-              </select>
+            <div class= "row">
+              <div class="form-group">
+                <label for="x-axis" class="col-sm-2 control-label">x-axis Label:</label>
+                <div class="col-sm-10">
+                    <select class="form-control ng-pristine ng-valid" id="x-axis" ng-model="chartObject.label" ng-change="chartSelectionChange()">
+                      <option ng-repeat="v in variables" value="v">{{v}}</option>
+                    </select>
+                </div>
+              </div>
             </div>
+            <div class="row">
+              <div class="form-group">
+                <label for="y-axis" class="col-sm-2 control-label">y-axis Label:</label>
+                <div class="col-sm-10">
+                    <select class="form-control ng-pristine ng-valid" id="chartType" ng-model="chartObject.label" ng-change="chartSelectionChange()">
+                      <option>-</option>
+                      <option ng-repeat="v in variables" value="v">{{v}}</option>
+                    </select>
+                </div>
+              </div> 
+            </div> 
           </div>
-      </div>
-        <div class="col-sm-8">
-          <div class="row">
+          <div class="col-xs-8">
             <div google-chart chart="chartObject" style="{{cssStyle}}"></div>
           </div>
         </div>
       </div>
-    </div>
   </body>
 </html>
