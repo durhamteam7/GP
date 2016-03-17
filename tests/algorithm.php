@@ -58,6 +58,10 @@ class Swanson {
 	//output a list with the number of species per classificaition
 	function get_species_counts($scals)
 	{
+		if (count($scals) == 0)
+		{
+			return array();
+		}
 		$spp = array();
 		for($x = 0; $x < count($scals); $x++)
 		{
@@ -122,6 +126,10 @@ class Swanson {
 	//output a list giving the minimum, median and maximum bin
 	function calculate_num_animals($noa)
 	{
+		if(count($noa) == 0)
+		{
+			return array();
+		}
 		$nums = array();
 		$tens = array();
 		$meds = array();
@@ -167,6 +175,10 @@ class Swanson {
 	//output a list containing statistics for each species provided
 	function winner_info($sppwinners, $numclass, $numblanks, $subject)
 	{
+		if(count($sppwinners) == 0 || count($subject) == 0)
+		{
+			return array()
+		}
 		//CAN'T TEST THIS FUNCTION YET AS USES ANOTHER FUNCTION THAT HASN'T BEEN ADDED YET
 		$info = array();
 		for($x=0; $x<count($sppwinners); $x++)
