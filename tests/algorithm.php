@@ -36,6 +36,7 @@ class newTable {
 	$evenness;
 	$fraction_support;
 	$fraction_blanks;
+	$tf_percentage
 }
 */
 
