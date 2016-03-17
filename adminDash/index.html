@@ -84,7 +84,7 @@
      
 
          
-         <b>Users</b><br>
+         
          
          <b>Gender</b><br>
          <div class="checkbox">
@@ -105,14 +105,17 @@
          
          <b>Age</b><br>
          <!--Drop down junior, adult etc-->
-         <div class="dropdown">
-          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Select an age
-          <span class="caret"></span></button>
-          <ul class="dropdown-menu">
-          <li><a href="#">Junior</a></li>
-          <li><a href="#">Adult</a></li>                   
-          </ul>
-        </div>           
+         <div class="checkbox">
+           <label>
+             <input type="checkbox"> Junior
+           </label>
+         </div>
+         <div class="checkbox">
+           <label>
+             <input type="checkbox"> Adult
+           </label>
+         </div>
+                   
           <br/>
 
          <b>Date</b><br>
@@ -136,21 +139,6 @@
             </div>
           </div>
         </div>
-
-        <script type="text/javascript">
-        $(function () {
-        $('#datetimepicker6').datetimepicker();
-        $('#datetimepicker7').datetimepicker({
-            useCurrent: false //Important! See issue #1075
-        });
-        $("#datetimepicker6").on("dp.change", function (e) {
-            $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
-        });
-        $("#datetimepicker7").on("dp.change", function (e) {
-            $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
-        });
-      });
-    </script>
           
 
          <b>Time</b><br>
@@ -174,12 +162,28 @@
 
 
 
-         <b>Site</b><br>
-         <b>Sequence</b><br>
+         
          <!-- checkboxes -->
          <b>Habitat Type</b><br>
+         <div class="checkbox">
+           <label>
+             <input type="checkbox"> Forest
+           </label>
+         </div>
+         <div class="checkbox">
+           <label>
+             <input type="checkbox"> Field
+           </label>
+         </div>
+
          <b>Human Presence</b><br>
          <!--tickbox yes -->
+          <div class="checkbox">
+           <label>
+             <input type="checkbox"> Yes
+           </label>
+         </div>
+
          <b>Blank Images</b><br>
          <div class="checkbox">
            <label>
