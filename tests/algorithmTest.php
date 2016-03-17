@@ -50,7 +50,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $res4 = array(1, 2);
 
 
-        $this->assertEquals(0, $this->s->get_species_counts($empty_array));
+        $this->assertEquals(array(), $this->s->get_species_counts($empty_array));
         $this->assertEquals($res, $this->s->get_species_counts($array));
         $this->assertEquals($res2, $this->s->get_species_counts($array2));
         $this->assertEquals($res3, $this->s->get_species_counts($array3));
@@ -101,7 +101,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(array(), $this->s->calculate_num_animals($array));
         $this->assertEquals(array(0, 0, 0), $this->s->calculate_num_animals($array2));
-        $this->assertEquals(array(5, 3, 1), $this->s->calculate_num_animals($array3));
+        $this->assertEquals(array(1, 3, 5), $this->s->calculate_num_animals($array3));
     }
     public function testCalculate_TF_perc()
     {
