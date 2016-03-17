@@ -177,7 +177,7 @@ class Swanson {
 	{
 		if(count($sppwinners) == 0 || count($subject) == 0)
 		{
-			return array()
+			return array();
 		}
 		//CAN'T TEST THIS FUNCTION YET AS USES ANOTHER FUNCTION THAT HASN'T BEEN ADDED YET
 		$info = array();
