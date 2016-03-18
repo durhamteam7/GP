@@ -11,7 +11,7 @@ adminApp.factory('ajax', ['$http', function($http) {
     },
     getSequence: function(id) {
       return $http.patch(url+'/api/volunteer/approve/' + id).success(function() {
-        console.log("approved")
+        console.log("approved");
       });
     }
   };
@@ -19,20 +19,20 @@ adminApp.factory('ajax', ['$http', function($http) {
 }]);
 
 adminApp.controller('MainController', ['$scope','ajax', function($scope,serverComm) {
-	$scope.results = [];
-	$scope.species = [{"option_id":10,"option_name":"Badger"},{"option_id":11,"option_name":"Blackbird"},{"option_id":12,"option_name":"Domestic Cat"}]
+	$scope.results = []; //contains the results from the server
+	$scope.species = [{"option_id":10,"option_name":"Badger"},{"option_id":11,"option_name":"Blackbird"},{"option_id":12,"option_name":"Domestic Cat"}];
 
 	$scope.getResults = function(query){
 		
 		serverComm.getPhotos().success(function(data) {
-				console.log(data);
+				//console.log(data);
 				$scope.results = data;
 				for (var i = 0; i < $scope.results.length; i++) {
-				 	result = $scope.results[i];
+          var result = $scope.results[i];
 					var parts = result.dirname.split("/");
 
 					$scope.results[i].URL = parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.filename;
-					console.log($scope.results[i].URL);
+					//console.log($scope.results[i].URL);
 				}
 			});
 		
@@ -90,43 +90,36 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
 	$scope.var1 = "in search results";
 
         $scope.chartTypes = ["AreaChart","PieChart","BarChart","ColumnChart","LineChart","Table"];
-        $scope.variables = ["Species","Evenness","Number of Classifications","Number of Animals","Gender","Age","Date","Time","Postcode","Habitat Type","Human Prescence","Blank Images"];
+        $scope.variables = [{displayName:"Species",value:"species"},{displayName:"Evenness",value:"evenness"},{displayName:"Number of Classifications",value:"numberOfClassifications"},{displayName:"Number of Animals",value:"numberOfAnimals"},{displayName:"Gender",value:"gender"},{displayName:"Age",value:"age"},{displayName:"Date",value:"taken"},{displayName:"Time",value:"taken"},{displayName:"Postcode",value:"site_id"},{displayName:"Habitat Type",value:"habitatType"},{displayName:"Human Prescence",value:"contains_human"},{displayName:"Blank Images",value:"blank"}];
+
+
+
+
+        $scope.makeData = function(){
+          console.log($scope.xName);
+          //console.log($scope.results)
+          $scope.chartObject.data.cols = [{id: "x", label: $scope.xName, type: "string"},{id: "y", label: $scope.yName, type: "number"}];
+
+          $scope.chartObject.data.rows = [];
+          for (var i = 0; i < $scope.results.length; i++) {
+            $scope.chartObject.data.rows.push({c: [{v: $scope.results[i][$scope.xName]}, {v: $scope.results[i][$scope.yName]}]});
+          }
+
+          console.log($scope.chartObject.data);
+        };
+
+
+
 
     $scope.chartObject = {
   "type": "AreaChart",
-  "displayed": false,
+  "displayed": true,
   "data": {
     "cols": [
-      {
-        "id": "month",
-        "label": "Month",
-        "type": "string",
-        "p": {}
-      }
+      
     ],
     "rows": [
-      {
-        "c": [
-          {
-            "v": "January"
-          },
-          {
-            "v": 19,
-            "f": "42 items"
-          },
-          {
-            "v": 12,
-            "f": "Ony 12 items"
-          },
-          {
-            "v": 7,
-            "f": "7 servers"
-          },
-          {
-            "v": 4
-          }
-        ]
-      }
+      
     ]
   },
   "options": {

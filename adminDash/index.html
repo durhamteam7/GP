@@ -287,7 +287,7 @@
     </div>
     <div class="well" ng-controller="GraphsController"> 
       <h1 class="h4">Graphs</h1>
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#graphModal">Open Graph Editor</button>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#graphModal" >Open Graph Editor</button>
     
         <!-- Modal -->
 <div id="graphModal" class="modal fade" role="dialog">
@@ -309,7 +309,7 @@
                 <label for="type" class="col-sm-2 control-label">Chart Type:</label>
                 <div class="col-sm-10">
                     <select class="form-control ng-pristine ng-valid" id="chartType" ng-model="chartObject.type" ng-change="chartSelectionChange()">
-                      <option ng-repeat="v in chartTypes" value="v">{{v}}</option>
+                      <option ng-repeat="type in chartTypes" ng-value="type">{{type}}</option>
                     </select>
                 </div>
               </div>
@@ -318,8 +318,8 @@
               <div class="form-group">
                 <label for="x-axis" class="col-sm-2 control-label">x-axis Label:</label>
                 <div class="col-sm-10">
-                    <select class="form-control ng-pristine ng-valid" id="x-axis" ng-model="chartObject.label" ng-change="chartSelectionChange()">
-                      <option ng-repeat="v in variables" value="v">{{v}}</option>
+                    <select class="form-control ng-pristine ng-valid" id="x-axis" ng-model="xName" ng-change="chartSelectionChange();makeData();">
+                      <option ng-repeat="v in variables" ng-value="v.value">{{v.displayName}}</option>
                     </select>
                 </div>
               </div>
@@ -328,9 +328,9 @@
               <div class="form-group">
                 <label for="y-axis" class="col-sm-2 control-label">y-axis Label:</label>
                 <div class="col-sm-10">
-                    <select class="form-control ng-pristine ng-valid" id="chartType" ng-model="chartObject.label" ng-change="chartSelectionChange()">
+                    <select class="form-control ng-pristine ng-valid" id="chartType" ng-model="yName" ng-change="chartSelectionChange();makeData();">
                       <option>-</option>
-                      <option ng-repeat="v in variables" value="v">{{v}}</option>
+                      <option ng-repeat="v in variables" ng-value="v.value">{{v.displayName}}</option>
                     </select>
                 </div>
               </div> 
