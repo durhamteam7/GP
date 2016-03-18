@@ -1,6 +1,5 @@
 var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart']);
 
-
 // Ajax Service
 adminApp.factory('ajax', ['$http', function($http) {
 	return {
@@ -74,13 +73,6 @@ adminApp.controller('FilterController', ['$scope', function($scope) {
             precision: 1
         }
     };
-
-     
-
-
-  $scope.funFunction = function(a){
-	alert(a);
-	}
 }]);
 
 
@@ -95,8 +87,8 @@ adminApp.controller('SummaryController', ['$scope', function($scope) {
 adminApp.controller('GraphsController', ['$scope', function($scope) {
 	$scope.var1 = "in search results";
 
-            $scope.chartTypes = ["AreaChart","PieChart","BarChart","ColumnChart","LineChart","Table"];
-        $scope.variables = ["Species","Evenness","Number of Animals"];
+        $scope.chartTypes = ["AreaChart","PieChart","BarChart","ColumnChart","LineChart","Table"];
+        $scope.variables = ["Species","Evenness","Number of Classifications","Number of Animals","Gender","Age","Date","Time","Postcode","Habitat Type","Human Prescence","Blank Images"];
 
     $scope.chartObject = {
   "type": "AreaChart",
