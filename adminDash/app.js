@@ -1,5 +1,7 @@
 var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart']);
 
+var url = "http://community.dur.ac.uk/g.t.hudson/GP/adminDash/";
+
 // Ajax Service
 adminApp.factory('ajax', ['$http', function($http) {
 	return {
@@ -8,7 +10,7 @@ adminApp.factory('ajax', ['$http', function($http) {
       });
     },
     getSequence: function(id) {
-      return $http.patch('/api/volunteer/approve/' + id).success(function() {
+      return $http.patch(url+'/api/volunteer/approve/' + id).success(function() {
         console.log("approved")
       });
     }

@@ -3,15 +3,10 @@
 // require database connection code
 require('../../dbConnect.php');
 //access query parameter
-$q = $_GET["q"];
-if ($_POST['q']){
-	$q = $_POST['q'];
-}
+
 //echo $q;
 $q = '{"contains_human":false}';
 $jsonQ = json_decode($q,true);
-//var_dump($jsonQ);
-//echo "<br><br>";
 $result = getPhotoFromQuery($jsonQ);
 
 // process result
@@ -21,7 +16,8 @@ if ($result->num_rows > 0) {
 	// output data of each row
 	$outputString =  "[";
 	while($row = $result->fetch_assoc()) {
-		  $outputString.= json_encode($row).",";
+		unset($row["exif"]);
+		$outputString.= json_encode($row).",";
 	}
 	$outputString = rtrim($outputString, ",");
 	$outputString.= "]";
@@ -38,7 +34,7 @@ function getPhotoFromQuery($query){
 	$qString = "1 ";
 	
 	//ID
-	if ($query["id"] != null){
+	if (array_key_exists("id", $query) && $query["id"] != null){
 		$qString .= "AND Photo.photo_id=".$query["id"];
 	}
 	
@@ -57,7 +53,7 @@ function getPhotoFromQuery($query){
 	//Gender
 	
 	//Age
-	if ($query["age_id"] != null){
+	if (array_key_exists("age_id", $query) && $query["age_id"] != null){
 		$qString .= "AND Photo.age_id=".$query["age_id"];
 	}
 	
@@ -65,24 +61,23 @@ function getPhotoFromQuery($query){
 	
 	
 	//Site
-	if ($query["site_id"] != null){
+	if (array_key_exists("site_id", $query) && $query["site_id"] != null){
 		$qString .= "AND Photo.site_id=".$query["site_id"];
 	}
 	
 	//Sequence
 	
 	//Habitat type
-	if ($query["habitat_id"] != null){
+	if (array_key_exists("habitat_id", $query) && $query["habitat_id"] != null){
 		$qString .= "AND Site.habitat_id=".$query["habitat_id"];
 	}
 	
 	//Human presence
-	if ($query["contains_human"] != null){
+	if (array_key_exists("contains_human", $query) && $query["contains_human"] != null){
 		$qString .= "AND Photo.contains_human=".$query["contains_human"];
 	}
 	
 	//Blank Images
-	
 	
 	
 	$sql = "SELECT *
@@ -93,8 +88,6 @@ function getPhotoFromQuery($query){
 	// execute query
 	$result = $mysqli->query($sql);
 	$mysqli->close();
-	
-	//echo $sql;
 	return $result;
 
 }
