@@ -41,10 +41,47 @@ function getPhotoFromQuery($query){
 	if ($query["id"] != null){
 		$qString .= "AND Photo.photo_id=".$query["id"];
 	}
-	//contains_human
+	
+	//species
+	
+	//evenness
+	
+	//Number of classifications
+	
+	//num animals
+	
+	//location
+	
+	//users
+	
+	//Gender
+	
+	//Age
+	if ($query["age_id"] != null){
+		$qString .= "AND Photo.age_id=".$query["age_id"];
+	}
+	
+	//Time period
+	
+	
+	//Site
+	if ($query["site_id"] != null){
+		$qString .= "AND Photo.site_id=".$query["site_id"];
+	}
+	
+	//Sequence
+	
+	//Habitat type
+	if ($query["habitat_id"] != null){
+		$qString .= "AND Site.habitat_id=".$query["habitat_id"];
+	}
+	
+	//Human presence
 	if ($query["contains_human"] != null){
 		$qString .= "AND Photo.contains_human=".$query["contains_human"];
 	}
+	
+	//Blank Images
 	
 	
 	
