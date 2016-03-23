@@ -31,33 +31,32 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
     $scope.ageIDs = [5,6];
 
     $scope.filters = {
-        evenness:{
-            type:"slider",
-            minValue: 0,
-            maxValue: 100,
-            options: {
-                floor: 0,
-                ceil: 100,
-                step: 1,
-                precision: 1,
-                onEnd: $scope.getFilterValues
-            }
-        },
-        species:{
+      species:{
             type:"checkboxes",
-            value:[]
-        },
-        numAnimals:{
-            type:"slider",
-            minValue: 0,
-            maxValue: 20,
-            options: {
-                floor: 0,
-                ceil: 20,
-                step: 1,
-                precision: 1,
-                onEnd: $scope.getFilterValues
-            }
+            value:[],
+            ids:[10,11,12]
+      },
+      gender:{
+          type:"checkboxes",
+          value:[],
+          ids:[3,4]
+      },
+      age:{
+          type:"checkboxes",
+          value:[],
+          ids:[5,6]
+      },
+      evenness:{
+          type:"slider",
+          minValue: 0,
+          maxValue: 100,
+          options: {
+              floor: 0,
+              ceil: 100,
+              step: 1,
+              precision: 1,
+              onEnd: $scope.getFilterValues
+          }
         },
         numClassifications:{
             type:"slider",
@@ -71,13 +70,17 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
                 onEnd: $scope.getFilterValues
             }
         },
-        gender:{
-            type:"checkboxes",
-            value:[]
-        },
-        age:{
-            type:"checkboxes",
-            value:[]
+        numAnimals:{
+            type:"slider",
+            minValue: 0,
+            maxValue: 20,
+            options: {
+                floor: 0,
+                ceil: 20,
+                step: 1,
+                precision: 1,
+                onEnd: $scope.getFilterValues
+            }
         }
     }
 

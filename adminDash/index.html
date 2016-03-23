@@ -40,86 +40,36 @@
 				<h1 class="h4">Filters</h1>
         {{query}}
 				<form>
-				<b>Species</b><br>
-				<div class="checkbox" ng-repeat="id in speciesIDs">
+        <span ng-repeat="(filterName,filterData) in filters">
+
+          <b>{{filterName}}</b><br>
+
+          <div class="checkbox" ng-repeat="id in filterData.ids" ng-if="filterData.type=='checkboxes'">
            <label>
-             <input type="checkbox" checklist-model="filters.species.value" checklist-value="id"> {{options[id]}}
+             <input type="checkbox" checklist-model="filterData.value" checklist-value="id"> {{options[id]}}
            </label>
-        </div>
-				 <b>Evenness</b><br>  
-              
-            
-            <div class="row">
+          </div>
 
-            <rzslider rz-slider-model="filters.evenness.minValue" rz-slider-high="filters.evenness.maxValue" rz-slider-options="filters.evenness.options"></rzslider>
+          <div class="row" ng-if="filterData.type=='slider'">
+            <rzslider rz-slider-model="filterData.minValue" rz-slider-high="filterData.maxValue" rz-slider-options="filterData.options"></rzslider>
             <div class="col-md-6">
-            <input type="number" class="form-control" step="0.1" ng-model="filters.evenness.minValue" />
+              <input type="number" class="form-control" step="1" ng-model="filterData.minValue" />
+            </div>
+            <div class = "col-md-6">
+              <input type="number" class="form-control" step="1" ng-model="filterData.maxValue" />
+            </div>
           </div>
-          
+
+          <br>
 
 
-          <div class = "col-md-6">
-            <input type="number" class="form-control" step="0.1" ng-model="filters.evenness.maxValue" />
-          </div>
-          </div>
-            <br/>
-
-          <b>Number of Classifications</b><br>
-         <div class="row">
-
-            <rzslider rz-slider-model="filters.numClassifications.minValue" rz-slider-high="filters.numClassifications.maxValue" rz-slider-options="filters.numClassifications.options"></rzslider>
-            <div class="col-md-6">
-            <input type="number" class="form-control" step="0.1" ng-model="filters.numClassifications.minValue" />
-          </div>
-          
+        </span>
 
 
-          <div class = "col-md-6">
-            <input type="number" class="form-control" step="0.1" ng-model="filters.numClassifications.maxValue" />
-          </div>
-          </div>
-            <br/>
-    
-     
 
-				 <b>Number of Animals</b><br>
-         <div class="row">
-
-            <rzslider rz-slider-model="filters.numAnimals.minValue" rz-slider-high="filters.numAnimals.maxValue" rz-slider-options="filters.numAnimals.options"></rzslider>
-            <div class="col-md-6">
-            <input type="number" class="form-control" step="0.1" ng-model="filters.numAnimals.minValue" />
-          </div>
-          
+        <h4>OTHER</h4>
 
 
-          <div class = "col-md-6">
-            <input type="number" class="form-control" step="0.1" ng-model="filters.numAnimals.maxValue" />
-          </div>
-          </div>
-            <br/> 
-       
-
-     
-
-         
-         
-         
-         <b>Gender</b><br>
-         <div class="checkbox" ng-repeat="id in genderIDs">
-           <label>
-             <input type="checkbox" checklist-model="filters.gender.value" checklist-value="id"> {{options[id]}}
-           </label>
-        </div>
-         
-         <b>Age</b><br>
-         <!--Drop down junior, adult etc-->
-         <div class="checkbox" ng-repeat="id in ageIDs">
-           <label>
-             <input type="checkbox" checklist-model="filters.gender.value" checklist-value="id"> {{options[id]}}
-           </label>
-        </div>
-                   
-          <br/>
 
          <b>Date</b><br>
          <div class='col-md-6'>
@@ -198,7 +148,7 @@
          <div class="checkbox">
            <label>
              <input type="checkbox"> Show blank images
-           </label>
+           </label>   
          </div>
          
 
@@ -228,6 +178,7 @@
 
      <h5>
       <span ng-repeat="(name,f) in filters">
+
         <span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='slider' && (f.minValue!=f.options.floor || f.maxValue!=f.options.ceil)">{{name}}: 
           <b> 
             <span ng-if="f.minValue!=f.options.floor">&gt;= {{f.minValue}}</span> <span ng-if="f.maxValue!=f.options.ceil">&lt;= {{f.maxValue}}</span>
