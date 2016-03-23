@@ -22,6 +22,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	$scope.results = []; //contains the results from the server
 	$scope.species = [{"option_id":10,"option_name":"Badger"},{"option_id":11,"option_name":"Blackbird"},{"option_id":12,"option_name":"Domestic Cat"}];
 
+
 	$scope.getResults = function(query){
 		
 		serverComm.getPhotos().success(function(data) {
@@ -42,6 +43,12 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 
 adminApp.controller('FilterController', ['$scope', function($scope) {
 	$scope.query = "in filter";
+
+    $scope.sendQ = function(){
+        alert("hi");
+    }
+
+
    //Range slider config
     $scope.evennessSlider = {
         minValue: 0,
@@ -50,7 +57,8 @@ adminApp.controller('FilterController', ['$scope', function($scope) {
             floor: 0,
             ceil: 100,
             step: 1,
-            precision: 1
+            precision: 1,
+            onEnd: $scope.sendQ
         }
     };
 
@@ -61,7 +69,8 @@ adminApp.controller('FilterController', ['$scope', function($scope) {
             floor: 0,
             ceil: 20,
             step: 1,
-            precision: 1
+            precision: 1,
+            onEnd: $scope.sendQ
         }
     };
 
@@ -72,7 +81,8 @@ adminApp.controller('FilterController', ['$scope', function($scope) {
             floor: 0,
             ceil: 30,
             step: 1,
-            precision: 1
+            precision: 1,
+            onEnd: $scope.sendQ
         }
     };
 }]);
