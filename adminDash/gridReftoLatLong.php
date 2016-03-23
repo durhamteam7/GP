@@ -20,7 +20,37 @@ http://www.movable-type.co.uk/scripts/latlong-gridRef-v1.html
 * convert geodesic co-ordinates to OS grid reference
 */
 
-var_dump(OSGridToLatLong(normaliseGridRef("NZ 27 41")));
+//open connection to db
+require('../dbConnect.php');
+
+//go through entries of table where lat long not set.
+$sql = "SELECT site_id,grid_ref
+	FROM Site
+	WHERE lat=0;";
+
+	// execute query
+	$result = $mysqli->query($sql);
+	
+	
+if ($result->num_rows > 0) {
+	// output data of each row
+	while($row = $result->fetch_assoc()) {
+		$latLong = OSGridToLatLong(normaliseGridRef($row["grid_ref"])); //get grid ref
+		//write back
+		//var_dump( $latLong);
+		//echo $row["site_id"];
+		$updateStr = "UPDATE Site SET lat=1.0 WHERE site_id=1;";
+		echo $updateStr;
+		echo "<br><br>";
+		$result2 = $mysqli->query($updateStr);
+		//var_dump($result2);
+	}
+} 
+	else {
+		 echo "0 results";
+	}
+
+//var_dump(OSGridToLatLong(normaliseGridRef("NZ 27 41")));
 
 
 function normaliseGridRef($oldGridRef)
