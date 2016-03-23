@@ -1,4 +1,9 @@
-var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart']);
+var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart',"checklist-model"]);
+
+
+
+
+
 
 var url = "http://community.dur.ac.uk/g.t.hudson/GP/adminDash/";
 
@@ -10,7 +15,7 @@ adminApp.factory('ajax', ['$http', function($http) {
       });
     },
     getSequence: function(id) {
-      return $http.patch(url+'/api/volunteer/approve/' + id).success(function() {
+      return $http.patch('/api/volunteer/approve/' + id).success(function() {
         console.log("approved");
       });
     }
@@ -20,71 +25,83 @@ adminApp.factory('ajax', ['$http', function($http) {
 
 adminApp.controller('MainController', ['$scope','ajax', function($scope,serverComm) {
 	$scope.results = []; //contains the results from the server
-	$scope.species = [{"option_id":10,"option_name":"Badger"},{"option_id":11,"option_name":"Blackbird"},{"option_id":12,"option_name":"Domestic Cat"}];
+	$scope.options = {10:"Badger",11:"Blackbird",12:"Domestic Cat",3:"Female",4:"Male",5:"Adult",6:"Juvenille"};
+    $scope.speciesIDs = [10,11,12];
+    $scope.genderIDs = [3,4];
+    $scope.ageIDs = [5,6];
 
+    $scope.filters = {
+        evenness:{
+            type:"slider",
+            minValue: 0,
+            maxValue: 100,
+            options: {
+                floor: 0,
+                ceil: 100,
+                step: 1,
+                precision: 1,
+                onEnd: $scope.getFilterValues
+            }
+        },
+        species:{
+            type:"checkboxes",
+            value:[]
+        },
+        numAnimals:{
+            type:"slider",
+            minValue: 0,
+            maxValue: 20,
+            options: {
+                floor: 0,
+                ceil: 20,
+                step: 1,
+                precision: 1,
+                onEnd: $scope.getFilterValues
+            }
+        },
+        numClassifications:{
+            type:"slider",
+            minValue: 0,
+            maxValue: 30,
+            options: {
+                floor: 0,
+                ceil: 30,
+                step: 1,
+                precision: 1,
+                onEnd: $scope.getFilterValues
+            }
+        },
+        gender:{
+            type:"checkboxes",
+            value:[]
+        },
+        age:{
+            type:"checkboxes",
+            value:[]
+        }
+    }
 
-	$scope.getResults = function(query){
-		
+	$scope.getResults = function(){
 		serverComm.getPhotos().success(function(data) {
 				//console.log(data);
 				$scope.results = data;
 				for (var i = 0; i < $scope.results.length; i++) {
-          var result = $scope.results[i];
+                    var result = $scope.results[i];
 					var parts = result.dirname.split("/");
 
 					$scope.results[i].URL = parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.filename;
 					//console.log($scope.results[i].URL);
 				}
-			});
+		});
+
 		
 	};
+
 	$scope.getResults();
 }]);
 
 adminApp.controller('FilterController', ['$scope', function($scope) {
-	$scope.query = "in filter";
 
-    $scope.sendQ = function(){
-        alert("hi");
-    }
-
-
-   //Range slider config
-    $scope.evennessSlider = {
-        minValue: 0,
-        maxValue: 100,
-        options: {
-            floor: 0,
-            ceil: 100,
-            step: 1,
-            precision: 1,
-            onEnd: $scope.sendQ
-        }
-    };
-
-    $scope.numAnimalsSlider = {
-        minValue: 0,
-        maxValue: 20,
-        options: {
-            floor: 0,
-            ceil: 20,
-            step: 1,
-            precision: 1,
-            onEnd: $scope.sendQ
-        }
-    };
-
-    $scope.numClassificationsSlider = {
-        minValue: 0,
-        maxValue: 30,
-        options: {
-            floor: 0,
-            ceil: 30,
-            step: 1,
-            precision: 1,
-            onEnd: $scope.sendQ
-        }
-    };
 }]);
 
 
