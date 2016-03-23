@@ -1,4 +1,6 @@
 <?php
+
+
 //https://community.dur.ac.uk/php.myadmin/password/phpMyAdmin/index.php?token=49768bff20a7a435e85700551e9ffe92&db=Cljdw32_MammalWeb
 // require database connection code
 require('../../dbConnect.php');
@@ -58,6 +60,7 @@ function getPhotoFromQuery($query){
 	}
 	
 	//Time period
+	//Date - seperate?
 	
 	
 	//Site
