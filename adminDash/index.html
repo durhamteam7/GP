@@ -14,7 +14,9 @@
   <script src="checklistModel.js"></script>
 	<script src="app.js"></script>
   <style>
-    body {
+  
+  
+body {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none;   /* Chrome/Safari/Opera */
   -khtml-user-select: none;    /* Konqueror */
@@ -26,6 +28,17 @@
 </style>
 
 </head>
+
+
+<link rel="stylesheet" href="loader.css">
+<div id="loader">
+    <div>
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+</div>
+
+
 
 <body ng-controller="MainController" ng-App="adminDash">
 
@@ -120,41 +133,6 @@
          <input type="text" class="form-control">
        </label>          
 
-
-
-         
-         <!-- checkboxes -->
-         <b>Habitat Type</b><br>
-         <div class="checkbox">
-           <label>
-             <input type="checkbox"> Forest
-           </label>
-         </div>
-         <div class="checkbox">
-           <label>
-             <input type="checkbox"> Field
-           </label>
-         </div>
-
-         <b>Human Presence</b><br>
-         <!--tickbox yes -->
-          <div class="checkbox">
-           <label>
-             <input type="checkbox"> Yes
-           </label>
-         </div>
-
-         <b>Blank Images</b><br>
-         <div class="checkbox">
-           <label>
-             <input type="checkbox"> Show blank images
-           </label>   
-         </div>
-         
-
-
-         <b>Consensus/Manual Checking</b><br>
-
         
          <!-- users
          gender
@@ -183,14 +161,14 @@
           <b> 
             <span ng-if="f.minValue!=f.options.floor">&gt;= {{f.minValue}}</span> <span ng-if="f.maxValue!=f.options.ceil">&lt;= {{f.maxValue}}</span>
           </b> 
-          <a href="javascript:void(0)" style="color:white" ng-click="f.minValue=f.options.floor;f.maxValue=f.options.ceil"><span class="glyphicon glyphicon-remove"></span></a>
+          <a href="javascript:void(0)" style="color:white" ng-click="f.minValue=f.options.floor;f.maxValue=f.options.ceil;getResults()"><span class="glyphicon glyphicon-remove"></span></a>
         </span>
 
       <span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='checkboxes'" ng-repeat="v in f.value">{{name}}: 
           <b> 
             {{options[v]}}
           </b> 
-          <a href="javascript:void(0)" style="color:white" ng-click="f.value.splice(f.value.indexOf(v),1)" ><span class="glyphicon glyphicon-remove"></span></a>
+          <a href="javascript:void(0)" style="color:white" ng-click="f.value.splice(f.value.indexOf(v),1);getResults()" ><span class="glyphicon glyphicon-remove"></span></a>
       </span>
 
       </span>
@@ -200,7 +178,13 @@
 
      <div  id="searchResults">
       <div class="row"  ng-repeat="result in results">
-        <div class="col-sm-4"><img ng-src="http://www.mammalweb.org/biodivimages/{{result.URL}}" width=150> </div>
+        <div class="col-sm-4">
+        	<div class="row">
+        	<div class="col-sm-4">
+        	<img ng-src="http://www.mammalweb.org/biodivimages/{{result.URL}}" width=150>
+        	</div>
+        	</div>
+        </div>
         <div class="col-sm-8">
           <div class="row">
             <div class="col-sm-3"><b>{{result.upload_filename}}</b></div>
@@ -216,10 +200,6 @@
           <div class="row">
             <div class="col-sm-3">Time:</div>
             <div class="col-sm-8">{{result.taken}}</div>
-          </div>
-          <div class="row">
-            <div class="col-sm-3">Users:</div>
-            <div class="col-sm-8"><a href="#">Simon Jones</a>, <a href="#"><a href="#">Ali Swanson</a></div>
           </div>
           <div class="row">
             <div class="col-sm-3">Animal:</div>

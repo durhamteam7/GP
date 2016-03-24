@@ -10,19 +10,16 @@ $result = getPhotoFromQuery($q);
 
 // process result
 
-
+$outputString =  "[";
 if ($result->num_rows > 0) {
 	// output data of each row
-	$outputString =  "[";
 	while($row = $result->fetch_assoc()) {
 		unset($row["exif"]);
 		$outputString.= json_encode($row).",";
 	}
 	$outputString = rtrim($outputString, ",");
-	$outputString.= "]";
-	} else {
-		 echo "0 results";
-	}
+}
+$outputString.= "]";
 echo $outputString;
 
 function getPhotoFromQuery($query){
@@ -35,7 +32,7 @@ function getPhotoFromQuery($query){
 	
 	//ID
 	if (array_key_exists("id", $query) && $query["id"] != null){
-		$qString .= " AND Photo.photo_id=".$query["id"];
+			$qString .= " AND Photo.photo_id=".$query["id"];
 	}
 	
 	//species

@@ -20,14 +20,12 @@ adminApp.factory('ajax', ['$http', function($http) {
 
 adminApp.controller('MainController', ['$scope','ajax', function($scope,serverComm) {
 	$scope.results = []; //contains the results from the server
-	$scope.options = {10:"Badger",11:"Blackbird",12:"Domestic Cat",3:"Female",4:"Male",5:"Adult",6:"Juvenille"};
-    $scope.speciesIDs = [10,11,12];
-    $scope.genderIDs = [3,4];
-    $scope.ageIDs = [5,6];
+	$scope.options = {10:"Badger",11:"Blackbird",12:"Domestic Cat",3:"Female",4:"Male",5:"Adult",6:"Juvenille",62:"Woodland",64:"Arable, horticulture"};
 
 
 	$scope.getResults = function(){
 		console.log("get results");
+		$("#loader").fadeTo("fast", 0.7);
 		serverComm.getPhotos($scope.filters).success(function(data) {
 				console.log(data);
 				$scope.results = data;
@@ -37,6 +35,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 
 					$scope.results[i].URL = parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.filename;
 				}
+				$("#loader").fadeOut("slow");
 		});
 
 		
@@ -99,7 +98,23 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
                 precision: 1,
                 onEnd: $scope.getResults
             }
-        }
+        },
+        habitatType:{
+          type:"checkboxes",
+          value:[],
+          ids:[62,64]
+       },
+       humanPresence:{
+          type:"checkboxes",
+          value:[],
+          ids:[62,64]
+       },
+       blankImages:{
+          type:"checkboxes",
+          value:[],
+          ids:[62,64]
+       },
+        
     }
 
 
