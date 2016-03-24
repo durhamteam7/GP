@@ -10,13 +10,8 @@ var url = "http://community.dur.ac.uk/g.t.hudson/GP/adminDash/";
 // Ajax Service
 adminApp.factory('ajax', ['$http', function($http) {
 	return {
-    getPhotos: function() {
-      return $http.get('api/photo.php').success(function() {
-      });
-    },
-    getSequence: function(id) {
-      return $http.patch('/api/volunteer/approve/' + id).success(function() {
-        console.log("approved");
+    getPhotos: function(query) {
+      return $http.post('api/photo.php',query).success(function() {
       });
     }
   };
@@ -29,6 +24,29 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
     $scope.speciesIDs = [10,11,12];
     $scope.genderIDs = [3,4];
     $scope.ageIDs = [5,6];
+
+
+	$scope.getResults = function(){
+		console.log("get results");
+		serverComm.getPhotos($scope.filters).success(function(data) {
+				console.log(data);
+				$scope.results = data;
+				for (var i = 0; i < $scope.results.length; i++) {
+                    var result = $scope.results[i];
+					var parts = result.dirname.split("/");
+
+					$scope.results[i].URL = parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.filename;
+				}
+		});
+
+		
+	};
+
+
+
+
+
+
 
     $scope.filters = {
       species:{
@@ -55,19 +73,19 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
               ceil: 100,
               step: 1,
               precision: 1,
-              onEnd: $scope.getFilterValues
+              onEnd: $scope.getResults
           }
         },
         numClassifications:{
             type:"slider",
             minValue: 0,
-            maxValue: 30,
+            maxValue: 100,
             options: {
                 floor: 0,
-                ceil: 30,
+                ceil: 100,
                 step: 1,
                 precision: 1,
-                onEnd: $scope.getFilterValues
+                onEnd: $scope.getResults
             }
         },
         numAnimals:{
@@ -79,26 +97,11 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
                 ceil: 20,
                 step: 1,
                 precision: 1,
-                onEnd: $scope.getFilterValues
+                onEnd: $scope.getResults
             }
         }
     }
 
-	$scope.getResults = function(){
-		serverComm.getPhotos().success(function(data) {
-				//console.log(data);
-				$scope.results = data;
-				for (var i = 0; i < $scope.results.length; i++) {
-                    var result = $scope.results[i];
-					var parts = result.dirname.split("/");
-
-					$scope.results[i].URL = parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.filename;
-					//console.log($scope.results[i].URL);
-				}
-		});
-
-		
-	};
 
 	$scope.getResults();
 }]);

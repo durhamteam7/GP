@@ -5,11 +5,8 @@
 // require database connection code
 require('../../dbConnect.php');
 //access query parameter
-
-//echo $q;
-$q = '{"contains_human":false}';
-$jsonQ = json_decode($q,true);
-$result = getPhotoFromQuery($jsonQ);
+$q = json_decode(file_get_contents("php://input"),true);
+$result = getPhotoFromQuery($q);
 
 // process result
 
@@ -34,10 +31,11 @@ function getPhotoFromQuery($query){
 	global $mysqli;
 	
 	$qString = "1 ";
+	$havingQString = " 1 ";
 	
 	//ID
 	if (array_key_exists("id", $query) && $query["id"] != null){
-		$qString .= "AND Photo.photo_id=".$query["id"];
+		$qString .= " AND Photo.photo_id=".$query["id"];
 	}
 	
 	//species
@@ -45,6 +43,12 @@ function getPhotoFromQuery($query){
 	//evenness
 	
 	//Number of classifications
+	if ($query["numClassifications"]["minValue"] != $query["numClassifications"]["options"]["floor"]){
+		 $havingQString .= "AND COUNT(Animal.photo_id) >= ".$query["numClassifications"]["minValue"];
+	}
+	if ($query["numClassifications"]["maxValue"] != $query["numClassifications"]["options"]["ceil"]){
+		 $havingQString .= "AND COUNT(Animal.photo_id) <= ".$query["numClassifications"]["maxValue"];
+	}
 	
 	//num animals
 	
@@ -55,8 +59,8 @@ function getPhotoFromQuery($query){
 	//Gender
 	
 	//Age
-	if (array_key_exists("age_id", $query) && $query["age_id"] != null){
-		$qString .= "AND Photo.age_id=".$query["age_id"];
+	if (sizeof($query["age"]["value"]) != 0){
+		//$qString .= "AND Photo.age_id=".$query["age"]["value"];
 	}
 	
 	//Time period
@@ -65,28 +69,39 @@ function getPhotoFromQuery($query){
 	
 	//Site
 	if (array_key_exists("site_id", $query) && $query["site_id"] != null){
-		$qString .= "AND Photo.site_id=".$query["site_id"];
+		$qString .= " AND Photo.site_id=".$query["site_id"];
 	}
 	
 	//Sequence
 	
 	//Habitat type
 	if (array_key_exists("habitat_id", $query) && $query["habitat_id"] != null){
-		$qString .= "AND Site.habitat_id=".$query["habitat_id"];
+		$qString .= " AND Site.habitat_id=".$query["habitat_id"];
 	}
 	
 	//Human presence
 	if (array_key_exists("contains_human", $query) && $query["contains_human"] != null){
-		$qString .= "AND Photo.contains_human=".$query["contains_human"];
+		$qString .= " AND Photo.contains_human=".$query["contains_human"];
 	}
 	
 	//Blank Images
 	
 	
-	$sql = "SELECT *
-	FROM Photo
+	$sql = "SELECT Photo.*
+	FROM Photo,Animal
 	WHERE ".$qString."
 	LIMIT 100;";
+	
+	
+	$sql = "SELECT Photo.*,COUNT(Animal.photo_id) FROM (Animal
+	INNER JOIN Photo
+	ON Animal.photo_id=Photo.photo_id)
+	WHERE ".$qString."
+	GROUP BY Photo.photo_id
+	HAVING ".$havingQString."
+	LIMIT 100;";
+	
+	//echo $sql;
 
 	// execute query
 	$result = $mysqli->query($sql);
