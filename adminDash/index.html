@@ -46,17 +46,17 @@
 
           <div class="checkbox" ng-repeat="id in filterData.ids" ng-if="filterData.type=='checkboxes'">
            <label>
-             <input type="checkbox" checklist-model="filterData.value" checklist-value="id"> {{options[id]}}
+             <input type="checkbox" checklist-model="filterData.value" checklist-value="id" ng-click="getResults()"> {{options[id]}}
            </label>
           </div>
 
           <div class="row" ng-if="filterData.type=='slider'">
             <rzslider rz-slider-model="filterData.minValue" rz-slider-high="filterData.maxValue" rz-slider-options="filterData.options"></rzslider>
             <div class="col-md-6">
-              <input type="number" class="form-control" step="1" ng-model="filterData.minValue" />
+              <input type="number" class="form-control" step="1" ng-model="filterData.minValue" ng-change="getResults()" />
             </div>
             <div class = "col-md-6">
-              <input type="number" class="form-control" step="1" ng-model="filterData.maxValue" />
+              <input type="number" class="form-control" step="1" ng-model="filterData.maxValue" ng-change="getResults()" />
             </div>
           </div>
 
@@ -198,32 +198,32 @@
      </h5>
 
 
-     <div class="container" id="searchResults" ng-repeat="result in results">
-      <div class="row">
-        <div class="col-sm-2"><img ng-src="http://www.mammalweb.org/biodivimages/{{result.URL}}" width=150> </div>
-        <div class="col-sm-10">
+     <div  id="searchResults">
+      <div class="row"  ng-repeat="result in results">
+        <div class="col-sm-4"><img ng-src="http://www.mammalweb.org/biodivimages/{{result.URL}}" width=150> </div>
+        <div class="col-sm-8">
           <div class="row">
-            <div class="col-sm-2"><b>{{result.upload_filename}}</b></div>
+            <div class="col-sm-3"><b>{{result.upload_filename}}</b></div>
           </div>
           <div class="row">
-            <div class="col-sm-2">Sequence:</div>
-            <div class="col-sm-10">{{result.sequence_id}}</div>
+            <div class="col-sm-3">Sequence:</div>
+            <div class="col-sm-8">{{result.sequence_id}}</div>
           </div>
           <div class="row">
-            <div class="col-sm-2">Site:</div>
-            <div class="col-sm-10"><a href="#">Old Moors</a></div>
+            <div class="col-sm-3">Site:</div>
+            <div class="col-sm-8"><a href="#">Old Moors</a></div>
           </div>
           <div class="row">
-            <div class="col-sm-2">Time:</div>
-            <div class="col-sm-10">{{result.taken}}</div>
+            <div class="col-sm-3">Time:</div>
+            <div class="col-sm-8">{{result.taken}}</div>
           </div>
           <div class="row">
-            <div class="col-sm-2">Users:</div>
-            <div class="col-sm-10"><a href="#">Simon Jones</a>, <a href="#"><a href="#">Ali Swanson</a></div>
+            <div class="col-sm-3">Users:</div>
+            <div class="col-sm-8"><a href="#">Simon Jones</a>, <a href="#"><a href="#">Ali Swanson</a></div>
           </div>
           <div class="row">
-            <div class="col-sm-2">Animal:</div>
-            <div class="col-sm-10"><a href="#">Deer 1 (3)</a>, <a href="#"><a href="#">Deer 2</a></div>
+            <div class="col-sm-3">Animal:</div>
+            <div class="col-sm-8"><a href="#">Deer 1 (3)</a>, <a href="#"><a href="#">Deer 2</a></div>
           </div>
           <br>
           
