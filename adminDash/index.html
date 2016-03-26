@@ -1,314 +1,254 @@
 <html>
-<head>
-	<title>Admin Dashboard</title>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/2.10.2/rzslider.min.css
-"/>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.js"></script>
-  <script src="https://cdn.upress.co.il/ajax/libs/angularjs-slider/2.9.0/rzslider.js"></script>
-  <script src="http://bouil.github.io/angular-google-chart/ng-google-chart.js"></script>
-  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <script src="checklistModel.js"></script>
-	<script src="app.js"></script>
-  <style>
-  
-  
-body {
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none;   /* Chrome/Safari/Opera */
-  -khtml-user-select: none;    /* Konqueror */
-  -moz-user-select: none;      /* Firefox */
-  -ms-user-select: none;       /* IE/Edge */
-  user-select: none;           /* non-prefixed version, currently
-                                  not supported by any browser */
-}
-</style>
-
-</head>
-
-
-<link rel="stylesheet" href="loader.css">
-<div id="loader">
-    <div>
-        <div class="spinner"></div>
-        <p>Loading...</p>
-    </div>
-</div>
-
-
-
-<body ng-controller="MainController" ng-App="adminDash">
-
-<div class="container">
-<div class="page-header">
-<h1>Welcome Admin</h1>
-</div>
-<div class="row">
-  			<div class="col-md-3" id="leftCol">
-              	
-				<div class="well" id="filters" ng-controller="FilterController"> 
-				<h1 class="h4">Filters</h1>
-        {{query}}
-				<form>
-        <span ng-repeat="(filterName,filterData) in filters">
-
-          <b>{{readable(filterName)}}</b><br>
-
-          <div class="checkbox" ng-repeat="id in filterData.ids" ng-if="filterData.type=='checkboxes'">
-           <label>
-             <input type="checkbox" checklist-model="filterData.value" checklist-value="id" ng-click="getResults()"> {{options[id]}}
-           </label>
-          </div>
-
-          <div class="row" ng-if="filterData.type=='slider'">
-            <rzslider rz-slider-model="filterData.minValue" rz-slider-high="filterData.maxValue" rz-slider-options="filterData.options"></rzslider>
-            <div class="col-md-6">
-              <input type="number" class="form-control" step="1" ng-model="filterData.minValue" ng-change="getResults()" />
-            </div>
-            <div class = "col-md-6">
-              <input type="number" class="form-control" step="1" ng-model="filterData.maxValue" ng-change="getResults()" />
-            </div>
-          </div>
-
-          <br>
-
-
-        </span>
-
-
-
-        <h4>OTHER</h4>
-
-
-
-         <b>Date</b><br>
-         <div class='col-md-6'>
-          <div class="form-group">
-            <div class='input-group date' id='datetimepicker6'>
-                <input type='text' class="form-control" />
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-              </div>
-            </div>
-            </div>
-          <div class='col-md-6'>
-          <div class="form-group">
-            <div class='input-group date' id='datetimepicker7'>
-                <input type='text' class="form-control" />
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-            </div>
-          </div>
-        </div>
-          
-
-         <b>Time</b><br>
-         <div class="form-group">
-                <div class='input-group date' id='datetimepicker3'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-time"></span>
-                    </span>
-                </div>
-            </div>
-        
-        <script type="text/javascript">
-            $(function () {
-                $('#datetimepicker3').datetimepicker({
-                    format: 'LT'
-                });
-            });
-        </script>
-
-        <b>Location</b><br>
-         
-        
-         <label>Postcode:        
-         
-         <input type="text" class="form-control">
-       </label>          
-
-        
-         <!-- users
-         gender
-         age
-         time period (seconds if poss)
-         site (arbitary geographical aRea)
-         sequence
-         habitat type
-         human presence
-         blank images
-         number of classifications
-         concencus/mannual checking -->
-
-         <!-- need a table of sites -->
-       </form>
-     </div>
-
-   </div>  
-   <div class="col-md-6" ng-controller="SearchResultsController">
-     <h2 id="sec0">Search Results</h2>
-
-     <h5>
-      <span ng-repeat="(name,f) in filters">
-
-        <span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='slider' && (f.minValue!=f.options.floor || f.maxValue!=f.options.ceil)">{{readable(name)}}: 
-          <b> 
-            <span ng-if="f.minValue!=f.options.floor">&gt;= {{f.minValue}}</span> <span ng-if="f.maxValue!=f.options.ceil">&lt;= {{f.maxValue}}</span>
-          </b> 
-          <a href="javascript:void(0)" style="color:white" ng-click="f.minValue=f.options.floor;f.maxValue=f.options.ceil;getResults()"><span class="glyphicon glyphicon-remove"></span></a>
-        </span>
-
-      <span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='checkboxes'" ng-repeat="v in f.value">{{readable(name)}}: 
-          <b> 
-            {{options[v]}}
-          </b> 
-          <a href="javascript:void(0)" style="color:white" ng-click="f.value.splice(f.value.indexOf(v),1);getResults()" ><span class="glyphicon glyphicon-remove"></span></a>
-      </span>
-
-      </span>
-
-     </h5>
-
-
-     <div  id="searchResults">
-      <div class="row"  ng-repeat="result in results">
-        <div class="col-sm-4">
-        	<div class="row">
-        	<div class="col-sm-4">
-        	<img ng-src="http://www.mammalweb.org/biodivimages/{{result.URL}}" width=150>
-        	</div>
-        	</div>
-        </div>
-        <div class="col-sm-8">
-          <div class="row">
-            <div class="col-sm-3"><b>{{result.upload_filename}}</b></div>
-          </div>
-          <div class="row">
-            <div class="col-sm-3">Sequence:</div>
-            <div class="col-sm-8">{{result.sequence_id}}</div>
-          </div>
-          <div class="row">
-            <div class="col-sm-3">Site:</div>
-            <div class="col-sm-8"><a href="#">Old Moors</a></div>
-          </div>
-          <div class="row">
-            <div class="col-sm-3">Time:</div>
-            <div class="col-sm-8">{{result.taken}}</div>
-          </div>
-          <div class="row">
-            <div class="col-sm-3">Animal:</div>
-            <div class="col-sm-8"><a href="#">Deer 1 (3)</a>, <a href="#"><a href="#">Deer 2</a></div>
-          </div>
-          <br>
-          
-
-
-        </div>
-      </div>
-
-
-    </div>
-
-
-    <hr>
-  </div> 
-
-
-  <div class="col-md-3" id="rightCol">
-    <div class="well"> 
-      <h1 class="h4">Summary</h1>
-      {{results.length}} results.
-    </div>
-    <div class="well" ng-controller="GraphsController"> 
-      <h1 class="h4">Graphs</h1>
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#graphModal" >Open Graph Editor</button>
-    
-        <!-- Modal -->
-<div id="graphModal" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Graph Editor</h4>
-      </div>
-      <div class="modal-body">
-        
-        <div class="container">
-        <div class="row">
-          <div class="col-xs-4">
-            <div class= "row">
-              <div class="form-group">
-                <label for="type" class="col-sm-2 control-label">Chart Type:</label>
-                <div class="col-sm-10">
-                    <select class="form-control ng-pristine ng-valid" id="chartType" ng-model="chartObject.type" ng-change="chartSelectionChange()">
-                      <option ng-repeat="type in chartTypes" ng-value="type">{{type}}</option>
-                    </select>
-                </div>
-              </div>
-            </div>
-            <div class= "row">
-              <div class="form-group">
-                <label for="x-axis" class="col-sm-2 control-label">x-axis Label:</label>
-                <div class="col-sm-10">
-                    <select class="form-control ng-pristine ng-valid" id="x-axis" ng-model="xName" ng-change="chartSelectionChange();makeData();">
-                      <option ng-repeat="v in variables" ng-value="v.value">{{v.displayName}}</option>
-                    </select>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="form-group">
-                <label for="y-axis" class="col-sm-2 control-label">y-axis Label:</label>
-                <div class="col-sm-10">
-                    <select class="form-control ng-pristine ng-valid" id="chartType" ng-model="yName" ng-change="chartSelectionChange();makeData();">
-                      <option>-</option>
-                      <option ng-repeat="v in variables" ng-value="v.value">{{v.displayName}}</option>
-                    </select>
-                </div>
-              </div> 
-            </div> 
-          </div>
-          <div class="col-xs-4">
-            <div google-chart chart="chartObject" style="{{cssStyle}}"></div>
-          </div>
-        </div>
-      </div>
-
-
-
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-    </div>
-  </div>
-</div>
-    <div class="well"> 
-      <h1 class="h4">Export CSV</h1>
-      CSV options
-    </div>
-  </div>	
-
-
-</div>
-</div>
-
-
-
-</div>
-</div>
-
-
-
+	<head>
+		<title>Admin Dashboard</title>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/2.10.2/rzslider.min.css
+			"/>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.js"></script>
+			<script src="https://cdn.upress.co.il/ajax/libs/angularjs-slider/2.9.0/rzslider.js"></script>
+			<script src="http://bouil.github.io/angular-google-chart/ng-google-chart.js"></script>
+			<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+			<script src="checklistModel.js"></script>
+			<script src="app.js"></script>
+			<style>
+			body {
+				-webkit-touch-callout: none; /* iOS Safari */
+				-webkit-user-select: none;   /* Chrome/Safari/Opera */
+				-khtml-user-select: none;    /* Konqueror */
+				-moz-user-select: none;      /* Firefox */
+				-ms-user-select: none;       /* IE/Edge */
+			user-select: none;           /* non-prefixed version, currently
+			not supported by any browser */
+			}
+			</style>
+			<link rel="stylesheet" href="loader.css">
+			
+		</head>
+		<body ng-controller="MainController" ng-App="adminDash">
+			<div id="loader">
+				<div>
+					<div class="spinner"></div>
+					<p>Loading...</p>
+				</div>
+			</div>
+			<div class="container">
+				<div class="page-header">
+					<h1>Welcome Admin</h1>
+				</div>
+				<div class="row">
+					<div class="col-md-3" id="leftCol">
+						<div class="well" id="filters" ng-controller="FilterController">
+							<h1 class="h4">Filters</h1>
+							{{query}}
+							<form>
+								<span ng-repeat="(filterName,filterData) in filters">
+									<b>{{readable(filterName)}}</b><br>
+									<div class="checkbox" ng-repeat="id in filterData.ids" ng-if="filterData.type=='checkboxes'">
+										<label>
+											<input type="checkbox" checklist-model="filterData.value" checklist-value="id" ng-click="getResults()"> {{options[id]}}
+										</label>
+									</div>
+									<div class="row" ng-if="filterData.type=='slider'">
+										<rzslider rz-slider-model="filterData.minValue" rz-slider-high="filterData.maxValue" rz-slider-options="filterData.options"></rzslider>
+										<div class="col-md-6">
+											<input type="number" class="form-control" step="1" ng-model="filterData.minValue" ng-change="getResults()" />
+										</div>
+										<div class = "col-md-6">
+											<input type="number" class="form-control" step="1" ng-model="filterData.maxValue" ng-change="getResults()" />
+										</div>
+									</div>
+									<br>
+								</span>
+								<h4>OTHER</h4>
+								<b>Date</b><br>
+								<div class='col-md-6'>
+									<div class="form-group">
+										<div class='input-group date' id='datetimepicker6'>
+											<input type='text' class="form-control" />
+											<span class="input-group-addon">
+												<span class="glyphicon glyphicon-calendar"></span>
+											</span>
+										</div>
+									</div>
+								</div>
+								<div class='col-md-6'>
+									<div class="form-group">
+										<div class='input-group date' id='datetimepicker7'>
+											<input type='text' class="form-control" />
+											<span class="input-group-addon">
+												<span class="glyphicon glyphicon-calendar"></span>
+											</span>
+										</div>
+									</div>
+								</div>
+								<b>Time</b><br>
+								<div class="form-group">
+									<div class='input-group date' id='datetimepicker3'>
+										<input type='text' class="form-control" />
+										<span class="input-group-addon">
+											<span class="glyphicon glyphicon-time"></span>
+										</span>
+									</div>
+								</div>
+								
+								<script type="text/javascript">
+								$(function () {
+									$('#datetimepicker3').datetimepicker({
+										format: 'LT'
+									});
+								});
+								</script>
+								<b>Location</b><br>
+								
+								<label>Postcode:
+									<input type="text" class="form-control">
+								</label>
+								<!-- users
+								gender
+								age
+								time period (seconds if poss)
+								site (arbitary geographical aRea)
+								sequence
+								habitat type
+								human presence
+								blank images
+								number of classifications
+								concencus/mannual checking -->
+								<!-- need a table of sites -->
+							</form>
+						</div>
+					</div>
+					<div class="col-md-6" ng-controller="SearchResultsController">
+						<h2 id="sec0">Search Results</h2>
+						<h5>
+						<span ng-repeat="(name,f) in filters">
+							<span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='slider' && (f.minValue!=f.options.floor || f.maxValue!=f.options.ceil)">{{readable(name)}}:
+								<b>
+								<span ng-if="f.minValue!=f.options.floor">&gt;= {{f.minValue}}</span> <span ng-if="f.maxValue!=f.options.ceil">&lt;= {{f.maxValue}}</span>
+								</b>
+								<a href="javascript:void(0)" style="color:white" ng-click="f.minValue=f.options.floor;f.maxValue=f.options.ceil;getResults()"><span class="glyphicon glyphicon-remove"></span></a>
+							</span>
+							<span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='checkboxes'" ng-repeat="v in f.value">{{readable(name)}}:
+								<b>
+								{{options[v]}}
+								</b>
+								<a href="javascript:void(0)" style="color:white" ng-click="f.value.splice(f.value.indexOf(v),1);getResults()" ><span class="glyphicon glyphicon-remove"></span></a>
+							</span>
+						</span>
+						</h5>
+						<div id="searchResults">
+							<div class="row"  ng-repeat="result in results">
+								<div class="col-sm-4">
+									<div class="row">
+										<div class="col-sm-4">
+											<img ng-src="http://www.mammalweb.org/biodivimages/{{result.URL}}" width=150>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-8">
+									<div class="row">
+										<div class="col-sm-3"><b>{{result.upload_filename}}</b></div>
+									</div>
+									<div class="row">
+										<div class="col-sm-3">Sequence:</div>
+										<div class="col-sm-8">{{result.sequence_id}}</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-3">Site:</div>
+										<div class="col-sm-8"><a href="#">Old Moors</a></div>
+									</div>
+									<div class="row">
+										<div class="col-sm-3">Time:</div>
+										<div class="col-sm-8">{{result.taken}}</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-3">Animal:</div>
+										<div class="col-sm-8"><a href="#">Deer 1 (3)</a>, <a href="#"><a href="#">Deer 2</a></div>
+									</div>
+									<br>
+								</div>
+							</div>
+						</div>
+						<hr>
+					</div>
+					<div class="col-md-3" id="rightCol">
+						<div class="well">
+							<h1 class="h4">Summary</h1>
+							{{results.length}} results.
+						</div>
+						<div class="well" ng-controller="GraphsController">
+							<h1 class="h4">Graphs</h1>
+							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#graphModal" >Open Graph Editor</button>
+							
+							<!-- Modal -->
+							<div id="graphModal" class="modal fade" role="dialog">
+								<div class="modal-dialog modal-lg">
+									<!-- Modal content-->
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+											<h4 class="modal-title">Graph Editor</h4>
+										</div>
+										<div class="modal-body">
+											<div class="container">
+												<div class="row">
+													<div class="col-xs-4">
+														<div class= "row">
+															<div class="form-group">
+																<label for="type" class="col-sm-2 control-label">Chart Type:</label>
+																<div class="col-sm-10">
+																	<select class="form-control ng-pristine ng-valid" id="chartType" ng-model="chartObject.type" ng-change="chartSelectionChange()">
+																		<option ng-repeat="type in chartTypes" ng-value="type">{{type}}</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+														<div class= "row">
+															<div class="form-group">
+																<label for="x-axis" class="col-sm-2 control-label">x-axis Label:</label>
+																<div class="col-sm-10">
+																	<select class="form-control ng-pristine ng-valid" id="x-axis" ng-model="xName" ng-change="chartSelectionChange();makeData();">
+																		<option ng-repeat="v in variables" ng-value="v.value">{{v.displayName}}</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+														<div class="row">
+															<div class="form-group">
+																<label for="y-axis" class="col-sm-2 control-label">y-axis Label:</label>
+																<div class="col-sm-10">
+																	<select class="form-control ng-pristine ng-valid" id="chartType" ng-model="yName" ng-change="chartSelectionChange();makeData();">
+																		<option>-</option>
+																		<option ng-repeat="v in variables" ng-value="v.value">{{v.displayName}}</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="col-xs-4">
+														<div google-chart chart="chartObject" style="{{cssStyle}}"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="well">
+							<h1 class="h4">Export CSV</h1>
+							CSV options
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
