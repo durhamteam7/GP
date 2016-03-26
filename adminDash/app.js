@@ -13,6 +13,10 @@ adminApp.factory('ajax', ['$http', function($http) {
     getPhotos: function(query) {
       return $http.post('api/photo.php',query).success(function() {
       });
+    },
+     getOptions: function() {
+      return $http.get('api/option.php').success(function() {
+      });
     }
   };
 
@@ -20,14 +24,14 @@ adminApp.factory('ajax', ['$http', function($http) {
 
 adminApp.controller('MainController', ['$scope','ajax', function($scope,serverComm) {
 	$scope.results = []; //contains the results from the server
-	$scope.options = {10:"Badger",11:"Blackbird",12:"Domestic Cat",3:"Female",4:"Male",5:"Adult",6:"Juvenille",62:"Woodland",64:"Arable, horticulture"};
+	$scope.options = {};
 
 
 	$scope.getResults = function(){
 		console.log("get results");
 		$("#loader").fadeTo("fast", 0.7);
 		serverComm.getPhotos($scope.filters).success(function(data) {
-				console.log(data);
+				//console.log(data);
 				$scope.results = data;
 				for (var i = 0; i < $scope.results.length; i++) {
                     var result = $scope.results[i];
@@ -37,15 +41,27 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 				}
 				$("#loader").fadeOut("slow");
 		});
-
-		
 	};
 
-
-
-
-
-
+	$scope.getOptions = function(){
+		console.log("get options");
+		$("#loader").fadeTo("fast", 0.7);
+		serverComm.getOptions().success(function(data) {
+				console.log(data);
+				for (var i = 0; i < data.length; i++) {
+					$scope.options[data[i]["option_id"]] = data[i]["option_name"]
+				}
+				console.log($scope.options)
+				
+		});
+	};
+	
+	 $scope.readable = function(string) {
+      string = string.replace(/_/g, " ");
+      string = string.replace(/([A-Z])/g, ' $1');
+      string = string.replace(/^./, function(str){ return str.toUpperCase(); });
+      return string
+  	}
 
     $scope.filters = {
       species:{
@@ -119,6 +135,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 
 
 	$scope.getResults();
+	$scope.getOptions();
 }]);
 
 adminApp.controller('FilterController', ['$scope', function($scope) {
