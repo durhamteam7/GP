@@ -1,6 +1,9 @@
+
 <html>
 	<head>
 		<title>Admin Dashboard</title>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/locale/en-gb.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -11,6 +14,11 @@
 		<script src="http://bouil.github.io/angular-google-chart/ng-google-chart.js"></script>
 		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 		<script src="checklistModel.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
+		
+		<script src="https://cdn.rawgit.com/diosney/angular-bootstrap-datetimepicker-directive/master/angular-bootstrap-datetimepicker-directive.js"></script>
+		
 		<script src="app.js"></script>
 		<style>
 		body {
@@ -59,47 +67,36 @@
 										<input type="number" class="form-control" step="1" ng-model="filterData.maxValue" ng-change="getResults()" />
 									</div>
 								</div>
-								<br>
-							</span>
-							<h4>OTHER</h4>
-							<b>Date</b><br>
-							<div class='col-md-6'>
+								<div class="row" ng-if="filterData.type=='dateTime'">
+									
+								<div class='col-md-12'>
 								<div class="form-group">
 									<div class='input-group date' id='datetimepicker6'>
-										<input type='text' class="form-control" />
+										<input type='text' class="form-control" placeholder="from..." datetimepicker ng-model="filterData.minValue" datetimepicker-options="{{filterData.options}}" />
 										<span class="input-group-addon">
-											<span class="glyphicon glyphicon-calendar"></span>
-										</span>
-									</div>
-								</div>
-							</div>
-							<div class='col-md-6'>
-								<div class="form-group">
-									<div class='input-group date' id='datetimepicker7'>
-										<input type='text' class="form-control" />
-										<span class="input-group-addon">
-											<span class="glyphicon glyphicon-calendar"></span>
-										</span>
-									</div>
-								</div>
-							</div>
-							<b>Time</b><br>
-							<div class="form-group">
-								<div class='input-group date' id='datetimepicker3'>
-									<input type='text' class="form-control" />
-									<span class="input-group-addon">
-										<span class="glyphicon glyphicon-time"></span>
+										<span class="glyphicon {{filterData.icon}}"></span>
 									</span>
+									</div>
 								</div>
 							</div>
+								
+							<div class='col-md-12'>
+								<div class="form-group">
+									<div class='input-group date' id='datetimepicker6'>
+										<input type='text' class="form-control" placeholder="...to" datetimepicker ng-model="filterData.maxValue" datetimepicker-options="{{filterData.options}}" />
+										<span class="input-group-addon">
+										<span class="glyphicon {{filterData.icon}}"></span>
+									</span>
+									</div>
+								</div>
+							</div>	
+								
+									
+								</div>
+
+							</span>
+							<h4>OTHER</h4>
 							
-							<script type="text/javascript">
-							$(function () {
-								$('#datetimepicker3').datetimepicker({
-									format: 'LT'
-								});
-							});
-							</script>
 							<b>Location</b><br>
 							
 							<label>Postcode:
@@ -143,7 +140,9 @@
 							<div class="col-sm-4">
 								<div class="row">
 									<div class="col-sm-4">
-										<img ng-src="http://www.mammalweb.org/biodivimages/{{result.URL}}" width=150>
+										<a data-toggle="modal" data-target="#{{result.photo_id}}" href="javascript:void(0)">
+											<img ng-src="http://www.mammalweb.org/biodivimages/{{result.URL}}" width=150>
+										</a>
 									</div>
 								</div>
 							</div>
@@ -172,6 +171,35 @@
 						</div>
 					</div>
 					<hr>
+					
+					<div class="row">
+        <div class="col-xs-4">
+            <p>Showing {{results.length == 0 ? 0 : (currentPage * pageSize) + 1}} to {{rowsShown()}} of {{results.length}} entries</p>
+        </div>
+        <nav class="col-xs-8">
+            <ul id="pagination" class="pagination pull-right" style="margin-top: 0px;">
+                <li ng-class="currentPage <= 0 ? 'disabled' : ''">
+                    <a href="#" aria-label="Previous" ng-click="currentPage = currentPage - 1" ng-class="currentPage <= 0 ? 'hidden' : ''">
+                        <span aria-hidden="true">&laquo; Previous</span>
+                    </a>
+                </li>
+                <li ng-repeat="n in range(numberOfPages())" ng-class="isActive(n)">
+                    <a href="#" ng-click="setPage(n)">
+                        {{n + 1}}
+                    </a>
+                </li>
+                <li ng-class="currentPage >= numberOfPages() - 1 ? 'disabled' : ''">
+                    <a href="#" aria-label="Next" ng-click="currentPage = currentPage + 1" ng-class="currentPage >= numberOfPages() - 1 ? 'hidden' : ''">
+                        <span aria-hidden="true">Next &raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+					
+					
+					
+					
 				</div>
 				<div class="col-md-3" id="rightCol">
 					<div class="well">
@@ -259,7 +287,7 @@
         <h4 class="modal-title">{{result.upload_filename}}</h4>
       </div>
       <div class="modal-body">
-        <img ng-src="http://www.mammalweb.org/biodivimages/{{result.URL}}" width=150>
+        <img ng-src="http://www.mammalweb.org/biodivimages/{{result.URL}}" width=400>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

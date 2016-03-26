@@ -1,4 +1,4 @@
-var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart',"checklist-model"]);
+var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart',"checklist-model",'datetimepicker']);
 
 
 
@@ -10,8 +10,12 @@ var url = "http://community.dur.ac.uk/g.t.hudson/GP/adminDash/";
 // Ajax Service
 adminApp.factory('ajax', ['$http', function($http) {
 	return {
-    getPhotos: function(query) {
+    getPhotos: function(query,pageNum,pageSize) {
+    	query["pageNum"] = pageNum;
+    	query["pageSize"] = pageSize;
       return $http.post('api/photo.php',query).success(function() {
+      	delete query["pageNum"];
+    		delete query["pageSize"];
       });
     },
      getOptions: function() {
@@ -25,12 +29,35 @@ adminApp.factory('ajax', ['$http', function($http) {
 adminApp.controller('MainController', ['$scope','ajax', function($scope,serverComm) {
 	$scope.results = []; //contains the results from the server
 	$scope.options = {};
-
+	
+	
+	//PAGE functions
+	$scope.currentPage = 0;
+	$scope.pageSize = 10;
+	
+	$scope.numberOfPages = function() {
+		return Math.ceil($scope.results.length/$scope.pageSize);
+	}
+	$scope.rowsShown = function() {
+		if (($scope.currentPage * $scope.pageSize) + $scope.pageSize < $scope.results.length) {
+			return Number(($scope.currentPage * $scope.pageSize) + $scope.pageSize);
+		} else {
+			return $scope.results.length;
+		}
+	}
+	$scope.range = function(num) {
+		return Array.apply(null, {length: num}).map(Number.call, Number)
+	}
+	$scope.setPage = function(num) {
+		$scope.currentPage = num;
+	}
+  
+  //MAIN functions
 
 	$scope.getResults = function(){
 		console.log("get results");
 		$("#loader").fadeTo("fast", 0.7);
-		serverComm.getPhotos($scope.filters).success(function(data) {
+		serverComm.getPhotos($scope.filters,$scope.curreentPage,$scope.pageSize).success(function(data) {
 				//console.log(data);
 				$scope.results = data;
 				for (var i = 0; i < $scope.results.length; i++) {
@@ -130,6 +157,24 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
           value:[],
           ids:[62,64]
        },
+       date:{
+          type:"dateTime",
+          icon: "glyphicon-calendar",
+          minValue: "",
+          maxValue: "",
+          options:{
+          	format:"DD/MM/YYYY"
+          }
+       },
+       time:{
+          type:"dateTime",
+          icon: "glyphicon-time",
+          minValue: "",
+          maxValue: "",
+          options:{
+          	format:"LT"
+          }
+       }
         
     }
 
