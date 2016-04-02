@@ -241,6 +241,10 @@ class Swanson {
 	    	}
 	    }
 
+	    if (count($items) <= 0) {
+	    	return 0;
+	    }
+
 	    return floatval($ctr)/count($items);
 	}
 
