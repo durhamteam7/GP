@@ -159,7 +159,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $empty_array = array();
         $array = array(0);
         $array2 = array(1);
-        $array3 = array(0, 1, "element", true, false, array(0), 0);
+        $array3 = array(0, 1, "element", 0);
 
         $this->assertEquals(0, $this->s->array_count_values_of($value, $empty_array));
         $this->assertEquals(1, $this->s->array_count_values_of($value, $array));
