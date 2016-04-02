@@ -289,7 +289,7 @@ class Swanson {
 			}
 
 			//get the number of animals
-			$numanimals = calculate_numanimals($noa);
+			$numanimals = calculate_num_animals($noa);
 
 			$stand_frac = calculate_TF_perc($stand);
 			$rest_frac = calculate_TF_perc($rest);
@@ -298,7 +298,7 @@ class Swanson {
 			$interact_frac = calculate_TF_perc($interact);
 			$baby_frac = calculate_TF_perc($baby);
 
-			$info[] = merge([$sppwinners[$x][0],$sppwinners[$x][0],$fracpeople],$numanimals,[$stand_frac,$rest_frac,$move_frac,$eat_frac,$interact_frac,$baby_frac]);
+			$info[] = array_merge([$sppwinners[$x][0],$sppwinners[$x][0],$fracpeople],$numanimals,[$stand_frac,$rest_frac,$move_frac,$eat_frac,$interact_frac,$baby_frac]);
 		}
 		return info;
 	}

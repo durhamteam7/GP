@@ -152,5 +152,31 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(1, 2);
     }
+    public function testArray_count_values_of()
+    {
+        $value = 0;
+
+        $empty_array = array();
+        $array = array(0);
+        $array2 = array(1);
+        $array3 = array(0, 1, "element", true, false, array(0), 0);
+
+        $this->assertEquals(0, $this->s->array_count_values_of($value, $empty_array));
+        $this->assertEquals(1, $this->s->array_count_values_of($value, $array));
+        $this->assertEquals(0, $this->s->array_count_values_of($value, $array2));
+        $this->assertEquals(2, $this->s->array_count_values_of($value, $array3));
+    }
+    public function testCalculate_median()
+    {
+        $empty_array = array();
+        $array = array(0);
+        $array2 = array(0, 1, 2);
+        $array3 = array(1, 2, 4, 5);
+
+        $this->assertEquals(0, $this->s->calculate_median($empty_array));
+        $this->assertEquals(0, $this->s->calculate_median($array));
+        $this->assertEquals(1, $this->s->calculate_median($array2));
+        $this->assertEquals(3, $this->s->calculate_median($array3));
+    }
 }
 ?>
