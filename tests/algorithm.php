@@ -418,6 +418,9 @@ class Swanson {
 
 	function array_count_values_of($value, $array) 
 	{
+		if (count($array) <= 0) {
+			return 0;
+		}
 	    $counts = array_count_values($array);
 	    return $counts[$value];
 	}
@@ -427,6 +430,9 @@ class Swanson {
 
 	function calculate_median($arr) 
 	{
+		if (count($array) <= 0) {
+			return 0;
+		}
 	    $count = count($arr); //total numbers in array
 	    $middleval = floor(($count-1)/2); // find the middle value, or the lowest middle value
 	    if($count % 2) 
