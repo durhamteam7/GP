@@ -21,7 +21,7 @@ http://www.movable-type.co.uk/scripts/latlong-gridRef-v1.html
 */
 
 //open connection to db
-require('../dbConnect.php');
+require('dbConnect.php');
 
 //go through entries of table where lat long not set.
 $sql = "SELECT site_id,grid_ref

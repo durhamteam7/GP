@@ -101,7 +101,7 @@ class Swanson {
 	//output a dictionary with species as the key and the number of votes the species received as value
 	function tally_spp_votes($subject)
 	{
-		$vote_table = array(array());
+		$vote_table = array();
 
 		foreach ($subject as $entry) 
 		{
@@ -110,19 +110,19 @@ class Swanson {
 			if ($spp != "") # ignore blanks
 			{
 				# already in table
-				if (in_array($spp, $vote_table))
+				if (array_key_exists($spp, $vote_table))
 				{
-					$vote_table[spp] = $vote_table[spp] + 1;
+					$vote_table[$spp] = $vote_table[$spp] + 1;
 				}
 				# not in table yet
 				else
 				{
-					$vote_table[spp] = 1;
+					$vote_table[$spp] = 1;
 				}
 			}
 		}
 
-		echo $vote_table;
+		return $vote_table;
 	}
 
 	//calculate the pielou evenness index
@@ -185,7 +185,6 @@ class Swanson {
 			}
 		}
 
-		echo $winners;
 		return $winners;
 	}
 
@@ -242,7 +241,7 @@ class Swanson {
 	    	}
 	    }
 
-	    echo floatval($ctr)/count($items);
+	    return floatval($ctr)/count($items);
 	}
 
 	//return metadata associated with the winning species
@@ -340,7 +339,7 @@ class Swanson {
 	    $sppcount = get_species_counts($scals);
 
 	    # count and remove the blanks
-	    $numblanks = array_count_values_of(0, $sppcount));
+	    $numblanks = array_count_values_of(0, $sppcount);
 		$sppcount_noblanks = array(array());
 		foreach ($sppcount as $val) 
 		{
@@ -416,7 +415,6 @@ class Swanson {
 	function array_count_values_of($value, $array) 
 	{
 	    $counts = array_count_values($array);
-	    echo $counts[$value];
 	    return $counts[$value];
 	}
 
@@ -434,7 +432,7 @@ class Swanson {
 	    else { // even number, calculate avg of 2 medians
 	        $low = $arr[$middleval];
 	        $high = $arr[$middleval+1];
-	        $median = ceil(($low+$high)/2)); // Rounds the value up if fraction
+	        $median = ceil(($low+$high)/2); // Rounds the value up if fraction
 	    }
 	    return $median;
 	}
