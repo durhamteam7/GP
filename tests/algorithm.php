@@ -158,20 +158,31 @@ class Swanson {
 	//output a list of the winning species
 	function choose_winners($numwin, $sppvotes)
 	{
+		if (count($sppvotes) <= 0) {
+			return array();
+		}
+
+		if ($numwin <= 0) {
+			return array();
+		}
+
 		# sort by votes
-		$sorted_sppvotes = asort($sppvotes); // Very dissimilar to original code...
+		arsort($sppvotes);
 
-		$winners = array_slice($sorted_sppvotes, 0, $numwin);
+		$winners = array_slice($sppvotes, 0, $numwin);
 
+		# Don't think we need this
+		/*
 		# check for ties
-		if (count($sorted_sppvotes)>$numwin) 
+		if (count($sppvotes)>$numwin)
 		{
-			if ($sorted_sppvotes[($numwin-1)]*[1] == $sorted_sppvotes[$numwin]*[1]) 
+			$keys = array_keys($sppvotes);
+			if ($sppvotes[$keys[($numwin-1)]] == $sppvotes[$keys[$numwin]])
 			{
-				$votes = $sorted_sppvotes[$numwin-1]*[1];
+				$votes = $sppvotes[$keys[($numwin-1)]];
 				$ties = array(array());
 				# get all the tied species
-	            foreach ($sorted_sppvotes as $spp) 
+	            foreach ($sppvotes as $spp) 
 	            {
 	             	if ($spp[1] == $votes)
 	             	{
@@ -184,6 +195,7 @@ class Swanson {
 	                
 			}
 		}
+		*/
 
 		return $winners;
 	}

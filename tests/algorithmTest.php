@@ -118,7 +118,15 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     }
     public function testChoose_winners()
     {
-        $this->assertEquals(1, 2);
+        $empty_array = array();
+        $votes = array("rabbit" => 2, "cat" => 1, "fox" => 1);
+        $votes2 = array("rabbit" => 2, "cat" => 2, "fox" => 1);
+
+        $this->assertEquals(array(), $this->s->choose_winners(1, $empty_array));
+        $this->assertEquals(array(), $this->s->choose_winners(0, $votes));
+        $this->assertEquals(array("rabbit" => 2), $this->s->choose_winners(1, $votes));
+        $this->assertEquals(array("rabbit" => 2, "fox" => 1), $this->s->choose_winners(2, $votes));
+        $this->assertEquals(array("rabbit" => 2, "cat" => 2), $this->s->choose_winners(2, $votes2));
     }
     public function testCalculate_num_animals()
     {

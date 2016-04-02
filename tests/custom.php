@@ -137,4 +137,21 @@
     echo "\nexpected = ";
     print_r($res5);
     echo "\n";
+
+    echo "choose winners\n";
+
+    $empty_array = array();
+    $votes = array("rabbit" => 2, "cat" => 1, "fox" => 1);
+    $votes2 = array("rabbit" => 2, "cat" => 2, "fox" => 1);
+
+    print_r($s->choose_winners(1, $empty_array));
+    print_r(array());
+    print_r($s->choose_winners(0, $votes));
+    print_r(array());
+    print_r($s->choose_winners(1, $votes));
+    print_r(array("rabbit" => 2));
+    print_r($s->choose_winners(2, $votes));
+    print_r(array("rabbit" => 2, "fox" => 1));
+    print_r($s->choose_winners(2, $votes2));
+    print_r(array("rabbit" => 2, "cat" => 2));
 ?>
