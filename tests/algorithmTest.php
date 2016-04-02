@@ -113,7 +113,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                            (2/8) * log(2/8));
         $r2 = -array_sum($plnplist2);
         $res2 = $r2 / $lns2;
-        $this->assertEquals(0, $this->s->calculate_pielou($array3));
+        $this->assertEquals(1, $this->s->calculate_pielou($array3));
 
     }
     public function testChoose_winners()
@@ -132,7 +132,17 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     }
     public function testCalculate_TF_perc()
     {
-        $this->assertEquals(1, 2);
+        $empty_array = array();
+        $array = array("true");
+        $array2 = array("false");
+        $array3 = array("true", "false");
+        $array4 = array("true", 25);
+
+        $this->assertEquals(0, $this->s->calculate_TF_perc($empty_array));
+        $this->assertEquals(1, $this->s->calculate_TF_perc($array));
+        $this->assertEquals(0, $this->s->calculate_TF_perc($array2));
+        $this->assertEquals(0.5, $this->s->calculate_TF_perc($array3));
+        $this->assertEquals(0.5, $this->s->calculate_TF_perc($array4));
     }
     public function testWinner_info()
     {

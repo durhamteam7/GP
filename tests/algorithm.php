@@ -54,7 +54,7 @@ class Swanson {
 	{
 		return $a[0] - $b[0];
 	}
-	/*
+	/* ALTERNATE VERSION
 	function compare_by_classification($a, $b)
 	{
 		if ($a[0]<$b[0]) 
