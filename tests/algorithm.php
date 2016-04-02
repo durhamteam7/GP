@@ -422,15 +422,20 @@ class Swanson {
 			return 0;
 		}
 	    $counts = array_count_values($array);
-	    return $counts[$value];
+	    if (array_key_exists($value, $counts)) {
+	    	return $counts[$value];
+	    }
+	    else {
+	    	return 0;
+	    }
 	}
 
 	###########################################################################
 	# Calculates the median of an array
 
-	function calculate_median($arr) 
+	function calculate_median($arr)
 	{
-		if (count($array) <= 0) {
+		if (count($arr) <= 0) {
 			return 0;
 		}
 	    $count = count($arr); //total numbers in array
