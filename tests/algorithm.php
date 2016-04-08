@@ -17,11 +17,14 @@
 // execute query
 //$result = $mysqli->query($sql);
 
+//$data = [];
+
 // process result
 /*if ($result->num_rows > 0) {
     // output data of each row
     echo '<pre>';
     while($row = $result->fetch_assoc()) {
+    	$data[] = $row;
         print_r($row);
     }
     echo '</pre>';
@@ -29,19 +32,6 @@
     echo "0 results";
 }*/
 ###########################################
-
-/*
-class newTable {
-	$retired;						// true => has been decided to not contain any animals, false => has either been decided or still needs classifying
-	$classification;				// if empty string, we need to have more classifications, otherwise this is the decided animal for this image
-	$number_of_classifications;		// number of classifications for this image
-	$evenness;						// pielou evenness index
-	$fraction_blanks;				// the fraction of blank classifications "nothing here" for an image that was ultimately classified as containing an animal
-	$fraction_support;				// fraction of classifications supporting the aggregated answer (i.e. fraction support of 1.0 indicates unanimous support)
-	$tf_percentage;					// probably same as fraction_support
-}
-*/
-
 
 // close connection
 //$mysqli->close();
