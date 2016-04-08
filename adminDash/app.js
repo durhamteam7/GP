@@ -11,11 +11,7 @@ var url = "http://community.dur.ac.uk/g.t.hudson/GP/adminDash/";
 adminApp.factory('ajax', ['$http', function($http) {
 	return {
     getPhotos: function(query,pageNum,pageSize) {
-    	query["pageNum"] = pageNum;
-    	query["pageSize"] = pageSize;
       return $http.post('api/photo.php',query).success(function() {
-      	delete query["pageNum"];
-    		delete query["pageSize"];
       });
     },
      getOptions: function() {
@@ -58,27 +54,27 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		console.log("get results");
 		$("#loader").fadeTo("fast", 0.7);
 		serverComm.getPhotos($scope.filters,$scope.curreentPage,$scope.pageSize).success(function(data) {
-				//console.log(data);
+				console.log("Data:",data);
 				$scope.results = data;
 				for (var i = 0; i < $scope.results.length; i++) {
-                    var result = $scope.results[i];
-					var parts = result.dirname.split("/");
+					var result = $scope.results[i];
+					var parts = result.Photo.dirname.split("/");
 
-					$scope.results[i].URL = parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.filename;
+					$scope.results[i].Photo.URL = parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.Photo.filename;
 				}
 				$("#loader").fadeOut("slow");
 		});
 	};
 
 	$scope.getOptions = function(){
-		console.log("get options");
+		//console.log("get options");
 		$("#loader").fadeTo("fast", 0.7);
 		serverComm.getOptions().success(function(data) {
-				console.log(data);
+				//console.log(data);
 				for (var i = 0; i < data.length; i++) {
 					$scope.options[data[i]["option_id"]] = data[i]["option_name"]
 				}
-				console.log($scope.options)
+				//console.log($scope.options)
 				
 		});
 	};
@@ -94,7 +90,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
       species:{
             type:"checkboxes",
             value:[],
-            ids:[10,11,12]
+            ids:[10,11,12,22]
       },
       gender:{
           type:"checkboxes",
