@@ -65,18 +65,20 @@ class Swanson {
 	//return the number of species in classifications for a given subject
 	//input a list of classifications, wherein each classification is a list of species (with associated data)
 	//output a list with the number of species per classificaition
-	function get_species_counts($scals)
+	function get_species_counts($classifications)
 	{
-		if (count($scals) == 0)
+		if (count($classifications) == 0)
 		{
 			return array();
 		}
 		$spp = array();
-		for($x = 0; $x < count($scals); $x++)
+		for($x = 0; $x < count($classifications); $x++)
 		{
-			if ($scals[$x][0]["species"] != "")
+			$key = "species";
+			$entry = $classifications[$x];
+			if ($entry[$key] != "")
 			{
-				$spp[] = count($scals[$x]);
+				$spp[] = count($entry);
 			}
 			else
 			{
@@ -89,25 +91,24 @@ class Swanson {
 	//returns a dictionary giving the vote tallies for a subject
 	//input a list of classifications lines, each of wich is a list
 	//output a dictionary with species as the key and the number of votes the species received as value
-	function tally_spp_votes($subject)
+	function tally_votes($key, $subject)
 	{
 		$vote_table = array();
 
 		foreach ($subject as $entry) 
 		{
-			$spp = $entry["species"];
-			
-			if ($spp != "") # ignore blanks
-			{
+			if (array_key_exists($key, $entry)) {
+				$value = $entry[$key];
+
 				# already in table
-				if (array_key_exists($spp, $vote_table))
+				if (array_key_exists($value, $vote_table))
 				{
-					$vote_table[$spp] = $vote_table[$spp] + 1;
+					$vote_table[$value] = $vote_table[$value] + 1;
 				}
 				# not in table yet
 				else
 				{
-					$vote_table[$spp] = 1;
+					$vote_table[$value] = 1;
 				}
 			}
 		}
@@ -328,7 +329,7 @@ class Swanson {
 			{
 				array_push($subcl, $entry);
 			}
-			elseif (count($subcl)>0)
+			else if (count($subcl)>0)
 			{
 				array_push($scals, $subcl);
 				$subcl = array($entry);
@@ -394,7 +395,6 @@ class Swanson {
 
 		}	
 
-
 	    $add_to = array($numclass,$totalvotes,$numblanks,$pielou,$medianspp);
 
 	   	$basic_info = $multi_1 + $multi_2 + $add_to;
@@ -406,14 +406,13 @@ class Swanson {
 	     	$spp_info = $basic_info + array($ctr) + $winner;
 	     	fputcsv($filewriter, $spp_info);
 	        $ctr = $ctr + 1;
-	    } 
-
+	    }
 
 	    return;
-
-	    
 	}
 
+	############################################################################
+	# The following functions are not part of the original swanson github repo #
 	############################################################################
 
 	# Counts number of ocurrences of a specified item in an array.
@@ -451,40 +450,63 @@ class Swanson {
 	    return $median;
 	}
 
+	# Fraction support is calculated as the fraction of classifications supporting the
+	# aggregated answer (i.e. fraction support of 1.0 indicates unanimous support).
+	# INPUT: a list of values representing the classifications of a subject
+	function fraction_support($votes)
+	{
+		if (count($votes) <= 0) {
+			return 0;
+		}
+
+		$sum = array_sum(array_values($votes));
+		
+		arsort($votes);
+		$keys = array_keys($votes);
+		$first_value = $votes[$keys[0]];
+		return $first_value/$sum;
+	}
+
 	# Fraction blanks is calculated as the fraction of classifiers who reported “nothing here”
 	# for an image that is ultimately classified as containing an animal.
 	# INPUT: a list of values representing the classifications of a subject
 	# OUTPUT
-	function fraction_blanks($classifications)
+	function fraction_blanks($votes)
 	{
-		if (count($classifications) <= 0) {
+		if (count($votes) <= 0) {
 			return 0;
 		}
 
-		$nothing = 86; # 86 - noanimal - Nothing <span class='fa fa-ban'/>	
-		$n = $this->array_count_values_of($nothing, $classifications);
-		return $n/count($classifications);
+		$sum = array_sum(array_values($votes));
+
+		$blank = 86; # 86 - noanimal - Nothing <span class='fa fa-ban'/>	
+		$n = $votes[$blank];
+		return $n/$sum;
 		
 	}
 
-	# Fraction support is calculated as the fraction of classifications supporting the
-	# aggregated answer (i.e. fraction support of 1.0 indicates unanimous support).
-	# INPUT: a list of values representing the classifications of a subject
-	function fraction_support($classifications)
+	# Decides based on the votes for a given key
+	function decide_on($key, $subject)
 	{
-		if (count($classifications) <= 0) {
-			return 0;
-		}
+	    $votes = $this->tally_votes($key, $subject);
+	    arsort($votes);
 
-		$count_values = array_count_values($classifications);
-		arsort($count_values);
-		$keys = array_keys($count_values);
-		$first_value = $count_values[$keys[0]];
-		return $first_value/count($classifications);
+	    echo "Votes Per $key";
+	    echo "\n";
+	    print_r($votes);
+	    echo "\n";
+
+	    $keys = array_keys($votes);
+	    $winner = $keys[0];
+
+	    echo "Winning " . ucfirst($key);
+	    echo "\n";
+	    print_r($winner);
+	    echo "\n";
+	    echo "\n";
+
+	    return $winner;
 	}
-
-	###########################################################################
-
 
 }
 ?>

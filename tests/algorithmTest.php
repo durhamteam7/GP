@@ -34,29 +34,17 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     {
         $empty_array = array();
 
-        $array = array(array(array("species" => "")));
+        $array = array(array("species" => ""));
         $res = array(0);
 
-        $array2 = array(array(array("species" => "animal")));
+        $array2 = array(array("species" => "animal"));
         $res2 = array(1);
-
-        $array3 = array(array(array("species" => "animal")),
-                              array(array("species" => "animal")));
-        $res3 = array(1, 1);
-
-        $array4 = array(array(array("species" => "animal")),
-                              array(array("species" => "animal"),
-                                    array("species" => "animal")));
-        $res4 = array(1, 2);
-
 
         $this->assertEquals(array(), $this->s->get_species_counts($empty_array));
         $this->assertEquals($res, $this->s->get_species_counts($array));
         $this->assertEquals($res2, $this->s->get_species_counts($array2));
-        $this->assertEquals($res3, $this->s->get_species_counts($array3));
-        $this->assertEquals($res4, $this->s->get_species_counts($array4));
     }
-    public function testTally_spp_votes()
+    public function testTally_votes()
     {
         $empty_array = array();
 
@@ -80,12 +68,12 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $res5 = array("animal" => 2, "species" => 1);
 
 
-        $this->assertEquals(array(), $this->s->tally_spp_votes($empty_array));
-        $this->assertEquals($res, $this->s->tally_spp_votes($array));
-        $this->assertEquals($res2, $this->s->tally_spp_votes($array2));
-        $this->assertEquals($res3, $this->s->tally_spp_votes($array3));
-        $this->assertEquals($res4, $this->s->tally_spp_votes($array4));
-        $this->assertEquals($res5, $this->s->tally_spp_votes($array5));
+        $this->assertEquals(array(), $this->s->tally_votes("species", $empty_array));
+        $this->assertEquals($res, $this->s->tally_votes("species", $array));
+        $this->assertEquals($res2, $this->s->tally_votes("species", $array2));
+        $this->assertEquals($res3, $this->s->tally_votes("species", $array3));
+        $this->assertEquals($res4, $this->s->tally_votes("species", $array4));
+        $this->assertEquals($res5, $this->s->tally_votes("species", $array5));
     }
     public function testCalculate_pielou()
     {
