@@ -111,10 +111,10 @@ while (count($data) > 0) {
     echo "\n";
 
     # Decide the winners
-    $species = $s->decide_on("species", $subject);
-    $gender = $s->decide_on("gender", $subject);
-    $age = $s->decide_on("age", $subject);
-    $number = $s->decide_on("number", $subject);
+    $output["species"] = $s->decide_on("species", $subject);
+    $output["gender"] = $s->decide_on("gender", $subject);
+    $output["age"] = $s->decide_on("age", $subject);
+    $output["number"] = $s->decide_on("number", $subject);
 
     # First Retirement Condition - Blank
     # Are the 5 first classifications blank?
@@ -150,8 +150,23 @@ while (count($data) > 0) {
     print_r($evenness);
     echo "\n";
     echo "\n";
-
     $output["evenness"] = $evenness;
+
+    echo "Fraction Support";
+    echo "\n";
+    $fraction_support = $s->fraction_support($votes);
+    print_r($fraction_support);
+    echo "\n";
+    echo "\n";
+    $output["fraction_support"] = $fraction_support;
+
+    echo "Fraction Blanks";
+    echo "\n";
+    $fraction_blanks = $s->fraction_blanks($votes);
+    print_r($fraction_blanks);
+    echo "\n";
+    echo "\n";
+    $output["fraction_blanks"] = $fraction_blanks;
 
     echo "Output";
     echo "\n";

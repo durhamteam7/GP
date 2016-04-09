@@ -99,19 +99,16 @@ class Swanson {
 		{
 			if (array_key_exists($key, $entry)) {
 				$value = $entry[$key];
-			
-				if ($value != "") # ignore blanks
+
+				# already in table
+				if (array_key_exists($value, $vote_table))
 				{
-					# already in table
-					if (array_key_exists($value, $vote_table))
-					{
-						$vote_table[$value] = $vote_table[$value] + 1;
-					}
-					# not in table yet
-					else
-					{
-						$vote_table[$value] = 1;
-					}
+					$vote_table[$value] = $vote_table[$value] + 1;
+				}
+				# not in table yet
+				else
+				{
+					$vote_table[$value] = 1;
 				}
 			}
 		}
@@ -453,36 +450,39 @@ class Swanson {
 	    return $median;
 	}
 
+	# Fraction support is calculated as the fraction of classifications supporting the
+	# aggregated answer (i.e. fraction support of 1.0 indicates unanimous support).
+	# INPUT: a list of values representing the classifications of a subject
+	function fraction_support($votes)
+	{
+		if (count($votes) <= 0) {
+			return 0;
+		}
+
+		$sum = array_sum(array_values($votes));
+		
+		arsort($votes);
+		$keys = array_keys($votes);
+		$first_value = $votes[$keys[0]];
+		return $first_value/$sum;
+	}
+
 	# Fraction blanks is calculated as the fraction of classifiers who reported “nothing here”
 	# for an image that is ultimately classified as containing an animal.
 	# INPUT: a list of values representing the classifications of a subject
 	# OUTPUT
-	function fraction_blanks($classifications)
+	function fraction_blanks($votes)
 	{
-		if (count($classifications) <= 0) {
+		if (count($votes) <= 0) {
 			return 0;
 		}
 
-		$nothing = 86; # 86 - noanimal - Nothing <span class='fa fa-ban'/>	
-		$n = $this->array_count_values_of($nothing, $classifications);
-		return $n/count($classifications);
+		$sum = array_sum(array_values($votes));
+
+		$blank = 86; # 86 - noanimal - Nothing <span class='fa fa-ban'/>	
+		$n = $votes[$blank];
+		return $n/$sum;
 		
-	}
-
-	# Fraction support is calculated as the fraction of classifications supporting the
-	# aggregated answer (i.e. fraction support of 1.0 indicates unanimous support).
-	# INPUT: a list of values representing the classifications of a subject
-	function fraction_support($classifications)
-	{
-		if (count($classifications) <= 0) {
-			return 0;
-		}
-
-		$count_values = array_count_values($classifications);
-		arsort($count_values);
-		$keys = array_keys($count_values);
-		$first_value = $count_values[$keys[0]];
-		return $first_value/count($classifications);
 	}
 
 	# Decides based on the votes for a given key
@@ -505,7 +505,7 @@ class Swanson {
 	    echo "\n";
 	    echo "\n";
 
-	    $output[$key] = $winner;
+	    return $winner;
 	}
 
 }
