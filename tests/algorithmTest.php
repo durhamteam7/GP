@@ -43,8 +43,6 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $this->s->get_species_counts($empty_array));
         $this->assertEquals($res, $this->s->get_species_counts($array));
         $this->assertEquals($res2, $this->s->get_species_counts($array2));
-        $this->assertEquals($res3, $this->s->get_species_counts($array3));
-        $this->assertEquals($res4, $this->s->get_species_counts($array4));
     }
     public function testTally_votes()
     {
