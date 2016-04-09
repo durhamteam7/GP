@@ -74,7 +74,7 @@ class Swanson {
 		$spp = array();
 		for($x = 0; $x < count($scals); $x++)
 		{
-			if ($scals[$x][0]["species"] != "")
+			if ($scals[$x]["species"] != "")
 			{
 				$spp[] = count($scals[$x]);
 			}
@@ -89,25 +89,27 @@ class Swanson {
 	//returns a dictionary giving the vote tallies for a subject
 	//input a list of classifications lines, each of wich is a list
 	//output a dictionary with species as the key and the number of votes the species received as value
-	function tally_spp_votes($subject)
+	function tally_votes($key, $subject)
 	{
 		$vote_table = array();
 
 		foreach ($subject as $entry) 
 		{
-			$spp = $entry["species"];
+			if (array_key_exists($key, $entry)) {
+				$value = $entry[$key];
 			
-			if ($spp != "") # ignore blanks
-			{
-				# already in table
-				if (array_key_exists($spp, $vote_table))
+				if ($value != "") # ignore blanks
 				{
-					$vote_table[$spp] = $vote_table[$spp] + 1;
-				}
-				# not in table yet
-				else
-				{
-					$vote_table[$spp] = 1;
+					# already in table
+					if (array_key_exists($value, $vote_table))
+					{
+						$vote_table[$value] = $vote_table[$value] + 1;
+					}
+					# not in table yet
+					else
+					{
+						$vote_table[$value] = 1;
+					}
 				}
 			}
 		}
@@ -415,6 +417,8 @@ class Swanson {
 	}
 
 	############################################################################
+	# The following functions are not part of the original swanson github repo #
+	############################################################################
 
 	# Counts number of ocurrences of a specified item in an array.
 	function array_count_values_of($value, $array) 
@@ -483,8 +487,28 @@ class Swanson {
 		return $first_value/count($classifications);
 	}
 
-	###########################################################################
+	# 
+	function decide_on($key, $subject)
+	{
+	    $votes = $this->tally_votes($key, $subject);
+	    arsort($votes);
 
+	    echo "Votes Per $key";
+	    echo "\n";
+	    print_r($votes);
+	    echo "\n";
+
+	    $keys = array_keys($votes);
+	    $winner = $keys[0];
+
+	    echo "Winning " . ucfirst($key);
+	    echo "\n";
+	    print_r($winner);
+	    echo "\n";
+	    echo "\n";
+
+	    $output[$key] = $winner;
+	}
 
 }
 ?>
