@@ -76,8 +76,7 @@ class Swanson {
 		{
 			$key = "species";
 			$entry = $classifications[$x];
-			if (array_key_exists($key, $entry)) {
-			if ([$key] != "")
+			if ($entry[$key] != "")
 			{
 				$spp[] = count($entry);
 			}
@@ -333,7 +332,7 @@ class Swanson {
 			{
 				array_push($subcl, $entry);
 			}
-			elseif (count($subcl)>0)
+			else if (count($subcl)>0)
 			{
 				array_push($scals, $subcl);
 				$subcl = array($entry);
@@ -399,7 +398,6 @@ class Swanson {
 
 		}	
 
-
 	    $add_to = array($numclass,$totalvotes,$numblanks,$pielou,$medianspp);
 
 	   	$basic_info = $multi_1 + $multi_2 + $add_to;
@@ -411,12 +409,9 @@ class Swanson {
 	     	$spp_info = $basic_info + array($ctr) + $winner;
 	     	fputcsv($filewriter, $spp_info);
 	        $ctr = $ctr + 1;
-	    } 
-
+	    }
 
 	    return;
-
-	    
 	}
 
 	############################################################################
@@ -490,7 +485,7 @@ class Swanson {
 		return $first_value/count($classifications);
 	}
 
-	# 
+	# Decides based on the votes for a given key
 	function decide_on($key, $subject)
 	{
 	    $votes = $this->tally_votes($key, $subject);

@@ -116,7 +116,7 @@ while (count($data) > 0) {
     $age = $s->decide_on("age", $subject);
     $number = $s->decide_on("number", $subject);
 
-    # First Retirement Condition
+    # First Retirement Condition - Blank
     # Are the 5 first classifications blank?
     $all_blank = true;
     if ($number_of_classifications == 5) {
@@ -130,13 +130,13 @@ while (count($data) > 0) {
         $output["retired"] = true;
     }
 
-    # Second Retirement Condition
-    # Are there 10 agreeing classifications?
+    # Second Retirement Condition - Consensus
+    # Are there 10 agreeing classifications? (Including blanks)
     if ($output["species"] >= 10) {
         $output["retired"] = true;
     }
 
-    # Second Retirement Condition
+    # Third Retirement Condition - Complete
     # Are there 25 or more classifications?
     if ($number_of_classifications >= 25) {
         $output["retired"] = true;
