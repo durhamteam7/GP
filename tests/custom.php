@@ -1,5 +1,8 @@
 <?php
 
+    # this is a file that I've used 
+    # to test the functions locally
+
     require('algorithm.php');
 
     echo "get species count\n";
