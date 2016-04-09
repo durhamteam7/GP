@@ -291,14 +291,14 @@ class Swanson {
 			}
 
 			//get the number of animals
-			$numanimals = calculate_num_animals($noa);
+			$numanimals = $this->calculate_num_animals($noa);
 
-			$stand_frac = calculate_TF_perc($stand);
-			$rest_frac = calculate_TF_perc($rest);
-			$move_frac = calculate_TF_perc($move);
-			$eat_frac = calculate_TF_perc($eat);
-			$interact_frac = calculate_TF_perc($interact);
-			$baby_frac = calculate_TF_perc($baby);
+			$stand_frac = $this->calculate_TF_perc($stand);
+			$rest_frac = $this->calculate_TF_perc($rest);
+			$move_frac = $this->calculate_TF_perc($move);
+			$eat_frac = $this->calculate_TF_perc($eat);
+			$interact_frac = $this->calculate_TF_perc($interact);
+			$baby_frac = $this->calculate_TF_perc($baby);
 
 			$info[] = array_merge([$sppwinners[$x][0],$sppwinners[$x][0],$fracpeople],$numanimals,[$stand_frac,$rest_frac,$move_frac,$eat_frac,$interact_frac,$baby_frac]);
 		}
@@ -342,10 +342,10 @@ class Swanson {
 	    $numclass = count($scals);
 
 	    # count unique species per classification, ignoring blanks
-	    $sppcount = get_species_counts($scals);
+	    $sppcount = $this->get_species_counts($scals);
 
 	    # count and remove the blanks
-	    $numblanks = array_count_values_of(0, $sppcount);
+	    $numblanks = $this->array_count_values_of(0, $sppcount);
 		$sppcount_noblanks = array(array());
 		foreach ($sppcount as $val) 
 		{
@@ -358,21 +358,21 @@ class Swanson {
 
 	    # take median (rounded up) of the number of individuals in the subject
 	    sort($sppcount_noblanks);
-	    $medianspp = calculate_median($sppcount_noblanks);
+	    $medianspp = $this->calculate_median($sppcount_noblanks);
 
 	    # count up votes for each species
-	    $sppvotes = tally_spp_votes($subject);
+	    $sppvotes = $this->tally_spp_votes($subject);
 
 	    # total number of (non-blank) votes
 	    $totalvotes = array_sum($sppvotes);
 	    # Pielou evenness index
-	    $pielou = calculate_pielou($sppvotes); # Potential bug... may need to # enumerate values
+	    $pielou = $this->calculate_pielou($sppvotes); # Potential bug... may need to # enumerate values
 
 	    # choose winners based on most votes
-	    $sppwinners = choose_winners($medianspp,$sppvotes);
+	    $sppwinners = $this->choose_winners($medianspp,$sppvotes);
 
 	    # get winner info
-	    $winnerstats = winner_info($sppwinners,$numclass,$numblanks,$subject);
+	    $winnerstats = $this->winner_info($sppwinners,$numclass,$numblanks,$subject);
 
 	    # output to file
 
