@@ -189,5 +189,29 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, $this->s->calculate_median($array2));
         $this->assertEquals(3, $this->s->calculate_median($array3));
     }
+    public function testFraction_blanks()
+    {
+        $empty_array = array();
+        $array = array(0);
+        $array2 = array(86);
+        $array3 = array(0, 86);
+
+        $this->assertEquals(0, $this->s->fraction_blanks($empty_array));
+        $this->assertEquals(0, $this->s->fraction_blanks($array));
+        $this->assertEquals(1, $this->s->fraction_blanks($array2));
+        $this->assertEquals(0.5, $this->s->fraction_blanks($array3));
+    }
+    public function testFraction_support()
+    {
+        $empty_array = array();
+        $array = array(0);
+        $array2 = array(0, 1, 2);
+        $array3 = array(1, 2, 3, 3);
+
+        $this->assertEquals(0, $this->s->fraction_support($empty_array));
+        $this->assertEquals(1, $this->s->fraction_support($array));
+        $this->assertEquals(1/3, $this->s->fraction_support($array2));
+        $this->assertEquals(0.5, $this->s->fraction_support($array3));
+    }
 }
 ?>

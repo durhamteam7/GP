@@ -401,7 +401,7 @@ class Swanson {
 
 	    $ctr = 1;
 
-	    foreach ($winnerstats as $winner) 
+	    foreach ($winnerstats as $winner)
 	    {
 	     	$spp_info = $basic_info + array($ctr) + $winner;
 	     	fputcsv($filewriter, $spp_info);
@@ -417,7 +417,6 @@ class Swanson {
 	############################################################################
 
 	# Counts number of ocurrences of a specified item in an array.
-
 	function array_count_values_of($value, $array) 
 	{
 		if (count($array) <= 0) {
@@ -432,9 +431,7 @@ class Swanson {
 	    }
 	}
 
-	###########################################################################
 	# Calculates the median of an array
-
 	function calculate_median($arr)
 	{
 		if (count($arr) <= 0) {
@@ -452,6 +449,35 @@ class Swanson {
 	        $median = ceil(($low+$high)/2); // Rounds the value up if fraction
 	    }
 	    return $median;
+	}
+
+	# Fraction blanks is calculated as the fraction of classifiers who reported “nothing here”
+	# for an image that is ultimately classified as containing an animal.
+	function fraction_blanks($classifications)
+	{
+		if (count($classifications) <= 0) {
+			return 0;
+		}
+
+		$nothing = 86; # 86 - noanimal - Nothing <span class='fa fa-ban'/>	
+		$n = array_count_values_of($classifications, $nothing);
+		return $n/count($classifications);
+		
+	}
+
+	# Fraction support is calculated as the fraction of classifications supporting the
+	# aggregated answer (i.e. fraction support of 1.0 indicates unanimous support).
+	function fraction_support($classifications)
+	{
+		if (count($classifications) <= 0) {
+			return 0;
+		}
+
+		$count_values = array_count_values($classifications);
+		arsort($count_values);
+		$keys = array_keys($count_values);
+		$first_value = $count_values[$keys[0]];
+		return $first_value/count($classifications);
 	}
 
 	###########################################################################
