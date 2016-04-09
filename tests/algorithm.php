@@ -74,7 +74,7 @@ class Swanson {
 		$spp = array();
 		for($x = 0; $x < count($scals); $x++)
 		{
-			if ($scals[$x][0][10] != "") // number 10 refers to species in the array
+			if ($scals[$x][0]["species"] != "")
 			{
 				$spp[] = count($scals[$x]);
 			}
@@ -95,7 +95,7 @@ class Swanson {
 
 		foreach ($subject as $entry) 
 		{
-			$spp = $entry[10];
+			$spp = $entry["species"];
 			
 			if ($spp != "") # ignore blanks
 			{
@@ -453,6 +453,8 @@ class Swanson {
 
 	# Fraction blanks is calculated as the fraction of classifiers who reported “nothing here”
 	# for an image that is ultimately classified as containing an animal.
+	# INPUT: a list of values representing the classifications of a subject
+	# OUTPUT
 	function fraction_blanks($classifications)
 	{
 		if (count($classifications) <= 0) {
@@ -467,6 +469,7 @@ class Swanson {
 
 	# Fraction support is calculated as the fraction of classifications supporting the
 	# aggregated answer (i.e. fraction support of 1.0 indicates unanimous support).
+	# INPUT: a list of values representing the classifications of a subject
 	function fraction_support($classifications)
 	{
 		if (count($classifications) <= 0) {

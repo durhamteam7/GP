@@ -34,19 +34,19 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     {
         $empty_array = array();
 
-        $array = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "")));
+        $array = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "species" => "")));
         $res = array(0);
 
-        $array2 = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal")));
+        $array2 = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "species" => "animal")));
         $res2 = array(1);
 
-        $array3 = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal")),
-                              array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal")));
+        $array3 = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "species" => "animal")),
+                              array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "species" => "animal")));
         $res3 = array(1, 1);
 
-        $array4 = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal")),
-                              array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal"),
-                                    array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal")));
+        $array4 = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "species" => "animal")),
+                              array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "species" => "animal"),
+                                    array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "species" => "animal")));
         $res4 = array(1, 2);
 
 
