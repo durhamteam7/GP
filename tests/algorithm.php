@@ -17,11 +17,14 @@
 // execute query
 //$result = $mysqli->query($sql);
 
+//$data = [];
+
 // process result
 /*if ($result->num_rows > 0) {
     // output data of each row
     echo '<pre>';
     while($row = $result->fetch_assoc()) {
+    	$data[] = $row;
         print_r($row);
     }
     echo '</pre>';
@@ -29,19 +32,6 @@
     echo "0 results";
 }*/
 ###########################################
-
-/*
-class newTable {
-	$retired;						// true => has been decided to not contain any animals, false => has either been decided or still needs classifying
-	$classification;				// if empty string, we need to have more classifications, otherwise this is the decided animal for this image
-	$number_of_classifications;		// number of classifications for this image
-	$evenness;						// pielou evenness index
-	$fraction_blanks;				// the fraction of blank classifications "nothing here" for an image that was ultimately classified as containing an animal
-	$fraction_support;				// fraction of classifications supporting the aggregated answer (i.e. fraction support of 1.0 indicates unanimous support)
-	$tf_percentage;					// probably same as fraction_support
-}
-*/
-
 
 // close connection
 //$mysqli->close();
@@ -84,7 +74,7 @@ class Swanson {
 		$spp = array();
 		for($x = 0; $x < count($scals); $x++)
 		{
-			if ($scals[$x][0][10] != "") // number 10 refers to species in the array
+			if ($scals[$x][0]["species"] != "")
 			{
 				$spp[] = count($scals[$x]);
 			}
@@ -105,7 +95,7 @@ class Swanson {
 
 		foreach ($subject as $entry) 
 		{
-			$spp = $entry[10];
+			$spp = $entry["species"];
 			
 			if ($spp != "") # ignore blanks
 			{
@@ -301,14 +291,14 @@ class Swanson {
 			}
 
 			//get the number of animals
-			$numanimals = calculate_num_animals($noa);
+			$numanimals = $this->calculate_num_animals($noa);
 
-			$stand_frac = calculate_TF_perc($stand);
-			$rest_frac = calculate_TF_perc($rest);
-			$move_frac = calculate_TF_perc($move);
-			$eat_frac = calculate_TF_perc($eat);
-			$interact_frac = calculate_TF_perc($interact);
-			$baby_frac = calculate_TF_perc($baby);
+			$stand_frac = $this->calculate_TF_perc($stand);
+			$rest_frac = $this->calculate_TF_perc($rest);
+			$move_frac = $this->calculate_TF_perc($move);
+			$eat_frac = $this->calculate_TF_perc($eat);
+			$interact_frac = $this->calculate_TF_perc($interact);
+			$baby_frac = $this->calculate_TF_perc($baby);
 
 			$info[] = array_merge([$sppwinners[$x][0],$sppwinners[$x][0],$fracpeople],$numanimals,[$stand_frac,$rest_frac,$move_frac,$eat_frac,$interact_frac,$baby_frac]);
 		}
@@ -352,10 +342,10 @@ class Swanson {
 	    $numclass = count($scals);
 
 	    # count unique species per classification, ignoring blanks
-	    $sppcount = get_species_counts($scals);
+	    $sppcount = $this->get_species_counts($scals);
 
 	    # count and remove the blanks
-	    $numblanks = array_count_values_of(0, $sppcount);
+	    $numblanks = $this->array_count_values_of(0, $sppcount);
 		$sppcount_noblanks = array(array());
 		foreach ($sppcount as $val) 
 		{
@@ -368,21 +358,21 @@ class Swanson {
 
 	    # take median (rounded up) of the number of individuals in the subject
 	    sort($sppcount_noblanks);
-	    $medianspp = calculate_median($sppcount_noblanks);
+	    $medianspp = $this->calculate_median($sppcount_noblanks);
 
 	    # count up votes for each species
-	    $sppvotes = tally_spp_votes($subject);
+	    $sppvotes = $this->tally_spp_votes($subject);
 
 	    # total number of (non-blank) votes
 	    $totalvotes = array_sum($sppvotes);
 	    # Pielou evenness index
-	    $pielou = calculate_pielou($sppvotes); # Potential bug... may need to # enumerate values
+	    $pielou = $this->calculate_pielou($sppvotes); # Potential bug... may need to # enumerate values
 
 	    # choose winners based on most votes
-	    $sppwinners = choose_winners($medianspp,$sppvotes);
+	    $sppwinners = $this->choose_winners($medianspp,$sppvotes);
 
 	    # get winner info
-	    $winnerstats = winner_info($sppwinners,$numclass,$numblanks,$subject);
+	    $winnerstats = $this->winner_info($sppwinners,$numclass,$numblanks,$subject);
 
 	    # output to file
 
@@ -411,7 +401,7 @@ class Swanson {
 
 	    $ctr = 1;
 
-	    foreach ($winnerstats as $winner) 
+	    foreach ($winnerstats as $winner)
 	    {
 	     	$spp_info = $basic_info + array($ctr) + $winner;
 	     	fputcsv($filewriter, $spp_info);
@@ -427,7 +417,6 @@ class Swanson {
 	############################################################################
 
 	# Counts number of ocurrences of a specified item in an array.
-
 	function array_count_values_of($value, $array) 
 	{
 		if (count($array) <= 0) {
@@ -442,9 +431,7 @@ class Swanson {
 	    }
 	}
 
-	###########################################################################
 	# Calculates the median of an array
-
 	function calculate_median($arr)
 	{
 		if (count($arr) <= 0) {
@@ -462,6 +449,38 @@ class Swanson {
 	        $median = ceil(($low+$high)/2); // Rounds the value up if fraction
 	    }
 	    return $median;
+	}
+
+	# Fraction blanks is calculated as the fraction of classifiers who reported “nothing here”
+	# for an image that is ultimately classified as containing an animal.
+	# INPUT: a list of values representing the classifications of a subject
+	# OUTPUT
+	function fraction_blanks($classifications)
+	{
+		if (count($classifications) <= 0) {
+			return 0;
+		}
+
+		$nothing = 86; # 86 - noanimal - Nothing <span class='fa fa-ban'/>	
+		$n = $this->array_count_values_of($nothing, $classifications);
+		return $n/count($classifications);
+		
+	}
+
+	# Fraction support is calculated as the fraction of classifications supporting the
+	# aggregated answer (i.e. fraction support of 1.0 indicates unanimous support).
+	# INPUT: a list of values representing the classifications of a subject
+	function fraction_support($classifications)
+	{
+		if (count($classifications) <= 0) {
+			return 0;
+		}
+
+		$count_values = array_count_values($classifications);
+		arsort($count_values);
+		$keys = array_keys($count_values);
+		$first_value = $count_values[$keys[0]];
+		return $first_value/count($classifications);
 	}
 
 	###########################################################################

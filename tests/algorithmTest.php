@@ -34,19 +34,19 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     {
         $empty_array = array();
 
-        $array = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "")));
+        $array = array(array(array("species" => "")));
         $res = array(0);
 
-        $array2 = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal")));
+        $array2 = array(array(array("species" => "animal")));
         $res2 = array(1);
 
-        $array3 = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal")),
-                              array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal")));
+        $array3 = array(array(array("species" => "animal")),
+                              array(array("species" => "animal")));
         $res3 = array(1, 1);
 
-        $array4 = array(array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal")),
-                              array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal"),
-                                    array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal")));
+        $array4 = array(array(array("species" => "animal")),
+                              array(array("species" => "animal"),
+                                    array("species" => "animal")));
         $res4 = array(1, 2);
 
 
@@ -60,23 +60,23 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     {
         $empty_array = array();
 
-        $array = array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ""));
+        $array = array(array("species" => ""));
         $res = array();
 
-        $array2 = array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal"));
+        $array2 = array(array("species" => "animal"));
         $res2 = array("animal" => 1);
 
-        $array3 = array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal"),
-                        array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal"));
+        $array3 = array(array("species" => "animal"),
+                        array("species" => "animal"));
         $res3 = array("animal" => 2);
 
-        $array4 = array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal"),
-                        array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "species"));
+        $array4 = array(array("species" => "animal"),
+                        array("species" => "species"));
         $res4 = array("animal" => 1, "species" => 1);
 
-        $array5 = array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal"),
-                        array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "animal"),
-                        array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "species"));
+        $array5 = array(array("species" => "animal"),
+                        array("species" => "animal"),
+                        array("species" => "species"));
         $res5 = array("animal" => 2, "species" => 1);
 
 
@@ -152,6 +152,8 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0.5, $this->s->calculate_TF_perc($array3));
         $this->assertEquals(0.5, $this->s->calculate_TF_perc($array4));
     }
+    /*
+    Won't test yet!
     public function testWinner_info()
     {
         $this->assertEquals(1, 2);
@@ -160,6 +162,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(1, 2);
     }
+    */
     public function testArray_count_values_of()
     {
         $value = 0;
@@ -185,6 +188,30 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, $this->s->calculate_median($array));
         $this->assertEquals(1, $this->s->calculate_median($array2));
         $this->assertEquals(3, $this->s->calculate_median($array3));
+    }
+    public function testFraction_blanks()
+    {
+        $empty_array = array();
+        $array = array(0);
+        $array2 = array(86);
+        $array3 = array(0, 1, 86, 86);
+
+        $this->assertEquals(0, $this->s->fraction_blanks($empty_array));
+        $this->assertEquals(0, $this->s->fraction_blanks($array));
+        $this->assertEquals(1, $this->s->fraction_blanks($array2));
+        $this->assertEquals(0.5, $this->s->fraction_blanks($array3));
+    }
+    public function testFraction_support()
+    {
+        $empty_array = array();
+        $array = array(0);
+        $array2 = array(0, 1, 2);
+        $array3 = array(1, 2, 3, 3);
+
+        $this->assertEquals(0, $this->s->fraction_support($empty_array));
+        $this->assertEquals(1, $this->s->fraction_support($array));
+        $this->assertEquals(1/3, $this->s->fraction_support($array2));
+        $this->assertEquals(0.5, $this->s->fraction_support($array3));
     }
 }
 ?>
