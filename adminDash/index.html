@@ -51,7 +51,8 @@
 						<h1 class="h4">Filters</h1>
 						{{query}}
 						<form>
-							<span ng-repeat="(filterName,filterData) in filters">
+							<span ng-repeat="filterCat in filters">
+							<span ng-repeat="(filterName,filterData) in filterCat">
 								<b>{{readable(filterName)}}</b><br>
 								<div class="checkbox" ng-repeat="id in filterData.ids" ng-if="filterData.type=='checkboxes'">
 									<label>
@@ -94,6 +95,7 @@
 									
 								</div>
 
+							</span>
 							</span>
 							<h4>OTHER</h4>
 							

@@ -88,45 +88,47 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
   	}
 
     $scope.filters = {
-      species:{
-            type:"checkboxes",
-            value:[],
-            ids:[10,11,12,22]
-      },
-      gender:{
-          type:"checkboxes",
-          value:[],
-          ids:[3,4]
-      },
-      age:{
-          type:"checkboxes",
-          value:[],
-          ids:[5,6]
-      },
-      evenness:{
-          type:"slider",
-          minValue: 0,
-          maxValue: 100,
-          options: {
-              floor: 0,
-              ceil: 100,
-              step: 1,
-              precision: 1,
-              onEnd: $scope.getResults
-          }
-        },
-        numClassifications:{
-            type:"slider",
-            minValue: 0,
-            maxValue: 100,
-            options: {
-                floor: 0,
-                ceil: 100,
-                step: 1,
-                precision: 1,
-                onEnd: $scope.getResults
-            }
-        },
+      Classification:{
+		   species:{
+		         type:"checkboxes",
+		         value:[],
+		         ids:[10,11,12,22]
+		   },
+		   gender:{
+		       type:"checkboxes",
+		       value:[],
+		       ids:[3,4]
+		   },
+		   age:{
+		       type:"checkboxes",
+		       value:[],
+		       ids:[5,6]
+		   },
+		   evenness:{
+		       type:"slider",
+		       minValue: 0,
+		       maxValue: 100,
+		       options: {
+		           floor: 0,
+		           ceil: 100,
+		           step: 1,
+		           precision: 1,
+		           onEnd: $scope.getResults
+		       }
+		     },
+		     numClassifications:{
+		         type:"slider",
+		         minValue: 0,
+		         maxValue: 100,
+		         options: {
+		             floor: 0,
+		             ceil: 100,
+		             step: 1,
+		             precision: 1,
+		             onEnd: $scope.getResults
+		         }
+		     }
+		  },
         numAnimals:{
             type:"slider",
             minValue: 0,
@@ -139,39 +141,43 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
                 onEnd: $scope.getResults
             }
         },
-        habitatType:{
-          type:"checkboxes",
-          value:[],
-          ids:[62,64]
+        Site:{
+		     habitatType:{
+		       type:"checkboxes",
+		       value:[],
+		       ids:[62,64]
+		    }
        },
-       humanPresence:{
-          type:"checkboxes",
-          value:[],
-          ids:[62,64]
-       },
-       blankImages:{
-          type:"checkboxes",
-          value:[],
-          ids:[62,64]
-       },
-       date:{
-          type:"dateTime",
-          icon: "glyphicon-calendar",
-          minValue: "",
-          maxValue: "",
-          options:{
-          	format:"DD/MM/YYYY"
-          }
-       },
-       time:{
-          type:"dateTime",
-          icon: "glyphicon-time",
-          minValue: "",
-          maxValue: "",
-          options:{
-          	format:"LT"
-          }
-       }
+       Photo:{
+		    humanPresence:{
+		       type:"checkboxes",
+		       value:[],
+		       ids:[62,64]
+		    },
+		    blankImages:{
+		       type:"checkboxes",
+		       value:[],
+		       ids:[62,64]
+		    },
+		    date:{
+		       type:"dateTime",
+		       icon: "glyphicon-calendar",
+		       minValue: "",
+		       maxValue: "",
+		       options:{
+		       	format:"DD/MM/YYYY"
+		       }
+		    },
+		    time:{
+		       type:"dateTime",
+		       icon: "glyphicon-time",
+		       minValue: "",
+		       maxValue: "",
+		       options:{
+		       	format:"LT"
+		       }
+		    }
+		 }
         
     }
 
