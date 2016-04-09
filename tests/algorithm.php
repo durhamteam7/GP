@@ -460,7 +460,7 @@ class Swanson {
 		}
 
 		$nothing = 86; # 86 - noanimal - Nothing <span class='fa fa-ban'/>	
-		$n = array_count_values_of($nothing, $classifications);
+		$n = $this->array_count_values_of($nothing, $classifications);
 		return $n/count($classifications);
 		
 	}

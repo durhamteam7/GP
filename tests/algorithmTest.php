@@ -194,7 +194,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $empty_array = array();
         $array = array(0);
         $array2 = array(86);
-        $array3 = array(0, 86);
+        $array3 = array(0, 1, 86, 86);
 
         $this->assertEquals(0, $this->s->fraction_blanks($empty_array));
         $this->assertEquals(0, $this->s->fraction_blanks($array));
