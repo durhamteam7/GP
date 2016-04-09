@@ -1,17 +1,18 @@
 var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart',"checklist-model",'datetimepicker']);
 
 
-
-
-
-
-var url = "http://community.dur.ac.uk/g.t.hudson/GP/adminDash/";
+var url = "https://mammalweb.herokuapp.com/photo";
 
 // Ajax Service
 adminApp.factory('ajax', ['$http', function($http) {
 	return {
     getPhotos: function(query,pageNum,pageSize) {
-      return $http.post('api/photo.php',query).success(function() {
+    	$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+        
+        // Delete the Requested With Header
+        delete $http.defaults.headers.common['X-Requested-With'];
+			 
+      return $http.post(url+'',query).success(function() {
       });
     },
      getOptions: function() {
@@ -58,9 +59,9 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 				$scope.results = data;
 				for (var i = 0; i < $scope.results.length; i++) {
 					var result = $scope.results[i];
-					var parts = result.Photo.dirname.split("/");
+					var parts = result.dirname.split("/");
 
-					$scope.results[i].Photo.URL = parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.Photo.filename;
+					$scope.results[i].URL = parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.filename;
 				}
 				$("#loader").fadeOut("slow");
 		});
