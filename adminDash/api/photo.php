@@ -116,14 +116,18 @@ if (array_key_exists("contains_human", $query) && $query["contains_human"] != nu
 
 //Blank Images
 
-$sql = "SELECT *
+
+$sql = "SELECT `Photo`.`photo_id`, `Photo`.`filename`, `Photo`.`upload_filename`, `Photo`.`dirname`, `Photo`.`upload_id`, `Photo`.`site_id`, `Photo`.`person_id`, `Photo`.`taken`, `Photo`.`size`, `Photo`.`sequence_id`, `Photo`.`sequence_num`, `Photo`.`prev_photo`, `Photo`.`next_photo`, `Photo`.`contains_human`, `Photo`.`uploaded`, `Site`.`site_id` AS `Site.site_id`, `Site`.`site_name` AS `Site.site_name`, `Animals`.`animal_id` AS `Animals.animal_id`, `Animals`.`photo_id` AS `Animals.photo_id`, `Animals`.`person_id` AS `Animals.person_id`, `Animals`.`species` AS `Animals.species`, `Classifications`.`classification_id` AS `Classifications.classification_id`, `Classifications`.`photo_id` AS `Classifications.photo_id`, `Classifications`.`species` AS `Classifications.species` FROM `Photo` AS `Photo` LEFT OUTER JOIN `Site` AS `Site` ON `Photo`.`photo_id` = `Site`.`site_id` LEFT OUTER JOIN `Animal` AS `Animals` ON `Photo`.`photo_id` = `Animals`.`photo_id` INNER JOIN `Classification` AS `Classifications` ON `Photo`.`photo_id` = `Classifications`.`photo_id` AND `Classifications`.`species` = 22 WHERE `Photo`.`photo_id` = 2";
+
+
+/*$sql = "SELECT *
 FROM (Classification
 INNER JOIN (SELECT Photo.*, COUNT(Animal.photo_id) AS numClassifications 
 FROM (Photo INNER JOIN Animal ON Animal.photo_id = Photo.photo_id)	
 GROUP BY Photo.photo_id
 HAVING ".$havingQString.") as Photo ON Photo.photo_id = Classification.photo_id)
 WHERE ".$qString."
-LIMIT ".$query["pageSize"].";";
+LIMIT ".$query["pageSize"].";";*/
 
 //echo $sql;
 
@@ -139,29 +143,11 @@ $mysqli->close();
 
 echo "\n\n\n";
 
-$resultset = new mysql_resultset($result);
-
 
 echo "\n";
 
-$rows = array();
-
-if ($result->num_rows > 0) {
-	// output data of each row
-	while($row = $resultset->fetch()) {
-		unset($row["PhotoMeta"]["exif"]);
-		if (!isset($rows[$row["photo_id"]])){
-			$row["Classification"] = array($row["Classification"]);
-			$rows[$row["photo_id"]] = $row;
-		}
-		else{
-			array_push($rows[$row["photo_id"]]["Classification"],$row["Classification"]);
-		}
-	}
-}
-
 $outputString =  "[";
-foreach($rows as $row){
+while($row = $result->fetch_assoc()) {
 	$outputString.= json_encode($row).",";
 }
 $outputString = rtrim($outputString, ",");
