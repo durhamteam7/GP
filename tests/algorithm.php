@@ -65,18 +65,21 @@ class Swanson {
 	//return the number of species in classifications for a given subject
 	//input a list of classifications, wherein each classification is a list of species (with associated data)
 	//output a list with the number of species per classificaition
-	function get_species_counts($scals)
+	function get_species_counts($classifications)
 	{
-		if (count($scals) == 0)
+		if (count($classifications) == 0)
 		{
 			return array();
 		}
 		$spp = array();
-		for($x = 0; $x < count($scals); $x++)
+		for($x = 0; $x < count($classifications); $x++)
 		{
-			if ($scals[$x]["species"] != "")
+			$key = "species";
+			$entry = $classifications[$x];
+			if (array_key_exists($key, $entry)) {
+			if ([$key] != "")
 			{
-				$spp[] = count($scals[$x]);
+				$spp[] = count($entry);
 			}
 			else
 			{
