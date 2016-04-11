@@ -3,7 +3,7 @@
 # Gold standard data set from Pen's classifications
 
 // require database connection code
-require('../dbConnect.php');
+require('../dbConnectExternal.php');
 
 ###########################################
 // SAMPLE QUERY

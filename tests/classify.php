@@ -5,8 +5,32 @@ require_once("algorithm.php");
 
 $s = new Swanson();
 
-# Sample retrieval of data
-$sql = "SELECT * FROM Animal ORDER BY photo_id ASC;";
+// require database connection code
+require('../dbConnectExternal.php');
+
+###########################################
+// QUERY
+$sql = "SELECT * FROM Animal ORDER BY photo_id DESC;";
+
+// execute query
+$result = $mysqli->query($sql);
+
+$data = [];
+
+// process result
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+} else {
+    echo "0 results";
+}
+
+echo count($data) . " entries retrieved";
+echo "\n";
+echo "\n";
+
+###########################################
 # Might be a problem to retrieve all rows in the db (86 000 entries)
 
 # Hard coded values to be used for testing our functions
@@ -75,7 +99,7 @@ $animal6 = array(
 
 # Imagine this is sorted based on the photo_id
 # So the 10 classifications for photo 1 are the 10 first/last elements
-$data = array($animal1, $animal2, $animal3, $animal4, $animal5, $animal6);
+#$data = array($animal1, $animal2, $animal3, $animal4, $animal5, $animal6);
 
 while (count($data) > 0) {
 
@@ -173,7 +197,31 @@ while (count($data) > 0) {
     print_r($output);
     echo "\n";
 
-    # RAM'S UPDATE FUNCTION
+    $photo_id = $output["photo_id"];
+    $retired = $output["retired"];
+    $species = $output["species"];
+    $gender = $output["gender"];
+    $age = $output["age"];
+    $number = $output["number"];
+    $evenness = $output["evenness"];
+    $fraction_support = $output["fraction_support"];
+    $fraction_blanks = $output["fraction_blanks"];
+
+    # RAM'S UPDATE FUNCTION - this isn't quite working. getting constraint error
+    $updateQuery = "INSERT INTO Classification " .
+                    "(photo_id, species, gender, age, number, evenness, fraction_support, fraction_blanks, timestamp) " .
+                    "VALUES ('$photo_id', '$species', '$gender', '$age', '$number', '$evenness', '$fraction_support', '$fraction_blanks', now()) " .
+                    "ON DUPLICATE KEY UPDATE " .
+                    "timestamp=now()";
+
+    if ($mysqli->query($updateQuery) === TRUE) {
+        echo "Record updated successfully";
+    } else {
+        echo "Error updating record: " . $mysqli->error;
+    }
 }
 
+require_once("getClassifications.php");
+
+$mysqli->close();
 ?>
