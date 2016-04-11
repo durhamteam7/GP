@@ -1,22 +1,21 @@
 var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart',"checklist-model",'datetimepicker']);
 
 
-var url = "https://mammalweb.herokuapp.com/photo";
+var url = "https://mammalweb.herokuapp.com/";
 
 // Ajax Service
 adminApp.factory('ajax', ['$http', function($http) {
 	return {
-    getPhotos: function(query,pageNum,pageSize) {
-    	$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
-        
+    getPhotos: function(query) {
+    	//$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
         // Delete the Requested With Header
-        delete $http.defaults.headers.common['X-Requested-With'];
+        //delete $http.defaults.headers.common['X-Requested-With'];
 			 
-      return $http.post(url+'',query).success(function() {
+      return $http.post(url+'photo',query).success(function() {
       });
     },
      getOptions: function() {
-      return $http.get('api/option.php').success(function() {
+      return $http.get(url+'options').success(function() {
       });
     }
   };
@@ -54,7 +53,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	$scope.getResults = function(){
 		console.log("get results");
 		$("#loader").fadeTo("fast", 0.7);
-		serverComm.getPhotos($scope.filters,$scope.curreentPage,$scope.pageSize).success(function(data) {
+		serverComm.getPhotos($scope.filters).success(function(data) {
 				console.log("Data:",data);
 				$scope.results = data;
 				for (var i = 0; i < $scope.results.length; i++) {
@@ -104,6 +103,11 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		       value:[],
 		       ids:[5,6]
 		   },
+       /*blankImages:{
+           type:"checkboxes",
+           value:[],
+           ids:[62,64]
+        },*/
 		   evenness:{
 		       type:"slider",
 		       minValue: 0,
@@ -115,7 +119,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		           precision: 1,
 		           onEnd: $scope.getResults
 		       }
-		     },
+		     }/*,
 		     numClassifications:{
 		         type:"slider",
 		         minValue: 0,
@@ -127,9 +131,8 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		             precision: 1,
 		             onEnd: $scope.getResults
 		         }
-		     }
-		  },
-        numAnimals:{
+		     }*/
+		     /*numAnimals:{
             type:"slider",
             minValue: 0,
             maxValue: 20,
@@ -140,7 +143,8 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
                 precision: 1,
                 onEnd: $scope.getResults
             }
-        },
+        },*/
+		  },
         Site:{
 		     habitatType:{
 		       type:"checkboxes",
@@ -149,17 +153,12 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		    }
        },
        Photo:{
-		    humanPresence:{
+		    contains_human:{
 		       type:"checkboxes",
 		       value:[],
 		       ids:[62,64]
 		    },
-		    blankImages:{
-		       type:"checkboxes",
-		       value:[],
-		       ids:[62,64]
-		    },
-		    date:{
+		    taken:{
 		       type:"dateTime",
 		       icon: "glyphicon-calendar",
 		       minValue: "",
@@ -167,7 +166,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		       options:{
 		       	format:"DD/MM/YYYY"
 		       }
-		    },
+		    }/*,
 		    time:{
 		       type:"dateTime",
 		       icon: "glyphicon-time",
@@ -176,7 +175,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		       options:{
 		       	format:"LT"
 		       }
-		    }
+		    }*/
 		 }
         
     }

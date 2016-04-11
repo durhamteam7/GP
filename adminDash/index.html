@@ -73,7 +73,7 @@
 								<div class='col-md-12'>
 								<div class="form-group">
 									<div class='input-group date' id='datetimepicker6'>
-										<input type='text' class="form-control" placeholder="from..." datetimepicker ng-model="filterData.minValue" datetimepicker-options="{{filterData.options}}" />
+										<input type='text' class="form-control" placeholder="from..." datetimepicker ng-model="filterData.minValue" datetimepicker-options="{{filterData.options}}" ng-change="getResults()"/>
 										<span class="input-group-addon">
 										<span class="glyphicon {{filterData.icon}}"></span>
 									</span>
@@ -84,7 +84,7 @@
 							<div class='col-md-12'>
 								<div class="form-group">
 									<div class='input-group date' id='datetimepicker6'>
-										<input type='text' class="form-control" placeholder="...to" datetimepicker ng-model="filterData.maxValue" datetimepicker-options="{{filterData.options}}" />
+										<input type='text' class="form-control" placeholder="...to" datetimepicker ng-model="filterData.maxValue" datetimepicker-options="{{filterData.options}}" ng-change="getResults()"/>
 										<span class="input-group-addon">
 										<span class="glyphicon {{filterData.icon}}"></span>
 									</span>
@@ -122,7 +122,8 @@
 				<div class="col-md-6" ng-controller="SearchResultsController">
 					<h2 id="sec0">Search Results</h2>
 					<h5>
-					<span ng-repeat="(name,f) in filters">
+					<span ng-repeat="filterCat in filters">
+					<span ng-repeat="(name,f) in filterCat">
 						<span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='slider' && (f.minValue!=f.options.floor || f.maxValue!=f.options.ceil)">{{readable(name)}}:
 							<b>
 							<span ng-if="f.minValue!=f.options.floor">&gt;= {{f.minValue}}</span> <span ng-if="f.maxValue!=f.options.ceil">&lt;= {{f.maxValue}}</span>
@@ -135,6 +136,7 @@
 							</b>
 							<a href="javascript:void(0)" style="color:white" ng-click="f.value.splice(f.value.indexOf(v),1);getResults()" ><span class="glyphicon glyphicon-remove"></span></a>
 						</span>
+					</span>
 					</span>
 					</h5>
 					<div id="searchResults">
