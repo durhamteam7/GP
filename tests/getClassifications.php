@@ -1,7 +1,7 @@
 <?php
 
 // require database connection code
-require('../dbConnectExternal.php');
+require_once('../dbConnectExternal.php');
 
 ###########################################
 // QUERY

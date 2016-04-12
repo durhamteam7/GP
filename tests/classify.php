@@ -1,18 +1,18 @@
 <?php
 
 # require database connection code
-require('../dbConnectExternal.php');
+require_once('../dbConnectExternal.php');
 
 # import algorithm
 require_once("algorithm.php");
 $s = new Swanson();
 
 # get the photo_ids of the already classified photos
-require('getClassified.php');
+require_once('getClassified.php');
 # $classified - will hold the data from all classified and retired photos
 
 # retrieve the animal data
-require('getAnimals.php');
+require_once('getAnimals.php');
 # $data - will hold all classifications
 # Might be a problem to retrieve all rows in the db (over 120 000 entries)
 
