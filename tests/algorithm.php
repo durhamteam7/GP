@@ -6,86 +6,113 @@
  ##                                     ##
   #######################################
 
-
-// require database connection code
-//require('dbConnect.php');
-
-###########################################
-// SAMPLE QUERY
-//$sql = "SELECT * FROM Animal LIMIT 25;";
-
-// execute query
-//$result = $mysqli->query($sql);
-
-//$data = [];
-
-// process result
-/*if ($result->num_rows > 0) {
-    // output data of each row
-    echo '<pre>';
-    while($row = $result->fetch_assoc()) {
-    	$data[] = $row;
-        print_r($row);
-    }
-    echo '</pre>';
-} else {
-    echo "0 results";
-}*/
-###########################################
-
-// close connection
-//$mysqli->close();
-
 class Swanson {
 
-	//compares two lists by looking at the first value from each
-	//negative if a[0]<b[0] zero if a[0]==b[0] else positive
-	function compare_by_classification($a,$b)
-	{
-		return $a[0] - $b[0];
-	}
-	/* ALTERNATE VERSION
-	function compare_by_classification($a, $b)
-	{
-		if ($a[0]<$b[0]) 
-		{
-			echo -1;
-		}
-		elseif ($a[0]==$b[0]) 
-		{
-			echo 0;
-		}
-		else
-		{
-			echo 1;
-		}
-	}
-	*/
+	function main($data, $mysqli) {
+	    while (count($data) > 0) {
 
-	//return the number of species in classifications for a given subject
-	//input a list of classifications, wherein each classification is a list of species (with associated data)
-	//output a list with the number of species per classificaition
-	function get_species_counts($classifications)
-	{
-		if (count($classifications) == 0)
-		{
-			return array();
-		}
-		$spp = array();
-		for($x = 0; $x < count($classifications); $x++)
-		{
-			$key = "species";
-			$entry = $classifications[$x];
-			if ($entry[$key] != "")
-			{
-				$spp[] = count($entry);
-			}
-			else
-			{
-				$spp[] = 0;
-			}
-		}
-		return $spp;
+	        # populate the subject variable with all classifications for one photo
+	        # subject will contain all rows with that photo_id
+	        $subject = array(array_pop($data));
+	        while ($data[count($data) - 1]["photo_id"] == $subject[0]["photo_id"]) {
+	            $subject[] = array_pop($data);
+	        }
+
+	        $photo_id = $subject[0]["photo_id"];
+
+	        $number_of_classifications = count($subject);
+
+	        echo "Subject " . $photo_id;
+	        echo "\n";
+	        print_r($subject);
+	        echo "\n";
+
+	        # Decide the winners
+	        $species = $this->decide_on("species", $subject);
+	        $gender = $this->decide_on("gender", $subject);
+	        $age = $this->decide_on("age", $subject);
+	        $number = $this->decide_on("number", $subject);
+
+	        $retired = false;
+
+	        # First Retirement Condition - Blank
+	        # Are the 5 first classifications blank?
+	        $all_blank = true;
+	        if ($number_of_classifications == 5) {
+	            foreach ($subject as $c) {
+	                if ($c["species"] != 86) {
+	                    $all_blank = false;
+	                }
+	            }
+	        }
+	        if ($all_blank) {
+	            $retired = true;
+	        }
+
+	        # Second Retirement Condition - Consensus
+	        # Are there 10 agreeing classifications? (Including blanks)
+	        if ($species >= 10) {
+	            $retired = true;
+	        }
+
+	        # Third Retirement Condition - Complete
+	        # Are there 25 or more classifications?
+	        if ($number_of_classifications >= 25) {
+	            $retired = true;
+	        }
+
+	        echo "Evenness Index";
+	        echo "\n";
+	        $votes = $this->tally_votes("species", $subject);
+	        $nlist = array_values($votes);
+	        $evenness = $this->calculate_pielou($nlist);
+	        print_r($evenness);
+	        echo "\n";
+	        echo "\n";
+
+	        echo "Fraction Support";
+	        echo "\n";
+	        $fraction_support = $this->fraction_support($votes);
+	        print_r($fraction_support);
+	        echo "\n";
+	        echo "\n";
+
+	        echo "Fraction Blanks";
+	        echo "\n";
+	        $fraction_blanks = $this->fraction_blanks($votes);
+	        print_r($fraction_blanks);
+	        echo "\n";
+	        echo "\n";
+
+	        $output = array(
+	            "photo_id" => $photo_id,
+	            "retired" => $retired,
+	            "species" => $species,
+	            "gender" => $gender,
+	            "age" => $age,
+	            "number" => $number,
+	            "evenness" => $evenness,
+	            "fraction_support" => $fraction_support,
+	            "fraction_blanks" => $fraction_blanks
+	        );
+	        echo "\n";
+	        print_r($output);
+	        echo "\n";
+
+	        # For now, we only classify a photo if it has been retired.
+	        # The consequence is that we do not store evenness values etc.
+	        # for photos which have yet to be retired (decided).
+	        if ($retired) {
+	            $updateQuery = "INSERT INTO Classification " .
+	                            "(photo_id, species, gender, age, number, evenness, fraction_support, fraction_blanks, timestamp) " .
+	                            "VALUES ('$photo_id', '$species', '$gender', '$age', '$number', '$evenness', '$fraction_support', '$fraction_blanks', now());";
+	            if ($mysqli->query($updateQuery) === TRUE) {
+	                echo "Record updated successfully";
+	            } else {
+	                echo "Error updating record: " . $mysqli->error;
+	            }
+	        }
+	    }
 	}
 
 	//returns a dictionary giving the vote tallies for a subject
@@ -141,6 +168,154 @@ class Swanson {
 		}
 		$sumplnp = -array_sum($plnplist);
 		return $sumplnp / $lns;
+	}
+
+	# Fraction support is calculated as the fraction of classifications supporting the
+	# aggregated answer (i.e. fraction support of 1.0 indicates unanimous support).
+	# INPUT: a list of values representing the classifications of a subject
+	function fraction_support($votes)
+	{
+		if (count($votes) <= 0) {
+			return 0;
+		}
+
+		$sum = array_sum(array_values($votes));
+		
+		arsort($votes);
+		$keys = array_keys($votes);
+		$first_value = $votes[$keys[0]];
+		return $first_value/$sum;
+	}
+
+	# Fraction blanks is calculated as the fraction of classifiers who reported “nothing here”
+	# for an image that is ultimately classified as containing an animal.
+	# INPUT: a list of values representing the classifications of a subject
+	# OUTPUT
+	function fraction_blanks($votes)
+	{
+		if (count($votes) <= 0) {
+			return 0;
+		}
+
+		$sum = array_sum(array_values($votes));
+
+		$blank = 86; # 86 - noanimal - Nothing <span class='fa fa-ban'/>	
+		$n = $votes[$blank];
+		return $n/$sum;
+		
+	}
+
+	# Decides based on the votes for a given key
+	function decide_on($key, $subject)
+	{
+	    $votes = $this->tally_votes($key, $subject);
+	    arsort($votes);
+
+	    echo "Votes Per $key";
+	    echo "\n";
+	    print_r($votes);
+	    echo "\n";
+
+	    $keys = array_keys($votes);
+	    $winner = $keys[0];
+
+	    echo "Winning " . ucfirst($key);
+	    echo "\n";
+	    print_r($winner);
+	    echo "\n";
+	    echo "\n";
+
+	    return $winner;
+	}
+
+
+	###################################################################
+	# The following functions are not currently used in the algorithm #
+	###################################################################
+
+	# Calculates the median of an array
+	function calculate_median($arr)
+	{
+		if (count($arr) <= 0) {
+			return 0;
+		}
+	    $count = count($arr); //total numbers in array
+	    $middleval = floor(($count-1)/2); // find the middle value, or the lowest middle value
+	    if($count % 2) 
+	    { // odd number, middle is the median
+	        $median = $arr[$middleval];
+	    } 
+	    else { // even number, calculate avg of 2 medians
+	        $low = $arr[$middleval];
+	        $high = $arr[$middleval+1];
+	        $median = ceil(($low+$high)/2); // Rounds the value up if fraction
+	    }
+	    return $median;
+	}
+
+	# Counts number of ocurrences of a specified item in an array.
+	function array_count_values_of($value, $array) 
+	{
+		if (count($array) <= 0) {
+			return 0;
+		}
+	    $counts = array_count_values($array);
+	    if (array_key_exists($value, $counts)) {
+	    	return $counts[$value];
+	    }
+	    else {
+	    	return 0;
+	    }
+	}
+
+	//compares two lists by looking at the first value from each
+	//negative if a[0]<b[0] zero if a[0]==b[0] else positive
+	function compare_by_classification($a,$b)
+	{
+		return $a[0] - $b[0];
+	}
+	/* ALTERNATE VERSION
+	function compare_by_classification($a, $b)
+	{
+		if ($a[0]<$b[0]) 
+		{
+			echo -1;
+		}
+		elseif ($a[0]==$b[0]) 
+		{
+			echo 0;
+		}
+		else
+		{
+			echo 1;
+		}
+	}
+	*/
+
+	//return the number of species in classifications for a given subject
+	//input a list of classifications, wherein each classification is a list of species (with associated data)
+	//output a list with the number of species per classificaition
+	function get_species_counts($classifications)
+	{
+		if (count($classifications) == 0)
+		{
+			return array();
+		}
+		$spp = array();
+		for($x = 0; $x < count($classifications); $x++)
+		{
+			$key = "species";
+			$entry = $classifications[$x];
+			if ($entry[$key] != "")
+			{
+				$spp[] = count($entry);
+			}
+			else
+			{
+				$spp[] = 0;
+			}
+		}
+		return $spp;
 	}
 
 	//choose the winners from the vote as the top vote-getters
@@ -409,103 +584,6 @@ class Swanson {
 	    }
 
 	    return;
-	}
-
-	############################################################################
-	# The following functions are not part of the original swanson github repo #
-	############################################################################
-
-	# Counts number of ocurrences of a specified item in an array.
-	function array_count_values_of($value, $array) 
-	{
-		if (count($array) <= 0) {
-			return 0;
-		}
-	    $counts = array_count_values($array);
-	    if (array_key_exists($value, $counts)) {
-	    	return $counts[$value];
-	    }
-	    else {
-	    	return 0;
-	    }
-	}
-
-	# Calculates the median of an array
-	function calculate_median($arr)
-	{
-		if (count($arr) <= 0) {
-			return 0;
-		}
-	    $count = count($arr); //total numbers in array
-	    $middleval = floor(($count-1)/2); // find the middle value, or the lowest middle value
-	    if($count % 2) 
-	    { // odd number, middle is the median
-	        $median = $arr[$middleval];
-	    } 
-	    else { // even number, calculate avg of 2 medians
-	        $low = $arr[$middleval];
-	        $high = $arr[$middleval+1];
-	        $median = ceil(($low+$high)/2); // Rounds the value up if fraction
-	    }
-	    return $median;
-	}
-
-	# Fraction support is calculated as the fraction of classifications supporting the
-	# aggregated answer (i.e. fraction support of 1.0 indicates unanimous support).
-	# INPUT: a list of values representing the classifications of a subject
-	function fraction_support($votes)
-	{
-		if (count($votes) <= 0) {
-			return 0;
-		}
-
-		$sum = array_sum(array_values($votes));
-		
-		arsort($votes);
-		$keys = array_keys($votes);
-		$first_value = $votes[$keys[0]];
-		return $first_value/$sum;
-	}
-
-	# Fraction blanks is calculated as the fraction of classifiers who reported “nothing here”
-	# for an image that is ultimately classified as containing an animal.
-	# INPUT: a list of values representing the classifications of a subject
-	# OUTPUT
-	function fraction_blanks($votes)
-	{
-		if (count($votes) <= 0) {
-			return 0;
-		}
-
-		$sum = array_sum(array_values($votes));
-
-		$blank = 86; # 86 - noanimal - Nothing <span class='fa fa-ban'/>	
-		$n = $votes[$blank];
-		return $n/$sum;
-		
-	}
-
-	# Decides based on the votes for a given key
-	function decide_on($key, $subject)
-	{
-	    $votes = $this->tally_votes($key, $subject);
-	    arsort($votes);
-
-	    echo "Votes Per $key";
-	    echo "\n";
-	    print_r($votes);
-	    echo "\n";
-
-	    $keys = array_keys($votes);
-	    $winner = $keys[0];
-
-	    echo "Winning " . ucfirst($key);
-	    echo "\n";
-	    print_r($winner);
-	    echo "\n";
-	    echo "\n";
-
-	    return $winner;
 	}
 
 }
