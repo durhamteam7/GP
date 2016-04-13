@@ -12,6 +12,7 @@ adminApp.factory('ajax', ['$http', function($http) {
         // Delete the Requested With Header
         //delete $http.defaults.headers.common['X-Requested-With'];
       return $http.post(urls[0]+'photo?pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
+      });
     },
      getOptions: function() {
       return $http.get(urls[1]+'options').success(function() {
