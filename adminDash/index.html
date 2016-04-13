@@ -53,12 +53,33 @@
 						<form>
 							<span ng-repeat="filterCat in filters">
 							<span ng-repeat="(filterName,filterData) in filterCat">
+								
 								<b>{{readable(filterName)}}</b><br>
-								<div class="checkbox" ng-repeat="id in filterData.ids" ng-if="filterData.type=='checkboxes'">
-									<label>
-										<input type="checkbox" checklist-model="filterData.value" checklist-value="id" ng-click="getResults()"> {{options[id]}}
-									</label>
-								</div>
+
+								<span ng-if="filterData.type=='checkboxes'">
+									<div class="checkbox" ng-repeat="(id,name) in options[filterData.struc] | objectLimitTo:(!filterData.open?5:(options[filterData.struc] | keylength))">
+										<label>
+											<input type="checkbox" checklist-model="filterData.value" checklist-value="id" ng-click="getResults()"> {{name}}
+										</label>
+									</div>
+									<span ng-if="(options[filterData.struc] | keylength)> 5">
+										<a href="javascript:void(0)" ng-click="filterData.open=!filterData.open">{{filterData.open?"-":"+"}} See {{filterData.open?"less":"more"}}</a><br><br>
+									</span>
+								</span>
+
+								<span ng-if="filterData.type=='boolean'">
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" checklist-model="filterData.value" checklist-value="true" ng-click="getResults();(filterData.value.length==2?filterData.value=[true]:1)"> Yes
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" checklist-model="filterData.value" checklist-value="false" ng-click="getResults();(filterData.value.length==2?filterData.value=[false]:1)"> No
+										</label>
+									</div>
+								</span>
+
 								<div class="row" ng-if="filterData.type=='slider'">
 									<rzslider rz-slider-model="filterData.minValue" rz-slider-high="filterData.maxValue" rz-slider-options="filterData.options"></rzslider>
 									<div class="col-md-6">
@@ -102,7 +123,15 @@
 							<b>Location</b><br>
 							
 							<label>Postcode:
-								<input type="text" class="form-control">
+								<div class='input-group'>
+									<input type="text" class="form-control">
+									<span class="input-group-addon">
+										<span class="glyphicon glyphicon-map-marker"></span>
+									</span>
+								</div>
+								<div class='input-group'>
+									<input type="number" class="form-control" placeholder="radius">
+								</div>
 							</label>
 							<!-- users
 							gender
@@ -130,9 +159,18 @@
 							</b>
 							<a href="javascript:void(0)" style="color:white" ng-click="f.minValue=f.options.floor;f.maxValue=f.options.ceil;getResults()"><span class="glyphicon glyphicon-remove"></span></a>
 						</span>
+
+						<span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='boolean' && f.value.length>0">
+							{{readable(name)}}:
+							<b>
+								{{(f.value[0]?'yes':'no')}}
+							</b>
+							<a href="javascript:void(0)" style="color:white" ng-click="f.value=[];getResults()"><span class="glyphicon glyphicon-remove"></span></a>
+						</span>
+
 						<span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='checkboxes'" ng-repeat="v in f.value">{{readable(name)}}:
 							<b>
-							{{options[v]}}
+							{{options[f.struc][v]}}
 							</b>
 							<a href="javascript:void(0)" style="color:white" ng-click="f.value.splice(f.value.indexOf(v),1);getResults()" ><span class="glyphicon glyphicon-remove"></span></a>
 						</span>
@@ -168,7 +206,7 @@
 								</div>
 								<div class="row">
 									<div class="col-sm-3">Animals:</div>
-									<div class="col-sm-8"><a ng-repeat="c in result.Classifications" href="#">{{options[c.species]}} </a></div>
+									<div class="col-sm-8"><a ng-repeat="c in result.Classifications" href="#">{{options["mammal"][c.species]}} </a></div>
 								</div>
 								<br>
 							</div>
@@ -242,18 +280,23 @@
 															<label for="x-axis" class="col-sm-2 control-label">x-axis Label:</label>
 															<div class="col-sm-10">
 																<select class="form-control ng-pristine ng-valid" id="x-axis" ng-model="xName" ng-change="chartSelectionChange();makeData();">
-																	<option ng-repeat="v in variables" ng-value="v.value">{{v.displayName}}</option>
+																		<option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters" ng-value="filterName">
+																		</option>
+																		<option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
+																	
 																</select>
 															</div>
 														</div>
 													</div>
 													<div class="row">
 														<div class="form-group">
-															<label for="y-axis" class="col-sm-2 control-label">y-axis Label:</label>
+															<label for="x-axis" class="col-sm-2 control-label">y-axis Label:</label>
 															<div class="col-sm-10">
-																<select class="form-control ng-pristine ng-valid" id="chartType" ng-model="yName" ng-change="chartSelectionChange();makeData();">
-																	<option>-</option>
-																	<option ng-repeat="v in variables" ng-value="v.value">{{v.displayName}}</option>
+																<select class="form-control ng-pristine ng-valid" id="y-axis" ng-model="yName" ng-change="chartSelectionChange();makeData();">
+																		<option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters" ng-value="filterName">
+																		</option>
+																		<option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
+																	
 																</select>
 															</div>
 														</div>
@@ -291,7 +334,9 @@
         <h4 class="modal-title">{{result.upload_filename}}</h4>
       </div>
       <div class="modal-body">
+      	<a ng-href="http://www.mammalweb.org/biodivimages/{{result.URL}}" target="_blank">
         <img ng-src="http://www.mammalweb.org/biodivimages/{{result.URL}}" width=400>
+    </a>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

@@ -1,7 +1,8 @@
 var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart',"checklist-model",'datetimepicker']);
 
 
-var url = "https://mammalweb.herokuapp.com/";
+
+var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 
 // Ajax Service
 adminApp.factory('ajax', ['$http', function($http) {
@@ -11,11 +12,11 @@ adminApp.factory('ajax', ['$http', function($http) {
         // Delete the Requested With Header
         //delete $http.defaults.headers.common['X-Requested-With'];
 			 
-      return $http.post(url+'photo',query).success(function() {
+      return $http.post(urls[0]+'photo',query).success(function() {
       });
     },
      getOptions: function() {
-      return $http.get(url+'options').success(function() {
+      return $http.get(urls[0]+'options').success(function() {
       });
     }
   };
@@ -71,8 +72,16 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		$("#loader").fadeTo("fast", 0.7);
 		serverComm.getOptions().success(function(data) {
 				//console.log(data);
+				$scope.options = {};
 				for (var i = 0; i < data.length; i++) {
-					$scope.options[data[i]["option_id"]] = data[i]["option_name"]
+					//console.log(data[i]["struc"])
+					if (!$scope.options.hasOwnProperty(data[i]["struc"]) ){
+						$scope.options[data[i]["struc"]] = {}
+					}
+					//Check for and remove "Unknown"
+					if (!(data[i]["option_name"] === "Unknown")){
+						$scope.options[data[i]["struc"]][data[i]["option_id"]] = data[i]["option_name"];
+					}
 				}
 				//console.log($scope.options)
 				
@@ -80,10 +89,11 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	};
 	
 	 $scope.readable = function(string) {
-      string = string.replace(/_/g, " ");
-      string = string.replace(/([A-Z])/g, ' $1');
-      string = string.replace(/^./, function(str){ return str.toUpperCase(); });
-      return string
+		string = string.replace(/_id/,"");
+		string = string.replace(/_/g, " ");
+		string = string.replace(/([A-Z])/g, ' $1');
+		string = string.replace(/^./, function(str){ return str.toUpperCase(); });
+		return string
   	}
 
     $scope.filters = {
@@ -91,17 +101,17 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		   species:{
 		         type:"checkboxes",
 		         value:[],
-		         ids:[10,11,12,22]
+		         struc:"mammal"
 		   },
 		   gender:{
 		       type:"checkboxes",
 		       value:[],
-		       ids:[3,4]
+		       struc: "gender"
 		   },
 		   age:{
 		       type:"checkboxes",
 		       value:[],
-		       ids:[5,6]
+		       struc:"age"
 		   },
        /*blankImages:{
            type:"checkboxes",
@@ -146,17 +156,16 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
         },*/
 		  },
         Site:{
-		     habitatType:{
+		     habitat_id:{
 		       type:"checkboxes",
 		       value:[],
-		       ids:[62,64]
+		       struc:"habitat"
 		    }
        },
        Photo:{
 		    contains_human:{
-		       type:"checkboxes",
-		       value:[],
-		       ids:[62,64]
+		       type:"boolean",
+		       value:[]
 		    },
 		    taken:{
 		       type:"dateTime",
@@ -224,35 +233,67 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
 
 
     $scope.chartObject = {
-  "type": "AreaChart",
-  "displayed": true,
-  "data": {
-    "cols": [
-      
-    ],
-    "rows": [
-      
-    ]
-  },
-  "options": {
-    "title": "Sales per month",
-    "isStacked": "true",
-    "fill": 20,
-    "displayExactValues": true,
-    "vAxis": {
-      "title": "Sales unit",
-      "gridlines": {
-        "count": 10
-      }
-    },
-    "hAxis": {
-      "title": "Date"
-    }
-  },
-  "formatters": {}
-}
+	  "type": "AreaChart",
+	  "displayed": true,
+	  "data": {
+	    "cols": [
+	      
+	    ],
+	    "rows": [
+	      
+	    ]
+	  },
+	  "options": {
+	    "title": "Sales per month",
+	    "isStacked": "true",
+	    "fill": 20,
+	    "displayExactValues": true,
+	    "vAxis": {
+	      "title": "Sales unit",
+	      "gridlines": {
+	        "count": 10
+	      }
+	    },
+	    "hAxis": {
+	      "title": "Date"
+	    }
+	  },
+	  "formatters": {}
+	}
 }]);
 
 adminApp.controller('CSVController', ['$scope', function($scope) {
 	$scope.var1 = "in search results";
+}]);
+
+
+
+//Utilities for treating objects like arrays
+adminApp.filter('keylength', function(){
+  return function(input){
+    if(!angular.isObject(input)){
+      throw Error("Usage of non-objects with keylength filter!!")
+    }
+    return Object.keys(input).length;
+  }
+});
+
+adminApp.filter('objectLimitTo', [function(){
+    return function(obj, limit){
+        var keys = Object.keys(obj);
+        if(keys.length < 1){
+            return [];
+        }
+
+        var ret = new Object,
+        count = 0;
+        angular.forEach(keys, function(key, arrayIndex){
+           if(count >= limit){
+                return false;
+            }
+            ret[key] = obj[key];
+            count++;
+        });
+        return ret;
+    };
 }]);
