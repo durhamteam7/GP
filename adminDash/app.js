@@ -55,7 +55,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		console.log("get results");
 		$("#loader").fadeTo("fast", 0.7);
 		serverComm.getPhotos($scope.filters).success(function(data) {
-				console.log("Data:",data);
+				//console.log("Data:",data);
 				$scope.results = data;
 				for (var i = 0; i < $scope.results.length; i++) {
 					var result = $scope.results[i];
@@ -211,19 +211,31 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
 	$scope.var1 = "in search results";
 
         $scope.chartTypes = ["AreaChart","PieChart","BarChart","ColumnChart","LineChart","Table"];
-        $scope.variables = [{displayName:"Species",value:"species"},{displayName:"Evenness",value:"evenness"},{displayName:"Number of Classifications",value:"numberOfClassifications"},{displayName:"Number of Animals",value:"numberOfAnimals"},{displayName:"Gender",value:"gender"},{displayName:"Age",value:"age"},{displayName:"Date",value:"taken"},{displayName:"Time",value:"taken"},{displayName:"Postcode",value:"site_id"},{displayName:"Habitat Type",value:"habitatType"},{displayName:"Human Prescence",value:"contains_human"},{displayName:"Blank Images",value:"blank"}];
-
 
 
 
         $scope.makeData = function(){
           console.log($scope.xName);
+          xNameSplit = $scope.xName.split(".");
+          yNameSplit = $scope.yName.split(".");
+
+          $scope.chartObject.options.vAxis.title = yNameSplit[1];
+          $scope.chartObject.options.hAxis.title = xNameSplit[1];
+
           //console.log($scope.results)
-          $scope.chartObject.data.cols = [{id: "x", label: $scope.xName, type: "string"},{id: "y", label: $scope.yName, type: "number"}];
+          $scope.chartObject.data.cols = [{id: "x", label: xNameSplit[1], type: "string"},{id: "y", label: yNameSplit[1], type: "string"}];
 
           $scope.chartObject.data.rows = [];
+          console.log($scope.results[0])
+
+
           for (var i = 0; i < $scope.results.length; i++) {
-            $scope.chartObject.data.rows.push({c: [{v: $scope.results[i][$scope.xName]}, {v: $scope.results[i][$scope.yName]}]});
+
+          			//if the data is an array (and not just JSON data like in the site field)
+          				//loop though array
+          					//append the whole row
+
+                   $scope.chartObject.data.rows.push({c: [{v: $scope.results[i][xNameSplit[0]][xNameSplit[1]]}, {v: $scope.results[i][yNameSplit[0]][yNameSplit[1]]}]});
           }
 
           console.log($scope.chartObject.data);
@@ -244,7 +256,7 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
 	    ]
 	  },
 	  "options": {
-	    "title": "Sales per month",
+	    "title": "Chart title",
 	    "isStacked": "true",
 	    "fill": 20,
 	    "displayExactValues": true,
