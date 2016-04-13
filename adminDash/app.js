@@ -7,12 +7,11 @@ var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 // Ajax Service
 adminApp.factory('ajax', ['$http', function($http) {
 	return {
-    getPhotos: function(query) {
+    getPhotos: function(query,pageNum,pageSize) {
     	//$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
         // Delete the Requested With Header
         //delete $http.defaults.headers.common['X-Requested-With'];
-			 
-      return $http.post(urls[0]+'photo',query).success(function() {
+      return $http.post(urls[0]+'photo?pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
       });
     },
      getOptions: function() {
@@ -30,16 +29,16 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	
 	//PAGE functions
 	$scope.currentPage = 0;
-	$scope.pageSize = 10;
+	$scope.pageSize = 5;
 	
 	$scope.numberOfPages = function() {
-		return Math.ceil($scope.results.length/$scope.pageSize);
+		return Math.ceil($scope.numResults/$scope.pageSize);
 	}
 	$scope.rowsShown = function() {
-		if (($scope.currentPage * $scope.pageSize) + $scope.pageSize < $scope.results.length) {
+		if (($scope.currentPage * $scope.pageSize) + $scope.pageSize < $scope.numResults) {
 			return Number(($scope.currentPage * $scope.pageSize) + $scope.pageSize);
 		} else {
-			return $scope.results.length;
+			return $scope.numResults;
 		}
 	}
 	$scope.range = function(num) {
@@ -54,9 +53,11 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	$scope.getResults = function(){
 		console.log("get results");
 		$("#loader").fadeTo("fast", 0.7);
-		serverComm.getPhotos($scope.filters).success(function(data) {
+		console.log($scope.currentPage,$scope.pageSize)
+		serverComm.getPhotos($scope.filters,$scope.currentPage,$scope.pageSize).success(function(data) {
 				//console.log("Data:",data);
-				$scope.results = data;
+				$scope.results = data.rows;
+				$scope.numResults = data.count;
 				for (var i = 0; i < $scope.results.length; i++) {
 					var result = $scope.results[i];
 					var parts = result.dirname.split("/");
