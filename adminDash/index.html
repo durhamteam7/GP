@@ -291,12 +291,13 @@
 													</div>
 													<div class="row">
 														<div class="form-group">
-															<label for="x-axis" class="col-sm-2 control-label">y-axis Label:</label>
+															<label for="y-axis" class="col-sm-2 control-label">y-axis Label:</label>
 															<div class="col-sm-10">
 																<select class="form-control ng-pristine ng-valid" id="y-axis" ng-model="yName" ng-change="chartSelectionChange();makeData();">
-																		<option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters" ng-value="filterName">
+																		<option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters">
 																		</option>
 																		<option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
+																		<option value="countOfXaxis">COUNTOF({{readable(xName)}})</option>
 																	
 																</select>
 															</div>

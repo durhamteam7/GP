@@ -11,7 +11,7 @@ adminApp.factory('ajax', ['$http', function($http) {
     	//$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
         // Delete the Requested With Header
         //delete $http.defaults.headers.common['X-Requested-With'];
-      return $http.post(urls[0]+'photo?pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
+      return $http.post(urls[1]+'photo?pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
       });
     },
      getOptions: function() {
@@ -223,7 +223,63 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
         }
 
         $scope.makeData = function(){
-          //console.log($scope.xName);
+
+
+		var typeMap = {"checkboxes":"string","slider":"number","boolean":"String"};
+
+          if ($scope.yName == "countOfXaxis"){
+          	xNameSplit = $scope.xName.split(".");
+          	$scope.chartObject.options.hAxis.title = $scope.readable(xNameSplit[1]);
+          	$scope.chartObject.options.vAxis.title = "Count of "+$scope.readable(xNameSplit[1]);
+          	var xField = $scope.filters[xNameSplit[0]][xNameSplit[1]];
+          	$scope.chartObject.data.cols = [{id: "x", label: $scope.readable(xNameSplit[1]), type: typeMap[xField.type]},
+          	{id: "y", label: "Count of "+$scope.readable(xNameSplit[1]), type: "number"}];
+          	$scope.chartObject.data.rows = [];
+
+
+          	//build dictionary
+          	dataDict = {}
+          	for (i in $scope.results) {
+          		console.log("loop")
+          		if(Array.isArray($scope.results[i][xNameSplit[0]])){
+          			for (var j = 0; j < $scope.results[i][xNameSplit[0]].length; j++)
+	          			{
+	          				xValue = getValue($scope.results[i][xNameSplit[0]][j][xNameSplit[1]],xField);
+	          				if(dataDict.hasOwnProperty(xValue))
+	          				{
+	          					dataDict[xValue]+=1;
+	          				}
+	          				else{
+	          					dataDict[xValue]=1;
+	          				}
+	          			
+	          			}
+          		}
+          		else{
+          			xValue = getValue($scope.results[i][xNameSplit[0]][xNameSplit[1]],xField);
+      				if(dataDict.hasOwnProperty(xValue))
+      				{
+      					dataDict[xValue]+=1;
+      				}
+      				else{
+      					dataDict[xValue]=1;
+      				}
+
+          		}
+
+          	}
+          	console.log(dataDict)
+
+          	//Convert to rows
+          	for (var key in dataDict){
+          		$scope.chartObject.data.rows.push({c: [{v: key}, {v: dataDict[key]}]});
+          	}
+
+
+
+          }
+          else{
+
           xNameSplit = $scope.xName.split(".");
           yNameSplit = $scope.yName.split(".");
 
@@ -234,7 +290,6 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
           var xField = $scope.filters[xNameSplit[0]][xNameSplit[1]];
           var yField = $scope.filters[yNameSplit[0]][yNameSplit[1]];
 
-          typeMap = {"checkboxes":"string","slider":"number","boolean":"String"};
 
           //console.log($scope.results)
           $scope.chartObject.data.cols = [{id: "x", label: $scope.readable(xNameSplit[1]), type: typeMap[xField.type]},{id: "y", label: $scope.readable(yNameSplit[1]), type: typeMap[yField.type]}];
@@ -242,13 +297,12 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
           $scope.chartObject.data.rows = [];
           console.log($scope.results[0])
 
+		
           //function to deal with type
           //first set type based on filter.type from above (checkboxes,sider or boolean)
 
           //if checkboxes
           	//lookup string value
-
-
 
 
           for (var i = 0; i < $scope.results.length; i++) {
@@ -262,7 +316,9 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
           			{
           				for (var k = 0; k < $scope.results[i][yNameSplit[0]].length; k++)
 						{
-							$scope.chartObject.data.rows.push({c: [{v: getValue($scope.results[i][xNameSplit[0]][j][xNameSplit[1]],xField)}, {v: getValue($scope.results[i][yNameSplit[0]][k][yNameSplit[1]],yField)}]});
+							xValue = getValue($scope.results[i][xNameSplit[0]][j][xNameSplit[1]],xField);
+							yValue = getValue($scope.results[i][xNameSplit[0]][k][xNameSplit[1]],xField);
+							$scope.chartObject.data.rows.push({c: [{v: xValue}, {v: yValue}]});
 						}
           			}
           		}
@@ -271,7 +327,9 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
           			console.log("case2")
           			for (var j = 0; j < $scope.results[i][xNameSplit[0]].length; j++)
           			{
-          				$scope.chartObject.data.rows.push({c: [{v: getValue($scope.results[i][xNameSplit[0]][j][xNameSplit[1]],xField)}, {v: getValue($scope.results[i][yNameSplit[0]][yNameSplit[1]],yField)}]});
+          				xValue = getValue($scope.results[i][xNameSplit[0]][j][xNameSplit[1]],xField);
+          				yValue = getValue($scope.results[i][yNameSplit[0]][yNameSplit[1]],yField);
+          				$scope.chartObject.data.rows.push({c: [{v: xValue}, {v: yValue}]});
           			}
           		}
           		else if (Array.isArray($scope.results[i][yNameSplit[0]]))
@@ -279,17 +337,24 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
           			console.log("case 3")
           			for (var j = 0; j < $scope.results[i][yNameSplit[0]].length; j++)
           			{
-          				
-          				$scope.chartObject.data.rows.push({c: [{v: getValue($scope.results[i][xNameSplit[0]][xNameSplit[1]],xField)}, {v: getValue($scope.results[i][yNameSplit[0]][j][yNameSplit[1]],yField)}]});
+          				xValue = getValue($scope.results[i][xNameSplit[0]][xNameSplit[1]],xField);
+          				yValue = getValue($scope.results[i][yNameSplit[0]][j][yNameSplit[1]],yField);
+          				$scope.chartObject.data.rows.push({c: [{v: xValue}, {v: yValue}]});
           			}
           		}
           		else
           		{
           			console.log("case4")
-          			$scope.chartObject.data.rows.push({c: [{v: getValue($scope.results[i][xNameSplit[0]][xNameSplit[1]],xField)}, {v: getValue($scope.results[i][yNameSplit[0]][yNameSplit[1]],yField)}]});
+          			xValue = getValue($scope.results[i][xNameSplit[0]][xNameSplit[1]],xField);
+          			yValue = getValue($scope.results[i][yNameSplit[0]][yNameSplit[1]],yField);
+          			$scope.chartObject.data.rows.push({c: [{v: xValue}, {v: yValue}]});
           		}
           }
+
+      }
           console.log($scope.chartObject.data);
+
+
         };
 
 
