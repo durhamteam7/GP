@@ -83,7 +83,8 @@ class Swanson {
 	        print_r($fraction_blanks);
 	        echo "\n";
 	        echo "\n";
-
+		
+		# Saving all values into an array to update the information with
 	        $output = array(
 	            "photo_id" => $photo_id,
 	            "retired" => $retired,
