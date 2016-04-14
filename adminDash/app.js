@@ -80,9 +80,9 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 						$scope.options[data[i]["struc"]] = {}
 					}
 					//Check for and remove "Unknown"
-					if (!(data[i]["option_name"] === "Unknown")){
+					//if (!(data[i]["option_name"] === "Unknown")){
 						$scope.options[data[i]["struc"]][data[i]["option_id"]] = data[i]["option_name"];
-					}
+					//}*/ //Removed as breaks things
 				}
 				//console.log($scope.options)
 				
@@ -211,10 +211,12 @@ adminApp.controller('SummaryController', ['$scope', function($scope) {
 adminApp.controller('GraphsController', ['$scope', function($scope) {
 	$scope.var1 = "in search results";
 
-        $scope.chartTypes = ["AreaChart","PieChart","BarChart","ColumnChart","LineChart","Table"];
+        $scope.chartTypes = ["AreaChart","PieChart","BarChart","ColumnChart","LineChart","ScatterChart","Table"];
 
         getValue = function(val,field){
         	if (field.type == "checkboxes"){
+        		console.log(field.struc)
+        		console.log($scope.options[field.struc])
         		return $scope.options[field.struc][val];
         	}
         	else{
@@ -223,7 +225,7 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
         }
 
         $scope.makeData = function(){
-
+        	console.log($scope.results);
 
 		var typeMap = {"checkboxes":"string","slider":"number","boolean":"String"};
 
@@ -290,65 +292,52 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
           var xField = $scope.filters[xNameSplit[0]][xNameSplit[1]];
           var yField = $scope.filters[yNameSplit[0]][yNameSplit[1]];
 
-
-          //console.log($scope.results)
           $scope.chartObject.data.cols = [{id: "x", label: $scope.readable(xNameSplit[1]), type: typeMap[xField.type]},{id: "y", label: $scope.readable(yNameSplit[1]), type: typeMap[yField.type]}];
 
           $scope.chartObject.data.rows = [];
-          console.log($scope.results[0])
-
-		
-          //function to deal with type
-          //first set type based on filter.type from above (checkboxes,sider or boolean)
-
-          //if checkboxes
-          	//lookup string value
-
 
           for (var i = 0; i < $scope.results.length; i++) {
 
+          			//Deal with data containing arrays
+          			loopX = 1;
+          			loopY = 1;
 
+          			xChanged = false;
+          			yChanged = false;
 
-          		if (Array.isArray($scope.results[i][xNameSplit[0]]) && Array.isArray($scope.results[i][yNameSplit[0]]))
-          		{
-          			console.log("case1")
-          			for (var j = 0; j < $scope.results[i][xNameSplit[0]].length; j++)
+          			//Set loop conditions
+          			if (Array.isArray($scope.results[i][xNameSplit[0]])){
+          				loopX = $scope.results[i][xNameSplit[0]].length;
+          			}
+          			else{
+          				$scope.results[i][xNameSplit[0]] = [$scope.results[i][xNameSplit[0]]];
+          				xChanged = true;
+          			}
+          			if (Array.isArray($scope.results[i][yNameSplit[0]])){
+          				loopY = $scope.results[i][yNameSplit[0]].length;
+          			}else{
+          				$scope.results[i][yNameSplit[0]] = [$scope.results[i][yNameSplit[0]]]
+          				yChanged = true;
+          			}
+
+          			//Add rows
+          			for (var j = 0; j < loopX; j++)
           			{
-          				for (var k = 0; k < $scope.results[i][yNameSplit[0]].length; k++)
+          				for (var k = 0; k < loopY; k++)
 						{
 							xValue = getValue($scope.results[i][xNameSplit[0]][j][xNameSplit[1]],xField);
-							yValue = getValue($scope.results[i][xNameSplit[0]][k][xNameSplit[1]],xField);
+							yValue = getValue($scope.results[i][yNameSplit[0]][k][yNameSplit[1]],yField);
 							$scope.chartObject.data.rows.push({c: [{v: xValue}, {v: yValue}]});
 						}
           			}
-          		}
-          		else if(Array.isArray($scope.results[i][xNameSplit[0]]))
-          		{
-          			console.log("case2")
-          			for (var j = 0; j < $scope.results[i][xNameSplit[0]].length; j++)
-          			{
-          				xValue = getValue($scope.results[i][xNameSplit[0]][j][xNameSplit[1]],xField);
-          				yValue = getValue($scope.results[i][yNameSplit[0]][yNameSplit[1]],yField);
-          				$scope.chartObject.data.rows.push({c: [{v: xValue}, {v: yValue}]});
+
+          			//Restore data structure
+          			if (xChanged){
+          				$scope.results[i][xNameSplit[0]] = $scope.results[i][xNameSplit[0]][0];
           			}
-          		}
-          		else if (Array.isArray($scope.results[i][yNameSplit[0]]))
-          		{
-          			console.log("case 3")
-          			for (var j = 0; j < $scope.results[i][yNameSplit[0]].length; j++)
-          			{
-          				xValue = getValue($scope.results[i][xNameSplit[0]][xNameSplit[1]],xField);
-          				yValue = getValue($scope.results[i][yNameSplit[0]][j][yNameSplit[1]],yField);
-          				$scope.chartObject.data.rows.push({c: [{v: xValue}, {v: yValue}]});
+          			if(yChanged){
+          				$scope.results[i][yNameSplit[0]] = $scope.results[i][yNameSplit[0]][0];
           			}
-          		}
-          		else
-          		{
-          			console.log("case4")
-          			xValue = getValue($scope.results[i][xNameSplit[0]][xNameSplit[1]],xField);
-          			yValue = getValue($scope.results[i][yNameSplit[0]][yNameSplit[1]],yField);
-          			$scope.chartObject.data.rows.push({c: [{v: xValue}, {v: yValue}]});
-          		}
           }
 
       }
@@ -358,7 +347,7 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
         };
 
 
-
+    $scope.chartStyle = "height:200px;width:200px";
 
     $scope.chartObject = {
 	  "type": "AreaChart",
