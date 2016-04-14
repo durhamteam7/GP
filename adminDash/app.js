@@ -211,7 +211,7 @@ adminApp.controller('SummaryController', ['$scope', function($scope) {
 adminApp.controller('GraphsController', ['$scope', function($scope) {
 	$scope.var1 = "in search results";
 
-        $scope.chartTypes = ["AreaChart","PieChart","BarChart","ColumnChart","LineChart","ScatterChart","Table"];
+        $scope.chartTypes = ["Table","PieChart","BarChart","ColumnChart","LineChart","ScatterChart","AreaChart"];
 
         getValue = function(val,field){
         	if (field.type == "checkboxes"){
@@ -347,10 +347,10 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
         };
 
 
-    $scope.chartStyle = "height:200px;width:200px";
+    $scope.chartStyle = "height:300px;width:300px";
 
     $scope.chartObject = {
-	  "type": "AreaChart",
+	  "type": "Table",
 	  "displayed": true,
 	  "data": {
 	    "cols": [
