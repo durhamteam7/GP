@@ -26,7 +26,7 @@ require('../dbConnectExternal.php');
 //go through entries of table where lat long not set.
 $sql = "SELECT site_id,grid_ref
 	FROM Site
-  WHERE lat IS NULL;";
+  WHERE lat IS NULL AND grid_ref != '';";
 
 	// execute query
 	$result = $mysqli->query($sql);
