@@ -15,6 +15,8 @@
 		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 		<script src="checklistModel.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+		<script src="angular-toggle-switch.min.js"></script>
+		<link href="angular-toggle-switch.css" media="all" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
 		
 		<script src="https://cdn.rawgit.com/diosney/angular-bootstrap-datetimepicker-directive/master/angular-bootstrap-datetimepicker-directive.js"></script>
@@ -49,7 +51,14 @@
 				<div class="col-md-3" id="leftCol">
 					<div class="well" id="filters" ng-controller="FilterController">
 						<h1 class="h4">Filters</h1>
-						{{query}}
+						    
+
+							   	<p> Display by: </p>
+							    <div toggle-switch class="switch-default" knob-label="Display" on-label='Sequence' off-label='Picture' ng-model="switchStatus"></div> 
+							
+			
+          
+
 						<form>
 							<span ng-repeat="filterCat in filters">
 							<span ng-repeat="(filterName,filterData) in filterCat">

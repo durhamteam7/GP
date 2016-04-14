@@ -1,4 +1,4 @@
-var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart',"checklist-model",'datetimepicker']);
+var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart',"checklist-model",'datetimepicker','toggle-switch']);
 
 
 
@@ -51,9 +51,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
   //MAIN functions
 
 	$scope.getResults = function(){
-		console.log("get results");
 		$("#loader").fadeTo("fast", 0.7);
-		console.log($scope.currentPage,$scope.pageSize)
 		serverComm.getPhotos($scope.filters,$scope.currentPage,$scope.pageSize).success(function(data) {
 				//console.log("Data:",data);
 				$scope.results = data.rows;
@@ -90,6 +88,10 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	};
 	
 	 $scope.readable = function(string) {
+	 	if (typeof string === "undefined")
+	 	{
+	 		return "";
+	 	}
 		string = string.replace(/_id/,"");
 		string = string.replace(/_/g, " ");
 		string = string.replace(/([A-Z])/g, ' $1');
@@ -389,7 +391,7 @@ adminApp.controller('CSVController', ['$scope', function($scope) {
 adminApp.filter('keylength', function(){
   return function(input){
     if(!angular.isObject(input)){
-      throw Error("Usage of non-objects with keylength filter!!")
+      return 0;
     }
     return Object.keys(input).length;
   }
@@ -397,6 +399,10 @@ adminApp.filter('keylength', function(){
 
 adminApp.filter('objectLimitTo', [function(){
     return function(obj, limit){
+    	if(!angular.isObject(obj))
+    	{
+    		return [];
+    	}
         var keys = Object.keys(obj);
         if(keys.length < 1){
             return [];
