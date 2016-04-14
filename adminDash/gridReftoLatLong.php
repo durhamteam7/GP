@@ -21,12 +21,12 @@ http://www.movable-type.co.uk/scripts/latlong-gridRef-v1.html
 */
 
 //open connection to db
-require('dbConnect.php');
+require('../dbConnectExternal.php');
 
 //go through entries of table where lat long not set.
 $sql = "SELECT site_id,grid_ref
 	FROM Site
-	WHERE lat=0;";
+  WHERE lat IS NULL AND grid_ref != '';";
 
 	// execute query
 	$result = $mysqli->query($sql);
@@ -37,9 +37,10 @@ if ($result->num_rows > 0) {
 	while($row = $result->fetch_assoc()) {
 		$latLong = OSGridToLatLong(normaliseGridRef($row["grid_ref"])); //get grid ref
 		//write back
-		//var_dump( $latLong);
+		//var_dump($latLong);
 		//echo $row["site_id"];
-		$updateStr = "UPDATE Site SET lat=1.0 WHERE site_id=1;";
+    //var_dump($row["lat"]);
+		$updateStr = "UPDATE Site SET lat=".$latLong[0].", lon=".$latLong[1]." WHERE site_id = ".$row["site_id"].";";
 		echo $updateStr;
 		echo "<br><br>";
 		$result2 = $mysqli->query($updateStr);
