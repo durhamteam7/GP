@@ -8,33 +8,31 @@
 
 class Swanson {
 
-	function main($data, $mysqli) {
-	    while (count($data) > 0) {
+function main($data, $mysqli) {
 
+		# This array will contain all arrays of image
+		# values once the while loop below has completed.
+		$all_outputs = array();
+
+	    while (count($data) > 0) {
 	        # populate the subject variable with all classifications for one photo
 	        # subject will contain all rows with that photo_id
 	        $subject = array(array_pop($data));
 	        while ($data[count($data) - 1]["photo_id"] == $subject[0]["photo_id"]) {
 	            $subject[] = array_pop($data);
 	        }
-
 	        $photo_id = $subject[0]["photo_id"];
-
 	        $number_of_classifications = count($subject);
-
 	        echo "Subject " . $photo_id;
 	        echo "\n";
 	        print_r($subject);
 	        echo "\n";
-
 	        # Decide the winners
 	        $species = $this->decide_on("species", $subject);
 	        $gender = $this->decide_on("gender", $subject);
 	        $age = $this->decide_on("age", $subject);
 	        $number = $this->decide_on("number", $subject);
-
 	        $retired = false;
-
 	        # First Retirement Condition - Blank
 	        # Are the 5 first classifications blank?
 	        $all_blank = true;
@@ -48,19 +46,16 @@ class Swanson {
 	        if ($all_blank) {
 	            $retired = true;
 	        }
-
 	        # Second Retirement Condition - Consensus
 	        # Are there 10 agreeing classifications? (Including blanks)
 	        if ($species >= 10) {
 	            $retired = true;
 	        }
-
 	        # Third Retirement Condition - Complete
 	        # Are there 25 or more classifications?
 	        if ($number_of_classifications >= 25) {
 	            $retired = true;
 	        }
-
 	        echo "Evenness Index";
 	        echo "\n";
 	        $votes = $this->tally_votes("species", $subject);
@@ -69,21 +64,18 @@ class Swanson {
 	        print_r($evenness);
 	        echo "\n";
 	        echo "\n";
-
 	        echo "Fraction Support";
 	        echo "\n";
 	        $fraction_support = $this->fraction_support($votes);
 	        print_r($fraction_support);
 	        echo "\n";
 	        echo "\n";
-
 	        echo "Fraction Blanks";
 	        echo "\n";
 	        $fraction_blanks = $this->fraction_blanks($votes);
 	        print_r($fraction_blanks);
 	        echo "\n";
 	        echo "\n";
-
 	        $output = array(
 	            "photo_id" => $photo_id,
 	            "retired" => $retired,
@@ -100,10 +92,20 @@ class Swanson {
 	        print_r($output);
 	        echo "\n";
 
-	        # For now, we only classify a photo if it has been retired.
+	        # Adding into the array of all image's values
+	        array_push($all_outputs, $output);
+	        
+	    }
+
+	    # Finally, we loop through the array of all image's values and classify the photos all at once, row-by-row.
+	    # For now, we only classify a photo if it has been retired.
 	        # The consequence is that we do not store evenness values etc.
 	        # for photos which have yet to be retired (decided).
-	        if ($retired) {
+	    foreach ($all_outputs as $output) 
+	    {
+
+	        if ($output["retired"]) 
+	        {
 	            $updateQuery = "INSERT INTO Classification " .
 	                            "(photo_id, number_of_classifications, species, gender, age, number, evenness, fraction_support, fraction_blanks, timestamp) " .
 	                            "VALUES ('$photo_id', '$number_of_classifications', '$species', '$gender', '$age', '$number', '$evenness', '$fraction_support', '$fraction_blanks', now());";
@@ -113,8 +115,24 @@ class Swanson {
 	                echo "Error updating record: " . $mysqli->error;
 	            }
 	        }
+
 	    }
+
+	    /*
+		INSERT INTO mytable (id, a, b, c)
+		VALUES (1, 'a1', 'b1', 'c1'),
+		(2, 'a2', 'b2', 'c2'),
+		(3, 'a3', 'b3', 'c3'),
+		(4, 'a4', 'b4', 'c4'),
+		(5, 'a5', 'b5', 'c5'),
+		(6, 'a6', 'b6', 'c6')
+		ON DUPLICATE KEY UPDATE id=VALUES(id),
+		a=VALUES(a),
+		b=VALUES(b),
+		c=VALUES(c);
+	    */
 	}
+
 
 	//returns a dictionary giving the vote tallies for a subject
 	//input a list of classifications lines, each of wich is a list
