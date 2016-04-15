@@ -87,6 +87,7 @@ class Swanson {
 	        $output = array(
 	            "photo_id" => $photo_id,
 	            "retired" => $retired,
+	            "number_of_classifications" => $number_of_classifications,
 	            "species" => $species,
 	            "gender" => $gender,
 	            "age" => $age,
@@ -104,8 +105,8 @@ class Swanson {
 	        # for photos which have yet to be retired (decided).
 	        if ($retired) {
 	            $updateQuery = "INSERT INTO Classification " .
-	                            "(photo_id, species, gender, age, number, evenness, fraction_support, fraction_blanks, timestamp) " .
-	                            "VALUES ('$photo_id', '$species', '$gender', '$age', '$number', '$evenness', '$fraction_support', '$fraction_blanks', now());";
+	                            "(photo_id, number_of_classifications, species, gender, age, number, evenness, fraction_support, fraction_blanks, timestamp) " .
+	                            "VALUES ('$photo_id', '$number_of_classifications', '$species', '$gender', '$age', '$number', '$evenness', '$fraction_support', '$fraction_blanks', now());";
 	            if ($mysqli->query($updateQuery) === TRUE) {
 	                echo "Record updated successfully";
 	            } else {
@@ -226,6 +227,36 @@ class Swanson {
 	    echo "\n";
 
 	    return $winner;
+	}
+
+	# Takes a users classifications and all decided classifications
+	# and compares how well the user classifies
+	# INPUT: the key to check (species, gender, age, number), users classifications, all decided classifications
+	# OUTPUT: the correctness rate the user has for that key
+	function getUserCorrectnessRate($key, $subject, $classifications) {
+	    $correct = 0;
+	    $all = 0;
+
+	    foreach ($subject as $s) {
+	        $c = null;
+	        foreach ($classifications as $classification) {
+	            if ($s["photo_id"] == $classification["photo_id"]) {
+	                $c = $classification;
+	            }
+	        }
+	        $sSpecies = $s[$key];
+	        $cSpecies = $c[$key];
+	        if ($s[$key] == $c[$key]) {
+	            $correct += 1;
+	        }
+	        $all += 1;
+	    }
+
+	    $rate = 0;
+	    if ($all > 0) {
+	        $rate = $correct / $all;
+	    }
+	    return $rate;
 	}
 
 
