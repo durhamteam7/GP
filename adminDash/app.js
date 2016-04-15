@@ -1,4 +1,5 @@
-var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart',"checklist-model",'datetimepicker','ngAutocomplete']);
+
+var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart',"checklist-model",'datetimepicker','toggle-switch','ngAutocomplete']);
 
 
 
@@ -59,9 +60,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
   //MAIN functions
 
 	$scope.getResults = function(){
-		console.log("get results");
 		$("#loader").fadeTo("fast", 0.7);
-		console.log($scope.currentPage,$scope.pageSize)
 		serverComm.getPhotos($scope.filters,$scope.currentPage,$scope.pageSize).success(function(data) {
 				//console.log("Data:",data);
 				$scope.results = data.rows;
@@ -117,6 +116,10 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	};
 	
 	 $scope.readable = function(string) {
+	 	if (typeof string === "undefined")
+	 	{
+	 		return "";
+	 	}
 		string = string.replace(/_id/,"");
 		string = string.replace(/_/g, " ");
 		string = string.replace(/([A-Z])/g, ' $1');
@@ -251,7 +254,7 @@ adminApp.controller('SummaryController', ['$scope', function($scope) {
 adminApp.controller('GraphsController', ['$scope', function($scope) {
 	$scope.var1 = "in search results";
 
-        $scope.chartTypes = ["AreaChart","PieChart","BarChart","ColumnChart","LineChart","ScatterChart","Table"];
+        $scope.chartTypes = ["Table","PieChart","BarChart","ColumnChart","LineChart","ScatterChart","AreaChart"];
 
         getValue = function(val,field){
         	if (field.type == "checkboxes"){
@@ -387,10 +390,10 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
         };
 
 
-    $scope.chartStyle = "height:200px;width:200px";
+    $scope.chartStyle = "height:300px;width:300px";
 
     $scope.chartObject = {
-	  "type": "AreaChart",
+	  "type": "Table",
 	  "displayed": true,
 	  "data": {
 	    "cols": [
@@ -429,7 +432,7 @@ adminApp.controller('CSVController', ['$scope', function($scope) {
 adminApp.filter('keylength', function(){
   return function(input){
     if(!angular.isObject(input)){
-      throw Error("Usage of non-objects with keylength filter!!")
+      return 0;
     }
     return Object.keys(input).length;
   }
@@ -437,6 +440,10 @@ adminApp.filter('keylength', function(){
 
 adminApp.filter('objectLimitTo', [function(){
     return function(obj, limit){
+    	if(!angular.isObject(obj))
+    	{
+    		return [];
+    	}
         var keys = Object.keys(obj);
         if(keys.length < 1){
             return [];

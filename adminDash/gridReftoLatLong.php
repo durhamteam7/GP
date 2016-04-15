@@ -35,23 +35,17 @@ $sql = "SELECT site_id,grid_ref
 if ($result->num_rows > 0) {
 	// output data of each row
 	while($row = $result->fetch_assoc()) {
-		$latLong = OSGridToLatLong(normaliseGridRef($row["grid_ref"])); //get grid ref
+    $latLong = gridRefToLatLongAPI(normaliseGridRef($row["grid_ref"]));
 		//write back
-		//var_dump($latLong);
-		//echo $row["site_id"];
-    //var_dump($row["lat"]);
 		$updateStr = "UPDATE Site SET lat=".$latLong[0].", lon=".$latLong[1]." WHERE site_id = ".$row["site_id"].";";
 		echo $updateStr;
 		echo "<br><br>";
 		$result2 = $mysqli->query($updateStr);
-		//var_dump($result2);
 	}
 } 
 	else {
 		 echo "0 results";
 	}
-
-//var_dump(OSGridToLatLong(normaliseGridRef("NZ 27 41")));
 
 
 function normaliseGridRef($oldGridRef)
@@ -69,6 +63,27 @@ function normaliseGridRef($oldGridRef)
   $gridRef = substr($oldGridRef,0,2).$partOne.$partTwo;
   return $gridRef;
 }
+
+function gridRefToLatLongAPI($gridRef)
+{
+  $key = "5c85f88eabbd73";
+  $url = "http://www.nearby.org.uk/api/convert.php?key=".$key."&p=".$gridRef."&output=text";
+  $data = file_get_contents($url);
+
+
+  $lines = explode("\n",$data); //becuase there can be multiple lines...
+
+  $data = explode(',',$lines[3]);
+
+  $lat = floatval($data[2]);
+  $lon = floatval($data[3]);
+  return array($lat,$lon);
+}
+
+
+//Depreciated functions
+
+
 
 function OSGridToLatLong($gridRef)
 {

@@ -8,6 +8,7 @@ $sql = "SELECT * FROM Animal ORDER BY photo_id DESC";
 $result = $mysqli->query($sql);
 
 $data = [];
+$all_data = [];
 
 // process result
 if ($result->num_rows > 0) {
@@ -15,6 +16,7 @@ if ($result->num_rows > 0) {
         if (!in_array($row["photo_id"], $classified)) {
             $data[] = $row;
         }
+        $all_data[] = $row;
     }
 } else {
     echo "0 results";

@@ -39,6 +39,9 @@ c=VALUES(c);
 # i.e. the data for all images that have been retired
 require_once("getClassifications.php");
 
+# loop through every users classifications and compare to the classified values
+require_once("flagUsers.php");
+
 # close connection
 $mysqli->close();
 
