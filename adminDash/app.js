@@ -1,4 +1,4 @@
-var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart',"checklist-model",'datetimepicker']);
+var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart',"checklist-model",'datetimepicker','ngAutocomplete']);
 
 
 
@@ -11,11 +11,15 @@ adminApp.factory('ajax', ['$http', function($http) {
     	//$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
         // Delete the Requested With Header
         //delete $http.defaults.headers.common['X-Requested-With'];
-      return $http.post(urls[1]+'photo?pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
+      return $http.post(urls[0]+'photo?pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
+      });
+    },
+    getPhotosCSV: function(query){
+    	return $http.post(urls[0]+'photo?output=csv',query).success(function() {
       });
     },
      getOptions: function() {
-      return $http.get(urls[1]+'options').success(function() {
+      return $http.get(urls[0]+'options').success(function() {
       });
     }
   };
@@ -26,10 +30,14 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	$scope.results = []; //contains the results from the server
 	$scope.options = {};
 	
+
+	$scope.result = '';
+    $scope.options = {country:''};
+    $scope.details = '';
 	
 	//PAGE functions
 	$scope.currentPage = 0;
-	$scope.pageSize = 5;
+	$scope.pageSize = 20;
 	
 	$scope.numberOfPages = function() {
 		return Math.ceil($scope.numResults/$scope.pageSize);
@@ -68,6 +76,25 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		});
 	};
 
+	
+	
+	
+	
+	
+	$scope.downloadCSV = function(){
+		$("#loader").fadeTo("fast", 0.7);
+		serverComm.getPhotosCSV($scope.filters).success(function(data) {
+				console.log("Data:",data);
+				$("#loader").fadeOut("slow");
+				$scope.url = "data:application/csv;charset=utf-8,"+encodeURIComponent(data);
+
+				$('body').append('<a class="b" href="'+$scope.url+'" target="_blank" download="mammal.csv">&nbsp;</a>');
+				$('.b').click(function() {
+				    window.location = $(this).attr('href');
+				}).click(); 
+				$( ".b" ).remove();
+		});
+	}
 	$scope.getOptions = function(){
 		//console.log("get options");
 		$("#loader").fadeTo("fast", 0.7);
@@ -130,8 +157,8 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		           precision: 1,
 		           onEnd: $scope.getResults
 		       }
-		     }/*,
-		     numClassifications:{
+		     },
+		     number_of_classifications:{
 		         type:"slider",
 		         minValue: 0,
 		         maxValue: 100,
@@ -142,7 +169,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		             precision: 1,
 		             onEnd: $scope.getResults
 		         }
-		     }*/
+		     }
 		     /*numAnimals:{
             type:"slider",
             minValue: 0,
@@ -161,6 +188,16 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		       type:"checkboxes",
 		       value:[],
 		       struc:"habitat"
+		    },
+		    lat:{
+		    	type:"coord",
+		    	value:null,
+		    	coordType:"latitude"
+		    },
+		    lon:{
+		    	type:"coord",
+		    	value:null,
+		    	coordType:"longitude"
 		    }
        },
        Photo:{
@@ -190,13 +227,16 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
         
     }
 
+    $scope.$watch('filters', function(newVal, oldVal){
+    	$scope.getResults();
+	}, true);
 
 	$scope.getResults();
 	$scope.getOptions();
+
 }]);
 
 adminApp.controller('FilterController', ['$scope', function($scope) {
-
 }]);
 
 
@@ -414,3 +454,8 @@ adminApp.filter('objectLimitTo', [function(){
         return ret;
     };
 }]);
+
+
+
+
+
