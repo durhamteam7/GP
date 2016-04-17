@@ -101,11 +101,22 @@ function main($data, $mysqli) {
 	    # For now, we only classify a photo if it has been retired.
 	        # The consequence is that we do not store evenness values etc.
 	        # for photos which have yet to be retired (decided).
+
 	    foreach ($all_outputs as $output) 
 	    {
 
 	        if ($output["retired"]) 
 	        {
+	        	$photo_id = $output["photo_id"];
+	        	$number_of_classifications = $output["number_of_classifications"];
+	        	$species = $output["species"];
+	        	$gender = $output["gender"];
+	        	$age = $output["age"];
+	        	$number = $output["number"];
+	        	$evenness = $output["evenness"];
+	        	$fraction_support = $output["fraction_support"];
+	        	$fraction_blanks = $output["fraction_blanks"];
+
 	            $updateQuery = "INSERT INTO Classification " .
 	                            "(photo_id, number_of_classifications, species, gender, age, number, evenness, fraction_support, fraction_blanks, timestamp) " .
 	                            "VALUES ('$photo_id', '$number_of_classifications', '$species', '$gender', '$age', '$number', '$evenness', '$fraction_support', '$fraction_blanks', now());";
@@ -117,20 +128,6 @@ function main($data, $mysqli) {
 	        }
 
 	    }
-
-	    /*
-		INSERT INTO mytable (id, a, b, c)
-		VALUES (1, 'a1', 'b1', 'c1'),
-		(2, 'a2', 'b2', 'c2'),
-		(3, 'a3', 'b3', 'c3'),
-		(4, 'a4', 'b4', 'c4'),
-		(5, 'a5', 'b5', 'c5'),
-		(6, 'a6', 'b6', 'c6')
-		ON DUPLICATE KEY UPDATE id=VALUES(id),
-		a=VALUES(a),
-		b=VALUES(b),
-		c=VALUES(c);
-	    */
 	}
 
 
