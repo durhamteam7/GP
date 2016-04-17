@@ -85,12 +85,26 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		serverComm.getPhotosCSV($scope.filters).success(function(data) {
 				console.log("Data:",data);
 				$("#loader").fadeOut("slow");
+				//console.log(data)
+				dataLines  = data.split("\n");
+				//dataLines[0] = dataLines[0].substring(0,dataLines[0].length-1)
+				for (i in dataLines){
+					lineSplit = dataLines[i].split(",")
+					for (j in lineSplit){
+						//lineSplit[j].replace(/"/g, '"');
+					}
+					dataLines[i] = lineSplit.join(',')
+
+				}
+				console.log(dataLines);
+				data = dataLines.join('\r\n')
+				console.log(data)
 				$scope.url = "data:application/csv;charset=utf-8,"+encodeURIComponent(data);
 
-				$('body').append('<a class="b" href="'+$scope.url+'" target="_blank" download="mammal.csv">&nbsp;</a>');
+				$('body').append('<a class="b" href="'+$scope.url+'" target="_blank" download="mammal.csv">HIIII</a>');
 				$('.b').click(function() {
 				    window.location = $(this).attr('href');
-				}).click(); 
+				}).click();
 				$( ".b" ).remove();
 		});
 	}
