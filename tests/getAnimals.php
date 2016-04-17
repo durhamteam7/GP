@@ -2,7 +2,7 @@
 
 ###########################################
 // QUERY
-$sql = "SELECT * FROM Animal ORDER BY photo_id DESC";
+$sql = "SELECT * FROM Animal ORDER BY photo_id DESC;";
 
 // execute query
 $result = $mysqli->query($sql);

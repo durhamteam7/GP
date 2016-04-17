@@ -1,5 +1,7 @@
 <?php
 
+ini_set('memory_limit', '4096M');
+
 # require database connection code
 require_once('../dbConnectExternal.php');
 
@@ -40,7 +42,10 @@ c=VALUES(c);
 require_once("getClassifications.php");
 
 # loop through every users classifications and compare to the classified values
-require_once("flagUsers.php");
+require_once("rateUsers.php");
+
+# print out the rows of the person stats table
+require_once("getPersonStats.php");
 
 # close connection
 $mysqli->close();

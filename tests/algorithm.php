@@ -97,36 +97,49 @@ function main($data, $mysqli) {
 	        
 	    }
 
-	    # Finally, we loop through the array of all image's values and classify the photos all at once, row-by-row.
+		# Finally, we loop through the array of all image's values and classify the photos all at once, row-by-row.
 	    # For now, we only classify a photo if it has been retired.
 	        # The consequence is that we do not store evenness values etc.
 	        # for photos which have yet to be retired (decided).
-
+	    $updateClassifications = "INSERT INTO Classification " .
+	                            "(photo_id, number_of_classifications, species, gender, age, number, evenness, fraction_support, fraction_blanks, timestamp) " . 
+	                            "VALUES ";
+		$numItems = count($all_outputs);
+		$i = 0;
 	    foreach ($all_outputs as $output) 
 	    {
 
 	        if ($output["retired"]) 
 	        {
-	        	$photo_id = $output["photo_id"];
-	        	$number_of_classifications = $output["number_of_classifications"];
-	        	$species = $output["species"];
-	        	$gender = $output["gender"];
-	        	$age = $output["age"];
-	        	$number = $output["number"];
-	        	$evenness = $output["evenness"];
-	        	$fraction_support = $output["fraction_support"];
-	        	$fraction_blanks = $output["fraction_blanks"];
+	        	$Cphoto_id = $output["photo_id"];
+	        	$Cnumber_of_classifications = $output["number_of_classifications"];
+	        	$Cspecies = $output["species"];
+	        	$Cgender = $output["gender"];
+	        	$Cage = $output["age"];
+	        	$Cnumber = $output["number"];
+	        	$Cevenness = $output["evenness"];
+	        	$Cfraction_support = $output["fraction_support"];
+	        	$Cfraction_blanks = $output["fraction_blanks"];
 
-	            $updateQuery = "INSERT INTO Classification " .
-	                            "(photo_id, number_of_classifications, species, gender, age, number, evenness, fraction_support, fraction_blanks, timestamp) " .
-	                            "VALUES ('$photo_id', '$number_of_classifications', '$species', '$gender', '$age', '$number', '$evenness', '$fraction_support', '$fraction_blanks', now());";
-	            if ($mysqli->query($updateQuery) === TRUE) {
-	                echo "Record updated successfully";
-	            } else {
-	                echo "Error updating record: " . $mysqli->error;
-	            }
+	        	if(++$i === $numItems) { # if last row
+					$updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now());";
+				} else {
+					$updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now()), ";
+				}
 	        }
+	    }
 
+	    #echo "Insert query\n";
+	    #echo $updateClassifications;
+	    #echo "\n";
+
+	    if ($mysqli->query($updateClassifications) === TRUE)
+	    {
+	        echo "Record updated successfully\n";
+	    } 
+	    else 
+	    {
+	        echo "Error updating record: " . $mysqli->error . "\n";
 	    }
 	}
 
