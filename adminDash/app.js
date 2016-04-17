@@ -1,5 +1,5 @@
 
-var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart',"checklist-model",'datetimepicker','toggle-switch','ngAutocomplete']);
+var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart',"checklist-model",'datetimepicker','toggle-switch','ngAutocomplete','bw.paging']);
 
 
 
@@ -37,12 +37,10 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
     $scope.details = '';
 	
 	//PAGE functions
-	$scope.currentPage = 0;
-	$scope.pageSize = 20;
+	$scope.currentPage = 1;
+	$scope.pageSize = 15;
 	
-	$scope.numberOfPages = function() {
-		return Math.ceil($scope.numResults/$scope.pageSize);
-	}
+
 	$scope.rowsShown = function() {
 		if (($scope.currentPage * $scope.pageSize) + $scope.pageSize < $scope.numResults) {
 			return Number(($scope.currentPage * $scope.pageSize) + $scope.pageSize);
@@ -50,17 +48,14 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 			return $scope.numResults;
 		}
 	}
-	$scope.range = function(num) {
-		return Array.apply(null, {length: num}).map(Number.call, Number)
-	}
-	$scope.setPage = function(num) {
-		$scope.currentPage = num;
-	}
   
   //MAIN functions
 
-	$scope.getResults = function(){
+	$scope.getResults = function(page){
 		$("#loader").fadeTo("fast", 0.7);
+		if (page){
+			$scope.currentPage = page
+		}
 		serverComm.getPhotos($scope.filters,$scope.currentPage,$scope.pageSize).success(function(data) {
 				//console.log("Data:",data);
 				$scope.results = data.rows;

@@ -16,6 +16,7 @@
 		<script src="checklistModel.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 		<script src="angular-toggle-switch.min.js"></script>
+		<script src="https://rawgit.com/brantwills/Angular-Paging/v2.2.0/dist/paging.min.js"></script>
 		<link href="angular-toggle-switch.css" media="all" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
 		
@@ -245,31 +246,12 @@
 					</div>
 					<hr>
 					
-					<div class="row">
-        <div class="col-xs-4">
-        	{{currentPage}}
+        <div>
             <p>Showing {{numResults == 0 ? 0 : (currentPage * pageSize) + 1}} to {{rowsShown()}} of {{numResults}} entries</p>
         </div>
-        <nav class="col-xs-8">
-            <ul id="pagination" class="pagination pull-right" style="margin-top: 0px;">
-                <li ng-class="currentPage <= 0 ? 'disabled' : ''">
-                    <a href="#" aria-label="Previous" ng-click="currentPage = currentPage - 1;getResults()" ng-class="currentPage <= 0 ? 'hidden' : ''">
-                        <span aria-hidden="true">&laquo; Previous</span>
-                    </a>
-                </li>
-                <li ng-repeat="n in range(numberOfPages())" ng-class="isActive(n)">
-                    <a href="#" ng-click="setPage(n);getResults()">
-                        {{n + 1}}
-                    </a>
-                </li>
-                <li ng-class="currentPage >= numberOfPages() - 1 ? 'disabled' : ''">
-                    <a href="#" aria-label="Next" ng-click="currentPage = currentPage + 1" ng-class="currentPage >= numberOfPages() - 1 ? 'hidden' : ''">
-                        <span aria-hidden="true">Next &raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+        <div class="row">	
+            <div paging page="currentPage" page-size="pageSize" total="10000" paging-action="getResults(page)" hide-if-empty="true" show-prev-next="true" show-first-last="true"></div> 
+   		 </div>
 					
 					
 					
