@@ -1,6 +1,9 @@
 <html>
 	<head>
 		<title>User Dashboard</title>
+		<script type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpzag5AVnm8nqYpPnO_7kku6siPeNxLO0">
+</script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/locale/en-gb.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
@@ -19,12 +22,9 @@
 
       
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-
   <script src="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<script src="https://cdn.rawgit.com/shramov/leaflet-plugins/master/layer/tile/Google.js"></script>
   <script src="//tombatossals.github.io/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
-
-
-
 		<script src="app.js"></script>
 
 
@@ -84,7 +84,7 @@
   </div><!-- /.container-fluid -->
 </nav>
 
-				<leaflet id="map" tiles="tiles" markers="markers" defaults="defaults" center="center"></leaflet>
+				<leaflet id="map" tiles="tiles" markers="markers" defaults="defaults" center="center" layers="layers"></leaflet>
 
 	</body>
 </html>

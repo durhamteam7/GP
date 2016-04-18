@@ -26,11 +26,13 @@ userApp.controller('MainController', ['$scope','ajax', function($scope,serverCom
 	//$("#loader").fadeTo("fast", 0.7);
   // make map
 
-  var imgURL = "http://www.mammalweb.org/biodivimages/person_182/site_2/55fc9b6303e88ff8d0435eecc3e24683.jpg";
-  var html = '<img width=200 src="'+imgURL+'">';
-
-  var getHTML = function(imgURL){
-    var html = '<img width=200 src="http://www.mammalweb.org/biodivimages/'+imgURL+'">';
+  var getHTML = function(item){
+    var html = '<div>'
+    var url = "http://www.mammalweb.org/biodivimages/"+item.URL;
+    html += '<a href="'+url+'" target="_blank"><img width=200 src="'+url+'"></a></div>';
+    html += '<b>'+item.upload_filename+'</b><br>';
+    html += item.Site.site_name+'<br>';
+    html += item.taken+'';
     return html;
   }
 
@@ -49,7 +51,15 @@ userApp.controller('MainController', ['$scope','ajax', function($scope,serverCom
           $scope.markers["m"+i] = {
             lat: $scope.results[i].Site.lat,
             lng: $scope.results[i].Site.lon,
-            message: getHTML($scope.results[i].URL)
+            message: getHTML($scope.results[i]),
+            icon:{
+              iconUrl: '../animalIcons/'+$scope.results[i].Classification[0].species+'.png',
+              shadowUrl: '../animalIcons/shadow.png',
+              iconSize:     [30, 30],
+              shadowSize:   [30, 30],
+              iconAnchor:   [15, 5],
+              shadowAnchor: [10, 0]
+            }
           }
 
         }
@@ -68,8 +78,34 @@ userApp.controller('MainController', ['$scope','ajax', function($scope,serverCom
             zoom: 7
         },
         markers:{},
-        tiles: {
-            url: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+        layers:{
+        baselayers: {
+                satellite: {
+                  name: "Satellite",
+                  type: "xyz",
+                  url: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                },
+                osm: {
+                    name: 'OpenStreetMap',
+                    url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    type: 'xyz'
+                },
+                googleTerrain: {
+                    name: 'Google Terrain',
+                    layerType: 'TERRAIN',
+                    type: 'google'
+                },
+                googleHybrid: {
+                    name: 'Google Hybrid',
+                    layerType: 'HYBRID',
+                    type: 'google'
+                },
+                googleRoadmap: {
+                    name: 'Google Streets',
+                    layerType: 'ROADMAP',
+                    type: 'google'
+                }
+            }
         },
         defaults: {
             scrollWheelZoom: true
