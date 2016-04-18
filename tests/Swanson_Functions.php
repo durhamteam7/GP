@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Spreadsheet/Excel/Writer/Worksheet.php'; // This needs to be changed to the correct spreadsheet that we need.
-
-// There may be some problems with the functions which simply "echo" not "return" however if this is the case, it is easily rectified.
-
 # Returns a dictionary giving the vote tallies for a subject
 # Input: a list of classifications lines, each of which is a list
 # Output: a dictionary with species as the key and the number of votes
