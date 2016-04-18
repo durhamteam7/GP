@@ -16,11 +16,18 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
 		<script src="https://cdn.rawgit.com/diosney/angular-bootstrap-datetimepicker-directive/master/angular-bootstrap-datetimepicker-directive.js"></script>
+
+      
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+
+  <script src="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+  <script src="//tombatossals.github.io/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+
+
+
 		<script src="app.js"></script>
 
 
-		<link rel="stylesheet" href="malhar-angular-dashboard.css">
-		<script src="malhar-angular-dashboard.js"></script>
 
 
 		<style>
@@ -32,6 +39,10 @@
 			-ms-user-select: none;       /* IE/Edge */
 		user-select: none;           /* non-prefixed version, currently
 		not supported by any browser */
+		}
+		#map{ height: 100%; width: 100%; }
+		.navbar{
+			margin:0;
 		}
 		</style>
 		<link rel="stylesheet" href="loader.css">
@@ -46,15 +57,34 @@
 		</div>
 
 
-		<div class="container">
-			<div class="page-header">
-				<h1>Welcome to the MammalWeb User Dashboard</h1>
-			</div>
+		<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">MammalWeb</a>
+    </div>
 
-			<div dashboard="dashboardOptions">
-				<p>Hello</p>
-			</div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Map <span class="sr-only">(current)</span></a></li>
+        <li><a href="#">Slideshow</a></li>
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-filter"></span></a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 
-    	</div>
+				<leaflet id="map" tiles="tiles" markers="markers" defaults="defaults" center="center"></leaflet>
+
 	</body>
 </html>
