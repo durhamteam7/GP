@@ -42,8 +42,8 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	
 
 	$scope.rowsShown = function() {
-		if (($scope.currentPage * $scope.pageSize) + $scope.pageSize < $scope.numResults) {
-			return Number(($scope.currentPage * $scope.pageSize) + $scope.pageSize);
+		if ((($scope.currentPage-1) * $scope.pageSize) + $scope.pageSize < $scope.numResults) {
+			return Number((($scope.currentPage-1) * $scope.pageSize) + $scope.pageSize);
 		} else {
 			return $scope.numResults;
 		}
@@ -57,7 +57,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 			$scope.currentPage = page
 		}
 		serverComm.getPhotos($scope.filters,$scope.currentPage,$scope.pageSize).success(function(data) {
-				//console.log("Data:",data);
+				console.log("Data:",data);
 				$scope.results = data.rows;
 				$scope.numResults = data.count;
 				for (var i = 0; i < $scope.results.length; i++) {
