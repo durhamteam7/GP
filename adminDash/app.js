@@ -248,18 +248,6 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 
 }]);
 
-adminApp.controller('FilterController', ['$scope', function($scope) {
-}]);
-
-
-adminApp.controller('SearchResultsController', ['$scope', function($scope) {
-	$scope.var1 = "in search results";
-}]);
-
-adminApp.controller('SummaryController', ['$scope', function($scope) {
-	$scope.var1 = "in search results";
-}]);
-
 adminApp.controller('GraphsController', ['$scope', function($scope) {
 	$scope.var1 = "in search results";
 

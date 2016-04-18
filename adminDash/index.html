@@ -55,7 +55,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-3" id="leftCol">
-					<div class="well" id="filters" ng-controller="FilterController">
+					<div class="well" id="filters">
 						<h1 class="h4">Filters</h1>
 						    
 
@@ -85,12 +85,13 @@
 								<span ng-if="filterData.type=='boolean'">
 									<div class="checkbox">
 										<label>
-											<input type="checkbox" checklist-model="filterData.value" checklist-value="true" ng-click="getResults();(filterData.value.length==2?filterData.value=[true]:1)"> Yes
+											<input type="checkbox" checklist-model="filterData.value" checklist-value="true" ng-click="getResults();((filterData.value.length==1)?(filterData.value=[true]):1)"> Yes
 										</label>
+
 									</div>
 									<div class="checkbox">
 										<label>
-											<input type="checkbox" checklist-model="filterData.value" checklist-value="false" ng-click="getResults();(filterData.value.length==2?filterData.value=[false]:1)"> No
+											<input type="checkbox" checklist-model="filterData.value" checklist-value="false" ng-click="getResults();((filterData.value.length==1)?(filterData.value=[false]):1)"> No
 										</label>
 									</div>
 								</span>
@@ -165,7 +166,7 @@
 						</form>
 					</div>
 				</div>
-				<div class="col-md-6" ng-controller="SearchResultsController">
+				<div class="col-md-6">
 					<h2 id="sec0">Search Results</h2>
 					<h5>
 					<span ng-repeat="filterCat in filters">
@@ -250,7 +251,7 @@
             <p>Showing {{numResults == 0 ? 0 : (currentPage * pageSize) + 1}} to {{rowsShown()}} of {{numResults}} entries</p>
         </div>
         <div class="row">	
-            <div paging page="currentPage" page-size="pageSize" total="10000" paging-action="getResults(page)" hide-if-empty="true" show-prev-next="true" show-first-last="true"></div> 
+            <div paging page="currentPage" page-size="pageSize" total="numResults" paging-action="getResults(page)" hide-if-empty="true" show-prev-next="true" show-first-last="true"></div> 
    		 </div>
 					
 					
