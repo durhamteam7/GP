@@ -97,40 +97,50 @@ function main($data, $mysqli) {
 	        
 	    }
 
-	    # Finally, we loop through the array of all image's values and classify the photos all at once, row-by-row.
+		# Finally, we loop through the array of all image's values and classify the photos all at once, row-by-row.
 	    # For now, we only classify a photo if it has been retired.
 	        # The consequence is that we do not store evenness values etc.
 	        # for photos which have yet to be retired (decided).
+	    $updateClassifications = "INSERT INTO Classification " .
+	                            "(photo_id, number_of_classifications, species, gender, age, number, evenness, fraction_support, fraction_blanks, timestamp) " . 
+	                            "VALUES ";
+		$numItems = count($all_outputs);
+		$i = 0;
 	    foreach ($all_outputs as $output) 
 	    {
 
 	        if ($output["retired"]) 
 	        {
-	            $updateQuery = "INSERT INTO Classification " .
-	                            "(photo_id, number_of_classifications, species, gender, age, number, evenness, fraction_support, fraction_blanks, timestamp) " .
-	                            "VALUES ('$photo_id', '$number_of_classifications', '$species', '$gender', '$age', '$number', '$evenness', '$fraction_support', '$fraction_blanks', now());";
-	            if ($mysqli->query($updateQuery) === TRUE) {
-	                echo "Record updated successfully";
-	            } else {
-	                echo "Error updating record: " . $mysqli->error;
-	            }
-	        }
+	        	$Cphoto_id = $output["photo_id"];
+	        	$Cnumber_of_classifications = $output["number_of_classifications"];
+	        	$Cspecies = $output["species"];
+	        	$Cgender = $output["gender"];
+	        	$Cage = $output["age"];
+	        	$Cnumber = $output["number"];
+	        	$Cevenness = $output["evenness"];
+	        	$Cfraction_support = $output["fraction_support"];
+	        	$Cfraction_blanks = $output["fraction_blanks"];
 
+	        	if(++$i === $numItems) { # if last row
+					$updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now());";
+				} else {
+					$updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now()), ";
+				}
+	        }
 	    }
 
-	    /*
-		INSERT INTO mytable (id, a, b, c)
-		VALUES (1, 'a1', 'b1', 'c1'),
-		(2, 'a2', 'b2', 'c2'),
-		(3, 'a3', 'b3', 'c3'),
-		(4, 'a4', 'b4', 'c4'),
-		(5, 'a5', 'b5', 'c5'),
-		(6, 'a6', 'b6', 'c6')
-		ON DUPLICATE KEY UPDATE id=VALUES(id),
-		a=VALUES(a),
-		b=VALUES(b),
-		c=VALUES(c);
-	    */
+	    #echo "Insert query\n";
+	    #echo $updateClassifications;
+	    #echo "\n";
+
+	    if ($mysqli->query($updateClassifications) === TRUE)
+	    {
+	        echo "Record updated successfully\n";
+	    } 
+	    else 
+	    {
+	        echo "Error updating record: " . $mysqli->error . "\n";
+	    }
 	}
 
 
