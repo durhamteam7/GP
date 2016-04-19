@@ -1,0 +1,121 @@
+<!DOCTYPE <html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpzag5AVnm8nqYpPnO_7kku6siPeNxLO0"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/locale/en-gb.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+	<!-- Angular Directives -->
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.13.1/TweenMax.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-animate.min.js"></script>
+    <script src="http://code.createjs.com/preloadjs-0.4.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
+	<script src="https://cdn.upress.co.il/ajax/libs/angularjs-slider/2.9.0/rzslider.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/2.10.2/rzslider.min.css"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.js"></script>
+	<script src="http://bouil.github.io/angular-google-chart/ng-google-chart.js"></script>
+	<script src="checklistModel.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
+	<script src="https://cdn.rawgit.com/diosney/angular-bootstrap-datetimepicker-directive/master/angular-bootstrap-datetimepicker-directive.js"></script>
+	<script src="https://cdn.rawgit.com/dpiccone/ng-pageslide/master/dist/angular-pageslide-directive.min.js"></script>
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+  	<script src="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+	<script src="https://cdn.rawgit.com/shramov/leaflet-plugins/master/layer/tile/Google.js"></script>
+  	<script src="//tombatossals.github.io/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+
+
+	<!--Bootstrap -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+	<script src="app.js"></script>
+	<!--<script src="slideshowController.js"></script>-->
+
+	<style>
+		body {
+			-webkit-touch-callout: none; /* iOS Safari */
+			-webkit-user-select: none;   /* Chrome/Safari/Opera */
+			-khtml-user-select: none;    /* Konqueror */
+			-moz-user-select: none;      /* Firefox */
+			-ms-user-select: none;       /* IE/Edge */
+		user-select: none;           /* non-prefixed version, currently
+		not supported by any browser */
+		}
+		#map{height: calc(100% - 52px); width: 100%; }
+		.navbar{
+			margin:0;
+		}
+		body{background-color:black;}
+		.ng-pageslide {
+                background: #101010;
+                top:52px !important;
+                position:absolute !important;
+                height: calc(100% - 52px) !important;
+            }
+             html {
+                overflow-x: hidden;
+            }
+        .fullBg {
+		    position: absolute;
+		    top: 52;
+		    left: 0;
+		}
+
+		#infoBox{
+		    position: absolute;
+		    bottom: 20px;
+		    right: 20px;
+		    opacity: 0.7;
+		}
+		.fullBg{
+			width:100%;
+			height: 100%;
+		}
+		</style>
+		<link rel="stylesheet" href="loader.css">
+
+</head>
+
+<body ng-app="userDash" ng-controller="dataController">
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">MammalWeb</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav" bs-active-link>
+        <li ><a ui-sref="map">Map <span class="sr-only">(current)</span></a></li>
+        <li><a ui-sref="slideshow">Slideshow</a></li>
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" ng-click="toggle()"><span class="glyphicon glyphicon-filter"></span></a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+		<div id="loader">
+			<div>
+				<div class="spinner"></div>
+				<p>Loading...</p>
+			</div>
+		</div><applet></applet>
+
+
+	<div ui-view></div>
+</body>
+</html>
