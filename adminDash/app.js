@@ -240,6 +240,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
     }
 
     $scope.$watch('filters', function(newVal, oldVal){
+    	$scope.currentPage = 1;
     	$scope.getResults();
 	}, true);
 	$scope.$watch('isSequence', function(newVal, oldVal){
