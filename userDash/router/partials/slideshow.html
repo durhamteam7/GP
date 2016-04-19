@@ -2,21 +2,20 @@
     <!--<div class="col-xs-12" ng-if="progress !== 100">
         <progressbar class="progress-striped" value="progress">{{progress | number:0}}%</progressbar>
     </div>-->
-    <div ng-show="loaded" ng-repeat="slide in results track by $index"
-         ng-if="isCurrentSlideIndex($index)">
-    <img ng-src="{{slide.URL}}" class="fullBg {{currentAnimation}}">
+    <!--<div class="well" id="infoBox">
+        {{slide.Classification[0].gender}} {{slide.Classification[0].age}} {{slide.Classification[0].species}} at
+        {{slide.Site.site_name}} </br>
+        taken on {{slide.taken}}
+    </div>-->
+    <img ng-show="loaded" ng-repeat="slide in results track by $index"
+         ng-if="isCurrentSlideIndex($index)" ng-src="{{slide.URL}}" class="fullBg {{currentAnimation}}">
 
-<div class="well" id="infoBox">
+    <div class="well" id="infoBox" ng-show="loaded" ng-repeat="slide in results track by $index"
+         ng-if="isCurrentSlideIndex($index)">
         {{slide.Classification[0].gender}} {{slide.Classification[0].age}} {{slide.Classification[0].species}} at
         {{slide.Site.site_name}} </br>
         taken on {{slide.taken}}
     </div>
 
-</div>
-    <ul ng-show="loaded" class="nav nav-pills">
-        <li ng-class="{'active':isCurrentAnimation('slide-left-animation')}"><a ng-click="setCurrentAnimation('slide-left-animation')">LEFT</a></li>
-        <li ng-class="{'active':isCurrentAnimation('slide-down-animation')}"><a ng-click="setCurrentAnimation('slide-down-animation')">DOWN</a></li>
-        <li ng-class="{'active':isCurrentAnimation('fade-in-animation')}"><a ng-click="setCurrentAnimation('fade-in-animation')">FADE</a></li>
-    </ul>
 
     

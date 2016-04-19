@@ -145,7 +145,7 @@ var slideshowController = function ($scope, $timeout, QueueService) {
     $scope.progress = 0;
     $scope.loaded = true;
     $scope.currentIndex = 0;
-    $scope.currentAnimation = 'slide-left-animation';
+    $scope.currentAnimation = 'fade-in-animation';
 
     $scope.setCurrentSlideIndex = setCurrentSlideIndex;
     $scope.isCurrentSlideIndex = isCurrentSlideIndex;
