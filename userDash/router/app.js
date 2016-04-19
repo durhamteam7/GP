@@ -22,16 +22,16 @@ userApp.config(function($stateProvider, $urlRouterProvider) {
 });
 
 //map route controller
-var mapController = function($scope) {
+var mapController = function($scope,$filter) {
 
         var getHTML = function(item){
 		    console.log(item)
 		   	var html = '<div>'
 		   	var url = item.URL;
 		    html += '<a href="'+url+'" target="_blank"><img width=200 src="'+url+'"></a></div>';
-		    html += '<b>'+item.upload_filename+'</b><br>';
+		    html += '<b>'+$scope.getOptionName(item.Classification[0].species)+'</b><br>';
 		    html += item.Site.site_name+'<br>';
-		    html += item.taken+'';
+		    html += $filter('date')(item.taken,'dd/MM/yyyy HH:mm')+'';
 		    return html;
 		}
 
