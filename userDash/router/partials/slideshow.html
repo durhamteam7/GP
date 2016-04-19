@@ -1,11 +1,11 @@
+    
     <img ng-show="loaded" ng-repeat="slide in results track by $index"
          ng-if="isCurrentSlideIndex($index)" ng-src="{{slide.URL}}" class="fullBg {{currentAnimation}}">
 
     <div class="well" id="infoBox" ng-show="loaded" ng-repeat="slide in results track by $index"
          ng-if="isCurrentSlideIndex($index)">
-        {{slide.Classification[0].gender}} {{slide.Classification[0].age}} {{slide.Classification[0].species}} at
-        {{slide.Site.site_name}} </br>
-        taken on {{slide.taken| date:'dd/MM/yyyy'}}
+        {{getOptionName(slide.Classification[0].species)}}</br>
+        taken on {{slide.taken| date:'dd/MM/yyyy hh:mm'}}
     </div>
 
 

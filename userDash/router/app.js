@@ -253,7 +253,51 @@ userApp.controller('dataController',['$scope', 'ajax', function($scope,serverCom
     });
   };
 
+  $scope.getOptions = function(){
+        //console.log("get options");
+        $("#loader").fadeTo("fast", 0.7);
+        serverComm.getOptions().success(function(data) {
+                console.log(data);
+                $scope.options = {};
+                for (var i = 0; i < data.length; i++) {
+                    //console.log(data[i]["struc"])
+                    if (!$scope.options.hasOwnProperty(data[i]["struc"]) ){
+                        $scope.options[data[i]["struc"]] = {}
+                    }
+                    //Check for and remove "Unknown"
+                    //if (!(data[i]["option_name"] === "Unknown")){
+                        $scope.options[data[i]["struc"]][data[i]["option_id"]] = data[i]["option_name"];
+                    //}*/ //Removed as breaks things
+                }
+                //console.log($scope.options)
+                
+        });
+    };
+
+    $scope.getOptionName = function(optionNum){
+        //Function to convert an option into human readable string
+        for (key in $scope.options){
+            if($scope.options[key].hasOwnProperty(optionNum)){
+                return $scope.options[key][optionNum]
+            }
+        }
+        return "";
+    }
+    
+     $scope.readable = function(string) {
+        if (typeof string === "undefined")
+        {
+            return "";
+        }
+        string = string.replace(/_id/,"");
+        string = string.replace(/_/g, " ");
+        string = string.replace(/([A-Z])/g, ' $1');
+        string = string.replace(/^./, function(str){ return str.toUpperCase(); });
+        return string
+    }
+
   $scope.getResults();
+  $scope.getOptions();
 }]);
 
 
