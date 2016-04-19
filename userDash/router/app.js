@@ -23,7 +23,6 @@ userApp.config(function($stateProvider, $urlRouterProvider) {
 
 //map route controller
 var mapController = function($scope) {
-        $scope.things = "mapThings";
 
         var getHTML = function(item){
 		    console.log(item)
@@ -48,8 +47,8 @@ var mapController = function($scope) {
 		            lng: $scope.results[i].Site.lon,
 		            message: getHTML($scope.results[i]),
 		            icon:{
-		              iconUrl: '../animalIcons/'+$scope.results[i].Classification[0].species+'.png',
-		              shadowUrl: '../animalIcons/shadow.png',
+		              iconUrl: '../../animalIcons/'+$scope.results[i].Classification[0].species+'.png',
+		              shadowUrl: '../../animalIcons/shadow.png',
 		              iconSize:     [30, 30],
 		              shadowSize:   [30, 30],
 		              iconAnchor:   [15, 5],
@@ -130,6 +129,7 @@ var slideshowController = function ($scope, $timeout, QueueService) {
     }
 
     function loadSlides() {
+        QueueService.loadManifest($scope.results);
     }
 
     $scope.$on('queueProgress', function(event, queueProgress) {
@@ -156,6 +156,26 @@ var slideshowController = function ($scope, $timeout, QueueService) {
 };
 
 userApp.factory('QueueService', function($rootScope){
+    var queue = new createjs.LoadQueue(true);
+
+    function loadManifest(manifest) {
+        queue.loadManifest(manifest);
+
+        queue.on('progress', function(event) {
+            $rootScope.$broadcast('queueProgress', event);
+        });
+
+        queue.on('complete', function() {
+            $rootScope.$broadcast('queueComplete', manifest);
+        });
+    }
+
+    return {
+        loadManifest: loadManifest
+    }
+})
+
+app.factory('QueueService', function($rootScope){
     var queue = new createjs.LoadQueue(true);
 
     function loadManifest(manifest) {
@@ -232,6 +252,7 @@ userApp.factory('ajax', ['$http', function($http) {
 
 //data controller
 userApp.controller('dataController',['$scope', 'ajax', function($scope,serverComm) {
+    $scope.checked = false;
         $scope.results = "data";
           $scope.getResults = function(){
     $("#loader").fadeTo("fast", 0.7);
