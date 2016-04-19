@@ -19,8 +19,9 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
 		<script src="https://cdn.rawgit.com/diosney/angular-bootstrap-datetimepicker-directive/master/angular-bootstrap-datetimepicker-directive.js"></script>
-
+		<script src="https://cdn.rawgit.com/dpiccone/ng-pageslide/master/dist/angular-pageslide-directive.min.js"></script>
       
+
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
   <script src="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script src="https://cdn.rawgit.com/shramov/leaflet-plugins/master/layer/tile/Google.js"></script>
@@ -40,10 +41,20 @@
 		user-select: none;           /* non-prefixed version, currently
 		not supported by any browser */
 		}
-		#map{ height: 100%; width: 100%; }
+		#map{height: calc(100% - 52px); width: 100%; }
 		.navbar{
 			margin:0;
 		}
+		body{background-color:black;}
+		.ng-pageslide {
+                background: #101010;
+                top:52px !important;
+                position:absolute !important;
+                height: calc(100% - 52px) !important;
+            }
+             html {
+                overflow-x: hidden;
+            }
 		</style>
 		<link rel="stylesheet" href="loader.css">
 		
@@ -78,11 +89,18 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-filter"></span></a></li>
+        <li><a href="#" ng-click="toggle()"><span class="glyphicon glyphicon-filter"></span></a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+
+ <div pageslide ps-open="checked">
+<div style="padding:20px" id="demo-right">
+                        <h2>Filters</h2>
+                    </div>
+ </div>
+
 
 				<leaflet id="map" tiles="tiles" markers="markers" defaults="defaults" center="center" layers="layers"></leaflet>
 

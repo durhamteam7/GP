@@ -1,4 +1,4 @@
-var userApp = angular.module('userDash', ['rzModule', 'ui.bootstrap',"checklist-model",'datetimepicker','leaflet-directive']);
+var userApp = angular.module('userDash', ['rzModule', 'ui.bootstrap',"checklist-model",'datetimepicker','leaflet-directive','pageslide-directive']);
 
 var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 
@@ -10,11 +10,11 @@ userApp.factory('ajax', ['$http', function($http) {
     	//$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
         // Delete the Requested With Header
         //delete $http.defaults.headers.common['X-Requested-With'];
-      return $http.post(urls[1]+'photo?pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
+      return $http.post(urls[0]+'photo?pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
       });
     },
      getOptions: function() {
-      return $http.get(urls[1]+'options').success(function() {
+      return $http.get(urls[0]+'options').success(function() {
       });
     }
   };
@@ -26,7 +26,14 @@ userApp.controller('MainController', ['$scope','ajax', function($scope,serverCom
 	//$("#loader").fadeTo("fast", 0.7);
   // make map
 
+
+   $scope.checked = false; // This will be binded using the ps-open attribute
+  $scope.toggle = function(){
+      $scope.checked = !$scope.checked
+  }
+
   var getHTML = function(item){
+    console.log(item)
     var html = '<div>'
     var url = "http://www.mammalweb.org/biodivimages/"+item.URL;
     html += '<a href="'+url+'" target="_blank"><img width=200 src="'+url+'"></a></div>';
@@ -38,7 +45,7 @@ userApp.controller('MainController', ['$scope','ajax', function($scope,serverCom
 
   $scope.getResults = function(){
     $("#loader").fadeTo("fast", 0.7);
-    serverComm.getPhotos({},1,100).success(function(data) {
+    serverComm.getPhotos({},1,1000).success(function(data) {
         console.log("Data:",data);
         $scope.results = data.rows;
         $scope.numResults = data.count;
@@ -48,6 +55,7 @@ userApp.controller('MainController', ['$scope','ajax', function($scope,serverCom
           var parts = result.dirname.split("/");
           $scope.results[i].URL = parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.filename;
 
+          if ($scope.results[i].Site != null){
           $scope.markers["m"+i] = {
             lat: $scope.results[i].Site.lat,
             lng: $scope.results[i].Site.lon,
@@ -61,6 +69,7 @@ userApp.controller('MainController', ['$scope','ajax', function($scope,serverCom
               shadowAnchor: [10, 0]
             }
           }
+        }
 
         }
 
@@ -120,3 +129,4 @@ userApp.controller('MainController', ['$scope','ajax', function($scope,serverCom
 
 
 }]);
+
