@@ -62,9 +62,9 @@ var mapController = function($scope,$filter) {
 
   angular.extend($scope, {
         center: {
-            lat: 55,
-            lng: 0,
-            zoom: 7
+            lat: 54.7,
+            lng: -1.4,
+            zoom: 9
         },
         markers:{},
         layers:{
@@ -105,7 +105,7 @@ var mapController = function($scope,$filter) {
 
 
 var slideshowController = function ($scope, $timeout, QueueService) {
-    var INTERVAL = 15000;
+    var INTERVAL = 10000;
 
     function setCurrentSlideIndex(index) {
         $scope.currentIndex = index;
@@ -194,7 +194,7 @@ userApp.animation('.fade-in-animation', function ($window) {
 userApp.factory('ajax', ['$http', function($http) {
 	return {
     getPhotos: function(query,pageNum,pageSize) {
-      return $http.post(urls[0]+'photo?pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
+      return $http.post(urls[0]+'photo?sequence=true&pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
       });
     },
      getOptions: function() {
@@ -206,12 +206,12 @@ userApp.factory('ajax', ['$http', function($http) {
 }]);
 
 //data controller
-userApp.controller('dataController',['$scope', 'ajax', function($scope,serverComm) {
+userApp.controller('dataController',['$scope','$location', 'ajax', function($scope, $location,serverComm) {
     $scope.checked = false;
         $scope.results = "data";
           $scope.getResults = function(){
     $("#loader").fadeTo("fast", 0.7);
-    serverComm.getPhotos({},1,100).success(function(data) {
+    serverComm.getPhotos({},1,50000).success(function(data) {
         console.log("Data:",data);
         $scope.results = data.rows;
         $scope.numResults = data.count;
@@ -271,31 +271,11 @@ userApp.controller('dataController',['$scope', 'ajax', function($scope,serverCom
         return string
     }
 
+    $scope.isActive = function (viewLocation) { 
+        return viewLocation === $location.path();
+    };
+
   $scope.getResults();
   $scope.getOptions();
 }]);
 
-
-
-userApp.directive('bsActiveLink', ['$location', function ($location) {
-return {
-    restrict: 'A', //use as attribute 
-    replace: false,
-    link: function (scope, elem) {
-        //after the route has changed
-        scope.$on("$routeChangeSuccess", function () {
-            var hrefs = ['/#' + $location.path(),
-                         '#' + $location.path(), //html5: false
-                         $location.path()]; //html5: true
-            angular.forEach(elem.find('a'), function (a) {
-                a = angular.element(a);
-                if (-1 !== hrefs.indexOf(a.attr('href'))) {
-                    a.parent().addClass('active');
-                } else {
-                    a.parent().removeClass('active');   
-                };
-            });     
-        });
-    }
-}
-}])
