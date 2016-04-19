@@ -105,7 +105,7 @@ var mapController = function($scope,$filter) {
 
 
 var slideshowController = function ($scope, $timeout, QueueService) {
-    var INTERVAL = 5000;
+    var INTERVAL = 15000;
 
     function setCurrentSlideIndex(index) {
         $scope.currentIndex = index;
@@ -175,35 +175,10 @@ userApp.factory('QueueService', function($rootScope){
     }
 })
 
-
-userApp.animation('.slide-left-animation', function ($window) {
-    return {
-        enter: function (element, done) {
-            TweenMax.fromTo(element, 1, { left: $window.innerWidth}, {left: 0, onComplete: done});
-        },
-
-        leave: function (element, done) {
-            TweenMax.to(element, 1, {left: -$window.innerWidth, onComplete: done});
-        }
-    };
-});
-
-userApp.animation('.slide-down-animation', function ($window) {
-    return {
-        enter: function (element, done) {
-            TweenMax.fromTo(element, 1, { top: -$window.innerHeight}, {top: 0, onComplete: done});
-        },
-
-        leave: function (element, done) {
-            TweenMax.to(element, 1, {top: $window.innerHeight, onComplete: done});
-        }
-    };
-});
-
 userApp.animation('.fade-in-animation', function ($window) {
     return {
         enter: function (element, done) {
-            TweenMax.fromTo(element, 1, { opacity: 0}, {opacity: 1, onComplete: done});
+            TweenMax.fromTo(element, 1, { opacity: 0}, {opacity: 1, onComplete: done,delay:1});
         },
 
         leave: function (element, done) {
@@ -219,11 +194,11 @@ userApp.animation('.fade-in-animation', function ($window) {
 userApp.factory('ajax', ['$http', function($http) {
 	return {
     getPhotos: function(query,pageNum,pageSize) {
-      return $http.post(urls[1]+'photo?pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
+      return $http.post(urls[0]+'photo?pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
       });
     },
      getOptions: function() {
-      return $http.get(urls[1]+'options').success(function() {
+      return $http.get(urls[0]+'options').success(function() {
       });
     }
   };
