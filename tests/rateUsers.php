@@ -55,7 +55,7 @@ while (count($all_data) > 0) {
     echo "$person_id has $species_rate, $gender_rate, $age_rate, $number_rate";
     echo "\n";
 
-    #output
+    #Output -- Needs to be made more efficient using the same method as in the Algorithm.PHP file.
     $updatePersonStats = "INSERT INTO PersonStats (person_id, species_rate, gender_rate, age_rate, number_rate) " .
     "VALUES ('$person_id', '$species_rate', '$gender_rate', '$age_rate', '$number_rate');";
 
