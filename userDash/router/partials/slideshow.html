@@ -14,7 +14,7 @@
          ng-if="isCurrentSlideIndex($index)">
         {{slide.Classification[0].gender}} {{slide.Classification[0].age}} {{slide.Classification[0].species}} at
         {{slide.Site.site_name}} </br>
-        taken on {{slide.taken}}
+        taken on {{slide.taken| date:'dd/MM/yyyy'}}
     </div>
 
 
