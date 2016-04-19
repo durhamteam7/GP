@@ -8,15 +8,15 @@ var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 // Ajax Service
 adminApp.factory('ajax', ['$http', function($http) {
 	return {
-    getPhotos: function(query,pageNum,pageSize) {
+    getPhotos: function(query,pageNum,pageSize,isSequence) {
     	//$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
         // Delete the Requested With Header
         //delete $http.defaults.headers.common['X-Requested-With'];
-      return $http.post(urls[0]+'photo?pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
+      return $http.post(urls[0]+'photo?pageNum='+pageNum+'&pageSize='+pageSize+'&sequence='+isSequence,query).success(function() {
       });
     },
-    getPhotosCSV: function(query){
-    	return $http.post(urls[0]+'photo?output=csv',query).success(function() {
+    getPhotosCSV: function(query,isSequence){
+    	return $http.post(urls[0]+'photo?output=csv&sequence='+isSequence,query).success(function() {
       });
     },
      getOptions: function() {
@@ -56,7 +56,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		if (page){
 			$scope.currentPage = page
 		}
-		serverComm.getPhotos($scope.filters,$scope.currentPage,$scope.pageSize).success(function(data) {
+		serverComm.getPhotos($scope.filters,$scope.currentPage,$scope.pageSize,$scope.isSequence).success(function(data) {
 				console.log("Data:",data);
 				$scope.results = data.rows;
 				$scope.numResults = data.count;
@@ -77,7 +77,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	
 	$scope.downloadCSV = function(){
 		$("#loader").fadeTo("fast", 0.7);
-		serverComm.getPhotosCSV($scope.filters).success(function(data) {
+		serverComm.getPhotosCSV($scope.filters,$scope.isSequence).success(function(data) {
 				console.log("Data:",data);
 				$("#loader").fadeOut("slow");
 				//console.log(data)
@@ -240,6 +240,9 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
     }
 
     $scope.$watch('filters', function(newVal, oldVal){
+    	$scope.getResults();
+	}, true);
+	$scope.$watch('isSequence', function(newVal, oldVal){
     	$scope.getResults();
 	}, true);
 
