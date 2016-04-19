@@ -4,7 +4,7 @@
     <div class="well" id="infoBox" ng-show="loaded" ng-repeat="slide in results track by $index"
          ng-if="isCurrentSlideIndex($index)">
         <b>{{getOptionName(slide.Classification[0].species)}}</b> in {{slide.Site.site_name}}</br>
-        taken on {{slide.taken| date:'dd/MM/yyyy HH:mm'}}
+        taken on {{slide.taken | date:'dd/MM/yyyy HH:mm'}}
     </div>
 </div>
 
