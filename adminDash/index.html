@@ -68,10 +68,13 @@
 			<div class="row">
 				<div class="col-md-3" id="leftCol">
 					<div class="well" id="filters">
-						<h1 class="h4">Filters</h1>
-						    
+						    <div class="row">
+						    	<div class='col-md-2'></div>
+						    	<div class='col-md-34'>
 							    <toggle-switch class="switch-default" on-label='Sequence' off-label='Picture' ng-model="isSequence"></toggle-switch>
-						<br><br>
+								</div>
+							</div>
+						<br>
 
 						<form>
 							<span ng-repeat="filterCat in filters">
