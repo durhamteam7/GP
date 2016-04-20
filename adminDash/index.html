@@ -78,9 +78,9 @@
 
 						<form>
 							<span ng-repeat="filterCat in filters">
-							<span ng-repeat="(filterName,filterData) in filterCat">
+							<span ng-repeat="filterData in filterCat | orderObjectBy | orderBy: 'order'">
 								
-								<b>{{readable(filterName)}}</b><br>
+								<b>{{readable(filterData.id)}}</b><br>
 
 								<span ng-if="filterData.type=='checkboxes'">
 									<div class="checkbox" ng-repeat="(id,name) in options[filterData.struc] | objectLimitTo:(!filterData.open?5:(options[filterData.struc] | keylength))">

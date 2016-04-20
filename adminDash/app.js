@@ -28,6 +28,22 @@ adminApp.factory('ajax', ['$http', function($http) {
 
 }]);
 
+adminApp.filter('orderObjectBy', function() {
+  return function(items, field, reverse) {
+    var filtered = [];
+    angular.forEach(items, function(item,key) {
+      item['id']=key;
+      filtered.push(item);
+    });
+    filtered.sort(function (a, b) {
+      return (a[field] > b[field] ? 1 : -1);
+    });
+    if(reverse) filtered.reverse();
+    return filtered;
+  };
+});
+
+
 adminApp.controller('MainController', ['$scope','ajax', function($scope,serverComm) {
 	$scope.results = []; //contains the results from the server
 	$scope.options = {};
