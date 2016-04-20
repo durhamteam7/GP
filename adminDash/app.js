@@ -125,6 +125,16 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		});
 	};
 
+	$scope.getOptionName = function(optionNum){
+        //Function to convert an option into human readable string
+        for (key in $scope.options){
+            if($scope.options[key].hasOwnProperty(optionNum)){
+                return $scope.options[key][optionNum]
+            }
+        }
+        return "";
+    }
+
 	$scope.getFilters = function(){
 		serverComm.getFilters().success(function(data) {
 			console.log("FITLERS",data)
