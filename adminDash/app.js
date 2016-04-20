@@ -244,6 +244,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
     	$scope.getResults();
 	}, true);
 	$scope.$watch('isSequence', function(newVal, oldVal){
+		$scope.currentPage = 1;
     	$scope.getResults();
 	}, true);
 
