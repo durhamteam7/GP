@@ -241,10 +241,13 @@
 							</div>
 							<div class="col-sm-8">
 								<div class="row">
-									<div class="col-sm-5"><b>{{ result.upload_filename | limitTo: 20 | newlines }}{{result.upload_filename > 20 ? '...' : ''}}
+									<div class="col-sm-5"><b>{{(isSequence?result.sequence_id:((result.upload_filename | limitTo: 15 | newlines) ))}}
+
+										{{(result.upload_filename.length > 15 && !isSequence)?'...' : '' }}
+
 </b></div>
 								</div>
-								<div class="row">
+								<div class="row" ng-if="!isSequence">
 									<div class="col-sm-3">Sequence:</div>
 									<div class="col-sm-8">{{result.sequence_id}}</div>
 								</div>
