@@ -43,8 +43,8 @@ var mapController = function($scope,$filter) {
         	{
 				if ($scope.results[i].Site != null){
 		        	$scope.markers["m"+i] = {
-		            lat: $scope.results[i].Site.lat,
-		            lng: $scope.results[i].Site.lon,
+		            lat: $scope.results[i].Site.lat+(0.5-Math.random())*0.001,
+		            lng: $scope.results[i].Site.lon+(0.5-Math.random())*0.001,
 		            message: getHTML($scope.results[i]),
 		            icon:{
 		              iconUrl: '../../animalIcons/'+$scope.results[i].Classification[0].species+'.png',
@@ -211,7 +211,7 @@ userApp.controller('dataController',['$scope','$location', 'ajax', function($sco
         $scope.results = "data";
           $scope.getResults = function(){
     $("#loader").fadeTo("fast", 0.7);
-    serverComm.getPhotos({},1,50000).success(function(data) {
+    serverComm.getPhotos({},1,5000).success(function(data) {
         console.log("Data:",data);
         $scope.results = data.rows;
         $scope.numResults = data.count;
