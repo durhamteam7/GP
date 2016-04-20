@@ -71,26 +71,33 @@
 						    <div class="row">
 						    	<div class='col-md-2'></div>
 						    	<div class='col-md-34'>
-							    <toggle-switch class="switch-default" on-label='Sequence' off-label='Picture' ng-model="isSequence"></toggle-switch>
+							    <toggle-switch class="switch-default" on-label='Sequence' off-label='Image' ng-model="isSequence"></toggle-switch>
 								</div>
 							</div>
 						<br>
 
 						<form>
 							<span ng-repeat="filterCat in filters">
-							<span ng-repeat="(filterName,filterData) in filterCat">
+							<span ng-repeat="filterData in filterCat | orderObjectBy | orderBy: 'order'">
 								
-								<b>{{readable(filterName)}}</b><br>
+								<h4>{{readable(filterData.id)}}</h4>
 
 								<span ng-if="filterData.type=='checkboxes'">
-									<div class="checkbox" ng-repeat="(id,name) in options[filterData.struc] | objectLimitTo:(!filterData.open?5:(options[filterData.struc] | keylength))">
-										<label>
-											<input type="checkbox" checklist-model="filterData.value" checklist-value="id" ng-click="getResults()"> {{name}}
-										</label>
+									<div ng-repeat="s in filterData.struc">
+										<span ng-if="filterData.struc.length > 1">
+											<b>{{readable(s)}}</b>
+										</span>
+										<div class="checkbox" ng-repeat="(id,name) in options[s] | objectLimitTo:(!filterData.open[s]?3:(options[s] | keylength))">
+											<label>
+												<input type="checkbox" checklist-model="filterData.value" checklist-value="id" ng-click="getResults()"> {{name}}
+											</label>
+
+										</div>
+											<span ng-if="(options[s] | keylength)> 5">
+												<a href="javascript:void(0)" ng-click="filterData.open[s]=!filterData.open[s]">{{filterData.open[s]?"-":"+"}} See {{filterData.open[s]?"less":"more"}}</a>
+											</span>
 									</div>
-									<span ng-if="(options[filterData.struc] | keylength)> 5">
-										<a href="javascript:void(0)" ng-click="filterData.open=!filterData.open">{{filterData.open?"-":"+"}} See {{filterData.open?"less":"more"}}</a><br><br>
-									</span>
+									
 								</span>
 
 								<span ng-if="filterData.type=='boolean'">
@@ -142,7 +149,7 @@
 								
 									
 								</div>
-
+								<br>
 							</span>
 							</span>
 							<h4>OTHER</h4>
@@ -234,10 +241,13 @@
 							</div>
 							<div class="col-sm-8">
 								<div class="row">
-									<div class="col-sm-5"><b>{{ result.upload_filename | limitTo: 20 | newlines }}{{result.upload_filename > 20 ? '...' : ''}}
+									<div class="col-sm-5"><b>{{(isSequence?result.sequence_id:((result.upload_filename | limitTo: 15 | newlines) ))}}
+
+										{{(result.upload_filename.length > 15 && !isSequence)?'...' : '' }}
+
 </b></div>
 								</div>
-								<div class="row">
+								<div class="row" ng-if="!isSequence">
 									<div class="col-sm-3">Sequence:</div>
 									<div class="col-sm-8">{{result.sequence_id}}</div>
 								</div>
@@ -251,7 +261,7 @@
 								</div>
 								<div class="row">
 									<div class="col-sm-3">Animals:</div>
-									<div class="col-sm-8"><a ng-repeat="c in result.Classification" href="#">{{options["mammal"][c.species]}} </a></div>
+									<div class="col-sm-8"><a ng-repeat="c in result.Classification" href="#">{{getOptionName(c.species)}} </a></div>
 								</div>
 								<br>
 							</div>

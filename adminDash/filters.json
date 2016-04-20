@@ -3,20 +3,23 @@
 		"species":{
 		     "type":"checkboxes",
 		     "value":[],
-		     "struc":"mammal",
-		     "order":0
+		     "struc":["mammal","bird"],
+		     "order":0,
+		     "open": {}
 		},
 		"gender":{
 		   "type":"checkboxes",
 		   "value":[],
-		   "struc": "gender",
-		   "order":1
+		   "struc": ["gender"],
+		   "order":1,
+		   "open": {}
 		},
 		"age":{
 		   "type":"checkboxes",
 		   "value":[],
-		   "struc":"age",
-		   "order":2
+		   "struc":["age"],
+		   "order":2,
+		   "open": {}
 		},
 		"evenness":{
 		   "type":"slider",
@@ -47,8 +50,9 @@
 	 "habitat_id":{
 	   "type":"checkboxes",
 	   "value":[],
-	   "struc":"habitat",
-	   "order":0
+	   "struc":["habitat"],
+	   "order":0,
+	   "open": {}
 	},
 	"lat":{
 		"type":"coord",
