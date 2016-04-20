@@ -55,6 +55,8 @@
 		#map{height: calc(100% - 52px); width: 100%; }
 		.navbar{
 			margin:0;
+			height: inherit !important;
+			min-height: 0px !important;
 		}
 		body{background-color:black;}
 		.slideRight {
@@ -72,18 +74,11 @@
                 opacity: 0.7;
             }
         .page {
-                height: calc(100% - 52px) !important;
+                height: 100% !important;
                 overflow:hidden;
          }
          html {
             overflow-x: hidden;
-        }
-        .fullBg {
-        	height: calc(100% + 55px) !important;
-		}
-
-		.transition{
-			top:-200px;
 		}
 
 		#infoBox{
@@ -94,7 +89,7 @@
 		}
 		.fullBg{
 			width:100%;
-			height: 100%;
+			height: calc(100% + 55px) !important;
 		}
 		.navbar-brand{
 			padding-top: 0;
@@ -110,35 +105,36 @@
 
 </head>
 
-<body ng-app="userDash" ng-controller="dataController">
+<body ng-app="userDash" ng-controller="dataController" ng-mousemove="mouseMove()">
 
-<nav class="navbar navbar-inverse navbar-static-top">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#"> <img src="MammalWeb.png" alt="MammalWeb" height="42"> </a>
-    </div>
+<div pageslide ps-side="top" ps-open="navbarOpen" class="navbar navbar-inverse navbar-static-top">
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li ng-class="{ active: isActive('/map')}"><a ui-sref="map">Map <span class="sr-only">(current)</span></a></li>
-        <li ng-class="{ active: isActive('/slideshow')}"><a ui-sref="slideshow" >Slideshow</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" ng-click="filtersOpen=!filtersOpen"><span class="glyphicon glyphicon-filter"></span></a></li>
-        <li><a href="#" ng-click="timelineOpen=!timelineOpen"><span class="glyphicon glyphicon-calendar"></span></a></li>
-      </ul>
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="#"> <img src="MammalWeb.png" alt="MammalWeb" height="42"> </a>
+	    </div>
 
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	        <li ng-class="{ active: isActive('/map')}"><a ui-sref="map">Map <span class="sr-only">(current)</span></a></li>
+	        <li ng-class="{ active: isActive('/slideshow')}"><a ui-sref="slideshow" >Slideshow</a></li>
+	      </ul>
+	      <ul class="nav navbar-nav navbar-right">
+	        <li><a href="#" ng-click="filtersOpen=!filtersOpen"><span class="glyphicon glyphicon-filter"></span></a></li>
+	        <li><a href="#" ng-click="timelineOpen=!timelineOpen"><span class="glyphicon glyphicon-calendar"></span></a></li>
+	      </ul>
+
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+</div>
 
 		<div id="loader">
 			<div>

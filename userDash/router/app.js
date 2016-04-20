@@ -206,10 +206,31 @@ userApp.factory('ajax', ['$http', function($http) {
 }]);
 
 //data controller
-userApp.controller('dataController',['$scope','$location', 'ajax', function($scope, $location,serverComm) {
+userApp.controller('dataController',['$scope','$location','$timeout','ajax', function($scope, $location,$timeout,serverComm) {
     $scope.filtersOpen = false;
     $scope.timelineOpen = true;
+    $scope.navbarOpen = true;
     $scope.results = "data";
+
+    var moved;
+
+    $scope.mouseMove = function(){
+        moved = true;
+        console.log("hi");
+        $scope.navbarOpen = true;
+        $timeout($scope.hideNav, 15000);
+        
+    };
+
+    $scope.hideNav = function(){
+        if (!moved){
+            $scope.navbarOpen = false;
+        }
+        else{
+            moved = false;
+            $timeout($scope.hideNav, 15000);
+        }
+    };
 
     $scope.getResults = function(){
         $("#loader").fadeTo("fast", 0.7);
