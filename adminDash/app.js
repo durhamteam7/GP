@@ -141,22 +141,26 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		   species:{
 		         type:"checkboxes",
 		         value:[],
-		         struc:"mammal"
+		         struc:"mammal",
+		         order:0
 		   },
 		   gender:{
 		       type:"checkboxes",
 		       value:[],
-		       struc: "gender"
+		       struc: "gender",
+		       order:1
 		   },
 		   age:{
 		       type:"checkboxes",
 		       value:[],
-		       struc:"age"
+		       struc:"age",
+		       order:2
 		   },
        /*blankImages:{
            type:"checkboxes",
            value:[],
            ids:[62,64]
+           order:3
         },*/
 		   evenness:{
 		       type:"slider",
@@ -168,7 +172,8 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		           step: 1,
 		           precision: 1,
 		           onEnd: $scope.getResults
-		       }
+		       },
+		       order:4
 		     },
 		     number_of_classifications:{
 		         type:"slider",
@@ -180,7 +185,8 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		             step: 1,
 		             precision: 1,
 		             onEnd: $scope.getResults
-		         }
+		         },
+		         order:5
 		     }
 		     /*numAnimals:{
             type:"slider",
@@ -192,30 +198,35 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
                 step: 1,
                 precision: 1,
                 onEnd: $scope.getResults
-            }
+            },
+            order:6
         },*/
 		  },
         Site:{
 		     habitat_id:{
 		       type:"checkboxes",
 		       value:[],
-		       struc:"habitat"
+		       struc:"habitat",
+		       order:0
 		    },
 		    lat:{
 		    	type:"coord",
 		    	value:null,
-		    	coordType:"latitude"
+		    	coordType:"latitude",
+		    	order:1
 		    },
 		    lon:{
 		    	type:"coord",
 		    	value:null,
-		    	coordType:"longitude"
+		    	coordType:"longitude",
+		    	order:2
 		    }
        },
        Photo:{
 		    contains_human:{
 		       type:"boolean",
-		       value:[]
+		       value:[],
+		       order:0
 		    },
 		    taken:{
 		       type:"dateTime",
@@ -224,7 +235,8 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		       maxValue: "",
 		       options:{
 		       	format:"DD/MM/YYYY"
-		       }
+		       },
+		       order:1
 		    }/*,
 		    time:{
 		       type:"dateTime",
@@ -233,7 +245,8 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		       maxValue: "",
 		       options:{
 		       	format:"LT"
-		       }
+		       },
+		       order:2
 		    }*/
 		 }
         
