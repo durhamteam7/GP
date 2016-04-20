@@ -9,9 +9,6 @@ var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 adminApp.factory('ajax', ['$http', function($http) {
 	return {
     getPhotos: function(query,pageNum,pageSize,isSequence) {
-    	//$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
-        // Delete the Requested With Header
-        //delete $http.defaults.headers.common['X-Requested-With'];
       return $http.post(urls[0]+'photo?pageNum='+pageNum+'&pageSize='+pageSize+'&sequence='+isSequence,query).success(function() {
       });
     },
@@ -19,8 +16,12 @@ adminApp.factory('ajax', ['$http', function($http) {
     	return $http.post(urls[0]+'photo?output=csv&sequence='+isSequence,query).success(function() {
       });
     },
-     getOptions: function() {
+    getOptions: function() {
       return $http.get(urls[0]+'options').success(function() {
+      });
+    },
+    getFilters: function() {
+      return $http.get('filters.json').success(function() {
       });
     }
   };
@@ -123,6 +124,15 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 				
 		});
 	};
+
+	$scope.getFilters = function(){
+		serverComm.getFilters().success(function(data) {
+			console.log("FITLERS",data)
+				//console.log(data);
+				$scope.filters = data
+				
+		});
+	}
 	
 	 $scope.readable = function(string) {
 	 	if (typeof string === "undefined")
@@ -136,121 +146,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		return string
   	}
 
-    $scope.filters = {
-      Classification:{
-		   species:{
-		         type:"checkboxes",
-		         value:[],
-		         struc:"mammal",
-		         order:0
-		   },
-		   gender:{
-		       type:"checkboxes",
-		       value:[],
-		       struc: "gender",
-		       order:1
-		   },
-		   age:{
-		       type:"checkboxes",
-		       value:[],
-		       struc:"age",
-		       order:2
-		   },
-       /*blankImages:{
-           type:"checkboxes",
-           value:[],
-           ids:[62,64]
-           order:3
-        },*/
-		   evenness:{
-		       type:"slider",
-		       minValue: 0,
-		       maxValue: 100,
-		       options: {
-		           floor: 0,
-		           ceil: 100,
-		           step: 1,
-		           precision: 1,
-		           onEnd: $scope.getResults
-		       },
-		       order:4
-		     },
-		     number_of_classifications:{
-		         type:"slider",
-		         minValue: 0,
-		         maxValue: 100,
-		         options: {
-		             floor: 0,
-		             ceil: 100,
-		             step: 1,
-		             precision: 1,
-		             onEnd: $scope.getResults
-		         },
-		         order:5
-		     }
-		     /*numAnimals:{
-            type:"slider",
-            minValue: 0,
-            maxValue: 20,
-            options: {
-                floor: 0,
-                ceil: 20,
-                step: 1,
-                precision: 1,
-                onEnd: $scope.getResults
-            },
-            order:6
-        },*/
-		  },
-        Site:{
-		     habitat_id:{
-		       type:"checkboxes",
-		       value:[],
-		       struc:"habitat",
-		       order:0
-		    },
-		    lat:{
-		    	type:"coord",
-		    	value:null,
-		    	coordType:"latitude",
-		    	order:1
-		    },
-		    lon:{
-		    	type:"coord",
-		    	value:null,
-		    	coordType:"longitude",
-		    	order:2
-		    }
-       },
-       Photo:{
-		    contains_human:{
-		       type:"boolean",
-		       value:[],
-		       order:0
-		    },
-		    taken:{
-		       type:"dateTime",
-		       icon: "glyphicon-calendar",
-		       minValue: "",
-		       maxValue: "",
-		       options:{
-		       	format:"DD/MM/YYYY"
-		       },
-		       order:1
-		    }/*,
-		    time:{
-		       type:"dateTime",
-		       icon: "glyphicon-time",
-		       minValue: "",
-		       maxValue: "",
-		       options:{
-		       	format:"LT"
-		       },
-		       order:2
-		    }*/
-		 }
-        
-    }
+    $scope.filters = {}
 
     $scope.$watch('filters', function(newVal, oldVal){
     	$scope.currentPage = 1;
@@ -263,6 +159,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 
 	$scope.getResults();
 	$scope.getOptions();
+	$scope.getFilters();
 
 }]);
 

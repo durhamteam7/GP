@@ -1,0 +1,84 @@
+{
+	"Classification":{
+		"species":{
+		     "type":"checkboxes",
+		     "value":[],
+		     "struc":"mammal",
+		     "order":0
+		},
+		"gender":{
+		   "type":"checkboxes",
+		   "value":[],
+		   "struc": "gender",
+		   "order":1
+		},
+		"age":{
+		   "type":"checkboxes",
+		   "value":[],
+		   "struc":"age",
+		   "order":2
+		},
+		"evenness":{
+		   "type":"slider",
+		   "minValue": 0,
+		   "maxValue": 100,
+		   "options": {
+		       "floor": 0,
+		       "ceil": 100,
+		       "step": 1,
+		       "precision": 1
+		    },
+		   "order":4
+		 },
+		 "number_of_classifications":{
+		     "type":"slider",
+		     "minValue": 0,
+		     "maxValue": 100,
+		     "options": {
+		         "floor": 0,
+		         "ceil": 100,
+		         "step": 1,
+		         "precision": 1
+		     },
+		     "order":5
+	 }
+	},
+	"Site":{
+	 "habitat_id":{
+	   "type":"checkboxes",
+	   "value":[],
+	   "struc":"habitat",
+	   "order":0
+	},
+	"lat":{
+		"type":"coord",
+		"value":null,
+		"coordType":"latitude",
+		"order":1
+	},
+	"lon":{
+		"type":"coord",
+		"value":null,
+		"coordType":"longitude",
+		"order":2
+	}
+	},
+	"Photo":{
+	"contains_human":{
+	   "type":"boolean",
+	   "value":[],
+	   "order":0
+	},
+	"taken":{
+	   "type":"dateTime",
+	   "icon": "glyphicon-calendar",
+	   "minValue": "",
+	   "maxValue": "",
+	   "options":{
+	   	"format":"DD/MM/YYYY"
+	   },
+	   "order":1
+	}
+	}
+        
+}
