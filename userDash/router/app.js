@@ -1,4 +1,4 @@
-var userApp = angular.module('userDash', ['rzModule', 'ui.bootstrap',"checklist-model",'datetimepicker','leaflet-directive','pageslide-directive','ui.router','ngAnimate']);
+var userApp = angular.module('userDash', ['rzModule', 'ui.bootstrap',"checklist-model",'datetimepicker','leaflet-directive','pageslide-directive','ui.router','ngAnimate','ngVis']);
 
 var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 
@@ -207,25 +207,24 @@ userApp.factory('ajax', ['$http', function($http) {
 
 //data controller
 userApp.controller('dataController',['$scope','$location', 'ajax', function($scope, $location,serverComm) {
-    $scope.checked = false;
-        $scope.results = "data";
-          $scope.getResults = function(){
-    $("#loader").fadeTo("fast", 0.7);
-    serverComm.getPhotos({},1,5000).success(function(data) {
-        console.log("Data:",data);
-        $scope.results = data.rows;
-        $scope.numResults = data.count;
-        for (var i = 0; i < $scope.results.length; i++) {
-          //Form correct URL
-          var result = $scope.results[i];
-          var parts = result.dirname.split("/");
-          $scope.results[i].URL = "http://www.mammalweb.org/biodivimages/"+parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.filename;
-        }
+    $scope.filtersOpen = false;
+    $scope.timelineOpen = true;
+    $scope.results = "data";
 
-
-
-        $("#loader").fadeOut("slow");
-    });
+    $scope.getResults = function(){
+        $("#loader").fadeTo("fast", 0.7);
+        serverComm.getPhotos({},1,100).success(function(data) {
+            console.log("Data:",data);
+            $scope.results = data.rows;
+            $scope.numResults = data.count;
+            for (var i = 0; i < $scope.results.length; i++) {
+              //Form correct URL
+              var result = $scope.results[i];
+              var parts = result.dirname.split("/");
+              $scope.results[i].URL = "http://www.mammalweb.org/biodivimages/"+parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.filename;
+            }
+            $("#loader").fadeOut("slow");
+        });
   };
 
   $scope.getOptions = function(){

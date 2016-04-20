@@ -20,11 +20,18 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
 	<script src="https://cdn.rawgit.com/diosney/angular-bootstrap-datetimepicker-directive/master/angular-bootstrap-datetimepicker-directive.js"></script>
+
 	<script src="https://cdn.rawgit.com/dpiccone/ng-pageslide/master/dist/angular-pageslide-directive.min.js"></script>
+
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
   	<script src="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 	<script src="https://cdn.rawgit.com/shramov/leaflet-plugins/master/layer/tile/Google.js"></script>
   	<script src="//tombatossals.github.io/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.js"></script>
+	<script src="https://cdn.rawgit.com/visjs/angular-visjs/master/angular-vis.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css"/>
+
 
 
 	<!--Bootstrap -->
@@ -32,6 +39,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
 	<script src="app.js"></script>
+	<script src="timeline.js"></script>
 	<!--<script src="slideshowController.js"></script>-->
 
 	<style>
@@ -49,11 +57,19 @@
 			margin:0;
 		}
 		body{background-color:black;}
-		.ng-pageslide {
+		.slideRight {
                 background: #101010;
                 top:50px !important;
                 position:absolute !important;
                 height: calc(100% - 50px) !important;
+                z-index:999999 !important;
+            }
+
+         .slideBottom {
+                background: #101010;
+                bottom:0 !important;
+                position:absolute !important;
+                opacity: 0.7;
             }
         .page {
                 height: calc(100% - 52px) !important;
@@ -87,6 +103,8 @@
 		.navbar-inverse{
 			border:0;
 		}
+
+		
 		</style>
 		<link rel="stylesheet" href="loader.css">
 
@@ -114,8 +132,10 @@
         <li ng-class="{ active: isActive('/slideshow')}"><a ui-sref="slideshow" >Slideshow</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" ng-click="checked=!checked"><span class="glyphicon glyphicon-filter"></span></a></li>
+        <li><a href="#" ng-click="filtersOpen=!filtersOpen"><span class="glyphicon glyphicon-filter"></span></a></li>
+        <li><a href="#" ng-click="timelineOpen=!timelineOpen"><span class="glyphicon glyphicon-calendar"></span></a></li>
       </ul>
+
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>

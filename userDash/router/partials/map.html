@@ -1,6 +1,79 @@
-<div pageslide ps-open="checked">
-<div style="padding:20px" id="demo-right">
-    <h2>Filters</h2>
+<div pageslide ps-open="filtersOpen" class="slideRight">
+	<div style="padding:20px">
+	    <h2>Filters</h2>
+	</div>
 </div>
-</div>
+
+<style>
+
+
+    .vis-timeline {
+      border: 0;
+      font-size: 12pt;
+    }
+
+    .vis-item {
+      border-color: 0;
+      font-size: 15pt;
+    }
+
+    .vis-item,
+    .vis-item.vis-line {
+      border-width: 3px;
+      color: white;
+    }
+
+
+	.vis-item,.vis-selected{
+		background-color: transparent;
+		border:0;
+	}
+		
+	.vis-item-content{
+		margin-bottom:-10px;
+		padding-left:0;
+		margin-left:-20px;
+	}
+    .vis-item.vis-dot {
+      border-width: 10px;
+      border-radius: 10px;
+    }
+
+    .vis-item.vis-selected {
+      border-color: red;
+      background-color: transparent;
+    }
+
+    .vis-time-axis .vis-text,.vis-grid,.vis-minor {
+      color: #9d9d9d;
+      padding-top: 10px;
+      padding-left: 10px;
+    }
+    .vis-time-axis .vis-grid.vis-minor {
+    border-color: #1d1d1d;
+}
+
+    .vis-time-axis .vis-text.vis-major {
+      font-weight: bold;
+    }
+
+    .vis-time-axis .vis-grid.vis-minor {
+      border-width: 2px;
+    }
+
+    .vis-time-axis .vis-grid.vis-major {
+      border-width: 2px;
+      border-color: #F991A3;
+    }
+  
+
+</style>
+
+
 <leaflet id="map" tiles="tiles" markers="markers" defaults="defaults" center="center" layers="layers"></leaflet>
+
+<div pageslide ps-side="bottom" ps-open="timelineOpen" class="slideBottom" ng-controller="TimelineCtrl"	>
+	<div style="padding:5px">
+	    <vis-timeline ng-show="timelineLoaded" data="timelineData" options="timelineOptions" events="graphEvents" class="ng-isolate-scope"></vis-timeline>
+	</div>
+</div>
