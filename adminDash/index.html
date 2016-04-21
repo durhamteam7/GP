@@ -300,52 +300,52 @@
 										<h4 class="modal-title">Graph Editor</h4>
 									</div>
 									<div class="modal-body">
-											<div class= "row">
-												<div google-chart chart="chartObject" style="{{chartStyle}}"></div>
-											</div>
+										<div class= "row">
+											<div google-chart chart="chartObject" style="{{chartStyle}}"></div>
+										</div>
 
-											<div class="row">
-												<div class="col-xs-4">
-													<div class= "row">
-														<div class="form-group">
-															<label for="type" class="col-sm-2 control-label">Chart Type:</label>
-															<div class="col-sm-10">
-																<select class="form-control ng-pristine ng-valid" id="chartType" ng-model="chartObject.type" ng-change="chartSelectionChange()">
-																	<option ng-repeat="type in chartTypes" ng-value="type">{{type}}</option>
-																</select>
-															</div>
-														</div>
-													</div>
-													<div class= "row">
-														<div class="form-group">
-															<label for="x-axis" class="col-sm-2 control-label">x-axis Label:</label>
-															<div class="col-sm-10">
-																<select class="form-control ng-pristine ng-valid" id="x-axis" ng-model="xName" ng-change="chartSelectionChange();makeData();">
-																		<option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters" ng-value="filterName">
-																		</option>
-																		<option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
-																	
-																</select>
-															</div>
-														</div>
-													</div>
-													<div class="row">
-														<div class="form-group">
-															<label for="y-axis" class="col-sm-2 control-label">y-axis Label:</label>
-															<div class="col-sm-10">
-																<select class="form-control ng-pristine ng-valid" id="y-axis" ng-model="yName" ng-change="chartSelectionChange();makeData();">
-																		<option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters">
-																		</option>
-																		<option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
-																		<option value="countOfXaxis">COUNTOF({{readable(xName)}})</option>
-																	
-																</select>
-															</div>
+										<div class="row">
+											<div class="col-xs-8">
+												<div class= "row">
+													<div class="form-group">
+														<label for="type" class="col-sm-2 control-label">Chart Type:</label>
+														<div class="col-sm-10">
+															<select class="form-control ng-pristine ng-valid" id="chartType" ng-model="chartObject.type" ng-change="chartSelectionChange()">
+																<option ng-repeat="type in chartTypes" ng-value="type">{{type}}</option>
+															</select>
 														</div>
 													</div>
 												</div>
-												
+												<div class= "row">
+													<div class="form-group">
+														<label for="x-axis" class="col-sm-2 control-label">x-axis Label:</label>
+														<div class="col-sm-10">
+															<select class="form-control ng-pristine ng-valid" id="x-axis" ng-model="xName" ng-change="chartSelectionChange();makeData();">
+																	<option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters" ng-value="filterName">
+																	</option>
+																	<option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
+																
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="form-group">
+														<label for="y-axis" class="col-sm-2 control-label">y-axis Label:</label>
+														<div class="col-sm-10">
+															<select class="form-control ng-pristine ng-valid" id="y-axis" ng-model="yName" ng-change="chartSelectionChange();makeData();">
+																	<option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters">
+																	</option>
+																	<option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
+																	<option value="countOfXaxis">COUNTOF({{readable(xName)}})</option>
+																
+															</select>
+														</div>
+													</div>
+												</div>
 											</div>
+											
+										</div>
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
