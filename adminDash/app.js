@@ -63,9 +63,9 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 				$scope.numResults = data.count;
 				for (var i = 0; i < $scope.results.length; i++) {
 					var result = $scope.results[i];
-					var parts = result.dirname.split("/");
+					var parts = result.Photo.dirname.split("/");
 
-					$scope.results[i].URL = parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.filename;
+					$scope.results[i].Photo.URL = parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.Photo.filename;
 				}
 				$("#loader").fadeOut("slow");
 		});
