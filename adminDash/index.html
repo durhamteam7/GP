@@ -90,7 +90,7 @@
 										</span>
 										<div class="checkbox" ng-repeat="(id,name) in options[s] | objectLimitTo:(!filterData.open[s]?3:(options[s] | keylength))">
 											<label>
-												<input type="checkbox" checklist-model="filterData.value" checklist-value="id" ng-click="getResults()"> {{name}}
+												<input type="checkbox" checklist-model="filterData.value" checklist-value="id"> {{name}}
 											</label>
 
 										</div>
@@ -104,13 +104,13 @@
 								<span ng-if="filterData.type=='boolean'">
 									<div class="checkbox">
 										<label>
-											<input type="checkbox" checklist-model="filterData.value" checklist-value="true" ng-click="getResults();((filterData.value.length==1)?(filterData.value=[true]):1)"> Yes
+											<input type="checkbox" checklist-model="filterData.value" checklist-value="true" ng-click="((filterData.value.length==1)?(filterData.value=[true]):1)"> Yes
 										</label>
 
 									</div>
 									<div class="checkbox">
 										<label>
-											<input type="checkbox" checklist-model="filterData.value" checklist-value="false" ng-click="getResults();((filterData.value.length==1)?(filterData.value=[false]):1)"> No
+											<input type="checkbox" checklist-model="filterData.value" checklist-value="false" ng-click="((filterData.value.length==1)?(filterData.value=[false]):1)"> No
 										</label>
 									</div>
 								</span>
@@ -217,7 +217,7 @@
 							<b>
 							{{getOptionName(v)}}
 							</b>
-							<a href="javascript:void(0)" style="color:white" ng-click="f.value.splice(f.value.indexOf(v),1);getResults()" ><span class="glyphicon glyphicon-remove"></span></a>
+							<a href="javascript:void(0)" style="color:white" ng-click="f.value.splice(f.value.indexOf(v),1)" ><span class="glyphicon glyphicon-remove"></span></a>
 						</span>
 
 						<span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='coord'&&f.value!=null">{{readable(name)}}:
