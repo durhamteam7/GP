@@ -40,6 +40,7 @@
 
 	<script src="app.js"></script>
 	<script src="timeline.js"></script>
+	<script src="filters.js"></script>
 	<!--<script src="slideshowController.js"></script>-->
 
 	<style>
@@ -52,7 +53,7 @@
 		user-select: none;           /* non-prefixed version, currently
 		not supported by any browser */
 		}
-		#map{height: calc(100% - 52px); width: 100%; }
+		#map{height: 100%; width: 100%; }
 		.navbar{
 			margin:0;
 			height: inherit !important;
@@ -111,7 +112,7 @@
 
 <body ng-app="userDash" ng-controller="dataController" ng-mousemove="mouseMove()">
 
-<div pageslide ps-side="top" ps-open="navbarOpen" class="navbar navbar-inverse navbar-static-top">
+<div pageslide ps-side="top" ps-open="navbarOpen || isActive('/map')" class="navbar navbar-inverse navbar-static-top">
 
 	  <div class="container-fluid">
 	    <!-- Brand and toggle get grouped for better mobile display -->

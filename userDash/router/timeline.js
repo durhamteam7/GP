@@ -175,6 +175,8 @@ userApp.controller('TimelineCtrl',['$scope','$timeout', 'VisDataSet', function($
          */
         $scope.onRangeChanged = function (period) {
             console.log("Range changed", period);
+            $scope.filters["taken"]["minValue"] = period.start;
+            $scope.filters["taken"]["maxValue"] = period.end;
         };
 
         $scope.$watch("results",function(newVal,oldVal){

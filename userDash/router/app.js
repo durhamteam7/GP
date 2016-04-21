@@ -189,16 +189,23 @@ userApp.animation('.fade-in-animation', function ($window) {
 
 
 
-
-//getting the data
+// Ajax Service
 userApp.factory('ajax', ['$http', function($http) {
-	return {
+    return {
     getPhotos: function(query,pageNum,pageSize) {
       return $http.post(urls[0]+'photo?sequence=true&pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
       });
     },
-     getOptions: function() {
+    getPhotosCSV: function(query,isSequence){
+        return $http.post(urls[0]+'photo?output=csv&sequence='+isSequence,query).success(function() {
+      });
+    },
+    getOptions: function() {
       return $http.get(urls[0]+'options').success(function() {
+      });
+    },
+    getFilters: function() {
+      return $http.get('../../adminDash/filters.json').success(function() {
       });
     }
   };
@@ -207,10 +214,18 @@ userApp.factory('ajax', ['$http', function($http) {
 
 //data controller
 userApp.controller('dataController',['$scope','$location','$timeout','ajax', function($scope, $location,$timeout,serverComm) {
-    $scope.filtersOpen = false;
-    $scope.timelineOpen = true;
+    $scope.filtersOpen = true;
+    $scope.timelineOpen = false;
     $scope.navbarOpen = true;
     $scope.results = "data";
+
+    $scope.results = []; //contains the results from the server
+    $scope.options = {};
+    
+    
+    //PAGE functions
+    $scope.currentPage = 1;
+    $scope.pageSize = 15;
 
     var moved;
 
@@ -252,7 +267,7 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
         //console.log("get options");
         $("#loader").fadeTo("fast", 0.7);
         serverComm.getOptions().success(function(data) {
-                console.log(data);
+                console.log("data",data);
                 $scope.options = {};
                 for (var i = 0; i < data.length; i++) {
                     //console.log(data[i]["struc"])
@@ -278,6 +293,15 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
         }
         return "";
     }
+
+    $scope.getFilters = function(){
+        serverComm.getFilters().success(function(data) {
+            console.log("FITLERS",data)
+                //console.log(data);
+                $scope.filters = data
+                
+        });
+    }
     
      $scope.readable = function(string) {
         if (typeof string === "undefined")
@@ -295,7 +319,15 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
         return viewLocation === $location.path();
     };
 
+
+    $scope.$watch('filters', function(newVal, oldVal){
+        $scope.getResults();
+    }, true);
+
+     $scope.filters = {}
+
   $scope.getResults();
   $scope.getOptions();
+  $scope.getFilters();
 }]);
 
