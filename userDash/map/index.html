@@ -1,0 +1,108 @@
+<html>
+	<head>
+		<title>User Dashboard</title>
+		<script type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpzag5AVnm8nqYpPnO_7kku6siPeNxLO0">
+</script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/locale/en-gb.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/2.10.2/rzslider.min.css"/>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.js"></script>
+		<script src="https://cdn.upress.co.il/ajax/libs/angularjs-slider/2.9.0/rzslider.js"></script>
+		<script src="http://bouil.github.io/angular-google-chart/ng-google-chart.js"></script>
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script src="checklistModel.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
+		<script src="https://cdn.rawgit.com/diosney/angular-bootstrap-datetimepicker-directive/master/angular-bootstrap-datetimepicker-directive.js"></script>
+		<script src="https://cdn.rawgit.com/dpiccone/ng-pageslide/master/dist/angular-pageslide-directive.min.js"></script>
+      
+
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+  <script src="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<script src="https://cdn.rawgit.com/shramov/leaflet-plugins/master/layer/tile/Google.js"></script>
+  <script src="//tombatossals.github.io/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+		<script src="app.js"></script>
+
+
+
+
+		<style>
+		body {
+			-webkit-touch-callout: none; /* iOS Safari */
+			-webkit-user-select: none;   /* Chrome/Safari/Opera */
+			-khtml-user-select: none;    /* Konqueror */
+			-moz-user-select: none;      /* Firefox */
+			-ms-user-select: none;       /* IE/Edge */
+		user-select: none;           /* non-prefixed version, currently
+		not supported by any browser */
+		}
+		#map{height: calc(100% - 52px); width: 100%; }
+		.navbar{
+			margin:0;
+		}
+		body{background-color:black;}
+		.ng-pageslide {
+                background: #101010;
+                top:52px !important;
+                position:absolute !important;
+                height: calc(100% - 52px) !important;
+            }
+             html {
+                overflow-x: hidden;
+            }
+		</style>
+		<link rel="stylesheet" href="loader.css">
+		
+	</head>
+	<body ng-controller="MainController" ng-App="userDash">
+		<div id="loader">
+			<div>
+				<div class="spinner"></div>
+				<p>Loading...</p>
+			</div>
+		</div>
+
+
+		<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">MammalWeb</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Map <span class="sr-only">(current)</span></a></li>
+        <li><a href="#">Slideshow</a></li>
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" ng-click="toggle()"><span class="glyphicon glyphicon-filter"></span></a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+ <div pageslide ps-open="checked">
+<div style="padding:20px" id="demo-right">
+                        <h2>Filters</h2>
+                    </div>
+ </div>
+
+
+				<leaflet id="map" tiles="tiles" markers="markers" defaults="defaults" center="center" layers="layers"></leaflet>
+
+	</body>
+</html>

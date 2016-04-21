@@ -57,8 +57,7 @@ while (count($all_data) > 0) {
     echo "on " . count($subject) . " classifications";
     echo "\n";
 
-    #output
-    # NEEDS TO UPDATE CORRECTLY
+    #Output -- Needs to be made more efficient using the same method as in the Algorithm.PHP file.
     $updatePersonStats = "INSERT INTO PersonStats (person_id, species_rate, gender_rate, age_rate, number_rate) " .
     "VALUES ('$person_id', '$species_rate', '$gender_rate', '$age_rate', '$number_rate') " .
     "ON DUPLICATE KEY UPDATE person_id=person_id," .

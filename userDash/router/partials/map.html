@@ -1,0 +1,156 @@
+<div pageslide ps-open="filtersOpen" class="slideRight">
+	<div style="padding:20px;overflow-y:scroll;height:100%">
+	    <h2>Filters</h2>
+                  <span ng-repeat="filterCat in filters">
+              <span ng-repeat="filterData in filterCat | orderObjectBy | orderBy: 'order'">
+                
+                <h4>{{readable(filterData.id)}}</h4>
+                <span ng-if="filterData.type=='checkboxes'">
+                  <div ng-repeat="s in filterData.struc">
+                    <span ng-if="filterData.struc.length > 1">
+                      <b>{{readable(s)}}</b>
+                    </span>
+                    <div class="checkbox" ng-repeat="(id,name) in options[s] | objectLimitTo:(!filterData.open[s]?3:(options[s] | keylength))">
+                      <label>
+                        <input type="checkbox" checklist-model="filterData.value" checklist-value="id" ng-click="getResults()"> {{name}}
+                      </label>
+
+                    </div>
+                      <span ng-if="(options[s] | keylength)> 5">
+                        <a href="javascript:void(0)" ng-click="filterData.open[s]=!filterData.open[s]">{{filterData.open[s]?"-":"+"}} See {{filterData.open[s]?"less":"more"}}</a>
+                      </span>
+                  </div>
+                  
+                </span>
+
+                <span ng-if="filterData.type=='boolean'">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" checklist-model="filterData.value" checklist-value="true" ng-click="getResults();((filterData.value.length==1)?(filterData.value=[true]):1)"> Yes
+                    </label>
+
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" checklist-model="filterData.value" checklist-value="false" ng-click="getResults();((filterData.value.length==1)?(filterData.value=[false]):1)"> No
+                    </label>
+                  </div>
+                </span>
+
+                <div class="row" ng-if="filterData.type=='slider'">
+                  <rzslider rz-slider-model="filterData.minValue" rz-slider-high="filterData.maxValue" rz-slider-options="filterData.options"></rzslider>
+                  <div class="col-md-6">
+                    <input type="number" class="form-control" step="1" ng-model="filterData.minValue"  />
+                  </div>
+                  <div class = "col-md-6">
+                    <input type="number" class="form-control" step="1" ng-model="filterData.maxValue"  />
+                  </div>
+                </div>
+                <div class="row" ng-if="filterData.type=='dateTime'">
+                  
+                <div class='col-md-12'>
+                <div class="form-group">
+                  <div class='input-group date' id='datetimepicker6'>
+                    <input type='text' class="form-control" placeholder="from..." datetimepicker ng-model="filterData.minValue" datetimepicker-options="{{filterData.options}}" />
+                    <span class="input-group-addon">
+                    <span class="glyphicon {{filterData.icon}}"></span>
+                  </span>
+                  </div>
+                </div>
+              </div>
+                
+              <div class='col-md-12'>
+                <div class="form-group">
+                  <div class='input-group date' id='datetimepicker6'>
+                    <input type='text' class="form-control" placeholder="...to" datetimepicker ng-model="filterData.maxValue" datetimepicker-options="{{filterData.options}}" />
+                    <span class="input-group-addon">
+                    <span class="glyphicon {{filterData.icon}}"></span>
+                  </span>
+                  </div>
+                </div>
+              </div>  
+                
+                  
+                </div>
+                <br>
+              </span>
+              </span>
+
+      
+      
+
+
+	</div>
+</div>
+
+<style>
+
+
+    .vis-timeline {
+      border: 0;
+      font-size: 12pt;
+    }
+
+    .vis-item {
+      border-color: 0;
+      font-size: 15pt;
+    }
+
+    .vis-item,
+    .vis-item.vis-line {
+      border-width: 3px;
+      color: white;
+    }
+
+
+	.vis-item,.vis-selected{
+		background-color: transparent;
+		border:0;
+	}
+		
+	.vis-item-content{
+		margin-bottom:-10px;
+		padding-left:0;
+		margin-left:-20px;
+	}
+    .vis-item.vis-dot {
+      border-width: 10px;
+      border-radius: 10px;
+    }
+
+    .vis-item.vis-selected {
+      border-color: red;
+      background-color: transparent;
+    }
+
+    .vis-time-axis .vis-text,.vis-grid,.vis-minor {
+      color: #9d9d9d;
+      padding-top: 10px;
+      padding-left: 10px;
+    }
+    .vis-time-axis .vis-grid.vis-minor {
+    border-color: #1d1d1d;
+}
+
+    .vis-time-axis .vis-text.vis-major {
+      font-weight: bold;
+    }
+
+    .vis-time-axis .vis-grid.vis-minor {
+      border-width: 2px;
+    }
+
+    .vis-time-axis .vis-grid.vis-major {
+      border-width: 2px;
+      border-color: #F991A3;
+    }
+  
+
+</style>
+
+
+<leaflet id="map" tiles="tiles" markers="markers" defaults="defaults" center="center" layers="layers"></leaflet>
+
+<div pageslide ps-side="bottom" ps-open="timelineOpen" class="slideBottom" ng-controller="TimelineCtrl"	>
+	    <vis-timeline ng-show="timelineLoaded" data="timelineData" options="timelineOptions" events="graphEvents" class="ng-isolate-scope"></vis-timeline>
+</div>

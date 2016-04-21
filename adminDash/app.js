@@ -8,19 +8,20 @@ var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 // Ajax Service
 adminApp.factory('ajax', ['$http', function($http) {
 	return {
-    getPhotos: function(query,pageNum,pageSize) {
-    	//$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
-        // Delete the Requested With Header
-        //delete $http.defaults.headers.common['X-Requested-With'];
-      return $http.post(urls[0]+'photo?pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
+    getPhotos: function(query,pageNum,pageSize,isSequence) {
+      return $http.post(urls[0]+'photo?pageNum='+pageNum+'&pageSize='+pageSize+'&sequence='+isSequence,query).success(function() {
       });
     },
-    getPhotosCSV: function(query){
-    	return $http.post(urls[0]+'photo?output=csv',query).success(function() {
+    getPhotosCSV: function(query,isSequence){
+    	return $http.post(urls[0]+'photo?output=csv&sequence='+isSequence,query).success(function() {
       });
     },
-     getOptions: function() {
+    getOptions: function() {
       return $http.get(urls[0]+'options').success(function() {
+      });
+    },
+    getFilters: function() {
+      return $http.get('filters.json').success(function() {
       });
     }
   };
@@ -42,8 +43,8 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	
 
 	$scope.rowsShown = function() {
-		if (($scope.currentPage * $scope.pageSize) + $scope.pageSize < $scope.numResults) {
-			return Number(($scope.currentPage * $scope.pageSize) + $scope.pageSize);
+		if ((($scope.currentPage-1) * $scope.pageSize) + $scope.pageSize < $scope.numResults) {
+			return Number((($scope.currentPage-1) * $scope.pageSize) + $scope.pageSize);
 		} else {
 			return $scope.numResults;
 		}
@@ -56,8 +57,8 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		if (page){
 			$scope.currentPage = page
 		}
-		serverComm.getPhotos($scope.filters,$scope.currentPage,$scope.pageSize).success(function(data) {
-				//console.log("Data:",data);
+		serverComm.getPhotos($scope.filters,$scope.currentPage,$scope.pageSize,$scope.isSequence).success(function(data) {
+				console.log("Data:",data);
 				$scope.results = data.rows;
 				$scope.numResults = data.count;
 				for (var i = 0; i < $scope.results.length; i++) {
@@ -77,7 +78,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	
 	$scope.downloadCSV = function(){
 		$("#loader").fadeTo("fast", 0.7);
-		serverComm.getPhotosCSV($scope.filters).success(function(data) {
+		serverComm.getPhotosCSV($scope.filters,$scope.isSequence).success(function(data) {
 				console.log("Data:",data);
 				$("#loader").fadeOut("slow");
 				//console.log(data)
@@ -123,6 +124,25 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 				
 		});
 	};
+
+	$scope.getOptionName = function(optionNum){
+        //Function to convert an option into human readable string
+        for (key in $scope.options){
+            if($scope.options[key].hasOwnProperty(optionNum)){
+                return $scope.options[key][optionNum]
+            }
+        }
+        return "";
+    }
+
+	$scope.getFilters = function(){
+		serverComm.getFilters().success(function(data) {
+			console.log("FITLERS",data)
+				//console.log(data);
+				$scope.filters = data
+				
+		});
+	}
 	
 	 $scope.readable = function(string) {
 	 	if (typeof string === "undefined")
@@ -136,115 +156,20 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		return string
   	}
 
-    $scope.filters = {
-      Classification:{
-		   species:{
-		         type:"checkboxes",
-		         value:[],
-		         struc:"mammal"
-		   },
-		   gender:{
-		       type:"checkboxes",
-		       value:[],
-		       struc: "gender"
-		   },
-		   age:{
-		       type:"checkboxes",
-		       value:[],
-		       struc:"age"
-		   },
-       /*blankImages:{
-           type:"checkboxes",
-           value:[],
-           ids:[62,64]
-        },*/
-		   evenness:{
-		       type:"slider",
-		       minValue: 0,
-		       maxValue: 100,
-		       options: {
-		           floor: 0,
-		           ceil: 100,
-		           step: 1,
-		           precision: 1,
-		           onEnd: $scope.getResults
-		       }
-		     },
-		     number_of_classifications:{
-		         type:"slider",
-		         minValue: 0,
-		         maxValue: 100,
-		         options: {
-		             floor: 0,
-		             ceil: 100,
-		             step: 1,
-		             precision: 1,
-		             onEnd: $scope.getResults
-		         }
-		     }
-		     /*numAnimals:{
-            type:"slider",
-            minValue: 0,
-            maxValue: 20,
-            options: {
-                floor: 0,
-                ceil: 20,
-                step: 1,
-                precision: 1,
-                onEnd: $scope.getResults
-            }
-        },*/
-		  },
-        Site:{
-		     habitat_id:{
-		       type:"checkboxes",
-		       value:[],
-		       struc:"habitat"
-		    },
-		    lat:{
-		    	type:"coord",
-		    	value:null,
-		    	coordType:"latitude"
-		    },
-		    lon:{
-		    	type:"coord",
-		    	value:null,
-		    	coordType:"longitude"
-		    }
-       },
-       Photo:{
-		    contains_human:{
-		       type:"boolean",
-		       value:[]
-		    },
-		    taken:{
-		       type:"dateTime",
-		       icon: "glyphicon-calendar",
-		       minValue: "",
-		       maxValue: "",
-		       options:{
-		       	format:"DD/MM/YYYY"
-		       }
-		    }/*,
-		    time:{
-		       type:"dateTime",
-		       icon: "glyphicon-time",
-		       minValue: "",
-		       maxValue: "",
-		       options:{
-		       	format:"LT"
-		       }
-		    }*/
-		 }
-        
-    }
+    $scope.filters = {}
 
     $scope.$watch('filters', function(newVal, oldVal){
+    	$scope.currentPage = 1;
+    	$scope.getResults();
+	}, true);
+	$scope.$watch('isSequence', function(newVal, oldVal){
+		$scope.currentPage = 1;
     	$scope.getResults();
 	}, true);
 
 	$scope.getResults();
 	$scope.getOptions();
+	$scope.getFilters();
 
 }]);
 
@@ -422,44 +347,3 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
 adminApp.controller('CSVController', ['$scope', function($scope) {
 	$scope.var1 = "in search results";
 }]);
-
-
-
-//Utilities for treating objects like arrays
-adminApp.filter('keylength', function(){
-  return function(input){
-    if(!angular.isObject(input)){
-      return 0;
-    }
-    return Object.keys(input).length;
-  }
-});
-
-adminApp.filter('objectLimitTo', [function(){
-    return function(obj, limit){
-    	if(!angular.isObject(obj))
-    	{
-    		return [];
-    	}
-        var keys = Object.keys(obj);
-        if(keys.length < 1){
-            return [];
-        }
-
-        var ret = new Object,
-        count = 0;
-        angular.forEach(keys, function(key, arrayIndex){
-           if(count >= limit){
-                return false;
-            }
-            ret[key] = obj[key];
-            count++;
-        });
-        return ret;
-    };
-}]);
-
-
-
-
-
