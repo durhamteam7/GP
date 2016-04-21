@@ -234,23 +234,23 @@
 							<div class="col-sm-4">
 								<div class="row">
 									<div class="col-sm-4">
-										<a data-toggle="modal" data-target="#{{result.photo_id}}" href="javascript:void(0)">
-											<img ng-src="http://www.mammalweb.org/biodivimages/{{result.URL}}" width=150>
+										<a data-toggle="modal" data-target="#{{result.Photo.photo_id}}" href="javascript:void(0)">
+											<img ng-src="http://www.mammalweb.org/biodivimages/{{result.Photo.URL}}" width=150>
 										</a>
 									</div>
 								</div>
 							</div>
 							<div class="col-sm-8">
 								<div class="row">
-									<div class="col-sm-5"><b>{{(isSequence?result.sequence_id:((result.upload_filename | limitTo: 15 | newlines) ))}}
+									<div class="col-sm-5"><b>{{(isSequence?result.Photo.sequence_id:((result.Photo.upload_filename | limitTo: 15 | newlines) ))}}
 
-										{{(result.upload_filename.length > 15 && !isSequence)?'...' : '' }}
+										{{(result.Photo.upload_filename.length > 15 && !isSequence)?'...' : '' }}
 
 </b></div>
 								</div>
 								<div class="row" ng-if="!isSequence">
 									<div class="col-sm-3">Sequence:</div>
-									<div class="col-sm-8">{{result.sequence_id}}</div>
+									<div class="col-sm-8">{{result.Photo.sequence_id}}</div>
 								</div>
 								<div class="row">
 									<div class="col-sm-3">Site:</div>
@@ -258,7 +258,7 @@
 								</div>
 								<div class="row">
 									<div class="col-sm-3">Time:</div>
-									<div class="col-sm-8">{{result.taken | date:'dd/MM/yyyy HH:mm'}}</div>
+									<div class="col-sm-8">{{result.Photo.taken | date:'dd/MM/yyyy HH:mm'}}</div>
 								</div>
 								<div class="row">
 									<div class="col-sm-3">Animals:</div>
@@ -365,16 +365,16 @@
 </div>
 
 
-<div id="{{result.photo_id}}" class="modal fade" role="dialog" ng-repeat="result in results">
+<div id="{{result.Photo.photo_id}}" class="modal fade" role="dialog" ng-repeat="result in results">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">{{result.upload_filename}}</h4>
+        <h4 class="modal-title">{{result.Photo.upload_filename}}</h4>
       </div>
       <div class="modal-body">
-      	<a ng-href="http://www.mammalweb.org/biodivimages/{{result.URL}}" target="_blank">
-        <img ng-src="http://www.mammalweb.org/biodivimages/{{result.URL}}" width=400>
+      	<a ng-href="http://www.mammalweb.org/biodivimages/{{result.Photo.URL}}" target="_blank">
+        <img ng-src="http://www.mammalweb.org/biodivimages/{{result.Photo.URL}}" width=400>
     </a>
       </div>
       <div class="modal-footer">
