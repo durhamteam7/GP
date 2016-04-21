@@ -180,9 +180,7 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
 
         getValue = function(val,field){
         	if (field.type == "checkboxes"){
-        		console.log(field.struc)
-        		console.log($scope.options[field.struc])
-        		return $scope.options[field.struc][val];
+        		return $scope.getOptionName(val);
         	}
         	else{
         		return val;
