@@ -310,7 +310,7 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
         };
 
 
-    $scope.chartStyle = "height:300px;width:300px";
+    $scope.chartStyle = "height:300px;width:100%";
 
     $scope.chartObject = {
 	  "type": "Table",
@@ -340,8 +340,4 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
 	  },
 	  "formatters": {}
 	}
-}]);
-
-adminApp.controller('CSVController', ['$scope', function($scope) {
-	$scope.var1 = "in search results";
 }]);
