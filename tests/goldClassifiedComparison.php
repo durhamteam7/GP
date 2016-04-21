@@ -40,33 +40,53 @@ $same = 0;
 $different = 0;
 $notClassified = 0;
 
+$different_classifications = array();
+
 for($x=0; $x<count($goldStandard); $x++)
 {
 	$photo_id = $goldStandard[$x][photo_id];
-	if (array_key_exists($photo_id, $classifications))
+	# Ignore "Don't know" classifications
+	if (!in_array($goldStandard[$x][species], array(96, 97)))
 	{
-		if ($classifications[$photo_id] == $goldStandard[$x][species])
+		if (array_key_exists($photo_id, $classifications))
 		{
-			$same++;
+			if ($classifications[$photo_id] == $goldStandard[$x][species])
+			{
+				$same++;
+			}
+			else
+			{
+				$different++;
+				$different_classifications[] = $photo_id;
+			}
 		}
 		else
 		{
-			$different++;
+			$notClassified++;
 		}
-	}
-	else
-	{
-		$notClassified++;
 	}
 }
 
+echo "Correctness against gold standard = " . ($same / ($same + $different));
+echo "\n";
+echo "<br>";
+echo "\n";
 echo "same results = ".$same;
+echo "\n";
 echo "<br>";
 echo "\n";
 echo "different results = ".$different;
+echo "\n";
 echo "<br>";
 echo "\n";
 echo "not classified = ".$notClassified;
+echo "\n";
+echo "<br>";
+echo "\n";
+echo "photo_ids where it differs:";
+echo "\n";
+print_r($different_classifications);
+echo "\n";
 echo "<br>";
 echo "\n";
 echo "\n";
