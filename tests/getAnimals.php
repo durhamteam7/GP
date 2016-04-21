@@ -2,7 +2,7 @@
 
 ###########################################
 // QUERY
-$sql = "SELECT * FROM Animal ORDER BY photo_id DESC LIMIT 10000;";
+$sql = "SELECT * FROM Animal ORDER BY photo_id DESC LIMIT 60000;";
 
 // execute query
 $result = $mysqli->query($sql);

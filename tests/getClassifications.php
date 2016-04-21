@@ -5,7 +5,7 @@ require_once('../dbConnectExternal.php');
 
 ###########################################
 // QUERY
-$sql = "SELECT * FROM Classification WHERE evenness > 0.25;";
+$sql = "SELECT * FROM Classification;";
 
 // execute query
 $result = $mysqli->query($sql);
