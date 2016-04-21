@@ -28,9 +28,11 @@ else
 	echo "0 results <br>";
 }
 
+/*
 echo '<pre>';
 print_r($classifications);
 echo '</pre>';
+*/
 
 //compare the gold standard and the classified species in each photo
 $same = 0;

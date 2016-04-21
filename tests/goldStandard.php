@@ -23,11 +23,11 @@ if ($result->num_rows > 0) {
     echo "0 results";
 }
 ###########################################
-
+/*
 echo '<pre>';
 print_r($goldStandard);
 echo '</pre>';
-
+*/
 # RUN ALGORITHM ON $goldStandard;
 
 ?>

@@ -21,7 +21,7 @@ if ($result->num_rows > 0) {
     echo "0 results";
 }
 
-echo count($personStats) . " entries retrieved";
+echo count($personStats) . " person stats retrieved";
 echo "\n";
 echo "\n";
 print_r($personStats);

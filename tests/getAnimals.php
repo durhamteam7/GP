@@ -2,7 +2,7 @@
 
 ###########################################
 // QUERY
-$sql = "SELECT * FROM Animal ORDER BY photo_id DESC;";
+$sql = "SELECT * FROM Animal ORDER BY photo_id DESC LIMIT 10000;";
 
 // execute query
 $result = $mysqli->query($sql);
@@ -14,7 +14,9 @@ $all_data = [];
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         if (!in_array($row["photo_id"], $classified)) {
-            $data[] = $row;
+            #if (in_array($row["photo_id"], $photo_ids)) {
+                $data[] = $row;
+            #}
         }
         $all_data[] = $row;
     }
@@ -22,7 +24,7 @@ if ($result->num_rows > 0) {
     echo "0 results";
 }
 
-echo count($data) . " entries retrieved";
+echo count($data) . " animals retrieved";
 echo "\n";
 echo "\n";
 

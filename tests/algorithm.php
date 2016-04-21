@@ -106,7 +106,7 @@ function main($data, $mysqli) {
 	                            "VALUES ";
 		$numItems = count($all_outputs);
 		$i = 0;
-	    foreach ($all_outputs as $output) 
+	    foreach ($all_outputs as $output)
 	    {
 
 	        if ($output["retired"]) 

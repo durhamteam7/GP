@@ -1,6 +1,6 @@
 <?php
 
-
+/*
 $createTable = "CREATE TABLE PersonStats (".
     "person_stats_id INT(11) AUTO_INCREMENT PRIMARY KEY,".
     "person_id INT NOT NULL,".
@@ -14,7 +14,7 @@ if ($mysqli->query($createTable) === TRUE) {
 } else {
     echo "Error updating record: " . $mysqli->error;
 }
-
+*/
 
 # assume we have $all_data
 
@@ -54,10 +54,18 @@ while (count($all_data) > 0) {
 
     echo "$person_id has $species_rate, $gender_rate, $age_rate, $number_rate";
     echo "\n";
+    echo "on " . count($subject) . " classifications";
+    echo "\n";
 
     #output
+    # NEEDS TO UPDATE CORRECTLY
     $updatePersonStats = "INSERT INTO PersonStats (person_id, species_rate, gender_rate, age_rate, number_rate) " .
-    "VALUES ('$person_id', '$species_rate', '$gender_rate', '$age_rate', '$number_rate');";
+    "VALUES ('$person_id', '$species_rate', '$gender_rate', '$age_rate', '$number_rate') " .
+    "ON DUPLICATE KEY UPDATE person_id=person_id," .
+    "species_rate='$species_rate'," .
+    "gender_rate='$gender_rate'," .
+    "age_rate='$age_rate'," .
+    "number_rate='$number_rate';";
 
     #echo $updatePersonStats . "\n";
 
