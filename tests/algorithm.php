@@ -13,6 +13,8 @@ class Swanson {
 	private $complete_condition = 2;	#25
 	private $agreement_condition = 1;	#1
 
+	private $blank_animal = 86;
+
 	function main($data, $mysqli) {
 
 		# This array will contain all arrays of image
@@ -43,7 +45,7 @@ class Swanson {
 	        if ($number_of_classifications == $this->blank_condition) {
 	        	$all_blank = true;
 	            foreach ($subject as $c) {
-	                if ($c["species"] != 86) {
+	                if ($c["species"] != $this->blank_animal) {
 	                    $all_blank = false;
 	                }
 	            }
@@ -132,6 +134,7 @@ class Swanson {
 				$updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now()), ";
 	        }
 	    }
+	    # replace the last character with a semicolon -> ;
 	    $updateClassifications = substr($updateClassifications, 0, -2) . ";";
 
 	    #echo "Insert query\n";
@@ -150,7 +153,7 @@ class Swanson {
 
 
 	//returns a dictionary giving the vote tallies for a subject
-	//input a list of classifications lines, each of wich is a list
+	//input the key to use,  a list of classifications lines, each of wich is a list
 	//output a dictionary with species as the key and the number of votes the species received as value
 	function tally_votes($key, $subject)
 	{
@@ -177,7 +180,9 @@ class Swanson {
 		return $vote_table;
 	}
 
-	// Gets the number of the most popular alternative
+	//gets the number of the most popular alternative
+	//input the key to use, a list of classifications lines, each of wich is a list
+	//output the highest number of votes an element has received
 	function highest_vote($key, $subject)
 	{
 		$votes = $this->tally_votes($key, $subject);
@@ -241,8 +246,7 @@ class Swanson {
 
 		$sum = array_sum(array_values($votes));
 
-		$blank = 86; # 86 - noanimal - Nothing <span class='fa fa-ban'/>	
-		$n = $votes[$blank];
+		$n = $votes[$this->blank_animal];
 		return $n/$sum;
 		
 	}
