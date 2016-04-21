@@ -26,11 +26,14 @@ if($result->num_rows > 0)
 else
 {
 	echo "0 results <br>";
+	echo "\n";
 }
 
+/*
 echo '<pre>';
 print_r($classifications);
 echo '</pre>';
+*/
 
 //compare the gold standard and the classified species in each photo
 $same = 0;
@@ -59,8 +62,12 @@ for($x=0; $x<count($goldStandard); $x++)
 
 echo "same results = ".$same;
 echo "<br>";
+echo "\n";
 echo "different results = ".$different;
 echo "<br>";
+echo "\n";
 echo "not classified = ".$notClassified;
 echo "<br>";
+echo "\n";
+echo "\n";
 ?>

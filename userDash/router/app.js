@@ -25,7 +25,6 @@ userApp.config(function($stateProvider, $urlRouterProvider) {
 var mapController = function($scope,$filter) {
 
         var getHTML = function(item){
-		    console.log(item)
 		   	var html = '<div>'
 		   	var url = item.URL;
 		    html += '<a href="'+url+'" target="_blank"><img width=200 src="'+url+'"></a></div>';
@@ -193,15 +192,15 @@ userApp.animation('.fade-in-animation', function ($window) {
 userApp.factory('ajax', ['$http', function($http) {
     return {
     getPhotos: function(query,pageNum,pageSize) {
-      return $http.post(urls[0]+'photo?sequence=true&pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
+      return $http.post(urls[1]+'photo?sequence=true&pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
       });
     },
     getPhotosCSV: function(query,isSequence){
-        return $http.post(urls[0]+'photo?output=csv&sequence='+isSequence,query).success(function() {
+        return $http.post(urls[1]+'photo?output=csv&sequence='+isSequence,query).success(function() {
       });
     },
     getOptions: function() {
-      return $http.get(urls[0]+'options').success(function() {
+      return $http.get(urls[1]+'options').success(function() {
       });
     },
     getFilters: function() {
@@ -214,8 +213,8 @@ userApp.factory('ajax', ['$http', function($http) {
 
 //data controller
 userApp.controller('dataController',['$scope','$location','$timeout','ajax', function($scope, $location,$timeout,serverComm) {
-    $scope.filtersOpen = true;
-    $scope.timelineOpen = false;
+    $scope.filtersOpen = false;
+    $scope.timelineOpen = true;
     $scope.navbarOpen = true;
     $scope.results = "data";
 
@@ -231,7 +230,6 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
 
     $scope.mouseMove = function(){
         moved = true;
-        console.log("hi");
         $scope.navbarOpen = true;
         $timeout($scope.hideNav, 15000);
         
@@ -249,7 +247,7 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
 
     $scope.getResults = function(){
         $("#loader").fadeTo("fast", 0.7);
-        serverComm.getPhotos({},1,100).success(function(data) {
+        serverComm.getPhotos($scope.filters,1,100).success(function(data) {
             console.log("Data:",data);
             $scope.results = data.rows;
             $scope.numResults = data.count;
@@ -324,7 +322,7 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
         $scope.getResults();
     }, true);
 
-     $scope.filters = {}
+  $scope.filters = {}
 
   $scope.getResults();
   $scope.getOptions();

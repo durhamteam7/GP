@@ -20,11 +20,12 @@ if ($result->num_rows > 0) {
     }
 } else {
     echo "0 results";
+    echo "\n";
 }
 
 echo "Getting already classified photo_ids";
 echo "\n";
-echo count($classified) . " entries retrieved";
+echo count($classified) . " classified entries retrieved";
 echo "\n";
 print_r($classified);
 echo "\n";

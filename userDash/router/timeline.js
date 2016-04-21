@@ -85,7 +85,6 @@ userApp.controller('TimelineCtrl',['$scope','$timeout', 'VisDataSet', function($
          * @param period
          */
         $scope.onRangeChange = function (period) {
-            console.log("Range changing", period);
             function splitDate(date) {
                 var m = moment(date);
                 return {
@@ -174,9 +173,8 @@ userApp.controller('TimelineCtrl',['$scope','$timeout', 'VisDataSet', function($
          * @param period
          */
         $scope.onRangeChanged = function (period) {
-            console.log("Range changed", period);
-            $scope.filters["taken"]["minValue"] = period.start;
-            $scope.filters["taken"]["maxValue"] = period.end;
+            //$scope.filters["Photo"]["taken"]["minValue"] = period.start;
+            //$scope.filters["Photo"]["taken"]["maxValue"] = period.end;
         };
 
         $scope.$watch("results",function(newVal,oldVal){
@@ -188,7 +186,6 @@ userApp.controller('TimelineCtrl',['$scope','$timeout', 'VisDataSet', function($
 
             for (i in $scope.results) {
                 var start = $scope.results[i].taken;
-                console.log($scope.results[i])
                 items.add({
                     id: i,
                     content: '<img src="../../animalIcons/'+$scope.results[i].Classification[0].species+'.png" height=30>',
@@ -198,8 +195,18 @@ userApp.controller('TimelineCtrl',['$scope','$timeout', 'VisDataSet', function($
             }
 
             $scope.timelineData = {
-            items: items
-        };
+                    items: items
+            }
+
+            /*if (typeof $scope.timelineData == "undefined" || typeof $scope.timelineData.items == "undefined"){
+                $scope.timelineData = {
+                    items: items
+                }
+            }
+            else{
+                $scope.timelineData["items"] = items;      
+            }
+*/
 
 
         });
@@ -207,7 +214,7 @@ userApp.controller('TimelineCtrl',['$scope','$timeout', 'VisDataSet', function($
 
         // create visualization
         $scope.timelineOptions = {
-        		showCurrentTime:false,
+        	showCurrentTime:false,
             height:"100%",
             groupOrder: 'content'  // groupOrder can be a property name or a sorting function
         };
