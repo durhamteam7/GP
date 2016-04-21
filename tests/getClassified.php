@@ -20,6 +20,7 @@ if ($result->num_rows > 0) {
     }
 } else {
     echo "0 results";
+    echo "\n";
 }
 
 echo "Getting already classified photo_ids";

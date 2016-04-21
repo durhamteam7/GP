@@ -44,7 +44,6 @@ while (count($all_data) > 0) {
         return $item1['photo_id'] < $item2['photo_id'] ? -1 : 1;
     });
 
-
     $person_id = $subject[0]["person_id"];
 
     $species_rate = $s->getUserCorrectnessRate("species", $subject, $classifications);
@@ -69,9 +68,11 @@ while (count($all_data) > 0) {
     #echo $updatePersonStats . "\n";
 
     if ($mysqli->query($updatePersonStats) === TRUE) {
-        echo "Record updated successfully\n";
+        echo "Record updated successfully";
+        echo "\n";
     } else {
-        echo "Error updating record: " . $mysqli->error . "\n";
+        echo "Error updating record: " . $mysqli->error;
+        echo "\n";
     }
 }
 ?>

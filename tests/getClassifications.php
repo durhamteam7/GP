@@ -5,7 +5,7 @@ require_once('../dbConnectExternal.php');
 
 ###########################################
 // QUERY
-$sql = "SELECT * FROM Classification;";
+$sql = "SELECT * FROM Classification WHERE evenness > 0.25;";
 
 // execute query
 $result = $mysqli->query($sql);
@@ -19,6 +19,7 @@ if ($result->num_rows > 0) {
     }
 } else {
     echo "0 results";
+    echo "\n";
 }
 
 echo count($classifications) . " classifications retrieved";
