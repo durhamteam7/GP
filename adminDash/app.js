@@ -9,15 +9,15 @@ var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 adminApp.factory('ajax', ['$http', function($http) {
 	return {
     getPhotos: function(query,pageNum,pageSize,isSequence) {
-      return $http.post(urls[0]+'photo?pageNum='+pageNum+'&pageSize='+pageSize+'&sequence='+isSequence,query).success(function() {
+      return $http.post(urls[1]+'photo?pageNum='+pageNum+'&pageSize='+pageSize+'&sequence='+isSequence,query).success(function() {
       });
     },
     getPhotosCSV: function(query,isSequence){
-    	return $http.post(urls[0]+'photo?output=csv&sequence='+isSequence,query).success(function() {
+    	return $http.post(urls[1]+'photo?output=csv&sequence='+isSequence,query).success(function() {
       });
     },
     getOptions: function() {
-      return $http.get(urls[0]+'options').success(function() {
+      return $http.get(urls[1]+'options').success(function() {
       });
     },
     getFilters: function() {
@@ -180,9 +180,7 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
 
         getValue = function(val,field){
         	if (field.type == "checkboxes"){
-        		console.log(field.struc)
-        		console.log($scope.options[field.struc])
-        		return $scope.options[field.struc][val];
+        		return $scope.getOptionName(val);
         	}
         	else{
         		return val;
@@ -312,7 +310,7 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
         };
 
 
-    $scope.chartStyle = "height:300px;width:300px";
+    $scope.chartStyle = "height:300px;width:100%";
 
     $scope.chartObject = {
 	  "type": "Table",
@@ -342,8 +340,4 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
 	  },
 	  "formatters": {}
 	}
-}]);
-
-adminApp.controller('CSVController', ['$scope', function($scope) {
-	$scope.var1 = "in search results";
 }]);

@@ -1,33 +1,28 @@
 <?php
 
-// require database connection code
-require_once('../dbConnectExternal.php');
-
 ###########################################
 // QUERY
-$sql = "SELECT * FROM PersonStats;";
+$sql = "SELECT * FROM Photo ORDER BY photo_id DESC LIMIT 10000;";
 
 // execute query
 $result = $mysqli->query($sql);
 
-$personStats = [];
+$photo_ids = [];
 
 // process result
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
-        $personStats[] = $row;
+        $photo_ids[] = $row["photo_id"];
     }
 } else {
     echo "0 results";
     echo "\n";
 }
 
-echo count($personStats) . " person stats retrieved";
+echo count($photo_ids) . " photo_ids retrieved";
+echo "\n";
+print_r($photo_ids);
 echo "\n";
 echo "\n";
-print_r($personStats);
-echo "\n";
-
-###########################################
 
 ?>

@@ -234,23 +234,23 @@
 							<div class="col-sm-4">
 								<div class="row">
 									<div class="col-sm-4">
-										<a data-toggle="modal" data-target="#{{result.photo_id}}" href="javascript:void(0)">
-											<img ng-src="http://www.mammalweb.org/biodivimages/{{result.URL}}" width=150>
+										<a data-toggle="modal" data-target="#{{result.Photo.photo_id}}" href="javascript:void(0)">
+											<img ng-src="http://www.mammalweb.org/biodivimages/{{result.Photo.URL}}" width=150>
 										</a>
 									</div>
 								</div>
 							</div>
 							<div class="col-sm-8">
 								<div class="row">
-									<div class="col-sm-5"><b>{{(isSequence?result.sequence_id:((result.upload_filename | limitTo: 15 | newlines) ))}}
+									<div class="col-sm-5"><b>{{(isSequence?result.Photo.sequence_id:((result.Photo.upload_filename | limitTo: 15 | newlines) ))}}
 
-										{{(result.upload_filename.length > 15 && !isSequence)?'...' : '' }}
+										{{(result.Photo.upload_filename.length > 15 && !isSequence)?'...' : '' }}
 
 </b></div>
 								</div>
 								<div class="row" ng-if="!isSequence">
 									<div class="col-sm-3">Sequence:</div>
-									<div class="col-sm-8">{{result.sequence_id}}</div>
+									<div class="col-sm-8">{{result.Photo.sequence_id}}</div>
 								</div>
 								<div class="row">
 									<div class="col-sm-3">Site:</div>
@@ -258,7 +258,7 @@
 								</div>
 								<div class="row">
 									<div class="col-sm-3">Time:</div>
-									<div class="col-sm-8">{{result.taken | date:'dd/MM/yyyy HH:mm'}}</div>
+									<div class="col-sm-8">{{result.Photo.taken | date:'dd/MM/yyyy HH:mm'}}</div>
 								</div>
 								<div class="row">
 									<div class="col-sm-3">Animals:</div>
@@ -300,53 +300,51 @@
 										<h4 class="modal-title">Graph Editor</h4>
 									</div>
 									<div class="modal-body">
-										<div class="container">
-											<div class= "row">
-												<div google-chart chart="chartObject" style="{{chartStyle}}"></div>
-											</div>
+										<div class= "row">
+											<div google-chart chart="chartObject" style="{{chartStyle}}"></div>
+										</div>
 
-											<div class="row">
-												<div class="col-xs-4">
-													<div class= "row">
-														<div class="form-group">
-															<label for="type" class="col-sm-2 control-label">Chart Type:</label>
-															<div class="col-sm-10">
-																<select class="form-control ng-pristine ng-valid" id="chartType" ng-model="chartObject.type" ng-change="chartSelectionChange()">
-																	<option ng-repeat="type in chartTypes" ng-value="type">{{type}}</option>
-																</select>
-															</div>
-														</div>
-													</div>
-													<div class= "row">
-														<div class="form-group">
-															<label for="x-axis" class="col-sm-2 control-label">x-axis Label:</label>
-															<div class="col-sm-10">
-																<select class="form-control ng-pristine ng-valid" id="x-axis" ng-model="xName" ng-change="chartSelectionChange();makeData();">
-																		<option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters" ng-value="filterName">
-																		</option>
-																		<option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
-																	
-																</select>
-															</div>
-														</div>
-													</div>
-													<div class="row">
-														<div class="form-group">
-															<label for="y-axis" class="col-sm-2 control-label">y-axis Label:</label>
-															<div class="col-sm-10">
-																<select class="form-control ng-pristine ng-valid" id="y-axis" ng-model="yName" ng-change="chartSelectionChange();makeData();">
-																		<option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters">
-																		</option>
-																		<option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
-																		<option value="countOfXaxis">COUNTOF({{readable(xName)}})</option>
-																	
-																</select>
-															</div>
+										<div class="row">
+											<div class="col-xs-8">
+												<div class= "row">
+													<div class="form-group">
+														<label for="type" class="col-sm-2 control-label">Chart Type:</label>
+														<div class="col-sm-10">
+															<select class="form-control ng-pristine ng-valid" id="chartType" ng-model="chartObject.type" ng-change="chartSelectionChange()">
+																<option ng-repeat="type in chartTypes" ng-value="type">{{type}}</option>
+															</select>
 														</div>
 													</div>
 												</div>
-												
+												<div class= "row">
+													<div class="form-group">
+														<label for="x-axis" class="col-sm-2 control-label">x-axis Label:</label>
+														<div class="col-sm-10">
+															<select class="form-control ng-pristine ng-valid" id="x-axis" ng-model="xName" ng-change="chartSelectionChange();makeData();">
+																	<option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters" ng-value="filterName">
+																	</option>
+																	<option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
+																
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="form-group">
+														<label for="y-axis" class="col-sm-2 control-label">y-axis Label:</label>
+														<div class="col-sm-10">
+															<select class="form-control ng-pristine ng-valid" id="y-axis" ng-model="yName" ng-change="chartSelectionChange();makeData();">
+																	<option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters">
+																	</option>
+																	<option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
+																	<option value="countOfXaxis">COUNTOF({{readable(xName)}})</option>
+																
+															</select>
+														</div>
+													</div>
+												</div>
 											</div>
+											
 										</div>
 									</div>
 									<div class="modal-footer">
@@ -367,16 +365,16 @@
 </div>
 
 
-<div id="{{result.photo_id}}" class="modal fade" role="dialog" ng-repeat="result in results">
+<div id="{{result.Photo.photo_id}}" class="modal fade" role="dialog" ng-repeat="result in results">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">{{result.upload_filename}}</h4>
+        <h4 class="modal-title">{{result.Photo.upload_filename}}</h4>
       </div>
       <div class="modal-body">
-      	<a ng-href="http://www.mammalweb.org/biodivimages/{{result.URL}}" target="_blank">
-        <img ng-src="http://www.mammalweb.org/biodivimages/{{result.URL}}" width=400>
+      	<a ng-href="http://www.mammalweb.org/biodivimages/{{result.Photo.URL}}" target="_blank">
+        <img ng-src="http://www.mammalweb.org/biodivimages/{{result.Photo.URL}}" width=400>
     </a>
       </div>
       <div class="modal-footer">

@@ -19,9 +19,10 @@ if ($result->num_rows > 0) {
     }
 } else {
     echo "0 results";
+    echo "\n";
 }
 
-echo count($classifications) . " entries retrieved";
+echo count($classifications) . " classifications retrieved";
 echo "\n";
 echo "\n";
 print_r($classifications);

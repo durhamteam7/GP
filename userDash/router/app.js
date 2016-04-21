@@ -192,15 +192,15 @@ userApp.animation('.fade-in-animation', function ($window) {
 userApp.factory('ajax', ['$http', function($http) {
     return {
     getPhotos: function(query,pageNum,pageSize) {
-      return $http.post(urls[0]+'photo?sequence=true&pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
+      return $http.post(urls[1]+'photo?sequence=true&pageNum='+pageNum+'&pageSize='+pageSize,query).success(function() {
       });
     },
     getPhotosCSV: function(query,isSequence){
-        return $http.post(urls[0]+'photo?output=csv&sequence='+isSequence,query).success(function() {
+        return $http.post(urls[1]+'photo?output=csv&sequence='+isSequence,query).success(function() {
       });
     },
     getOptions: function() {
-      return $http.get(urls[0]+'options').success(function() {
+      return $http.get(urls[1]+'options').success(function() {
       });
     },
     getFilters: function() {
