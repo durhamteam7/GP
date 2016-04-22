@@ -1,7 +1,7 @@
 
 var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart',"checklist-model",'datetimepicker','toggle-switch','ngAutocomplete','bw.paging']);
 
-
+var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/"
 
 var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 
@@ -65,7 +65,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 					var result = $scope.results[i];
 					var parts = result.Photo.dirname.split("/");
 
-					$scope.results[i].Photo.URL = parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.Photo.filename;
+					$scope.results[i].Photo.URL = mammalwebBaseURL + parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.Photo.filename;
 				}
 				$("#loader").fadeOut("slow");
 		});
