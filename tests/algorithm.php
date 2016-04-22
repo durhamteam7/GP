@@ -2,7 +2,7 @@
 
   #######################################
  ##                                     ##
-### implementation of swanson algorithm ###
+### Implementation of Swanson Algorithm ###
  ##                                     ##
   #######################################
 
@@ -150,7 +150,6 @@ class Swanson {
 	        array_push($all_outputs, $output);
 	        
 	    }
-
 		/* 
 		Finally, we loop through the array of all image's values and classify the photos all at once, row-by-row.
 	        We will classify a photo if it has been retired (decided) and then transfer the values/properties etc. into the
@@ -190,14 +189,22 @@ class Swanson {
 				$i++;
 	        }
 	    }
+	    
 	    # replace the last character with a semicolon -> ;
 	    $updateClassifications = substr($updateClassifications, 0, -1) . ";";
 
 	    #echo "Insert query\n";
 	    #echo $updateClassifications;
 	    #echo "\n";
-
-	    if ($i > 0) {
+	    
+	    /* 
+	    i.e. A test of if there were images that were retired and so needed to be classified
+	    We will check if the update of the classifcations with the image properties was successful or
+	    if it wasn't, and echo the appropriate message depending on the answer. 
+	    */
+	    
+	    if ($i > 0) 
+	    { 
 		    if ($this->mysqli->query($updateClassifications) === TRUE)
 		    {
 		        echo "Record updated successfully\n";
@@ -206,7 +213,7 @@ class Swanson {
 		    {
 		        echo "Error updating record: " . $this->mysqli->error . "\n";
 		    }
-		}
+	    }
 	}
 
 
