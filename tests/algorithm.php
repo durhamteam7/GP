@@ -131,6 +131,10 @@ class Swanson {
 	            "fraction_support" => $fraction_support,
 	            "fraction_blanks" => $fraction_blanks
 	        );
+	        /*
+	        This will print the image values in human-readable form from the array
+	        and illustrate the relationships in the array.
+	        */
 	        echo "\n";
 	        print_r($output);
 	        echo "\n";
