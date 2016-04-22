@@ -9,15 +9,19 @@ var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 adminApp.factory('ajax', ['$http', function($http) {
 	return {
     getPhotos: function(query,pageNum,pageSize,isSequence) {
-      return $http.post(urls[1]+'photo?pageNum='+pageNum+'&pageSize='+pageSize+'&sequence='+isSequence,query).success(function() {
+      return $http.post(urls[0]+'photo?pageNum='+pageNum+'&pageSize='+pageSize+'&sequence='+isSequence,query).success(function() {
       });
     },
     getPhotosCSV: function(query,isSequence){
-    	return $http.post(urls[1]+'photo?output=csv&sequence='+isSequence,query).success(function() {
+    	return $http.post(urls[0]+'photo?output=csv&sequence='+isSequence,query).success(function() {
       });
     },
     getOptions: function() {
-      return $http.get(urls[1]+'options').success(function() {
+      return $http.get(urls[0]+'options').success(function() {
+      });
+    },
+    getPersons: function() {
+      return $http.get(urls[0]+'persons').success(function() {
       });
     },
     getFilters: function() {
@@ -41,18 +45,15 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	$scope.currentPage = 1;
 	$scope.pageSize = 15;
 
-	$scope.users = [];
+	$scope.persons = [];
 
-	$scope.getUsers = function() {
-		$scope.users = [
-		{person_id:1,
-		species_rate:1,
-		gender_rate:1,
-		age_rate:1,
-		number_rate:1}
-		]};
+	$scope.getPersons = function() {
+		serverComm.getPersons().success(function(data) {
+			$scope.persons = data
+		})
+	}
 		
-	$scope.getUsers();
+	$scope.getPersons();
 
 	$scope.rowsShown = function() {
 		if ((($scope.currentPage-1) * $scope.pageSize) + $scope.pageSize < $scope.numResults) {
@@ -76,7 +77,6 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 				for (var i = 0; i < $scope.results.length; i++) {
 					var result = $scope.results[i];
 					var parts = result.Photo.dirname.split("/");
-
 					$scope.results[i].Photo.URL = mammalwebBaseURL + parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.Photo.filename;
 				}
 				$("#loader").fadeOut("slow");
