@@ -12,6 +12,10 @@ adminApp.factory('ajax', ['$http', function($http) {
       return $http.post(urls[0]+'photo?pageNum='+pageNum+'&pageSize='+pageSize+'&sequence='+isSequence,query).success(function() {
       });
     },
+    getFullPhotos: function(query,isSequence) {
+      return $http.post(urls[0]+'photo?sequence='+isSequence,query).success(function() {
+      });
+    },
     getPhotosCSV: function(query,isSequence){
     	return $http.post(urls[0]+'photo?output=csv&sequence='+isSequence,query).success(function() {
       });
@@ -35,10 +39,11 @@ adminApp.factory('ajax', ['$http', function($http) {
 adminApp.controller('MainController', ['$scope','ajax', function($scope,serverComm) {
 	$scope.results = []; //contains the results from the server
 	$scope.options = {};
+
+	$scope.fullResults = [];
 	
 
 	$scope.result = '';
-    $scope.options = {country:''};
     $scope.details = '';
 	
 	//PAGE functions
@@ -83,6 +88,15 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 		});
 	};
 
+
+	$scope.getFullResults = function(page){
+		$("#loader").fadeTo("fast", 0.7);
+		serverComm.getFullPhotos($scope.filters,$scope.isSequence).success(function(data) {
+				console.log("Data:",data);
+				$scope.fullResults = data.rows;
+				$("#loader").fadeOut("slow");
+		});
+	};
 	
 	
 	
@@ -203,8 +217,12 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
         }
 
         $scope.makeData = function(){
-        	console.log($scope.results);
+        	console.log($scope.fullResults);
 
+        	//if havn't pulled full results then copy in existing ones
+        	if ($scope.fullResults.length == 0){
+	        	$scope.fullResults = $scope.results;
+	        }
         	
         	//Stop if a variable is not defined
         	if (typeof $scope.xName == "undefined" || typeof $scope.yName == "undefined")	{
@@ -225,12 +243,12 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
 
           	//build dictionary
           	dataDict = {}
-          	for (i in $scope.results) {
+          	for (i in $scope.fullResults) {
           		console.log("loop")
-          		if(Array.isArray($scope.results[i][xNameSplit[0]])){
-          			for (var j = 0; j < $scope.results[i][xNameSplit[0]].length; j++)
+          		if(Array.isArray($scope.fullResults[i][xNameSplit[0]])){
+          			for (var j = 0; j < $scope.fullResults[i][xNameSplit[0]].length; j++)
 	          			{
-	          				xValue = getValue($scope.results[i][xNameSplit[0]][j][xNameSplit[1]],xField);
+	          				xValue = getValue($scope.fullResults[i][xNameSplit[0]][j][xNameSplit[1]],xField);
 	          				if(dataDict.hasOwnProperty(xValue))
 	          				{
 	          					dataDict[xValue]+=1;
@@ -242,7 +260,7 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
 	          			}
           		}
           		else{
-          			xValue = getValue($scope.results[i][xNameSplit[0]][xNameSplit[1]],xField);
+          			xValue = getValue($scope.fullResults[i][xNameSplit[0]][xNameSplit[1]],xField);
       				if(dataDict.hasOwnProperty(xValue))
       				{
       					dataDict[xValue]+=1;
@@ -280,7 +298,7 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
 
           $scope.chartObject.data.rows = [];
 
-          for (var i = 0; i < $scope.results.length; i++) {
+          for (var i = 0; i < $scope.fullResults.length; i++) {
 
           			//Deal with data containing arrays
           			loopX = 1;
@@ -290,17 +308,17 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
           			yChanged = false;
 
           			//Set loop conditions
-          			if (Array.isArray($scope.results[i][xNameSplit[0]])){
-          				loopX = $scope.results[i][xNameSplit[0]].length;
+          			if (Array.isArray($scope.fullResults[i][xNameSplit[0]])){
+          				loopX = $scope.fullResults[i][xNameSplit[0]].length;
           			}
           			else{
-          				$scope.results[i][xNameSplit[0]] = [$scope.results[i][xNameSplit[0]]];
+          				$scope.fullResults[i][xNameSplit[0]] = [$scope.fullResults[i][xNameSplit[0]]];
           				xChanged = true;
           			}
-          			if (Array.isArray($scope.results[i][yNameSplit[0]])){
-          				loopY = $scope.results[i][yNameSplit[0]].length;
+          			if (Array.isArray($scope.fullResults[i][yNameSplit[0]])){
+          				loopY = $scope.fullResults[i][yNameSplit[0]].length;
           			}else{
-          				$scope.results[i][yNameSplit[0]] = [$scope.results[i][yNameSplit[0]]]
+          				$scope.fullResults[i][yNameSplit[0]] = [$scope.fullResults[i][yNameSplit[0]]]
           				yChanged = true;
           			}
 
@@ -309,18 +327,18 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
           			{
           				for (var k = 0; k < loopY; k++)
 						{
-							xValue = getValue($scope.results[i][xNameSplit[0]][j][xNameSplit[1]],xField);
-							yValue = getValue($scope.results[i][yNameSplit[0]][k][yNameSplit[1]],yField);
+							xValue = getValue($scope.fullResults[i][xNameSplit[0]][j][xNameSplit[1]],xField);
+							yValue = getValue($scope.fullResults[i][yNameSplit[0]][k][yNameSplit[1]],yField);
 							$scope.chartObject.data.rows.push({c: [{v: xValue}, {v: yValue}]});
 						}
           			}
 
           			//Restore data structure
           			if (xChanged){
-          				$scope.results[i][xNameSplit[0]] = $scope.results[i][xNameSplit[0]][0];
+          				$scope.fullResults[i][xNameSplit[0]] = $scope.fullResults[i][xNameSplit[0]][0];
           			}
           			if(yChanged){
-          				$scope.results[i][yNameSplit[0]] = $scope.results[i][yNameSplit[0]][0];
+          				$scope.fullResults[i][yNameSplit[0]] = $scope.fullResults[i][yNameSplit[0]][0];
           			}
           }
 
