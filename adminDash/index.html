@@ -377,22 +377,18 @@
 												<table class="table table-bordered table-hover">
 									                <thead>
 									                    <tr>
-									                        <th ng-repeat="(key,value) in users[0]">
+									                        <th ng-repeat="(key,value) in persons[0]">
 								                                {{ readable(key) }}
 									                        </th>
 									                    </tr>
 									                </thead>
 									                <tbody>
-									                	<tr ng-repeat="u in users">
-									                		<td ng-repeat="(key,value) in u">
+									                	<tr ng-repeat="p in persons">
+									                		<td ng-repeat="(key,value) in p">
 									                			{{ value }}
 									                		</td>
 									                	</tr>
 									                </tbody>
-
-
-
-
 									            </table>
 											</div>
 										</div>
