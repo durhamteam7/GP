@@ -1,5 +1,7 @@
 <?php
 
+# These are some of the functions written in PHP to implement the Swanson Algorithm
+
 # Returns a dictionary giving the vote tallies for a subject
 # Input: a list of classifications lines, each of which is a list
 # Output: a dictionary with species as the key and the number of votes
