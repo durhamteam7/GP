@@ -194,6 +194,9 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
         	if (field.type == "checkboxes"){
         		return $scope.getOptionName(val);
         	}
+        	else if(field.type == "dateTime"){
+        		return new Date(val);
+        	}
         	else{
         		return val;
         	}
@@ -202,7 +205,13 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
         $scope.makeData = function(){
         	console.log($scope.results);
 
-		var typeMap = {"checkboxes":"string","slider":"number","boolean":"String"};
+        	
+        	//Stop if a variable is not defined
+        	if (typeof $scope.xName == "undefined" || typeof $scope.yName == "undefined")	{
+        		return;
+        	}
+
+		var typeMap = {"checkboxes":"string","slider":"number","boolean":"number","dateTime":"datetime","coord":"number"};
 
           if ($scope.yName == "countOfXaxis"){
           	xNameSplit = $scope.xName.split(".");

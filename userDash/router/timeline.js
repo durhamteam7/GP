@@ -1,5 +1,5 @@
 
-userApp.controller('TimelineCtrl',['$scope','$timeout', 'VisDataSet', function($scope, $timeout, VisDataSet) {
+userApp.controller('TimelineCtrl',['$scope','$timeout', 'VisDataSet','debounce', function($scope, $timeout, VisDataSet,debounce) {
 
         var graph2d;
 
@@ -173,16 +173,21 @@ userApp.controller('TimelineCtrl',['$scope','$timeout', 'VisDataSet', function($
          * @param period
          */
         $scope.onRangeChanged = function (period) {
-            //$scope.filters["Photo"]["taken"]["minValue"] = period.start;
-            //$scope.filters["Photo"]["taken"]["maxValue"] = period.end;
+            debounce.debounce($scope.updateTimeRange,1000);
+            $scope.period = period
         };
 
-        $scope.$watch("results",function(newVal,oldVal){
+        $scope.updateTimeRange = function(){
+            console.log("FUNCTHJBEF")
+            $scope.filters["Photo"]["taken"]["minValue"] = $scope.period.start;
+            $scope.filters["Photo"]["taken"]["maxValue"] = $scope.period.end;
+        }
 
+        $scope.$watch("results",function(newVal,oldVal){
             var now = moment().minutes(0).seconds(0).milliseconds(0);
 
             // create a dataset with items
-            var items = new VisDataSet();
+            items = new VisDataSet();
 
             for (i in $scope.results) {
                 var start = $scope.results[i].taken;
@@ -193,21 +198,19 @@ userApp.controller('TimelineCtrl',['$scope','$timeout', 'VisDataSet', function($
                     type: 'box'
                 });
             }
+            console.log("REUSLTS")
+            console.log($scope.timelineData)
 
-            $scope.timelineData = {
-                    items: items
-            }
-
-            /*if (typeof $scope.timelineData == "undefined" || typeof $scope.timelineData.items == "undefined"){
-                $scope.timelineData = {
-                    items: items
-                }
+            if ($scope.results.length > 0){
+            if(graph2d !== undefined){
+                $scope.timelineData = {items:items}
             }
             else{
-                $scope.timelineData["items"] = items;      
+                console.log("resultsss",$scope.results)
+                $scope.timelineData = {items:items}
             }
-*/
-
+        }
+            console.log($scope.timelineData)
 
         });
         
