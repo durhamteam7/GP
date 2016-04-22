@@ -5,23 +5,25 @@ var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/"
 
 var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 
+var env = 1; // GLOBAL VARIABLE FOR DEV ENVIRONMENT
+
 // Ajax Service
 adminApp.factory('ajax', ['$http', function($http) {
 	return {
     getPhotos: function(query,pageNum,pageSize,isSequence) {
-      return $http.post(urls[0]+'photo?pageNum='+pageNum+'&pageSize='+pageSize+'&sequence='+isSequence,query).success(function() {
+      return $http.post(urls[env]+'photo?pageNum='+pageNum+'&pageSize='+pageSize+'&sequence='+isSequence,query).success(function() {
       });
     },
     getPhotosCSV: function(query,isSequence){
-    	return $http.post(urls[0]+'photo?output=csv&sequence='+isSequence,query).success(function() {
+    	return $http.post(urls[env]+'photo?output=csv&sequence='+isSequence,query).success(function() {
       });
     },
     getOptions: function() {
-      return $http.get(urls[0]+'options').success(function() {
+      return $http.get(urls[env]+'options').success(function() {
       });
     },
     getPersons: function() {
-      return $http.get(urls[0]+'persons').success(function() {
+      return $http.get(urls[env]+'persons').success(function() {
       });
     },
     getFilters: function() {
@@ -46,12 +48,23 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	$scope.pageSize = 15;
 
 	$scope.persons = [];
-
 	$scope.getPersons = function() {
 		serverComm.getPersons().success(function(data) {
-			$scope.persons = data.rows
-		})
-	}
+			$scope.persons = data.rows;
+            for (var i = 0; i < $scope.persons.length; i++) {
+                $scope.persons[i].weighted_average = (2*$scope.persons[i].species_rate+$scope.persons[i].gender_rate+$scope.persons[i].age_rate+$scope.persons[i].number_rate)/5;
+            }
+            $scope.personTableOrder = [
+                "person_id",
+                "number_of_classifications",
+                "weighted_average",
+                "species_rate",
+                "gender_rate",
+                "age_rate",
+                "number_rate"
+            ];
+		});
+	};
 		
 	$scope.getPersons();
 

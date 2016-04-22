@@ -17,10 +17,10 @@ class Swanson {
 
 	private $blank_animal = 86;
 
-	private $animal_limiting = true;
-	private $get_animal_limit = 50000;
-	private $photo_limiting = true;
-	private $get_photo_limit = 50000;
+	private $animal_limiting = false; # will be false in the end
+	private $get_animal_limit = 1;
+	private $photo_limiting = false; # will be false in the end
+	private $get_photo_limit = 1;
 
 	function __construct() {
 		$this->setupDB();
@@ -514,6 +514,8 @@ class Swanson {
 	}
 
 	function goldClassifiedComparison() {
+		$gold_standard = $this->getGoldStandard();
+
 		// query to get the species and photo_id for each classified image
 		$sql = "SELECT species, photo_id FROM Classification;";
 
@@ -573,8 +575,9 @@ class Swanson {
 				}
 			}
 		}
-
-		echo "Correctness against gold standard = " . ($same / ($same + $different));
+		if (($same + $different) > 0) {
+			echo "Correctness against gold standard = " . ($same / ($same + $different));
+		}
 		echo "\n";
 		echo "<br>";
 		echo "\n";
@@ -634,19 +637,22 @@ class Swanson {
 		    $age_rate = $this->getUserCorrectnessRate("age", $subject, $classifications);
 		    $number_rate = $this->getUserCorrectnessRate("number", $subject, $classifications);
 
+		    $number_of_classifications = count($subject);
+
 		    echo "$person_id has $species_rate, $gender_rate, $age_rate, $number_rate";
 		    echo "\n";
-		    echo "on " . count($subject) . " classifications";
+		    echo "on " . $number_of_classifications . " classifications";
 		    echo "\n";
 
 		    #Output -- Needs to be made more efficient using the same method as in the Algorithm.PHP file.
-		    $updatePersonStats = "INSERT INTO PersonStats (person_id, species_rate, gender_rate, age_rate, number_rate) " .
-		    "VALUES ('$person_id', '$species_rate', '$gender_rate', '$age_rate', '$number_rate') " .
+		    $updatePersonStats = "INSERT INTO PersonStats (person_id, species_rate, gender_rate, age_rate, number_rate, number_of_classifications) " .
+		    "VALUES ('$person_id', '$species_rate', '$gender_rate', '$age_rate', '$number_rate', '$number_of_classifications') " .
 		    "ON DUPLICATE KEY UPDATE person_id=person_id," .
 		    "species_rate='$species_rate'," .
 		    "gender_rate='$gender_rate'," .
 		    "age_rate='$age_rate'," .
-		    "number_rate='$number_rate';";
+		    "number_rate='$number_rate'," .
+		    "number_of_classifications='$number_of_classifications';";
 
 		    #echo $updatePersonStats . "\n";
 

@@ -378,27 +378,28 @@
 										<button type="button" class="close" data-dismiss="modal">&times;</button>
 										<h4 class="modal-title">Users</h4>
 									</div>
-									<div class="modal-body" style="height:80%;overflow:scroll">
+									<div class="modal-body" style="height:80%;overflow:scroll;margin-bottom:15px;">
 										<div class="row">
 											<div class="col-xs-12">
 												<table class="table table-bordered table-hover">
 									                <thead>
 									                    <tr>
-									                    	<th>
-								                                Person
-									                        </th>
-									                        <th ng-repeat="(key,value) in persons[0]" ng-if="key!='person_id'">
+									                        <th ng-repeat="key in personTableOrder">
 								                                {{ readable(key) }}
 									                        </th>
 									                    </tr>
 									                </thead>
 									                <tbody>
-									                	<tr ng-repeat="p in persons">
-									                		<td>
+									                	<tr ng-repeat="p in persons | orderBy :'weighted_average'">
+									                		<td class="col-xs-1">
 									                			{{p.person_id}}
 									                		</td>
-									                		<td ng-repeat="(key,value) in p" ng-if="key!='person_id'">
+									                		<td class="col-xs-1">
+									                			{{p.number_of_classifications}}
+									                		</td>
+									                		<td ng-repeat="key in personTableOrder" ng-if="key!='person_id' && key!='number_of_classifications'" class="col-xs-2">
 									                			<div class="progress">
+									                			  {{value=p[key];""}}
 																  <div class="progress-bar" role="progressbar" aria-valuenow="{{value}}"
 																  aria-valuemin="0" aria-valuemax="1" style="width:{{value*100}}%;background-color:{{
 																  value==1?'#33cc33':(
