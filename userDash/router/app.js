@@ -36,6 +36,12 @@ var mapController = function($scope,$filter) {
 		    return html;
 		}
 
+        var seed = 1;
+        function random() {
+            var x = Math.sin(seed++) * 10000;
+            return x - Math.floor(x);
+        }
+
         $scope.$watch("results",function(newVal,oldVal){
 
 
@@ -43,9 +49,10 @@ var mapController = function($scope,$filter) {
         	for (var i = 0; i < $scope.results.length; i++)
         	{
 				if ($scope.results[i].Site != null){
+                    seed = $scope.results[i].Photo.photo_id
 		        	$scope.markers["m"+i] = {
-		            lat: $scope.results[i].Site.lat+(0.5-Math.random())*0.001,
-		            lng: $scope.results[i].Site.lon+(0.5-Math.random())*0.001,
+		            lat: $scope.results[i].Site.lat+(0.5-random())*0.001,
+		            lng: $scope.results[i].Site.lon+(0.5-random())*0.001,
 		            message: getHTML($scope.results[i]),
 		            icon:{
 		              iconUrl: '../../animalIcons/'+$scope.results[i].Classification[0].species+'.png',
