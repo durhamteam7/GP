@@ -132,7 +132,7 @@ class Swanson {
 	            "fraction_blanks" => $fraction_blanks
 	        );
 	        /*
-	        This will print the image values in human-readable form from the array
+	        This will print the image values in human-readable form takne from the array
 	        and illustrate the relationships in the array.
 	        */
 	        echo "\n";
@@ -140,6 +140,13 @@ class Swanson {
 	        echo "\n";
 
 	        # Adding into the array of all image's values
+	        
+	        /*
+	        The array 'all_outputs' will be the container for each image and therefore its
+	        properties. By keeping all the images and their respective properties in this array,
+	        we will be able to access and tranfer all properties and values of each feature at once
+	        and insert them into our database more efficiently.
+	        */
 	        array_push($all_outputs, $output);
 	        
 	    }
