@@ -235,7 +235,7 @@
 								<div class="row">
 									<div class="col-sm-4">
 										<a data-toggle="modal" data-target="#{{result.Photo.photo_id}}" href="javascript:void(0)">
-											<img ng-src="http://www.mammalweb.org/biodivimages/{{result.Photo.URL}}" width=150>
+											<img ng-src="{{result.Photo.URL}}" width=150>
 										</a>
 									</div>
 								</div>
@@ -373,8 +373,8 @@
         <h4 class="modal-title">{{result.Photo.upload_filename}}</h4>
       </div>
       <div class="modal-body">
-      	<a ng-href="http://www.mammalweb.org/biodivimages/{{result.Photo.URL}}" target="_blank">
-        <img ng-src="http://www.mammalweb.org/biodivimages/{{result.Photo.URL}}" width=400>
+      	<a ng-href="{{result.Photo.URL}}" target="_blank">
+        <img ng-src="{{result.Photo.URL}}" width=400>
     </a>
       </div>
       <div class="modal-footer">
