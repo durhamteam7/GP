@@ -158,7 +158,7 @@ class Swanson {
 	        for the photos which have yet to be retired (decided).
 	        */
 	        
-	    $i = 0;
+	    $i = 0; // A counter to keep track of the number of images we classify.
 	    $updateClassifications = "INSERT INTO Classification " .
 	                            "(photo_id, number_of_classifications, species, gender, age, number, evenness, fraction_support, fraction_blanks, timestamp) " . 
 	                            "VALUES ";
@@ -186,7 +186,7 @@ class Swanson {
 				Concatenating properties of image (including ID) with the current contents of the database.
 				*/
 				$updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now()),";
-				$i++;
+				$i++; // Incremented after every classification of image
 	        }
 	    }
 	    
@@ -343,7 +343,8 @@ class Swanson {
 	# and compares how well the user classifies
 	# INPUT: the key to check (species, gender, age, number), users classifications, all decided classifications
 	# OUTPUT: the correctness rate the user has for that key
-	function getUserCorrectnessRate($key, $subject, $classifications) {
+	function getUserCorrectnessRate($key, $subject, $classifications) 
+	{
 	    $correct = 0;
 	    $all = 0;
 
