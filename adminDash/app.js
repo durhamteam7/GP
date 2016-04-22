@@ -1,7 +1,7 @@
 
 var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart',"checklist-model",'datetimepicker','toggle-switch','ngAutocomplete','bw.paging']);
 
-
+var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/"
 
 var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 
@@ -9,15 +9,19 @@ var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 adminApp.factory('ajax', ['$http', function($http) {
 	return {
     getPhotos: function(query,pageNum,pageSize,isSequence) {
-      return $http.post(urls[1]+'photo?pageNum='+pageNum+'&pageSize='+pageSize+'&sequence='+isSequence,query).success(function() {
+      return $http.post(urls[0]+'photo?pageNum='+pageNum+'&pageSize='+pageSize+'&sequence='+isSequence,query).success(function() {
       });
     },
     getPhotosCSV: function(query,isSequence){
-    	return $http.post(urls[1]+'photo?output=csv&sequence='+isSequence,query).success(function() {
+    	return $http.post(urls[0]+'photo?output=csv&sequence='+isSequence,query).success(function() {
       });
     },
     getOptions: function() {
-      return $http.get(urls[1]+'options').success(function() {
+      return $http.get(urls[0]+'options').success(function() {
+      });
+    },
+    getPersons: function() {
+      return $http.get(urls[0]+'persons').success(function() {
       });
     },
     getFilters: function() {
@@ -40,7 +44,16 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	//PAGE functions
 	$scope.currentPage = 1;
 	$scope.pageSize = 15;
-	
+
+	$scope.persons = [];
+
+	$scope.getPersons = function() {
+		serverComm.getPersons().success(function(data) {
+			$scope.persons = data
+		})
+	}
+		
+	$scope.getPersons();
 
 	$scope.rowsShown = function() {
 		if ((($scope.currentPage-1) * $scope.pageSize) + $scope.pageSize < $scope.numResults) {
@@ -63,9 +76,8 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 				$scope.numResults = data.count;
 				for (var i = 0; i < $scope.results.length; i++) {
 					var result = $scope.results[i];
-					var parts = result.dirname.split("/");
-
-					$scope.results[i].URL = parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.filename;
+					var parts = result.Photo.dirname.split("/");
+					$scope.results[i].Photo.URL = mammalwebBaseURL + parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.Photo.filename;
 				}
 				$("#loader").fadeOut("slow");
 		});
@@ -182,6 +194,9 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
         	if (field.type == "checkboxes"){
         		return $scope.getOptionName(val);
         	}
+        	else if(field.type == "dateTime"){
+        		return new Date(val);
+        	}
         	else{
         		return val;
         	}
@@ -190,7 +205,13 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
         $scope.makeData = function(){
         	console.log($scope.results);
 
-		var typeMap = {"checkboxes":"string","slider":"number","boolean":"String"};
+        	
+        	//Stop if a variable is not defined
+        	if (typeof $scope.xName == "undefined" || typeof $scope.yName == "undefined")	{
+        		return;
+        	}
+
+		var typeMap = {"checkboxes":"string","slider":"number","boolean":"number","dateTime":"datetime","coord":"number"};
 
           if ($scope.yName == "countOfXaxis"){
           	xNameSplit = $scope.xName.split(".");
@@ -310,7 +331,7 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
         };
 
 
-    $scope.chartStyle = "height:300px;width:300px";
+    $scope.chartStyle = "height:300px;width:100%";
 
     $scope.chartObject = {
 	  "type": "Table",
@@ -340,8 +361,4 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
 	  },
 	  "formatters": {}
 	}
-}]);
-
-adminApp.controller('CSVController', ['$scope', function($scope) {
-	$scope.var1 = "in search results";
 }]);

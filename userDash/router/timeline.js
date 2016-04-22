@@ -1,5 +1,5 @@
 
-userApp.controller('TimelineCtrl',['$scope','$timeout', 'VisDataSet', function($scope, $timeout, VisDataSet) {
+userApp.controller('TimelineCtrl',['$scope','$timeout', 'VisDataSet','$debounce', function($scope, $timeout, VisDataSet,$debounce) {
 
         var graph2d;
 
@@ -172,20 +172,28 @@ userApp.controller('TimelineCtrl',['$scope','$timeout', 'VisDataSet', function($
          * This is called once at the end of zooming and scrolling
          * @param period
          */
+
+
         $scope.onRangeChanged = function (period) {
-            //$scope.filters["Photo"]["taken"]["minValue"] = period.start;
-            //$scope.filters["Photo"]["taken"]["maxValue"] = period.end;
+            console.log(updateTimeRange);
+            $debounce(updateTimeRange, 1000);
+            $scope.period = period
         };
 
-        $scope.$watch("results",function(newVal,oldVal){
+        var updateTimeRange = function(){
+            console.log("FUNCTHJBEF")
+            $scope.filters["Photo"]["taken"]["minValue"] = $scope.period.start;
+            $scope.filters["Photo"]["taken"]["maxValue"] = $scope.period.end;
+        }
 
+        $scope.$watch("results",function(newVal,oldVal){
             var now = moment().minutes(0).seconds(0).milliseconds(0);
 
             // create a dataset with items
-            var items = new VisDataSet();
+            items = new VisDataSet();
 
             for (i in $scope.results) {
-                var start = $scope.results[i].taken;
+                var start = $scope.results[i].Photo.taken;
                 items.add({
                     id: i,
                     content: '<img src="../../animalIcons/'+$scope.results[i].Classification[0].species+'.png" height=30>',
@@ -193,21 +201,19 @@ userApp.controller('TimelineCtrl',['$scope','$timeout', 'VisDataSet', function($
                     type: 'box'
                 });
             }
+            console.log("REUSLTS")
+            console.log($scope.timelineData)
 
-            $scope.timelineData = {
-                    items: items
-            }
-
-            /*if (typeof $scope.timelineData == "undefined" || typeof $scope.timelineData.items == "undefined"){
-                $scope.timelineData = {
-                    items: items
-                }
+            if ($scope.results.length > 0){
+            if(graph2d !== undefined){
+                $scope.timelineData = {items:items}
             }
             else{
-                $scope.timelineData["items"] = items;      
+                console.log("resultsss",$scope.results)
+                $scope.timelineData = {items:items}
             }
-*/
-
+        }
+            console.log($scope.timelineData)
 
         });
         
@@ -232,3 +238,78 @@ userApp.controller('TimelineCtrl',['$scope','$timeout', 'VisDataSet', function($
         
     }]);
 
+
+
+userApp.factory('$debounce', ['$rootScope', '$browser', '$q', '$exceptionHandler',
+        function($rootScope,   $browser,   $q,   $exceptionHandler) {
+            var deferreds = {},
+                methods = {},
+                uuid = 0;
+
+            function debounce(fn, delay, invokeApply) {
+                var deferred = $q.defer(),
+                    promise = deferred.promise,
+                    skipApply = (angular.isDefined(invokeApply) && !invokeApply),
+                    timeoutId, cleanup,
+                    methodId, bouncing = false;
+
+                // check we dont have this method already registered
+                angular.forEach(methods, function(value, key) {
+                    if(angular.equals(methods[key].fn, fn)) {
+                        bouncing = true;
+                        methodId = key;
+                    }
+                });
+
+                // not bouncing, then register new instance
+                if(!bouncing) {
+                    methodId = uuid++;
+                    methods[methodId] = {fn: fn};
+                } else {
+                    // clear the old timeout
+                    deferreds[methods[methodId].timeoutId].reject('bounced');
+                    $browser.defer.cancel(methods[methodId].timeoutId);
+                }
+
+                var debounced = function() {
+                    // actually executing? clean method bank
+                    delete methods[methodId];
+
+                    try {
+                        deferred.resolve(fn());
+                    } catch(e) {
+                        deferred.reject(e);
+                        $exceptionHandler(e);
+                    }
+
+                    if (!skipApply) $rootScope.$apply();
+                };
+
+                timeoutId = $browser.defer(debounced, delay);
+
+                // track id with method
+                methods[methodId].timeoutId = timeoutId;
+
+                cleanup = function(reason) {
+                    delete deferreds[promise.$$timeoutId];
+                };
+
+                promise.$$timeoutId = timeoutId;
+                deferreds[timeoutId] = deferred;
+                promise.then(cleanup, cleanup);
+
+                return promise;
+            }
+
+
+            // similar to angular's $timeout cancel
+            debounce.cancel = function(promise) {
+                if (promise && promise.$$timeoutId in deferreds) {
+                    deferreds[promise.$$timeoutId].reject('canceled');
+                    return $browser.defer.cancel(promise.$$timeoutId);
+                }
+                return false;
+            };
+
+            return debounce;
+    }]);
