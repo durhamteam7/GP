@@ -8,6 +8,8 @@
 
 class Swanson {
 
+	private $mysqli;
+
 	private $blank_condition = 1;		#5
 	private $consensus_condition = 1;	#10
 	private $complete_condition = 2;	#25
@@ -15,8 +17,35 @@ class Swanson {
 
 	private $blank_animal = 86;
 
-	function main($data, $mysqli) {
+	private $animal_limiting = true;
+	private $get_animal_limit = 50000;
+	private $photo_limiting = true;
+	private $get_photo_limit = 50000;
 
+	function __construct() {
+		$this->setupDB();
+	}
+
+	function __destruct() {
+		$this->mysqli->close();
+	}
+
+	function setupDB() {
+		$servername = "db4free.net";
+		$username = "mammalweb";
+		$password = "aliSwans0n";
+		$db = "mammalweb";
+
+		// Create connection
+		$this->mysqli = new mysqli($servername, $username, $password, $db);
+
+		// Check connection
+		if ($this->mysqli->connect_error) {
+		    die("Connection failed: " . $this->mysqli->connect_error);
+		}
+	}
+
+	function main($data) {
 		# This array will contain all arrays of image
 		# values once the while loop below has completed.
 		$all_outputs = array();
@@ -113,12 +142,12 @@ class Swanson {
 	    # For now, we only classify a photo if it has been retired.
 	        # The consequence is that we do not store evenness values etc.
 	        # for photos which have yet to be retired (decided).
+	    $i = 0;
 	    $updateClassifications = "INSERT INTO Classification " .
 	                            "(photo_id, number_of_classifications, species, gender, age, number, evenness, fraction_support, fraction_blanks, timestamp) " . 
 	                            "VALUES ";
 	    foreach ($all_outputs as $output)
 	    {
-
 	        if ($output["retired"]) 
 	        {
 	        	$Cphoto_id = $output["photo_id"];
@@ -131,24 +160,27 @@ class Swanson {
 	        	$Cfraction_support = $output["fraction_support"];
 	        	$Cfraction_blanks = $output["fraction_blanks"];
 
-				$updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now()), ";
+				$updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now()),";
+				$i++;
 	        }
 	    }
 	    # replace the last character with a semicolon -> ;
-	    $updateClassifications = substr($updateClassifications, 0, -2) . ";";
+	    $updateClassifications = substr($updateClassifications, 0, -1) . ";";
 
 	    #echo "Insert query\n";
 	    #echo $updateClassifications;
 	    #echo "\n";
 
-	    if ($mysqli->query($updateClassifications) === TRUE)
-	    {
-	        echo "Record updated successfully\n";
-	    } 
-	    else 
-	    {
-	        echo "Error updating record: " . $mysqli->error . "\n";
-	    }
+	    if ($i > 0) {
+		    if ($this->mysqli->query($updateClassifications) === TRUE)
+		    {
+		        echo "Record updated successfully\n";
+		    } 
+		    else 
+		    {
+		        echo "Error updating record: " . $this->mysqli->error . "\n";
+		    }
+		}
 	}
 
 
@@ -304,6 +336,340 @@ class Swanson {
 	        $rate = $correct / $all;
 	    }
 	    return $rate;
+	}
+
+	function getAnimals($classified, $photo_ids) {
+		// QUERY
+		$sql = "SELECT * FROM Animal ORDER BY photo_id";
+		if ($this->animal_limiting) {
+			$sql .= " DESC LIMIT $this->get_animal_limit";
+		}
+		$sql .= ";";
+
+		// execute query
+		$result = $this->mysqli->query($sql);
+
+		$data = [];
+		$all_data = [];
+
+		// process result
+		if ($result->num_rows > 0) {
+		    while($row = $result->fetch_assoc()) {
+		        if (!in_array($row["photo_id"], $classified)) {
+		            if (in_array($row["photo_id"], $photo_ids)) {
+		                $data[] = $row;
+		            }
+		        }
+		        $all_data[] = $row;
+		    }
+		} else {
+		    echo "0 results";
+		    echo "\n";
+		}
+
+		echo count($data) . " animals retrieved";
+		echo "\n";
+		echo "\n";
+
+		return [$data, $all_data];
+	}
+
+	function getClassified() {
+		// QUERY
+		$sql = "SELECT photo_id FROM Classification;";
+
+		// execute query
+		$result = $this->mysqli->query($sql);
+
+		$classified = [];
+
+		// process result
+		if ($result->num_rows > 0) {
+		    while($row = $result->fetch_assoc()) {
+		        $classified[] = $row["photo_id"];
+		    }
+		} else {
+		    echo "0 results";
+		    echo "\n";
+		}
+
+		echo "Getting already classified photo_ids";
+		echo "\n";
+		echo count($classified) . " classified entries retrieved";
+		echo "\n";
+		print_r($classified);
+		echo "\n";
+
+		return $classified;
+	}
+
+	function getClassifications() {
+		// QUERY
+		$sql = "SELECT * FROM Classification;";
+
+		// execute query
+		$result = $this->mysqli->query($sql);
+
+		$classifications = [];
+
+		// process result
+		if ($result->num_rows > 0) {
+		    while($row = $result->fetch_assoc()) {
+		        $classifications[] = $row;
+		    }
+		} else {
+		    echo "0 results";
+		    echo "\n";
+		}
+
+		echo count($classifications) . " classifications retrieved";
+		echo "\n";
+		echo "\n";
+		print_r($classifications);
+		echo "\n";
+
+		return $classifications;
+	}
+
+	function getPhotos() {
+		// QUERY
+		$sql = "SELECT * FROM Photo ORDER BY photo_id";
+		if ($this->photo_limiting) {
+			$sql .= " DESC LIMIT $this->get_photo_limit";
+		}
+		$sql .= ";";
+
+		// execute query
+		$result = $this->mysqli->query($sql);
+
+		$photo_ids = [];
+
+		// process result
+		if ($result->num_rows > 0) {
+		    while($row = $result->fetch_assoc()) {
+		        $photo_ids[] = $row["photo_id"];
+		    }
+		} else {
+		    echo "0 results";
+		    echo "\n";
+		}
+
+		echo count($photo_ids) . " photo_ids retrieved";
+		echo "\n";
+		print_r($photo_ids);
+		echo "\n";
+		echo "\n";
+
+		return $photo_ids;
+	}
+
+	function getPersonStats() {
+		// QUERY
+		$sql = "SELECT * FROM PersonStats;";
+
+		// execute query
+		$result = $this->mysqli->query($sql);
+
+		$person_stats = [];
+
+		// process result
+		if ($result->num_rows > 0) {
+		    while($row = $result->fetch_assoc()) {
+		        $person_stats[] = $row;
+		    }
+		} else {
+		    echo "0 results";
+		    echo "\n";
+		}
+
+		echo count($person_stats) . " person stats retrieved";
+		echo "\n";
+		echo "\n";
+		print_r($person_stats);
+		echo "\n";
+
+		return $person_stats;
+	}
+
+	function getGoldStandard() {
+		// SAMPLE QUERY
+		$sql = "SELECT * FROM Animal WHERE person_id = 311 ORDER BY photo_id ASC;";
+
+		// execute query
+		$result = $this->mysqli->query($sql);
+
+		$gold_standard = [];
+
+		// process result
+		if ($result->num_rows > 0) {
+		    while($row = $result->fetch_assoc()) {
+		        $gold_standard[] = $row;
+		    }
+		} else {
+		    echo "0 results";
+		    echo "\n";
+		}
+
+		return $gold_standard;
+	}
+
+	function goldClassifiedComparison() {
+		// query to get the species and photo_id for each classified image
+		$sql = "SELECT species, photo_id FROM Classification;";
+
+		// execute query
+		$result = $this->mysqli->query($sql);
+
+		$classifications = [];
+
+		// process result into an array with the photo_id as the key and the species as the value
+		if($result->num_rows > 0)
+		{
+			while($row = $result->fetch_assoc())
+			{
+				$classifications[$row[photo_id]] = $row[species];
+			}
+		}
+		else
+		{
+			echo "0 results <br>";
+			echo "\n";
+		}
+
+		/*
+		echo '<pre>';
+		print_r($classifications);
+		echo '</pre>';
+		*/
+
+		//compare the gold standard and the classified species in each photo
+		$same = 0;
+		$different = 0;
+		$notClassified = 0;
+
+		$different_classifications = array();
+
+		for($x=0; $x<count($gold_standard); $x++)
+		{
+			$photo_id = $gold_standard[$x][photo_id];
+			# Ignore "Don't know" classifications
+			if (!in_array($gold_standard[$x][species], array(96, 97)))
+			{
+				if (array_key_exists($photo_id, $classifications))
+				{
+					if ($classifications[$photo_id] == $gold_standard[$x][species])
+					{
+						$same++;
+					}
+					else
+					{
+						$different++;
+						$different_classifications[] = $photo_id;
+					}
+				}
+				else
+				{
+					$notClassified++;
+				}
+			}
+		}
+
+		echo "Correctness against gold standard = " . ($same / ($same + $different));
+		echo "\n";
+		echo "<br>";
+		echo "\n";
+		echo "same results = ".$same;
+		echo "\n";
+		echo "<br>";
+		echo "\n";
+		echo "different results = ".$different;
+		echo "\n";
+		echo "<br>";
+		echo "\n";
+		echo "not classified = ".$notClassified;
+		echo "\n";
+		echo "<br>";
+		echo "\n";
+		echo "photo_ids where it differs:";
+		echo "\n";
+		print_r($different_classifications);
+		echo "\n";
+		echo "<br>";
+		echo "\n";
+		echo "\n";
+	}
+
+	function rateUsers($all_data, $classifications) {
+		# assume we have $all_data
+		echo "Calculating the correctness rate of each user";
+		echo "\n";
+		echo "species, gender, age, number";
+		echo "\n";
+		echo "\n";
+
+		# Sorts the all_data array based on person_id
+		usort($all_data, function ($item1, $item2) {
+		    if ($item1['person_id'] == $item2['person_id']) return 0;
+		    return $item1['person_id'] < $item2['person_id'] ? -1 : 1;
+		});
+
+		while (count($all_data) > 0) {
+
+		    # populate the subject variable with all classifications for one photo
+		    # subject will contain all rows with that photo_id
+		    $subject = array(array_pop($all_data));
+		    while ($all_data[count($all_data) - 1]["person_id"] == $subject[0]["person_id"]) {
+		        $subject[] = array_pop($all_data);
+		    }
+
+		    usort($subject, function ($item1, $item2) {
+		        if ($item1['photo_id'] == $item2['photo_id']) return 0;
+		        return $item1['photo_id'] < $item2['photo_id'] ? -1 : 1;
+		    });
+
+		    $person_id = $subject[0]["person_id"];
+
+		    $species_rate = $this->getUserCorrectnessRate("species", $subject, $classifications);
+		    $gender_rate = $this->getUserCorrectnessRate("gender", $subject, $classifications);
+		    $age_rate = $this->getUserCorrectnessRate("age", $subject, $classifications);
+		    $number_rate = $this->getUserCorrectnessRate("number", $subject, $classifications);
+
+		    echo "$person_id has $species_rate, $gender_rate, $age_rate, $number_rate";
+		    echo "\n";
+		    echo "on " . count($subject) . " classifications";
+		    echo "\n";
+
+		    #Output -- Needs to be made more efficient using the same method as in the Algorithm.PHP file.
+		    $updatePersonStats = "INSERT INTO PersonStats (person_id, species_rate, gender_rate, age_rate, number_rate) " .
+		    "VALUES ('$person_id', '$species_rate', '$gender_rate', '$age_rate', '$number_rate') " .
+		    "ON DUPLICATE KEY UPDATE person_id=person_id," .
+		    "species_rate='$species_rate'," .
+		    "gender_rate='$gender_rate'," .
+		    "age_rate='$age_rate'," .
+		    "number_rate='$number_rate';";
+
+		    #echo $updatePersonStats . "\n";
+
+		    if ($this->mysqli->query($updatePersonStats) === TRUE) {
+		        echo "Record updated successfully";
+		        echo "\n";
+		    } else {
+		        echo "Error updating record: " . $this->mysqli->error;
+		        echo "\n";
+		    }
+		}
+	}
+
+	function emptyTable($table_name) {
+		$emptyTable = "TRUNCATE $table_name;";
+
+		if ($this->mysqli->query($emptyTable) === TRUE) {
+		    echo "Record updated successfully";
+		    echo "\n";
+		} else {
+		    echo "Error updating record: " . $this->mysqli->error;
+		    echo "\n";
+		}
 	}
 }
 ?>
