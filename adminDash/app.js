@@ -49,7 +49,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 
 	$scope.getPersons = function() {
 		serverComm.getPersons().success(function(data) {
-			$scope.persons = data
+			$scope.persons = data.rows
 		})
 	}
 		
