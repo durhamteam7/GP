@@ -156,7 +156,7 @@ class Swanson {
 	        We will classify a photo if it has been retired (decided) and then transfer the values/properties etc. into the
 	        database via the 'updateClassifications' variable.
 	        The consequence of only classfying retired photos is that we do not store evenness values etc.
-	        for the photos which have yet to be retired (decided). 
+	        for the photos which have yet to be retired (decided).
 	        */
 	        
 	    $i = 0;
@@ -165,7 +165,13 @@ class Swanson {
 	                            "VALUES ";
 	    foreach ($all_outputs as $output)
 	    {
-	        if ($output["retired"]) 
+	    
+	    /* 
+	    Retired images will have all their properties stored in local variables and then contatenated into the
+	    'updateClassifications' variable's contents to be stored in the database.
+	    */
+	    
+	        if ($output["retired"]) // Will only classify 'retired' photos
 	        {
 	        	$Cphoto_id = $output["photo_id"];
 	        	$Cnumber_of_classifications = $output["number_of_classifications"];
@@ -176,7 +182,10 @@ class Swanson {
 	        	$Cevenness = $output["evenness"];
 	        	$Cfraction_support = $output["fraction_support"];
 	        	$Cfraction_blanks = $output["fraction_blanks"];
-
+				
+				/*
+				Concatenating properties of image (including ID) with the current contents of the database.
+				*/
 				$updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now()),";
 				$i++;
 	        }
