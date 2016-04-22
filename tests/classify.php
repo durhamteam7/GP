@@ -2,40 +2,36 @@
 
 ini_set('memory_limit', '4096M');
 
-# require database connection code
-require_once('../dbConnectExternal.php');
-
 # import algorithm
 require_once("algorithm.php");
 $s = new Swanson();
 
-# get the photo_ids of the already classified photos
-#require_once('getPhotos.php');
+# get the photo_ids of all available photos
+$photo_ids = $s->getPhotos();
 
 # get the photo_ids of the already classified photos
-require_once('getClassified.php');
+$classified = $s->getClassified();
 # $classified - will hold the data from all classified and retired photos
 
 # retrieve the animal data
-require_once('getAnimals.php');
-# $data - will hold all classifications
+$d = $s->getAnimals($classified, $photo_ids);
+$data = $d[0];
+$all_data = $d[1];
 # Might be a problem to retrieve all rows in the db (over 120 000 entries)
 
-$s->main($data, $mysqli);
+$s->main($data);
 
 # print out the rows of the classification table
 # i.e. the data for all images that have been retired
-require_once("getClassifications.php");
+$classifications = $s->getClassifications();
 
 # loop through every users classifications and compare to the classified values
-require_once("rateUsers.php");
+$s->rateUsers($all_data, $classifications);
 
 # print out the rows of the person stats table
-require_once("getPersonStats.php");
+$person_stats = $s->getPersonStats();
 
-require_once("goldClassifiedComparison.php");
-
-# close connection
-$mysqli->close();
+# compare against fold standard set
+$s->goldClassifiedComparison();
 
 ?>
