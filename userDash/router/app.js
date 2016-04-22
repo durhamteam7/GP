@@ -2,6 +2,8 @@ var userApp = angular.module('userDash', ['rzModule', 'ui.bootstrap',"checklist-
 
 var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 
+var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/"
+
 userApp.config(function($stateProvider, $urlRouterProvider) {
   //
   // For any unmatched url, redirect to /state1
@@ -26,7 +28,7 @@ var mapController = function($scope,$filter) {
 
         var getHTML = function(item){
 		   	var html = '<div>'
-		   	var url = item.URL;
+		   	var url = item.Photo.URL;
 		    html += '<a href="'+url+'" target="_blank"><img width=200 src="'+url+'"></a></div>';
 		    html += '<b>'+$scope.getOptionName(item.Classification[0].species)+'</b><br>';
 		    html += item.Site.site_name+'<br>';
@@ -252,10 +254,10 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
             $scope.results = data.rows;
             $scope.numResults = data.count;
             for (var i = 0; i < $scope.results.length; i++) {
-              //Form correct URL
-              var result = $scope.results[i];
-              var parts = result.dirname.split("/");
-              $scope.results[i].URL = "http://www.mammalweb.org/biodivimages/"+parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.filename;
+                var result = $scope.results[i];
+                var parts = result.Photo.dirname.split("/");
+
+                $scope.results[i].Photo.URL = mammalwebBaseURL + parts[parts.length - 2]+"/"+parts[parts.length - 1]+"/"+result.Photo.filename;
             }
             $("#loader").fadeOut("slow");
         });

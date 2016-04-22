@@ -32,7 +32,7 @@
 	<script src="https://cdn.rawgit.com/visjs/angular-visjs/master/angular-vis.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css"/>
 
-
+	<script src="https://cdn.rawgit.com/shahata/angular-debounce/master/angular-debounce.js"></script>
 
 	<!--Bootstrap -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -66,6 +66,7 @@
                 position:absolute !important;
                 height: calc(100% - 50px) !important;
                 z-index:999999 !important;
+                color:#9d9d9d;
             }
 
          .slideBottom {
@@ -73,6 +74,7 @@
                 bottom:0 !important;
                 position:absolute !important;
                 opacity: 0.7;
+                height:40% !important;
             }
         .page {
                 height: 100% !important;
@@ -104,15 +106,35 @@
 			margin-top:60px !important;
 		}
 
+
+		::-webkit-scrollbar-track
+		{
+			-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+			border-radius: 0px;
+			background-color: #101010;
+		}
+		::-webkit-scrollbar
+		{
+			width: 12px;
+			background-color: #F5F5F5;
+		}
+
+		::-webkit-scrollbar-thumb
+		{
+			border-radius: 10px;
+			-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+			background-color: #555;
+		}
+
 		
 		</style>
 		<link rel="stylesheet" href="loader.css">
 
 </head>
 
-<body ng-app="userDash" ng-controller="dataController" ng-mousemove="mouseMove()">
+<body ng-app="userDash" ng-controller="dataController">
 
-<div pageslide ps-side="top" ps-open="navbarOpen || isActive('/map')" class="navbar navbar-inverse navbar-static-top">
+<div pageslide ps-side="top" ps-open="!fullscreen || isActive('/map')" class="navbar navbar-inverse navbar-static-top">
 
 	  <div class="container-fluid">
 	    <!-- Brand and toggle get grouped for better mobile display -->

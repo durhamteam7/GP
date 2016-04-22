@@ -1,6 +1,7 @@
+<!--   <a fullscreen href="javascript:void();"><span class="glyphicon glyphicon-resize-full" style="color:white;opacity:0.2;position:absolute;top:75px;right:20px;z-index:9999999;font-size:30px"></span></a> -->
   <div class="page">
     <img ng-show="loaded" ng-repeat="slide in results track by $index"
-         ng-if="isCurrentSlideIndex($index)" ng-src="{{slide.URL}}" class="fullBg {{currentAnimation}}" >
+         ng-if="isCurrentSlideIndex($index)" ng-src="{{slide.Photo.URL}}" class="fullBg {{currentAnimation}}" >
     <div class="well" id="infoBox" ng-show="loaded" ng-repeat="slide in results track by $index"
          ng-if="isCurrentSlideIndex($index)">
         <b>{{getOptionName(slide.Classification[0].species)}}</b> in {{slide.Site.site_name}}</br>
