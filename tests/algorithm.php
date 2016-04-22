@@ -46,13 +46,13 @@ class Swanson {
 	}
 
 	function main($data) {
-		# This array will contain all arrays of image
-		# values once the while loop below has completed.
+		/* This array 'all_outputs' will contain all arrays of the image
+		 values once the while loop below has completed. */
 		$all_outputs = array();
 
 	    while (count($data) > 0) {
-	        # populate the subject variable with all classifications for one photo
-	        # subject will contain all rows with that photo_id
+	        # This loop populates the 'subject' variable with all classifications for one photo
+	        # The array 'subject' will contain all rows with that photo_id
 	        $subject = array(array_pop($data));
 	        while ($data[count($data) - 1]["photo_id"] == $subject[0]["photo_id"]) {
 	            $subject[] = array_pop($data);
@@ -117,6 +117,8 @@ class Swanson {
 	        print_r($fraction_blanks);
 	        echo "\n";
 	        echo "\n";
+	        /* The array 'output' will store all the specification values of the image
+	        that have previously been calculated. */
 	        $output = array(
 	            "photo_id" => $photo_id,
 	            "retired" => $retired,
