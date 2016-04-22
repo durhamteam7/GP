@@ -371,7 +371,10 @@ class Swanson {
 	    }
 	    return $rate;
 	}
-
+	
+	/*
+	
+	*/
 	function getAnimals($classified, $photo_ids) {
 		// QUERY
 		$sql = "SELECT * FROM Animal ORDER BY photo_id";
@@ -407,7 +410,12 @@ class Swanson {
 
 		return [$data, $all_data];
 	}
-
+	
+	/*
+	Gives the number of how many images have been classified into the database
+	so far and lists each classified photo's ID.
+	If no photos have been classified, '0 Results' will be printed.
+	*/
 	function getClassified() {
 		// QUERY
 		$sql = "SELECT photo_id FROM Classification;";
@@ -436,7 +444,12 @@ class Swanson {
 
 		return $classified;
 	}
-
+	
+	/*
+	Gives the number of how many images have been classified into the database
+	so far and lists each classified photo's entire properties.
+	If no photos have been classified, '0 Results' will be printed.
+	*/
 	function getClassifications() {
 		// QUERY
 		$sql = "SELECT * FROM Classification;";
@@ -464,7 +477,10 @@ class Swanson {
 
 		return $classifications;
 	}
-
+	
+	/*
+        
+	*/
 	function getPhotos() {
 		// QUERY
 		$sql = "SELECT * FROM Photo ORDER BY photo_id";
@@ -496,7 +512,13 @@ class Swanson {
 
 		return $photo_ids;
 	}
-
+	
+	/*
+	Prints the statistics of each Person and how many people there are with statistics in
+	the database. 
+	Statistics include: Species Rate, Gender Rate, Age Rate and Number Rate with respect to correctness.
+	If there are no stats to print, '0 results' wil be printed.
+	*/
 	function getPersonStats() {
 		// QUERY
 		$sql = "SELECT * FROM PersonStats;";
