@@ -40,7 +40,19 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	//PAGE functions
 	$scope.currentPage = 1;
 	$scope.pageSize = 15;
-	
+
+	$scope.users = [];
+
+	$scope.getUsers = function() {
+		$scope.users = [
+		{person_id:1,
+		species_rate:1,
+		gender_rate:1,
+		age_rate:1,
+		number_rate:1}
+		]};
+		
+	$scope.getUsers();
 
 	$scope.rowsShown = function() {
 		if ((($scope.currentPage-1) * $scope.pageSize) + $scope.pageSize < $scope.numResults) {

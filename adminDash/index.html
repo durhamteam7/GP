@@ -358,6 +358,51 @@
 						<h1 class="h4">Export CSV</h1>
 						<button class="btn" ng-click="downloadCSV()">Download CSV</button>
 					</div>
+
+					<div class="well">
+						<h1 class="h4">User Ratings</h1>
+						<button class="btn" data-toggle="modal" data-target="#userModal">View Users</button>
+						<!--Modal-->
+						<div id="userModal" class="modal fade" role="dialog">
+							<div class="modal-dialog modal-lg">
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">Users</h4>
+									</div>
+									<div class="modal-body">
+										<div class="row">
+											<div class="col-xs-12">
+												<table class="table table-bordered table-hover">
+									                <thead>
+									                    <tr>
+									                        <th ng-repeat="(key,value) in users[0]">
+								                                {{ readable(key) }}
+									                        </th>
+									                    </tr>
+									                </thead>
+									                <tbody>
+									                	<tr ng-repeat="u in users">
+									                		<td ng-repeat="(key,value) in u">
+									                			{{ value }}
+									                		</td>
+									                	</tr>
+									                </tbody>
+
+
+
+
+									            </table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					</div>
 				</div>
 			</div>
 		</div>
