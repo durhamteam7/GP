@@ -280,10 +280,10 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	 	{
 	 		return "";
 	 	}
-		s = string.replace(/_id/,"");
-		s = string.replace(/_/g, " ");
-		s = string.replace(/([A-Z])/g, ' $1');
-		s = string.replace(/^./, function(str){ return str.toUpperCase(); });
+		s = s.replace(/_id/,"");
+		s = s.replace(/_/g, " ");
+		s = s.replace(/([A-Z])/g, ' $1');
+		s = s.replace(/^./, function(str){ return str.toUpperCase(); });
 		return s
   	}
 
