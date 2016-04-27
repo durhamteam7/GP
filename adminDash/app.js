@@ -1,11 +1,20 @@
 
 var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap','googlechart',"checklist-model",'datetimepicker','toggle-switch','ngAutocomplete','bw.paging']);
 
-var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/"
+var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/";
 
 var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 
-// Ajax Service
+
+/**
+   * @memberof adminApp
+   * @ngdoc factory
+   * @name ajax
+   * @param {service} http Allows requests to api
+	 * @return {object} functions
+   * @description
+   *   Makes http requests
+*/
 adminApp.factory('ajax', ['$http', function($http) {
 	return {
     getPhotos: function(query,pageNum,pageSize,isSequence) {
@@ -36,30 +45,81 @@ adminApp.factory('ajax', ['$http', function($http) {
 
 }]);
 
+
+
+/** Main Controller for the admin app. Stores and manipulates data from mammalweb db
+	* @memberof adminApp
+	* @ngdoc controller
+	* @name MainController
+	* @param $scope {service} controller scope
+	* @param ajax {factory} ajax methods for server
+*/
 adminApp.controller('MainController', ['$scope','ajax', function($scope,serverComm) {
-	$scope.results = []; //contains the results from the server
+	/**
+	 * @memberof MainController
+     * @property results
+		 * @type array
+		 * @description contains an array of photo/sequence objects matching the query on a page.
+  */
+	$scope.results = [];
+	/**
+	 * @memberof MainController
+	 * @property options
+	 * @description Array of key value pairs
+	 * @type array
+  */
 	$scope.options = {};
-
+	/**
+	 * @memberof MainController
+	 * @property fullResults
+	 * @description Array of every result matched by the query
+	 * @type array
+  */
 	$scope.fullResults = [];
-	
 
-	$scope.result = '';
-    $scope.details = '';
-	
+
 	//PAGE functions
+	/**
+	 * @memberof MainController
+	 * @property currentPage
+	 * @description The current page of results (starts at page 1)
+	 * @type int
+  */
 	$scope.currentPage = 1;
+	/**
+	 * @memberof MainController
+	 * @property pageSize
+	 * @description The number of results displayed on a page of search results
+	 * @type int
+  */
 	$scope.pageSize = 15;
 
+	/**
+	 * @memberof MainController
+	 * @property persons
+	 * @description Storts an array of objects of user stats information
+	 * @type array
+  */
 	$scope.persons = [];
 
+
+	/** Makes call to factory method to get person data
+	 * @memberof MainController
+	 * @function getPersons
+	*/
 	$scope.getPersons = function() {
 		serverComm.getPersons().success(function(data) {
-			$scope.persons = data.rows
-		})
-	}
-		
-	$scope.getPersons();
+			$scope.persons = data.rows;
+		});
+	};
 
+
+
+	/** Calculate how many results are on current page
+		* @memberof MainController
+		* @function rowShown
+		* @returns {int} Number of results on the current page
+	*/
 	$scope.rowsShown = function() {
 		if ((($scope.currentPage-1) * $scope.pageSize) + $scope.pageSize < $scope.numResults) {
 			return Number((($scope.currentPage-1) * $scope.pageSize) + $scope.pageSize);
@@ -67,9 +127,14 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 			return $scope.numResults;
 		}
 	}
-  
+
   //MAIN functions
 
+	/** Make request to results method in factory to get a page of results
+		* @memberof MainController
+		* @function getResults
+		* @param {integer} [page]  Index of current page
+	*/
 	$scope.getResults = function(page){
 		$("#loader").fadeTo("fast", 0.7);
 		if (page){
@@ -89,7 +154,11 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	};
 
 
-	$scope.getFullResults = function(page){
+	/** Make request to results method in factory to get all results
+		* @memberof MainController
+		* @function getFullResults
+	*/
+	$scope.getFullResults = function(){
 		$("#loader").fadeTo("fast", 0.7);
 		serverComm.getFullPhotos($scope.filters,$scope.isSequence).success(function(data) {
 				console.log("Data:",data);
@@ -97,11 +166,14 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 				$("#loader").fadeOut("slow");
 		});
 	};
-	
-	
-	
-	
-	
+
+
+
+
+	/** Gets and downloads CSV data for current query
+		* @memberof MainController
+		* @function downloadCSV
+	*/
 	$scope.downloadCSV = function(){
 		$("#loader").fadeTo("fast", 0.7);
 		serverComm.getPhotosCSV($scope.filters,$scope.isSequence).success(function(data) {
@@ -130,6 +202,11 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 				$( ".b" ).remove();
 		});
 	}
+
+	/** Gets options from database
+		* @memberof MainController
+		* @function getOptions
+	*/
 	$scope.getOptions = function(){
 		//console.log("get options");
 		$("#loader").fadeTo("fast", 0.7);
@@ -147,10 +224,16 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 					//}*/ //Removed as breaks things
 				}
 				//console.log($scope.options)
-				
+
 		});
 	};
 
+	/** Converts an option into a human readable string using a lookup
+	 	 * @memberof MainController
+		 * @function getOptionName
+		 * @param {int} optionNum  An option number to be converted
+		 * @returns {string} Human readable version from lookup
+	*/
 	$scope.getOptionName = function(optionNum){
         //Function to convert an option into human readable string
         for (key in $scope.options){
@@ -161,49 +244,75 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
         return "";
     }
 
+	/** Get filter JSON from file
+	 * @memberof MainController
+	 * @function getFilters
+	*/
 	$scope.getFilters = function(){
 		serverComm.getFilters().success(function(data) {
 			console.log("FITLERS",data)
 				//console.log(data);
 				$scope.filters = data
-				
+
 		});
 	}
-	
-	 $scope.readable = function(string) {
-	 	if (typeof string === "undefined")
+
+	/** Converts a string into a human-readable format
+	   * @memberof MainController
+	   * @function readable
+		 * @param {string} s  An option number to be converted
+		 * @returns {string} Human readable version converting spaces to underscores, removing _id, correctly capitalized
+	*/
+	 $scope.readable = function(s) {
+	 	if (typeof s === "undefined")
 	 	{
 	 		return "";
 	 	}
-		string = string.replace(/_id/,"");
-		string = string.replace(/_/g, " ");
-		string = string.replace(/([A-Z])/g, ' $1');
-		string = string.replace(/^./, function(str){ return str.toUpperCase(); });
-		return string
+		s = string.replace(/_id/,"");
+		s = string.replace(/_/g, " ");
+		s = string.replace(/([A-Z])/g, ' $1');
+		s = string.replace(/^./, function(str){ return str.toUpperCase(); });
+		return s
   	}
 
     $scope.filters = {}
 
+		//Watchers to call functions when objects change
     $scope.$watch('filters', function(newVal, oldVal){
     	$scope.currentPage = 1;
     	$scope.getResults();
-	}, true);
-	$scope.$watch('isSequence', function(newVal, oldVal){
-		$scope.currentPage = 1;
-    	$scope.getResults();
-	}, true);
+		}, true);
+		$scope.$watch('isSequence', function(newVal, oldVal){
+			$scope.currentPage = 1;
+	    	$scope.getResults();
+		}, true);
 
+	//Initial calls to get data on page load
 	$scope.getResults();
 	$scope.getOptions();
 	$scope.getFilters();
+	$scope.getPersons();
 
 }]);
 
+
+/**
+	* @memberof adminApp
+	* @ngdoc controller
+	* @name GraphsController
+	* @param $scope {service} controller scope
+*/
 adminApp.controller('GraphsController', ['$scope', function($scope) {
-	$scope.var1 = "in search results";
 
         $scope.chartTypes = ["Table","PieChart","BarChart","ColumnChart","LineChart","ScatterChart","AreaChart"];
 
+				/** Converts a field value into it's displayable version based on it's type
+					* @memberof GraphsController
+					* @function getValue
+					* @param {int} val value of the field
+					* @param {object} field object from filters
+					* @returns {string|Date|integer} val actual value of field
+				*/
         getValue = function(val,field){
         	if (field.type == "checkboxes"){
         		return $scope.getOptionName(val);
@@ -214,8 +323,12 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
         	else{
         		return val;
         	}
-        }
+        };
 
+				/** Formats the results into correct GoogleCharts format based on choice of x,y axis
+					* @memberof GraphsController
+					* @function makeData
+				*/
         $scope.makeData = function(){
         	console.log($scope.fullResults);
 
@@ -223,7 +336,7 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
         	if ($scope.fullResults.length == 0){
 	        	$scope.fullResults = $scope.results;
 	        }
-        	
+
         	//Stop if a variable is not defined
         	if (typeof $scope.xName == "undefined" || typeof $scope.yName == "undefined")	{
         		return;
@@ -256,7 +369,7 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
 	          				else{
 	          					dataDict[xValue]=1;
 	          				}
-	          			
+
 	          			}
           		}
           		else{
@@ -356,10 +469,10 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
 	  "displayed": true,
 	  "data": {
 	    "cols": [
-	      
+
 	    ],
 	    "rows": [
-	      
+
 	    ]
 	  },
 	  "options": {
