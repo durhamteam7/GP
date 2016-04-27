@@ -5,6 +5,7 @@ var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/";
 
 var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 
+var env = 1; // GLOBAL VARIABLE FOR DEV ENVIRONMENT
 
 /**
    * @memberof adminApp
@@ -15,10 +16,12 @@ var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
    * @description
    *   Makes http requests
 */
+
+// Ajax Service
 adminApp.factory('ajax', ['$http', function($http) {
 	return {
     getPhotos: function(query,pageNum,pageSize,isSequence) {
-      return $http.post(urls[0]+'photo?pageNum='+pageNum+'&pageSize='+pageSize+'&sequence='+isSequence,query).success(function() {
+      return $http.post(urls[env]+'photo?pageNum='+pageNum+'&pageSize='+pageSize+'&sequence='+isSequence,query).success(function() {
       });
     },
     getFullPhotos: function(query,isSequence) {
@@ -26,15 +29,15 @@ adminApp.factory('ajax', ['$http', function($http) {
       });
     },
     getPhotosCSV: function(query,isSequence){
-    	return $http.post(urls[0]+'photo?output=csv&sequence='+isSequence,query).success(function() {
+    	return $http.post(urls[env]+'photo?output=csv&sequence='+isSequence,query).success(function() {
       });
     },
     getOptions: function() {
-      return $http.get(urls[0]+'options').success(function() {
+      return $http.get(urls[env]+'options').success(function() {
       });
     },
     getPersons: function() {
-      return $http.get(urls[0]+'persons').success(function() {
+      return $http.get(urls[env]+'persons').success(function() {
       });
     },
     getFilters: function() {
@@ -101,6 +104,7 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	 * @type array
   */
 	$scope.persons = [];
+<<<<<<< HEAD
 
 
 	/** Makes call to factory method to get person data
@@ -114,6 +118,27 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	};
 
 
+=======
+	$scope.getPersons = function() {
+		serverComm.getPersons().success(function(data) {
+			$scope.persons = data.rows;
+            for (var i = 0; i < $scope.persons.length; i++) {
+                $scope.persons[i].weighted_average = (2*$scope.persons[i].species_rate+$scope.persons[i].gender_rate+$scope.persons[i].age_rate+$scope.persons[i].number_rate)/5;
+            }
+            $scope.personTableOrder = [
+                "person_id",
+                "number_of_classifications",
+                "weighted_average",
+                "species_rate",
+                "gender_rate",
+                "age_rate",
+                "number_rate"
+            ];
+		});
+	};
+
+	$scope.getPersons();
+>>>>>>> 92c31b4153ddd283c5ddd8ac6e1623c40926ca1a
 
 	/** Calculate how many results are on current page
 		* @memberof MainController

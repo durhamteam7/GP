@@ -2,7 +2,7 @@
 
   #######################################
  ##                                     ##
-### implementation of swanson algorithm ###
+### Implementation of Swanson Algorithm ###
  ##                                     ##
   #######################################
 
@@ -17,10 +17,10 @@ class Swanson {
 
 	private $blank_animal = 86;
 
-	private $animal_limiting = true;
-	private $get_animal_limit = 50000;
-	private $photo_limiting = true;
-	private $get_photo_limit = 50000;
+	private $animal_limiting = false; # will be false in the end
+	private $get_animal_limit = 1;
+	private $photo_limiting = false; # will be false in the end
+	private $get_photo_limit = 1;
 
 	function __construct() {
 		$this->setupDB();
@@ -46,13 +46,13 @@ class Swanson {
 	}
 
 	function main($data) {
-		# This array will contain all arrays of image
-		# values once the while loop below has completed.
+		/* This array 'all_outputs' will contain all arrays of the image
+		 values once the while loop below has completed. */
 		$all_outputs = array();
 
 	    while (count($data) > 0) {
-	        # populate the subject variable with all classifications for one photo
-	        # subject will contain all rows with that photo_id
+	        # This loop populates the 'subject' variable with all classifications for one photo
+	        # The array 'subject' will contain all rows with that photo_id
 	        $subject = array(array_pop($data));
 	        while ($data[count($data) - 1]["photo_id"] == $subject[0]["photo_id"]) {
 	            $subject[] = array_pop($data);
@@ -117,6 +117,8 @@ class Swanson {
 	        print_r($fraction_blanks);
 	        echo "\n";
 	        echo "\n";
+	        /* The array 'output' will store all the specification values of the image
+	        that have previously been calculated. */
 	        $output = array(
 	            "photo_id" => $photo_id,
 	            "retired" => $retired,
@@ -129,26 +131,46 @@ class Swanson {
 	            "fraction_support" => $fraction_support,
 	            "fraction_blanks" => $fraction_blanks
 	        );
+	        /*
+	        This will print the image values in human-readable form takne from the array
+	        and illustrate the relationships in the array.
+	        */
 	        echo "\n";
 	        print_r($output);
 	        echo "\n";
 
 	        # Adding into the array of all image's values
+	        
+	        /*
+	        The array 'all_outputs' will be the container for each image and therefore its
+	        properties. By keeping all the images and their respective properties in this array,
+	        we will be able to access and tranfer all properties and values of each feature at once
+	        and insert them into our database more efficiently.
+	        */
 	        array_push($all_outputs, $output);
 	        
 	    }
-
-		# Finally, we loop through the array of all image's values and classify the photos all at once, row-by-row.
-	    # For now, we only classify a photo if it has been retired.
-	        # The consequence is that we do not store evenness values etc.
-	        # for photos which have yet to be retired (decided).
-	    $i = 0;
+		/* 
+		Finally, we loop through the array of all image's values and classify the photos all at once, row-by-row.
+	        We will classify a photo if it has been retired (decided) and then transfer the values/properties etc. into the
+	        database via the 'updateClassifications' variable.
+	        The consequence of only classfying retired photos is that we do not store evenness values etc.
+	        for the photos which have yet to be retired (decided).
+	        */
+	        
+	    $i = 0; // A counter to keep track of the number of images we classify.
 	    $updateClassifications = "INSERT INTO Classification " .
 	                            "(photo_id, number_of_classifications, species, gender, age, number, evenness, fraction_support, fraction_blanks, timestamp) " . 
 	                            "VALUES ";
 	    foreach ($all_outputs as $output)
 	    {
-	        if ($output["retired"]) 
+	    
+	    /* 
+	    Retired images will have all their properties stored in local variables and then contatenated into the
+	    'updateClassifications' variable's contents to be stored in the database.
+	    */
+	    
+	        if ($output["retired"]) // Will only classify 'retired' photos
 	        {
 	        	$Cphoto_id = $output["photo_id"];
 	        	$Cnumber_of_classifications = $output["number_of_classifications"];
@@ -159,19 +181,30 @@ class Swanson {
 	        	$Cevenness = $output["evenness"];
 	        	$Cfraction_support = $output["fraction_support"];
 	        	$Cfraction_blanks = $output["fraction_blanks"];
-
+				
+				/*
+				Concatenating properties of image (including ID) with the current contents of the database.
+				*/
 				$updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now()),";
-				$i++;
+				$i++; // Incremented after every classification of image
 	        }
 	    }
+	    
 	    # replace the last character with a semicolon -> ;
 	    $updateClassifications = substr($updateClassifications, 0, -1) . ";";
 
 	    #echo "Insert query\n";
 	    #echo $updateClassifications;
 	    #echo "\n";
-
-	    if ($i > 0) {
+	    
+	    /* 
+	    i.e. A test of if there were images that were retired and so needed to be classified
+	    We will check if the update of the classifcations with the image properties was successful or
+	    if it wasn't, and echo the appropriate message depending on the answer. 
+	    */
+	    
+	    if ($i > 0) 
+	    { 
 		    if ($this->mysqli->query($updateClassifications) === TRUE)
 		    {
 		        echo "Record updated successfully\n";
@@ -180,7 +213,7 @@ class Swanson {
 		    {
 		        echo "Error updating record: " . $this->mysqli->error . "\n";
 		    }
-		}
+	    }
 	}
 
 
@@ -310,7 +343,8 @@ class Swanson {
 	# and compares how well the user classifies
 	# INPUT: the key to check (species, gender, age, number), users classifications, all decided classifications
 	# OUTPUT: the correctness rate the user has for that key
-	function getUserCorrectnessRate($key, $subject, $classifications) {
+	function getUserCorrectnessRate($key, $subject, $classifications) 
+	{
 	    $correct = 0;
 	    $all = 0;
 
@@ -337,7 +371,10 @@ class Swanson {
 	    }
 	    return $rate;
 	}
-
+	
+	/*
+	
+	*/
 	function getAnimals($classified, $photo_ids) {
 		// QUERY
 		$sql = "SELECT * FROM Animal ORDER BY photo_id";
@@ -373,7 +410,12 @@ class Swanson {
 
 		return [$data, $all_data];
 	}
-
+	
+	/*
+	Gives the number of how many images have been classified into the database
+	so far and lists each classified photo's ID.
+	If no photos have been classified, '0 Results' will be printed.
+	*/
 	function getClassified() {
 		// QUERY
 		$sql = "SELECT photo_id FROM Classification;";
@@ -402,7 +444,12 @@ class Swanson {
 
 		return $classified;
 	}
-
+	
+	/*
+	Gives the number of how many images have been classified into the database
+	so far and lists each classified photo's entire properties.
+	If no photos have been classified, '0 Results' will be printed.
+	*/
 	function getClassifications() {
 		// QUERY
 		$sql = "SELECT * FROM Classification;";
@@ -430,7 +477,10 @@ class Swanson {
 
 		return $classifications;
 	}
-
+	
+	/*
+        
+	*/
 	function getPhotos() {
 		// QUERY
 		$sql = "SELECT * FROM Photo ORDER BY photo_id";
@@ -462,7 +512,13 @@ class Swanson {
 
 		return $photo_ids;
 	}
-
+	
+	/*
+	Prints the statistics of each Person and how many people there are with statistics in
+	the database. 
+	Statistics include: Species Rate, Gender Rate, Age Rate and Number Rate with respect to correctness.
+	If there are no stats to print, '0 results' wil be printed.
+	*/
 	function getPersonStats() {
 		// QUERY
 		$sql = "SELECT * FROM PersonStats;";
@@ -514,6 +570,8 @@ class Swanson {
 	}
 
 	function goldClassifiedComparison() {
+		$gold_standard = $this->getGoldStandard();
+
 		// query to get the species and photo_id for each classified image
 		$sql = "SELECT species, photo_id FROM Classification;";
 
@@ -573,8 +631,9 @@ class Swanson {
 				}
 			}
 		}
-
-		echo "Correctness against gold standard = " . ($same / ($same + $different));
+		if (($same + $different) > 0) {
+			echo "Correctness against gold standard = " . ($same / ($same + $different));
+		}
 		echo "\n";
 		echo "<br>";
 		echo "\n";
@@ -634,19 +693,22 @@ class Swanson {
 		    $age_rate = $this->getUserCorrectnessRate("age", $subject, $classifications);
 		    $number_rate = $this->getUserCorrectnessRate("number", $subject, $classifications);
 
+		    $number_of_classifications = count($subject);
+
 		    echo "$person_id has $species_rate, $gender_rate, $age_rate, $number_rate";
 		    echo "\n";
-		    echo "on " . count($subject) . " classifications";
+		    echo "on " . $number_of_classifications . " classifications";
 		    echo "\n";
 
 		    #Output -- Needs to be made more efficient using the same method as in the Algorithm.PHP file.
-		    $updatePersonStats = "INSERT INTO PersonStats (person_id, species_rate, gender_rate, age_rate, number_rate) " .
-		    "VALUES ('$person_id', '$species_rate', '$gender_rate', '$age_rate', '$number_rate') " .
+		    $updatePersonStats = "INSERT INTO PersonStats (person_id, species_rate, gender_rate, age_rate, number_rate, number_of_classifications) " .
+		    "VALUES ('$person_id', '$species_rate', '$gender_rate', '$age_rate', '$number_rate', '$number_of_classifications') " .
 		    "ON DUPLICATE KEY UPDATE person_id=person_id," .
 		    "species_rate='$species_rate'," .
 		    "gender_rate='$gender_rate'," .
 		    "age_rate='$age_rate'," .
-		    "number_rate='$number_rate';";
+		    "number_rate='$number_rate'," .
+		    "number_of_classifications='$number_of_classifications';";
 
 		    #echo $updatePersonStats . "\n";
 
