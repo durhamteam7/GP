@@ -104,21 +104,11 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
 	 * @type array
   */
 	$scope.persons = [];
-<<<<<<< HEAD
-
 
 	/** Makes call to factory method to get person data
 	 * @memberof MainController
 	 * @function getPersons
 	*/
-	$scope.getPersons = function() {
-		serverComm.getPersons().success(function(data) {
-			$scope.persons = data.rows;
-		});
-	};
-
-
-=======
 	$scope.getPersons = function() {
 		serverComm.getPersons().success(function(data) {
 			$scope.persons = data.rows;
@@ -136,9 +126,6 @@ adminApp.controller('MainController', ['$scope','ajax', function($scope,serverCo
             ];
 		});
 	};
-
-	$scope.getPersons();
->>>>>>> 92c31b4153ddd283c5ddd8ac6e1623c40926ca1a
 
 	/** Calculate how many results are on current page
 		* @memberof MainController
