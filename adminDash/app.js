@@ -334,7 +334,7 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
         console.log($scope.fullResults);
 
         //if havn't pulled full results then copy in existing ones
-        if ($scope.fullResults.length == 0) {
+        if ($scope.fullResults.length === 0) {
             $scope.fullResults = $scope.results;
         }
 
@@ -382,9 +382,9 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
                         } else {
                             dataDict[xValue] = 1;
                         }
-
                     }
-                } else {
+                }
+								else{
                     xValue = getValue($scope.fullResults[i][xNameSplit[0]][xNameSplit[1]], xField);
                     if (dataDict.hasOwnProperty(xValue)) {
                         dataDict[xValue] += 1;
@@ -398,11 +398,7 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
             //Convert to rows
             for (var key in dataDict) {
                 $scope.chartObject.data.rows.push({
-                    c: [{
-                        v: key
-                    }, {
-                        v: dataDict[key]
-                    }]
+                    c: [{v: key}, {v: dataDict[key]}]
                 });
             }
         } else { //Case of 2 normal variables
