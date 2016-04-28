@@ -1,11 +1,7 @@
 # GP
+[![Build Status](https://travis-ci.org/durhamteam7/GP.svg?branch=master)](https://travis-ci.org/durhamteam7/GP)
+[![Coverage Status](https://coveralls.io/repos/github/durhamteam7/GP/badge.svg?branch=master)](https://coveralls.io/github/durhamteam7/GP?branch=master)
 Group Project
-
-## Death by Modal Part 2
-> One Modal to rule them all,
-> One Modal to find them;
-> One Modal to bring them all
-> and in the darkness bind them.
 
 Algorithm is in tests/ directory
 
