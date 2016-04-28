@@ -5,7 +5,7 @@ require_once("algorithm.php");
 
 class SwansonTest extends PHPUnit_Framework_TestCase
 {
-	
+
     // contains the object handle of the string class
     private $s;
 
@@ -26,12 +26,12 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     	$array2 = array(2, 3, 4, 5);
     	$array3 = array(2, 9, 4, 1);
 
-        $this->assertLessThan(0, $this->s->compare_by_classification($array, $array2));
+      $this->assertLessThan(0, $this->s->compare_by_classification($array, $array2));
     	$this->assertGreaterThan(0, $this->s->compare_by_classification($array2, $array));
     	$this->assertEquals(0, $this->s->compare_by_classification($array2, $array3));
     }
     */
-    /*
+
     public function testGet_species_counts()
     {
         $empty_array = array();

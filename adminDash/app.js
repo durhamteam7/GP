@@ -1,9 +1,12 @@
 var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap', 'googlechart', "checklist-model", 'datetimepicker', 'toggle-switch', 'ngAutocomplete', 'bw.paging']);
 
-var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/";
+var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/"; //root of all img URLs
 
+//Allows for switching between dev local server and hosted server
 var urls = ["http://localhost:8080/", "https://mammalweb.herokuapp.com/"];
 var env = 1; // GLOBAL VARIABLE FOR ENVIRONMENT (0:Dev,1:Production)
+
+
 
 /**
  * @memberof adminApp
@@ -240,7 +243,6 @@ adminApp.controller('MainController', ['$scope', 'ajax', function($scope, server
                 return $scope.options[key][optionNum]; //return option name
             }
         }
-        return "";
     };
 
     /** Get filter JSON from file
@@ -293,6 +295,8 @@ adminApp.controller('MainController', ['$scope', 'ajax', function($scope, server
 }]);
 
 
+
+
 /**
  * @memberof adminApp
  * @ngdoc controller
@@ -317,13 +321,14 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
      * @returns {string|Date|number} val actual value of field
      */
     getValue = function(val, field) {
-        if (field.type == "checkboxes") {
-            return $scope.getOptionName(val);
-        } else if (field.type == "dateTime") {
-            return new Date(val);
-        } else {
-            return val;
-        }
+				switch(field.type) {
+					case "checkboxes":
+						return $scope.getOptionName(val);
+					case "dateTime":
+						return new Date(val);
+					default:
+						return val;
+				}
     };
 
     /** Formats the results into correct GoogleCharts format based on choice of x,y axis
@@ -334,7 +339,7 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
         console.log($scope.fullResults);
 
         //if havn't pulled full results then copy in existing ones
-        if ($scope.fullResults.length == 0) {
+        if ($scope.fullResults.length === 0) {
             $scope.fullResults = $scope.results;
         }
 
@@ -343,6 +348,8 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
             return;
         }
 
+				//Map for filter type to GoogleCharts data type
+				// TODO: refactor into filter.json
         var typeMap = {
             "checkboxes": "string",
             "slider": "number",
@@ -382,9 +389,9 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
                         } else {
                             dataDict[xValue] = 1;
                         }
-
                     }
-                } else {
+                }
+								else{
                     xValue = getValue($scope.fullResults[i][xNameSplit[0]][xNameSplit[1]], xField);
                     if (dataDict.hasOwnProperty(xValue)) {
                         dataDict[xValue] += 1;
@@ -398,11 +405,7 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
             //Convert to rows
             for (var key in dataDict) {
                 $scope.chartObject.data.rows.push({
-                    c: [{
-                        v: key
-                    }, {
-                        v: dataDict[key]
-                    }]
+                    c: [{v: key}, {v: dataDict[key]}]
                 });
             }
         } else { //Case of 2 normal variables
