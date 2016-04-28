@@ -1,4 +1,4 @@
-var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap', 'googlechart', "checklist-model", 'datetimepicker', 'toggle-switch', 'ngAutocomplete', 'bw.paging']);
+var adminApp = angular.module('adminDash', ['utilitiesModule','rzModule', 'ui.bootstrap', 'googlechart', "checklist-model", 'datetimepicker', 'toggle-switch', 'ngAutocomplete', 'bw.paging']);
 
 var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/"; //root of all img URLs
 

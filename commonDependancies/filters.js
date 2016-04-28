@@ -1,14 +1,17 @@
 //Utilities for treating objects like arrays
-adminApp.filter('keylength', function(){
+var utilitiesModule = angular.module('utilitiesModule',[]);
+
+
+utilitiesModule.filter('keylength', function(){
   return function(input){
     if(!angular.isObject(input)){
       return 0;
     }
     return Object.keys(input).length;
-  }
+  };
 });
 
-adminApp.filter('objectLimitTo', [function(){
+utilitiesModule.filter('objectLimitTo', [function(){
     return function(obj, limit){
     	if(!angular.isObject(obj))
     	{
@@ -34,13 +37,13 @@ adminApp.filter('objectLimitTo', [function(){
 
 
 
-adminApp.filter('newlines', function () {
+utilitiesModule.filter('newlines', function () {
     return function(text) {
         return text.replace(/\n/g, '');
     }
 });
 
-adminApp.filter('orderObjectBy', function() {
+utilitiesModule.filter('orderObjectBy', function() {
   return function(items, field, reverse) {
     var filtered = [];
     angular.forEach(items, function(item,key) {

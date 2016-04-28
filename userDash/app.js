@@ -1,4 +1,4 @@
-var userApp = angular.module('userDash', ['rzModule', 'ui.bootstrap',"checklist-model",'datetimepicker','leaflet-directive','pageslide-directive','ui.router','ngAnimate','ngVis','rt.debounce']);
+var userApp = angular.module('userDash', ['utilitiesModule','rzModule', 'ui.bootstrap',"checklist-model",'datetimepicker','leaflet-directive','pageslide-directive','ui.router','ngAnimate','ngVis','rt.debounce']);
 
 var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 
