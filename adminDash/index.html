@@ -56,6 +56,7 @@
 	</head>
 	<body ng-controller="MainController" ng-App="adminDash">
 		{{details}}
+		<!--creates loading spinner for page load-->
 		<div id="loader">
 			<div>
 				<div class="spinner"></div>
@@ -67,6 +68,8 @@
 				<h1>Welcome Admin</h1>
 			</div>
 			<div class="row">
+				<!--This is the filters section, it uses the data from filters.js and filter.json
+				Breaks down the filters into the data types (checkbox,boolean,slider etc.)-->
 				<div class="col-md-3" id="leftCol">
 					<div class="well" id="filters">
 						    <div class="row">
@@ -170,21 +173,11 @@
 									<input type="number" class="form-control" placeholder="radius">
 								</div>
 							</label>
-							<!-- users
-							gender
-							age
-							time period (seconds if poss)
-							site (arbitary geographical aRea)
-							sequence
-							habitat type
-							human presence
-							blank images
-							number of classifications
-							concencus/mannual checking -->
-							<!-- need a table of sites -->
+							
 						</form>
 					</div>
 				</div>
+
 				<div class="col-md-6">
 					<h2 id="sec0">Search Results</h2>
 					<h5>
@@ -282,15 +275,17 @@
 					
 				</div>
 				<div class="col-md-3" id="rightCol">
+					<!--Summary of the results of the filtered query-->
 					<div class="well">
 						<h1 class="h4">Summary</h1>
 						{{numResults}} results.
 					</div>
+					<!--Well containing graphs modal button-->
 					<div class="well" ng-controller="GraphsController">
 						<h1 class="h4">Graphs</h1>
 						<button type="button" class="btn" data-toggle="modal" data-target="#graphModal" >Open Graph Editor</button>
 						
-						<!-- Modal -->
+						<!-- Graphs Modal -->
 						<div id="graphModal" class="modal fade" role="dialog">
 							<div class="modal-dialog modal-lg">
 								<!-- Modal content-->
@@ -344,6 +339,7 @@
 													</div>
 												</div>
 											</div>
+											<!--Button to load full dataset with appropriate warning about the loading time-->
 											<div class="col-xs-4">
 												<div class="row">
 													<button type="button" class="btn btn-danger"  ng-click="getFullResults()">Use Full Dataset</button>
@@ -361,15 +357,16 @@
 							</div>
 						</div>
 					</div>
+					<!--Well for the download CSV functionality-->
 					<div class="well">
 						<h1 class="h4">Export CSV</h1>
 						<button class="btn" ng-click="downloadCSV()">Download CSV</button>
 					</div>
-
+					<!--Well containing the user ratings system modal-->
 					<div class="well">
 						<h1 class="h4">User Ratings</h1>
 						<button class="btn" data-toggle="modal" data-target="#userModal">View Users</button>
-						<!--Modal-->
+						<!--User Ratings Modal-->
 						<div id="userModal" class="modal fade" role="dialog">
 							<div class="modal-dialog modal-lg">
 								<!-- Modal content-->
@@ -430,7 +427,7 @@
 	</div>
 </div>
 
-
+<!--Modal for displaying more about the image when clicked-->
 <div id="{{result.Photo.photo_id}}" class="modal fade" role="dialog" ng-repeat="result in results">
   <div class="modal-dialog">
     <div class="modal-content">
