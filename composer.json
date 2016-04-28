@@ -1,4 +1,7 @@
 {
+   "require-dev": {
+     "codeclimate/php-test-reporter": "dev-master"
+   },
     "require": {
         "phpunit/phpunit": "4.8.*"
     }
