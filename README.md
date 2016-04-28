@@ -1,7 +1,7 @@
 # GP
-Group Project
-
+[![Build Status](https://travis-ci.org/durhamteam7/GP.svg?branch=master)](https://travis-ci.org/durhamteam7/GP)
 [![Coverage Status](https://coveralls.io/repos/github/durhamteam7/GP/badge.svg?branch=master)](https://coveralls.io/github/durhamteam7/GP?branch=master)
+Group Project
 
 Algorithm is in tests/ directory
 
