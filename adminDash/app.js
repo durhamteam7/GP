@@ -240,7 +240,6 @@ adminApp.controller('MainController', ['$scope', 'ajax', function($scope, server
                 return $scope.options[key][optionNum]; //return option name
             }
         }
-        return "";
     };
 
     /** Get filter JSON from file
@@ -317,13 +316,14 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
      * @returns {string|Date|number} val actual value of field
      */
     getValue = function(val, field) {
-        if (field.type == "checkboxes") {
-            return $scope.getOptionName(val);
-        } else if (field.type == "dateTime") {
-            return new Date(val);
-        } else {
-            return val;
-        }
+				switch(field.type) {
+					case "checkboxes":
+						return $scope.getOptionName(val);
+					case "dateTime":
+						return new Date(val);
+					default:
+						return val;
+				}
     };
 
     /** Formats the results into correct GoogleCharts format based on choice of x,y axis
