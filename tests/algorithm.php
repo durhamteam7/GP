@@ -19,7 +19,7 @@
 class Swanson {
 
 	private $mysqli;
-	private $env = 1; # 0 means durham server, anything else means db4free server
+	private $env = 1;
 
 	private $blank_condition = 1;		#5
 	private $consensus_condition = 1;	#10
@@ -46,15 +46,17 @@ class Swanson {
 	 *
 	 */
 	function setupDB() {
-		$servername = "db4free.net";
-		$username = "mammalweb";
-		$password = "aliSwans0n";
-		$db = "mammalweb";
 		if ($this->env == 0) {
 			$servername = "mysql.dur.ac.uk";
-			$username = "ljdw32";
-			$password = "boston38";
+			$username = "nobody";
+			$password = "";
 			$db = "Cljdw32_MammalWeb";
+		}
+		else {
+			$servername = "db4free.net";
+			$username = "mammalweb";
+			$password = "aliSwans0n";
+			$db = "mammalweb";
 		}
 
 		// Create connection
@@ -64,7 +66,6 @@ class Swanson {
 		if ($this->mysqli->connect_error) {
 		    die("Connection failed: " . $this->mysqli->connect_error);
 		}
-		echo "DB connection successful";
 	}
 
 	/**

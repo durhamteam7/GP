@@ -240,7 +240,7 @@ adminApp.controller('MainController', ['$scope', 'ajax', function($scope, server
     $scope.getOptionName = function(optionNum) {
         for (var key in $scope.options) { //Try each struc type in options
             if ($scope.options[key].hasOwnProperty(optionNum)) { //if the optionNum is in the struc
-                return $scope.readable($scope.options[key][optionNum]); //return option name
+                return $scope.options[key][optionNum]; //return option name
             }
         }
     };
@@ -268,7 +268,6 @@ adminApp.controller('MainController', ['$scope', 'ajax', function($scope, server
         s = s.replace(/_id/, "");
         s = s.replace(/_/g, " ");
         s = s.replace(/([A-Z])/g, ' $1');
-        s = s.replace(/<\/?[^>]+(>|$)/g, "");
         s = s.replace(/^./, function(str) {
             return str.toUpperCase();
         });
