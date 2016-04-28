@@ -1,8 +1,7 @@
 # GP
 [![Build Status](https://travis-ci.org/durhamteam7/GP.svg?branch=master)](https://travis-ci.org/durhamteam7/GP)
-[![Coverage Status](https://coveralls.io/repos/github/durhamteam7/GP/badge.svg?branch=master)](https://coveralls.io/github/durhamteam7/GP?branch=master)
-Group Project
-
+[![Test Coverage](https://codeclimate.com/github/durhamteam7/GP/badges/coverage.svg)](https://codeclimate.com/github/durhamteam7/GP/coverage)
+<br>
 Algorithm is in tests/ directory
 
 ## Main idea of algorithm
