@@ -1,6 +1,8 @@
 # GP
 Group Project
 
+[![Coverage Status](https://coveralls.io/repos/github/durhamteam7/GP/badge.svg?branch=master)](https://coveralls.io/github/durhamteam7/GP?branch=master)
+
 Algorithm is in tests/ directory
 
 ## Main idea of algorithm
