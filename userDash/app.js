@@ -295,7 +295,7 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
         //Function to convert an option into human readable string
         for (key in $scope.options){
             if($scope.options[key].hasOwnProperty(optionNum)){
-                return $scope.options[key][optionNum]
+                return $scope.readable($scope.options[key][optionNum]);
             }
         }
         return "";
@@ -318,6 +318,7 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
         string = string.replace(/_id/,"");
         string = string.replace(/_/g, " ");
         string = string.replace(/([A-Z])/g, ' $1');
+        string = string.replace(/<\/?[^>]+(>|$)/g, "");
         string = string.replace(/^./, function(str){ return str.toUpperCase(); });
         return string
     }
