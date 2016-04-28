@@ -213,7 +213,7 @@ userApp.factory('ajax', ['$http', function($http) {
       });
     },
     getFilters: function() {
-      return $http.get('../../adminDash/filters.json').success(function() {
+      return $http.get('../commonDependancies/filters.json').success(function() {
       });
     }
   };
@@ -229,8 +229,8 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
 
     $scope.results = []; //contains the results from the server
     $scope.options = {};
-    
-    
+
+
     //PAGE functions
     $scope.currentPage = 1;
     $scope.pageSize = 15;
@@ -241,7 +241,7 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
         moved = true;
         $scope.navbarOpen = true;
         $timeout($scope.hideNav, 15000);
-        
+
     };
 
     $scope.hideNav = function(){
@@ -287,7 +287,7 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
                     //}*/ //Removed as breaks things
                 }
                 //console.log($scope.options)
-                
+
         });
     };
 
@@ -306,10 +306,10 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
             console.log("FITLERS",data)
                 //console.log(data);
                 $scope.filters = data
-                
+
         });
     }
-    
+
      $scope.readable = function(string) {
         if (typeof string === "undefined")
         {
@@ -323,7 +323,7 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
         return string
     }
 
-    $scope.isActive = function (viewLocation) { 
+    $scope.isActive = function (viewLocation) {
         return viewLocation === $location.path();
     };
 
@@ -338,4 +338,3 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
   $scope.getOptions();
   $scope.getFilters();
 }]);
-

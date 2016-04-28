@@ -35,7 +35,7 @@ adminApp.factory('ajax', ['$http', function($http) {
             return $http.get(urls[env] + 'persons').success(function() {});
         },
         getFilters: function() {
-            return $http.get('filters.json').success(function() {});
+            return $http.get('../commonDependancies/filters.json').success(function() {});
         }
     };
 }]);
