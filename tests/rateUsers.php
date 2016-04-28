@@ -1,21 +1,5 @@
 <?php
 
-/*
-$createTable = "CREATE TABLE PersonStats (".
-    "person_stats_id INT(11) AUTO_INCREMENT PRIMARY KEY,".
-    "person_id INT NOT NULL,".
-    "species_rate DECIMAL(10, 9) NOT NULL,".
-    "gender_rate DECIMAL(10, 9) NOT NULL,".
-    "age_rate DECIMAL(10, 9) NOT NULL,".
-    "number_rate DECIMAL(10, 9) NOT NULL".
-");";
-if ($mysqli->query($createTable) === TRUE) {
-    echo "Record updated successfully";
-} else {
-    echo "Error updating record: " . $mysqli->error;
-}
-*/
-
 # assume we have $all_data
 
 echo "Calculating the correctness rate of each user";

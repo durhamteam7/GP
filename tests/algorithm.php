@@ -9,6 +9,7 @@
 class Swanson {
 
 	private $mysqli;
+	private $env = 1;
 
 	private $blank_condition = 1;		#5
 	private $consensus_condition = 1;	#10
@@ -31,10 +32,18 @@ class Swanson {
 	}
 
 	function setupDB() {
-		$servername = "db4free.net";
-		$username = "mammalweb";
-		$password = "aliSwans0n";
-		$db = "mammalweb";
+		if ($this->env == 0) {
+			$servername = "mysql.dur.ac.uk";
+			$username = "nobody";
+			$password = "";
+			$db = "Cljdw32_MammalWeb";
+		}
+		else {
+			$servername = "db4free.net";
+			$username = "mammalweb";
+			$password = "aliSwans0n";
+			$db = "mammalweb";
+		}
 
 		// Create connection
 		$this->mysqli = new mysqli($servername, $username, $password, $db);
@@ -296,7 +305,14 @@ class Swanson {
 		arsort($votes);
 		$keys = array_keys($votes);
 		$first_value = $votes[$keys[0]];
-		return $first_value/$sum;
+		if($sum != 0)
+		{
+			return $first_value/$sum;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	# Fraction blanks is calculated as the fraction of classifiers who reported “nothing here”
@@ -319,7 +335,15 @@ class Swanson {
 		{
 			$n = 0;
 		}
-		return $n/$sum;
+
+		if($sum != 0)
+		{
+			return $n/$sum;
+		}
+		else
+		{
+			return 0;
+		}
 		
 	}
 
@@ -727,6 +751,54 @@ class Swanson {
 		        echo "\n";
 		    }
 		}
+	}
+
+	function createTables() {
+		# Creating Classification table
+		$createTable = "CREATE TABLE IF NOT EXISTS `Classification` (".
+		  "`classification_id` int(11) NOT NULL AUTO_INCREMENT,".
+		  "`photo_id` int(11) NOT NULL,".
+		  "`species` int(11) NOT NULL,".
+		  "`gender` int(11) NOT NULL,".
+		  "`age` int(11) NOT NULL,".
+		  "`number` int(4) NOT NULL,".
+		  "`evenness` decimal(10,9) NOT NULL,".
+		  "`fraction_support` decimal(10,9) NOT NULL,".
+		  "`fraction_blanks` decimal(10,9) NOT NULL,".
+		  "`timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,".
+		  "`number_of_classifications` int(11) NOT NULL,".
+		  "PRIMARY KEY (`classification_id`),".
+		  "KEY `photo_id` (`photo_id`)".
+		") ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+		if ($this->mysqli->query($createTable) === TRUE) {
+		    echo "Classification table created successfully\n";
+		} else {
+		    echo "Error creating Classification table: " . $this->mysqli->error . "\n";
+		}
+
+		$alterTable = "ALTER TABLE `Classification` ".
+		  "ADD CONSTRAINT `Classification_ibfk_1` FOREIGN KEY (`photo_id`) REFERENCES `Photo` (`photo_id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+		if ($this->mysqli->query($alterTable) === TRUE) {
+		    echo "Classification table altered successfully\n";
+		} else {
+		    echo "Error altering Classification table: " . $this->mysqli->error . "\n";
+		}
+
+		# Creating PersonStats table
+		$createTable = "CREATE TABLE IF NOT EXISTS PersonStats (".
+		    "person_stats_id INT(11) AUTO_INCREMENT PRIMARY KEY,".
+		    "person_id INT NOT NULL,".
+		    "species_rate DECIMAL(10, 9) NOT NULL,".
+		    "gender_rate DECIMAL(10, 9) NOT NULL,".
+		    "age_rate DECIMAL(10, 9) NOT NULL,".
+		    "number_rate DECIMAL(10, 9) NOT NULL".
+		");";
+		if ($this->mysqli->query($createTable) === TRUE) {
+		    echo "PersonStats table created successfully\n";
+		} else {
+		    echo "Error creating PersonStats table: " . $this->mysqli->error . "\n";
+		}
+
 	}
 
 	function emptyTable($table_name) {

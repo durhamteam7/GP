@@ -53,7 +53,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $empty_array = array();
 
         $array = array(array("species" => ""));
-        $res = array();
+        $res = array("" => 1);
 
         $array2 = array(array("species" => "animal"));
         $res2 = array("animal" => 1);
@@ -194,9 +194,9 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     public function testFraction_blanks()
     {
         $empty_array = array();
-        $array = array(0);
-        $array2 = array(86);
-        $array3 = array(0, 1, 86, 86);
+        $array = array(0 => 1);
+        $array2 = array(86 => 1);
+        $array3 = array(0 => 1, 1 => 1, 86 => 2);
 
         $this->assertEquals(0, $this->s->fraction_blanks($empty_array));
         $this->assertEquals(0, $this->s->fraction_blanks($array));
@@ -206,9 +206,9 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     public function testFraction_support()
     {
         $empty_array = array();
-        $array = array(0);
-        $array2 = array(0, 1, 2);
-        $array3 = array(1, 2, 3, 3);
+        $array = array(0 => 1);
+        $array2 = array(0 => 1, 1 => 1, 2 => 1);
+        $array3 = array(1 => 1, 2 => 1, 3 => 2);
 
         $this->assertEquals(0, $this->s->fraction_support($empty_array));
         $this->assertEquals(1, $this->s->fraction_support($array));
