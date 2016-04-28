@@ -311,7 +311,14 @@ class Swanson {
 
 		$sum = array_sum(array_values($votes));
 
-		$n = $votes[$this->blank_animal];
+		if (array_key_exists($this->blank_animal,$votes))
+		{
+			$n = $votes[$this->blank_animal];
+		}
+		else
+		{
+			$n = 0;
+		}
 		return $n/$sum;
 		
 	}
