@@ -296,7 +296,14 @@ class Swanson {
 		arsort($votes);
 		$keys = array_keys($votes);
 		$first_value = $votes[$keys[0]];
-		return $first_value/$sum;
+		if($sum != 0)
+		{
+			return $first_value/$sum;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	# Fraction blanks is calculated as the fraction of classifiers who reported “nothing here”
@@ -319,7 +326,15 @@ class Swanson {
 		{
 			$n = 0;
 		}
-		return $n/$sum;
+
+		if($sum != 0)
+		{
+			return $n/$sum;
+		}
+		else
+		{
+			return 0;
+		}
 		
 	}
 
