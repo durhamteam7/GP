@@ -53,7 +53,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $empty_array = array();
 
         $array = array(array("species" => ""));
-        $res = array();
+        $res = array(array("" => 1));
 
         $array2 = array(array("species" => "animal"));
         $res2 = array("animal" => 1);
