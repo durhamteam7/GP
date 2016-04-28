@@ -4,9 +4,6 @@ php:
 #-5.4
 #- hhvm
 
-addons:
-  code_climate:
-    repo_token: 6fdcc9f41ae8f03876ddb127a094a262809518a20b798bdfbc06dbb117c831bb
 before_script:
   - composer update --prefer-source
 
@@ -14,8 +11,7 @@ script:
   - phpunit --coverage-clover build/logs/clover.xml
   - php coverage-checker.php clover.xml 75
 
-after_script:
-  - ./codeclimate.sh
+after_script: php vendor/bin/coveralls
 
 
 notifications:
