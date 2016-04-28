@@ -1,17 +1,33 @@
 language: php
+
+sudo: false
+
 php:
-- 5.5
-#-5.4
-#- hhvm
+  - 5.5
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+env:
+  global:
+    secure: Yc+Xohkr/iEUU7FCQuSLXAE9ywNW9g6CfrM1Ki0Hl+fS15F3AXT7dFY8EyCJ4dP1/oI0dBmwrGWrltXV0XWIjGV1Ms3tefCgQpBBAqwT+hImzVP3RbpZW8Iyo2d0VgiDemQF1LWYD/pKu6d8WljTnv5D77NIMdEJjQ0uzeTLWdw=
+
+before_install:
+  - composer self-update
+
+install:
+  - composer install --prefer-dist
 
 before_script:
-  - composer update --prefer-source
+  - git config --global user.email "travis-ci@codeclimate.com"
+  - git config --global user.name "Travis CI"
 
 script:
-  - phpunit --coverage-clover build/logs/clover.xml
-  - php coverage-checker.php clover.xml 75
+  - vendor/bin/phpunit
 
-after_script: php vendor/bin/coveralls
+after_script:
+  - php composer/bin/test-reporter
 
 
 notifications:
