@@ -32,6 +32,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     }
     */
 
+    /*
     public function testGet_species_counts()
     {
         $empty_array = array();
