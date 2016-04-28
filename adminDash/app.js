@@ -1,9 +1,12 @@
 var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap', 'googlechart', "checklist-model", 'datetimepicker', 'toggle-switch', 'ngAutocomplete', 'bw.paging']);
 
-var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/";
+var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/"; //root of all img URLs
 
+//Allows for switching between dev local server and hosted server
 var urls = ["http://localhost:8080/", "https://mammalweb.herokuapp.com/"];
 var env = 1; // GLOBAL VARIABLE FOR ENVIRONMENT (0:Dev,1:Production)
+
+
 
 /**
  * @memberof adminApp
@@ -292,6 +295,8 @@ adminApp.controller('MainController', ['$scope', 'ajax', function($scope, server
 }]);
 
 
+
+
 /**
  * @memberof adminApp
  * @ngdoc controller
@@ -343,6 +348,8 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
             return;
         }
 
+				//Map for filter type to GoogleCharts data type
+				// TODO: refactor into filter.json
         var typeMap = {
             "checkboxes": "string",
             "slider": "number",
