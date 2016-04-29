@@ -30,21 +30,21 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $array = array(array("species" => ""));
         $res = array("" => 1);
 
-        $array2 = array(array("species" => "animal"));
-        $res2 = array("animal" => 1);
+        $array2 = array(array("species" => "badger"));
+        $res2 = array("badger" => 1);
 
-        $array3 = array(array("species" => "animal"),
-                        array("species" => "animal"));
-        $res3 = array("animal" => 2);
+        $array3 = array(array("species" => "dog"),
+                        array("species" => "dog"));
+        $res3 = array("dog" => 2);
 
-        $array4 = array(array("species" => "animal"),
-                        array("species" => "species"));
-        $res4 = array("animal" => 1, "species" => 1);
+        $array4 = array(array("species" => "deer"),
+                        array("species" => "cat"));
+        $res4 = array("deer" => 1, "cat" => 1);
 
-        $array5 = array(array("species" => "animal"),
-                        array("species" => "animal"),
-                        array("species" => "species"));
-        $res5 = array("animal" => 2, "species" => 1);
+        $array5 = array(array("species" => "deer"),
+                        array("species" => "deer"),
+                        array("species" => "badger"));
+        $res5 = array("deer" => 2, "badger" => 1);
 
         $this->assertEquals(array(), $this->s->tally_votes("species", $empty_array));
         $this->assertEquals($res, $this->s->tally_votes("species", $array));
@@ -61,21 +61,21 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $array = array(array("species" => ""));
         $res = array("" => 1);
 
-        $array2 = array(array("species" => "animal"));
-        $res2 = array("animal" => 1);
+        $array2 = array(array("species" => "badger"));
+        $res2 = array("badger" => 1);
 
-        $array3 = array(array("species" => "animal"),
-                        array("species" => "animal"));
-        $res3 = array("animal" => 2);
+        $array3 = array(array("species" => "dog"),
+                        array("species" => "dog"));
+        $res3 = array("dog" => 2);
 
-        $array4 = array(array("species" => "animal"),
-                        array("species" => "species"));
-        $res4 = array("animal" => 1, "species" => 1);
+        $array4 = array(array("species" => "deer"),
+                        array("species" => "cat"));
+        $res4 = array("deer" => 1, "cat" => 1);
 
-        $array5 = array(array("species" => "animal"),
-                        array("species" => "animal"),
-                        array("species" => "species"));
-        $res5 = array("animal" => 2, "species" => 1);
+        $array5 = array(array("species" => "deer"),
+                        array("species" => "deer"),
+                        array("species" => "badger"));
+        $res5 = array("deer" => 2, "badger" => 1);
 
         $this->assertEquals(0, $this->s->highest_vote("species", $empty_array));
         $this->assertEquals(1, $this->s->highest_vote("species", $array));
@@ -93,20 +93,20 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $res = array("" => 1);
 
         $array2 = array(array("species" => "badger"));
-        $res2 = array("animal" => 1);
+        $res2 = array("badger" => 1);
 
         $array3 = array(array("species" => "dog"),
                         array("species" => "dog"));
-        $res3 = array("animal" => 2);
+        $res3 = array("dog" => 2);
 
         $array4 = array(array("species" => "deer"),
                         array("species" => "cat"));
-        $res4 = array("animal" => 1, "species" => 1);
+        $res4 = array("deer" => 1, "cat" => 1);
 
         $array5 = array(array("species" => "deer"),
                         array("species" => "deer"),
                         array("species" => "badger"));
-        $res5 = array("animal" => 2, "species" => 1);
+        $res5 = array("deer" => 2, "badger" => 1);
 
         $this->assertEquals("", $this->s->decide_on("species", $empty_array));
         $this->assertEquals("", $this->s->decide_on("species", $array));
