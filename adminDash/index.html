@@ -1,87 +1,96 @@
-
 <html>
-	<head>
-		<title>Admin Dashboard</title>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/locale/en-gb.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/2.10.2/rzslider.min.css"/>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.js"></script>
-		<script src="https://cdn.upress.co.il/ajax/libs/angularjs-slider/2.9.0/rzslider.js"></script>
-		<script src="http://bouil.github.io/angular-google-chart/ng-google-chart.js"></script>
-		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-		<script src="../commonDependancies/checklistModel.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
-		<script src="../commonDependancies/angular-toggle-switch.min.js"></script>
-		<link href="../commonDependancies/angular-toggle-switch.css" media="all" rel="stylesheet" type="text/css">
-		<script src="https://rawgit.com/brantwills/Angular-Paging/v2.2.0/dist/paging.min.js"></script>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
 
-		<script src="https://cdn.rawgit.com/diosney/angular-bootstrap-datetimepicker-directive/master/angular-bootstrap-datetimepicker-directive.js"></script>
+<head>
+    <title>Admin Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/locale/en-gb.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/2.10.2/rzslider.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.js"></script>
+    <script src="https://cdn.upress.co.il/ajax/libs/angularjs-slider/2.9.0/rzslider.js"></script>
+    <script src="http://bouil.github.io/angular-google-chart/ng-google-chart.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="../commonDependancies/checklistModel.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../commonDependancies/angular-toggle-switch.min.js"></script>
+    <link href="../commonDependancies/angular-toggle-switch.css" media="all" rel="stylesheet" type="text/css">
+    <script src="https://rawgit.com/brantwills/Angular-Paging/v2.2.0/dist/paging.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
 
-		    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCpzag5AVnm8nqYpPnO_7kku6siPeNxLO0&libraries=places"></script>
-		    <script src="../commonDependancies/ngAutocomplete.js"></script>
+    <script src="https://cdn.rawgit.com/diosney/angular-bootstrap-datetimepicker-directive/master/angular-bootstrap-datetimepicker-directive.js"></script>
+
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCpzag5AVnm8nqYpPnO_7kku6siPeNxLO0&libraries=places"></script>
+    <script src="../commonDependancies/ngAutocomplete.js"></script>
 
 
-		<script src="app.js"></script>
-		<script src="../commonDependancies/filters.js"></script>
-		<style>
-		body {
-			-webkit-touch-callout: none; /* iOS Safari */
-			-webkit-user-select: none;   /* Chrome/Safari/Opera */
-			-khtml-user-select: none;    /* Konqueror */
-			-moz-user-select: none;      /* Firefox */
-			-ms-user-select: none;       /* IE/Edge */
-		user-select: none;           /* non-prefixed version, currently
+    <script src="app.js"></script>
+    <script src="../commonDependancies/filters.js"></script>
+    <style>
+        body {
+            -webkit-touch-callout: none;
+            /* iOS Safari */
+            -webkit-user-select: none;
+            /* Chrome/Safari/Opera */
+            -khtml-user-select: none;
+            /* Konqueror */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* IE/Edge */
+            user-select: none;
+            /* non-prefixed version, currently
 		not supported by any browser */
-		}
-		.knob{
-			color: #f5f5f5;
-		}
-		.switch-right{
-			color: white !important;
-			background-color: #0db9f0 !important;
-		}
-		.switch-left{
-			color: white !important;
-			background-color: #0db9f0 !important;
-		}
+        }
+        
+        .knob {
+            color: #f5f5f5;
+        }
+        
+        .switch-right {
+            color: white !important;
+            background-color: #0db9f0 !important;
+        }
+        
+        .switch-left {
+            color: white !important;
+            background-color: #0db9f0 !important;
+        }
+    </style>
+    <link rel="stylesheet" href="../commonDependancies/loader.css">
 
-		</style>
-		<link rel="stylesheet" href="../commonDependancies/loader.css">
+</head>
 
-	</head>
-	<body ng-controller="MainController" ng-App="adminDash">
-		{{details}}
-		<!--creates loading spinner for page load-->
-		<div id="loader">
-			<div>
-				<div class="spinner"></div>
-				<p>Loading...</p>
-			</div>
-		</div>
-		<div class="container">
-			<div class="page-header">
-				<h1>Welcome Admin</h1>
-			</div>
-			<div class="row">
-				<!--This is the filters section, it uses the data from filters.js and filter.json
+<body ng-controller="MainController" ng-App="adminDash">
+    {{details}}
+    <!--creates loading spinner for page load-->
+    <div id="loader">
+        <div>
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="page-header">
+            <h1>Welcome Admin</h1>
+        </div>
+        <div class="row">
+            <!--This is the filters section, it uses the data from filters.js and filter.json
 				Breaks down the filters into the data types (checkbox,boolean,slider etc.)-->
-				<div class="col-md-3" id="leftCol">
-					<div class="well" id="filters">
-						    <div class="row">
-						    	<div class='col-md-2'></div>
-						    	<div class='col-md-34'>
-							    <toggle-switch class="switch-default" on-label='Sequence' off-label='Image' ng-model="isSequence"></toggle-switch>
-								</div>
-							</div>
-						<br>
+            <div class="col-md-3" id="leftCol">
+                <div class="well" id="filters">
+                    <div class="row">
+                        <div class='col-md-2'></div>
+                        <div class='col-md-34'>
+                            <toggle-switch class="switch-default" on-label='Sequence' off-label='Image' ng-model="isSequence"></toggle-switch>
+                        </div>
+                    </div>
+                    <br>
 
-						<form>
-							<span ng-repeat="filterCat in filters">
+                    <form>
+                        <span ng-repeat="filterCat in filters">
 							<span ng-repeat="filterData in filterCat | orderObjectBy | orderBy: 'order'">
 
 								<h4>{{readable(filterData.id)}}</h4>
@@ -91,20 +100,20 @@
 										<span ng-if="filterData.struc.length > 1">
 											<b>{{readable(s)}}</b>
 										</span>
-										<div class="checkbox" ng-repeat="(id,name) in options[s] | objectLimitTo:(!filterData.open[s]?3:(options[s] | keylength))">
-											<label>
-												<input type="checkbox" checklist-model="filterData.value" checklist-value="id"> {{name}}
-											</label>
+                        <div class="checkbox" ng-repeat="(id,name) in options[s] | objectLimitTo:(!filterData.open[s]?3:(options[s] | keylength))">
+                            <label>
+                                <input type="checkbox" checklist-model="filterData.value" checklist-value="id"> {{name}}
+                            </label>
 
-										</div>
-											<span ng-if="(options[s] | keylength)> 5">
+                        </div>
+                        <span ng-if="(options[s] | keylength)> 5">
 												<a href="javascript:void(0)" ng-click="filterData.open[s]=!filterData.open[s]">{{filterData.open[s]?"-":"+"}} See {{filterData.open[s]?"less":"more"}}</a>
 											</span>
-									</div>
+                </div>
 
-								</span>
+                </span>
 
-								<span ng-if="filterData.type=='boolean'">
+                <span ng-if="filterData.type=='boolean'">
 									<div class="checkbox">
 										<label>
 											<input type="checkbox" checklist-model="filterData.value" checklist-value="true" ng-click="((filterData.value.length==1)?(filterData.value=[true]):1)"> Yes
@@ -118,69 +127,70 @@
 									</div>
 								</span>
 
-								<div class="row" ng-if="filterData.type=='slider'">
-									<rzslider rz-slider-model="filterData.minValue" rz-slider-high="filterData.maxValue" rz-slider-options="filterData.options"></rzslider>
-									<div class="col-md-6">
-										<input type="number" class="form-control" step="1" ng-model="filterData.minValue"  />
-									</div>
-									<div class = "col-md-6">
-										<input type="number" class="form-control" step="1" ng-model="filterData.maxValue"  />
-									</div>
-								</div>
-								<div class="row" ng-if="filterData.type=='dateTime'">
+                <div class="row" ng-if="filterData.type=='slider'">
+                    <rzslider rz-slider-model="filterData.minValue" rz-slider-high="filterData.maxValue" rz-slider-options="filterData.options"></rzslider>
+                    <div class="col-md-6">
+                        <input type="number" class="form-control" step="1" ng-model="filterData.minValue" />
+                    </div>
+                    <div class="col-md-6">
+                        <input type="number" class="form-control" step="1" ng-model="filterData.maxValue" />
+                    </div>
+                </div>
+                <div class="row" ng-if="filterData.type=='dateTime'">
 
-								<div class='col-md-12'>
-								<div class="form-group">
-									<div class='input-group date' id='datetimepicker6'>
-										<input type='text' class="form-control" placeholder="from..." datetimepicker ng-model="filterData.minValue" datetimepicker-options="{{filterData.options}}" />
-										<span class="input-group-addon">
+                    <div class='col-md-12'>
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker6'>
+                                <input type='text' class="form-control" placeholder="from..." datetimepicker ng-model="filterData.minValue" datetimepicker-options="{{filterData.options}}" />
+                                <span class="input-group-addon">
 										<span class="glyphicon {{filterData.icon}}"></span>
-									</span>
-									</div>
-								</div>
-							</div>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
 
-							<div class='col-md-12'>
-								<div class="form-group">
-									<div class='input-group date' id='datetimepicker6'>
-										<input type='text' class="form-control" placeholder="...to" datetimepicker ng-model="filterData.maxValue" datetimepicker-options="{{filterData.options}}" />
-										<span class="input-group-addon">
+                    <div class='col-md-12'>
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker6'>
+                                <input type='text' class="form-control" placeholder="...to" datetimepicker ng-model="filterData.maxValue" datetimepicker-options="{{filterData.options}}" />
+                                <span class="input-group-addon">
 										<span class="glyphicon {{filterData.icon}}"></span>
-									</span>
-									</div>
-								</div>
-							</div>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
 
 
-								</div>
-								<br>
-							</span>
-							</span>
-							<h4>OTHER</h4>
+                </div>
+                <br>
+                </span>
+                </span>
+                <h4>OTHER</h4>
 
-							<b>Location</b><br>
+                <b>Location</b>
+                <br>
 
-							<label>Postcode:</label>
-								<div class='input-group'>
-									<input type="text" class="form-control" ng-model="autocomplete" ng-autocomplete options="options" details="details" lat="filters.Site.lat.value" lon="filters.Site.lon.value" >
-									<span class="input-group-addon">
+                <label>Postcode:</label>
+                <div class='input-group'>
+                    <input type="text" class="form-control" ng-model="autocomplete" ng-autocomplete options="options" details="details" lat="filters.Site.lat.value" lon="filters.Site.lon.value">
+                    <span class="input-group-addon">
 										<span class="glyphicon glyphicon-map-marker"></span>
-									</span>
+                    </span>
 
-								</div>
-								<br>
-								<div class='input-group'>
-									<input type="number" class="form-control" placeholder="radius">
-								</div>
-							</label>
+                </div>
+                <br>
+                <div class='input-group'>
+                    <input type="number" class="form-control" placeholder="radius">
+                </div>
+                </label>
 
-						</form>
-					</div>
-				</div>
+                </form>
+            </div>
+        </div>
 
-				<div class="col-md-6">
-					<h2 id="sec0">Search Results</h2>
-					<h5>
+        <div class="col-md-6">
+            <h2 id="sec0">Search Results</h2>
+            <h5>
 					<span ng-repeat="filterCat in filters">
 					<span ng-repeat="(name,f) in filterCat">
 						<span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='slider' && (f.minValue!=f.options.floor || f.maxValue!=f.options.ceil)">{{readable(name)}}:
@@ -222,315 +232,318 @@
 					</span>
 					</span>
 					</h5>
-					<div id="searchResults">
-						<div class="row"  ng-repeat="result in results">
-							<div class="col-sm-4">
-								<div class="row">
-									<div class="col-sm-4">
-										<a data-toggle="modal" data-target="#{{result.Photo.photo_id}}" href="javascript:void(0)">
-											<img ng-src="{{result.Photo.URL}}" width=150>
-										</a>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-8">
-								<div class="row">
-									<div class="col-sm-5"><b>{{(isSequence?result.Photo.sequence_id:((result.Photo.upload_filename | limitTo: 15 | newlines) ))}}
+            <div id="searchResults">
+                <div class="row" ng-repeat="result in results">
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <a data-toggle="modal" data-target="#{{result.Photo.photo_id}}" href="javascript:void(0)">
+                                    <img ng-src="{{result.Photo.URL}}" width=150>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-5"><b>{{(isSequence?result.Photo.sequence_id:((result.Photo.upload_filename | limitTo: 15 | newlines) ))}}
 
 										{{(result.Photo.upload_filename.length > 15 && !isSequence)?'...' : '' }}
 
 </b></div>
-								</div>
-								<div class="row" ng-if="!isSequence">
-									<div class="col-sm-3">Sequence:</div>
-									<div class="col-sm-8">{{result.Photo.sequence_id}}</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-3">Site:</div>
-									<div class="col-sm-8"><a href="#">{{result.Site.site_name}}</a></div>
-								</div>
-								<div class="row">
-									<div class="col-sm-3">Time:</div>
-									<div class="col-sm-8">{{result.Photo.taken | date:'dd/MM/yyyy HH:mm'}}</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-3">Animals:</div>
-									<div class="col-sm-8"><a ng-repeat="c in result.Classification" href="#">{{getOptionName(c.species)}} </a></div>
-								</div>
-								<br>
-							</div>
-						</div>
-					</div>
-					<hr>
+                        </div>
+                        <div class="row" ng-if="!isSequence">
+                            <div class="col-sm-3">Sequence:</div>
+                            <div class="col-sm-8">{{result.Photo.sequence_id}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">Site:</div>
+                            <div class="col-sm-8"><a href="#">{{result.Site.site_name}}</a></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">Time:</div>
+                            <div class="col-sm-8">{{result.Photo.taken | date:'dd/MM/yyyy HH:mm'}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">Animals:</div>
+                            <div class="col-sm-8"><a ng-repeat="c in result.Classification" href="#">{{getOptionName(c.species)}} </a></div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <hr>
 
-        <div>
-            <p>Showing {{numResults == 0 ? 0 : ((currentPage-1) * pageSize) + 1}} to {{rowsShown()}} of {{numResults}} entries</p>
+            <div>
+                <p>Showing {{numResults == 0 ? 0 : ((currentPage-1) * pageSize) + 1}} to {{rowsShown()}} of {{numResults}} entries</p>
+            </div>
+            <div class="row">
+                <div paging page="currentPage" page-size="pageSize" total="numResults" paging-action="getResults(page)" hide-if-empty="true" show-prev-next="true" show-first-last="true"></div>
+            </div>
+
+
+
+
         </div>
-        <div class="row">
-            <div paging page="currentPage" page-size="pageSize" total="numResults" paging-action="getResults(page)" hide-if-empty="true" show-prev-next="true" show-first-last="true"></div>
-   		 </div>
+        <div class="col-md-3" id="rightCol">
+            <!--Summary of the results of the filtered query-->
+            <div class="well">
+                <h1 class="h4">Summary</h1> {{numResults}} results.
+            </div>
+            <!--Well containing graphs modal button-->
+            <div class="well" ng-controller="GraphsController">
+                <h1 class="h4">Graphs</h1>
+                <button type="button" class="btn" data-toggle="modal" data-target="#graphModal">Open Graph Editor</button>
 
+                <!-- Graphs Modal -->
+                <div id="graphModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Graph Editor</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div google-chart chart="chartObject" style="{{chartStyle}}"></div>
+                                </div>
 
+                                <div class="row">
+                                    <div class="col-xs-8">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label for="type" class="col-sm-2 control-label">Chart Type:</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control ng-pristine ng-valid" id="chartType" ng-model="chartObject.type" ng-change="chartSelectionChange()">
+                                                        <option ng-repeat="type in chartTypes" ng-value="type">{{type}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label for="x-axis" class="col-sm-2 control-label">x-axis Label:</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control ng-pristine ng-valid" id="x-axis" ng-model="xName" ng-change="chartSelectionChange();makeData();">
+                                                        <option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters" ng-value="filterName">
+                                                        </option>
+                                                        <option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
 
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label for="y-axis" class="col-sm-2 control-label">y-axis Label:</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control ng-pristine ng-valid" id="y-axis" ng-model="yName" ng-change="chartSelectionChange();makeData();">
+                                                        <option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters">
+                                                        </option>
+                                                        <option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
+                                                        <option value="countOfXaxis">COUNTOF({{readable(xName)}})</option>
 
-				</div>
-				<div class="col-md-3" id="rightCol">
-					<!--Summary of the results of the filtered query-->
-					<div class="well">
-						<h1 class="h4">Summary</h1>
-						{{numResults}} results.
-					</div>
-					<!--Well containing graphs modal button-->
-					<div class="well" ng-controller="GraphsController">
-						<h1 class="h4">Graphs</h1>
-						<button type="button" class="btn" data-toggle="modal" data-target="#graphModal" >Open Graph Editor</button>
-
-						<!-- Graphs Modal -->
-						<div id="graphModal" class="modal fade" role="dialog">
-							<div class="modal-dialog modal-lg">
-								<!-- Modal content-->
-								<div class="modal-content">
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal">&times;</button>
-										<h4 class="modal-title">Graph Editor</h4>
-									</div>
-									<div class="modal-body">
-										<div class= "row">
-											<div google-chart chart="chartObject" style="{{chartStyle}}"></div>
-										</div>
-
-										<div class="row">
-											<div class="col-xs-8">
-												<div class= "row">
-													<div class="form-group">
-														<label for="type" class="col-sm-2 control-label">Chart Type:</label>
-														<div class="col-sm-10">
-															<select class="form-control ng-pristine ng-valid" id="chartType" ng-model="chartObject.type" ng-change="chartSelectionChange()">
-																<option ng-repeat="type in chartTypes" ng-value="type">{{type}}</option>
-															</select>
-														</div>
-													</div>
-												</div>
-												<div class= "row">
-													<div class="form-group">
-														<label for="x-axis" class="col-sm-2 control-label">x-axis Label:</label>
-														<div class="col-sm-10">
-															<select class="form-control ng-pristine ng-valid" id="x-axis" ng-model="xName" ng-change="chartSelectionChange();makeData();">
-																	<option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters" ng-value="filterName">
-																	</option>
-																	<option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
-
-															</select>
-														</div>
-													</div>
-												</div>
-												<div class="row">
-													<div class="form-group">
-														<label for="y-axis" class="col-sm-2 control-label">y-axis Label:</label>
-														<div class="col-sm-10">
-															<select class="form-control ng-pristine ng-valid" id="y-axis" ng-model="yName" ng-change="chartSelectionChange();makeData();">
-																	<option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters">
-																	</option>
-																	<option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
-																	<option value="countOfXaxis">COUNTOF({{readable(xName)}})</option>
-
-															</select>
-														</div>
-													</div>
-												</div>
-											</div>
-											<!--Button to load full dataset with appropriate warning about the loading time-->
-											<div class="col-xs-4">
-												<div class="row">
-													<button type="button" class="btn btn-danger"  ng-click="getFullResults()">Use Full Dataset</button>
-												</div>
-												<div class="row">
-													<p>Warning: There are {{numResults}} results.<br>This may take a long time to load</p>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!--Well for the download CSV functionality-->
-					<div class="well">
-						<h1 class="h4">Export CSV</h1>
-						<button class="btn" ng-click="downloadCSV()">Download CSV</button>
-					</div>
-					<!--Well containing the user ratings system modal-->
-					<div class="well">
-						<h1 class="h4">User Ratings</h1>
-						<button class="btn" data-toggle="modal" data-target="#userModal">View Users</button>
-						<!--User Ratings Modal-->
-						<div id="userModal" class="modal fade" role="dialog">
-							<div class="modal-dialog modal-lg">
-								<!-- Modal content-->
-								<div class="modal-content">
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal">&times;</button>
-										<h4 class="modal-title">Users</h4>
-									</div>
-									<div class="modal-body" style="height:80%;overflow:scroll;margin-bottom:15px;">
-										<div class="row">
-											<div class="col-xs-12">
-												<table class="table table-bordered table-hover">
-									                <thead>
-									                    <tr>
-									                        <th ng-repeat="key in personTableOrder">
-								                                {{ readable(key) }}
-									                        </th>
-									                    </tr>
-									                </thead>
-									                <tbody>
-									                	<tr ng-repeat="p in persons | orderBy :'weighted_average'">
-									                		<td class="col-xs-1">
-									                			{{p.person_id}}
-									                		</td>
-									                		<td class="col-xs-1">
-									                			{{p.number_of_classifications}}
-									                		</td>
-									                		<td ng-repeat="key in personTableOrder" ng-if="key!='person_id' && key!='number_of_classifications'" class="col-xs-2">
-									                			<div class="progress">
-									                			  {{value=p[key];""}}
-																  <div class="progress-bar" role="progressbar" aria-valuenow="{{value}}"
-																  aria-valuemin="0" aria-valuemax="1" style="width:{{value*100}}%;background-color:{{
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Button to load full dataset with appropriate warning about the loading time-->
+                                    <div class="col-xs-4">
+                                        <div class="row">
+                                            <button type="button" class="btn btn-danger" ng-click="getFullResults()">Use Full Dataset</button>
+                                        </div>
+                                        <div class="row">
+                                            <p>Warning: There are {{numResults}} results.
+                                                <br>This may take a long time to load</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Well for the download CSV functionality-->
+            <div class="well">
+                <h1 class="h4">Export CSV</h1>
+                <button class="btn" ng-click="downloadCSV()">Download CSV</button>
+            </div>
+            <!--Well containing the user ratings system modal-->
+            <div class="well">
+                <h1 class="h4">User Ratings</h1>
+                <button class="btn" data-toggle="modal" data-target="#userModal">View Users</button>
+                <!--User Ratings Modal-->
+                <div id="userModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Users</h4>
+                            </div>
+                            <div class="modal-body" style="height:80%;overflow:scroll;margin-bottom:15px;">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th ng-repeat="key in personTableOrder">
+                                                        {{ readable(key) }}
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="p in persons | orderBy :'weighted_average'">
+                                                    <td class="col-xs-1">
+                                                        {{p.person_id}}
+                                                    </td>
+                                                    <td class="col-xs-1">
+                                                        {{p.number_of_classifications}}
+                                                    </td>
+                                                    <td ng-repeat="key in personTableOrder" ng-if="key!='person_id' && key!='number_of_classifications'" class="col-xs-2">
+                                                        <div class="progress">
+                                                            {{value=p[key];""}}
+                                                            <div class="progress-bar" role="progressbar" aria-valuenow="{{value}}" aria-valuemin="0" aria-valuemax="1" style="width:{{value*100}}%;background-color:{{
 																  value==1?'#33cc33':(
 																  value>0.9?'#bbee55':(
 																  value>0.75?'#ffee22':(
 																  value>0.5?'#ffcc00':(
 																  value>0.25?'ff6600':
 																  '#dd0000'))))}}">
-																    {{value}}
-																  </div>
-																</div>
-									                		</td>
-									                	</tr>
-									                </tbody>
-									            </table>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+                                                                {{value}}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!--Modal for displaying more about the image when clicked-->
-<div id="{{result.Photo.photo_id}}" class="modal fade" role="dialog" ng-repeat="result in results">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">{{result.Photo.upload_filename}}</h4>
-      </div>
-      
-    <div class="modal-body">
-      	<div class="row">
-	        <div class="col-sm-6">
-	        	<a ng-href="{{result.Photo.URL}}" target="_blank">
-	        	<img ng-src="{{result.Photo.URL}}" width=400></a>
-	        </div>
-	        <div class="col-sm-5">
-	        					<div class="row">
-									<div class="col-sm-8"><h4>Photo</h4></div>
-								</div>
-								<div class="row" ng-if="!isSequence">
-									<div class="col-sm-3">Sequence:</div>
-									<div class="col-sm-8">{{result.Photo.sequence_id}}</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-3">Time:</div>
-									<div class="col-sm-8">{{result.Photo.taken | date:'dd/MM/yyyy HH:mm'}}</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-8"><h4>Site</h4></div>
-								</div>
-								<div class="row">
-									<div class="col-sm-3">Name:</div>
-									<div class="col-sm-8">{{result.Site.site_name}}</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-3">Landuse:</div>
-									<div class="col-sm-8">{{getOptionName(result.Site.landuse_id)}}</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-3">Habitat:</div>
-									<div class="col-sm-8">{{getOptionName(result.Site.habitat_id)}}</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-3">Water:</div>
-									<div class="col-sm-8">{{getOptionName(result.Site.water_id)}}</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-3">Purpose:</div>
-									<div class="col-sm-8">{{getOptionName(result.Site.purpose_id)}}</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-3">Location:</div>
-									<div class="col-sm-8">{{result.Site.grid_ref}}</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-3">Height:</div>
-									<div class="col-sm-8">{{result.Site.camera_height}}</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-3">Notes:</div>
-									<div class="col-sm-8">{{result.Site.notes}}</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-8"><h4>Classifications</h4></div>
-								</div>
-								<div class="row">
-									<div class="col-sm-8">
-										<table class='table table-bordered table-hover'>
-											<thead>
-												<tr>
-													<th>Species</th>
-													<th>Gender</th>
-													<th>Age</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr ng-repeat="c in result.Classification">
-													<td>
-														{{getOptionName(c.species)}}
-													</td>
-													<td>
-														{{getOptionName(c.gender)}}
-													</td>
-													<td>
-														{{getOptionName(c.age)}}
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-	        
-       
+        </div>
     </div>
     </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
+    </div>
+    </div>
     </div>
 
-  </div>
-</div>
+    <!--Modal for displaying more about the image when clicked-->
+    <div id="{{result.Photo.photo_id}}" class="modal fade" role="dialog" ng-repeat="result in results">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{{result.Photo.upload_filename}}</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a ng-href="{{result.Photo.URL}}" target="_blank">
+                                <img ng-src="{{result.Photo.URL}}" width=400></a>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <h4>Photo</h4></div>
+                            </div>
+                            <div class="row" ng-if="!isSequence">
+                                <div class="col-sm-3">Sequence:</div>
+                                <div class="col-sm-8">{{result.Photo.sequence_id}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">Time:</div>
+                                <div class="col-sm-8">{{result.Photo.taken | date:'dd/MM/yyyy HH:mm'}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <h4>Site</h4></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">Name:</div>
+                                <div class="col-sm-8">{{result.Site.site_name}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">Landuse:</div>
+                                <div class="col-sm-8">{{getOptionName(result.Site.landuse_id)}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">Habitat:</div>
+                                <div class="col-sm-8">{{getOptionName(result.Site.habitat_id)}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">Water:</div>
+                                <div class="col-sm-8">{{getOptionName(result.Site.water_id)}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">Purpose:</div>
+                                <div class="col-sm-8">{{getOptionName(result.Site.purpose_id)}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">Location:</div>
+                                <div class="col-sm-8">{{result.Site.grid_ref}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">Height:</div>
+                                <div class="col-sm-8">{{result.Site.camera_height}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">Notes:</div>
+                                <div class="col-sm-8">{{result.Site.notes}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <h4>Classifications</h4></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <table class='table table-bordered table-hover'>
+                                        <thead>
+                                            <tr>
+                                                <th>Species</th>
+                                                <th>Gender</th>
+                                                <th>Age</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="c in result.Classification">
+                                                <td>
+                                                    {{getOptionName(c.species)}}
+                                                </td>
+                                                <td>
+                                                    {{getOptionName(c.gender)}}
+                                                </td>
+                                                <td>
+                                                    {{getOptionName(c.age)}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 
 </body>
+
 </html>
