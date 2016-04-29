@@ -1,13 +1,16 @@
 <?php
 
 // import algorithm
-require_once("algorithm.php");
+require_once("../algorithm.php");
 
 class SwansonTest extends PHPUnit_Framework_TestCase
 {
 
     // contains the object handle of the string class
     private $s;
+
+    private $classified;
+    private $photo_ids;
 
     // constructor of the test suite
     function SwansonTest() {
