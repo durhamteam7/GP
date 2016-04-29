@@ -292,7 +292,7 @@ class Swanson {
 		$votes = $this->tally_votes($key, $subject);
 		print_r($votes);
 		if (count($votes) > 0) {
-			sort($votes);
+			arsort($votes);
 			return $votes[0];
 		}
 		return 0;
