@@ -18,6 +18,16 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         unset($this->s);
     }
 
+    // tests if the database connection is set up
+    function testSetupDB() {
+      $connected = true;
+  		// Check connection
+  		if ($this->s->mysqli->connect_error) {
+          $connected = false;
+  		}
+      $this->assertEquals(true, $connected);
+    }
+
     // compare by classification test
     /*
     public function testCompare_by_classification()
