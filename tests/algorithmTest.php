@@ -171,37 +171,33 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0.5, $this->s->fraction_blanks($array3));
     }
 
-    public function testGetAnimals() {
-
-      # get the photo_ids of all available photos
-      $photo_ids = $this->s->getPhotos();
-
-      # get the photo_ids of the already classified photos
-      $classified = $this->s->getClassified();
-      # $classified - will hold the data from all classified and retired photos
-
-      $a = $this->s->getAnimals();
-      $this->assertTrue(count($a) > 0);
-    }
-
     public function testGetClassified() {
-      $a = $this->s->getClassified();
-      $this->assertTrue(count($a) > 0);
+      $this->classified = $this->s->getClassified();
+      $this->assertTrue(count($this->classified) > 0);
     }
 
     public function testGetClassifications() {
-      $a = $this->s->getClassifications();
-      $this->assertTrue(count($a) > 0);
+      $this->classifications = $this->s->getClassifications();
+      $this->assertTrue(count($this->classifications) > 0);
     }
 
     public function testGetPhotos() {
-      $a = $this->s->getPhotos();
-      $this->assertTrue(count($a) > 0);
+      $this->photo_ids = $this->s->getPhotos();
+      $this->assertTrue(count($this->photo_ids) > 0);
     }
 
     public function testGetPersonStats() {
-      $a = $this->s->getPersonStats();
-      $this->assertTrue(count($a) > 0);
+      $this->person_stats = $this->s->getPersonStats();
+      $this->assertTrue(count($this->person_stats) > 0);
+    }
+
+    public function testGetAnimals() {
+      $d = $this->s->getAnimals($this->classified, $this->photo_ids);
+      $this->assertTrue(count($d) > 0);
+      $this->data = $d[0];
+      $this->all_data = $d[1];
+      $this->assertTrue(count($this->data) > 0);
+      $this->assertTrue(count($this->all_data) > 0);
     }
 
     public function testGetGoldStandard() {
@@ -210,7 +206,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     }
 
     public function testGoldClassifiedComparison() {
-      $this->assertEquals(2, 1);
+      //$this->assertEquals(2, 1);
     }
 }
 ?>
