@@ -4,7 +4,7 @@
 
 #Introduction
 
-This project consists of 3 parts:
+This project is about adding functionality to the system to ensure reliability of user classifications and provide detailed analysis and reports on this data. The client currently has data but not the ability to analyse and get meaningful insights about it. The proposed system will provide this. On user end: increase user engagement, which will result in more classifications and therefore better data to work with.
 
 #Features
 ## Swanson Algorithm
