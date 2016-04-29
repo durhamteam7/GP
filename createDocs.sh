@@ -17,4 +17,4 @@ fi
 echo "Creating Doc files"
 `./composer.phar install`
 `./vendor/bin/phpdoc.php -t docs/php/`
-`node_modules/jsdoc/jsdoc.js --configure node_modules/angular-jsdoc/common/conf.json --template node_modules/angular-jsdoc/angular-template --destination docs/js commonDependancies adminDash userDash`
+`node_modules/jsdoc/jsdoc.js --configure node_modules/angular-jsdoc/common/conf.json --template node_modules/angular-jsdoc/angular-template --readme README.md --destination docs/js commonDependancies adminDash userDash`
