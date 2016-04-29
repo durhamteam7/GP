@@ -311,27 +311,34 @@ class Swanson {
 			return 0;
 	}
 
-	# Decides based on the votes for a given key
+		/**
+	* Decides the winner based on the votes for a given key
+	*
+	* @param string $key One of the species|age|gender|number
+	* @param Array[] $subject Array of Classification rows
+	* @return string of the winning species|gender|age|number for said key
+	*/
 	function decide_on($key, $subject)
 	{
 	    $votes = $this->tally_votes($key, $subject);
 			$winner = "";
 			if (count($votes) > 0) {
-		    arsort($votes);
+		    	arsort($votes);
 
 		    #echo "Votes Per $key";
 		    #echo "\n";
 		    #print_r($votes);
 		    #echo "\n";
 
-		    $keys = array_keys($votes);
-		    $winner = $keys[0];
+		    	$keys = array_keys($votes);
+		    	$winner = $keys[0];
 
 		    #echo "Winning " . ucfirst($key);
 		    #echo "\n";
 		    #print_r($winner);
 		    #echo "\n";
 		    #echo "\n";
+
 			}
 	    return $winner;
 	}
@@ -371,9 +378,8 @@ class Swanson {
  * Fraction support is calculated as the fraction of classifications supporting the
  * aggregated answer (i.e. fraction support of 1.0 indicates unanimous support).
  *
- * @param string $key One of species|age|gender
  * @param int[] $votes Array of values representing the classifications of a subject
- * @return float The highest number of votes an element has received - REALLY??
+ * @return float The fraction of support for the most voted answer
  */
 	function fraction_support($votes)
 	{
@@ -396,10 +402,13 @@ class Swanson {
 		}
 	}
 
-	# Fraction blanks is calculated as the fraction of classifiers who reported “nothing here”
-	# for an image that is ultimately classified as containing an animal.
-	# INPUT: a list of values representing the classifications of a subject
-	# OUTPUT
+		/**
+	* Calculates the amount of votes that have classified the image as blank
+	* for an image that is ultimatly classified as containing an animal
+	*
+	* @param int[] $votes Array of values representing the classifications of a subject
+	* @return float the fraction of votes that are blank
+	*/
 	function fraction_blanks($votes)
 	{
 		if (count($votes) <= 0) {
@@ -427,10 +436,15 @@ class Swanson {
 		}
 	}
 
-	# Takes a users classifications and all decided classifications
-	# and compares how well the user classifies
-	# INPUT: the key to check (species, gender, age, number), user's classifications, all decided classifications
-	# OUTPUT: the correctness rate the user has for that key
+		/**
+	* Calculates the amount of votes that have classified the image as blank
+	* for an image that is ultimatly classified as containing an animal
+	*
+	* @param string $key One of the species|age|gender|number
+	* @param Array[] $subject Array of Classification rows
+	* @param Array[] $classifications the final classification given to things
+	* @return float the fraction of votes that the user has done correctly
+	*/
 	function getUserCorrectnessRate($key, $subject, $classifications)
 	{
 	    $correct = 0;
@@ -596,44 +610,48 @@ class Swanson {
 		return $person_stats;
 	}
 
-	/*
+		/**
+		*
+		*
+		* @param $classified
+		* @param $photo_ids
+		* @return
+		*/
+		function getAnimals($classified, $photo_ids) {
+			// QUERY
+			$sql = "SELECT * FROM Animal ORDER BY photo_id";
+			if ($this->animal_limiting) {
+				$sql .= " DESC LIMIT $this->get_animal_limit";
+			}
+			$sql .= ";";
 
-	*/
-	function getAnimals($classified, $photo_ids) {
-		// QUERY
-		$sql = "SELECT * FROM Animal ORDER BY photo_id";
-		if ($this->animal_limiting) {
-			$sql .= " DESC LIMIT $this->get_animal_limit";
+			// execute query
+			$result = $this->mysqli->query($sql);
+
+			$data = [];
+			$all_data = [];
+
+			// process result
+			if ($result->num_rows > 0) {
+			    while($row = $result->fetch_assoc()) {
+			        if (!in_array($row["photo_id"], $classified)) {
+			            if (in_array($row["photo_id"], $photo_ids)) {
+			                $data[] = $row;
+			            }
+			        }
+			        $all_data[] = $row;
+			    }
+			} else {
+			    echo "0 results";
+			    echo "\n";
+			}
+
+			#echo count($data) . " animals retrieved";
+			#echo "\n";
+			#echo "\n";
+
+			return [$data, $all_data];
 		}
-		$sql .= ";";
-
-		// execute query
-		$result = $this->mysqli->query($sql);
-
-		$data = [];
-		$all_data = [];
-
-		// process result
-		if ($result->num_rows > 0) {
-		    while($row = $result->fetch_assoc()) {
-		        if (!in_array($row["photo_id"], $classified)) {
-		            if (in_array($row["photo_id"], $photo_ids)) {
-		                $data[] = $row;
-		            }
-		        }
-		        $all_data[] = $row;
-		    }
-		} else {
-		    echo "0 results";
-		    echo "\n";
-		}
-
-		#echo count($data) . " animals retrieved";
-		#echo "\n";
-		#echo "\n";
-
-		return [$data, $all_data];
-	}
 
 	function getGoldStandard() {
 		// SAMPLE QUERY
