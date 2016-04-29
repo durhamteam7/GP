@@ -172,6 +172,14 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     }
 
     public function testGetAnimals() {
+
+      # get the photo_ids of all available photos
+      $photo_ids = $this->s->getPhotos();
+
+      # get the photo_ids of the already classified photos
+      $classified = $this->s->getClassified();
+      # $classified - will hold the data from all classified and retired photos
+
       $a = $this->s->getAnimals();
       $this->assertTrue(count($a) > 0);
     }
