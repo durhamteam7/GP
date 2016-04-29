@@ -73,7 +73,7 @@ class Swanson {
 	/**
 	 * Starting point for the algorithm
 	 *
-	 * @param Array[] data Array of database rowsReturned by getAnimals()
+	 * @param Array[] data Array of database rows Returned by getAnimals()
 	 */
 	function main($data) {
 		/* This array 'all_outputs' will contain all arrays of the image
@@ -437,13 +437,13 @@ class Swanson {
 	}
 
 		/**
-	* Calculates the amount of votes that have classified the image as blank
-	* for an image that is ultimatly classified as containing an animal
+	* Calculates the amount of votes that the user made that were correct
+	* as a fraction of all of the votes that were produced
 	*
 	* @param string $key One of the species|age|gender|number
 	* @param Array[] $subject Array of Classification rows
 	* @param Array[] $classifications the final classification given to things
-	* @return float the fraction of votes that the user has done correctly
+	* @return float the fraction of votes that the user has correctly identifies
 	*/
 	function getUserCorrectnessRate($key, $subject, $classifications)
 	{
@@ -474,10 +474,11 @@ class Swanson {
 	    return $rate;
 	}
 
-	/*
-	Gives the number of how many images have been classified into the database
-	so far and lists each classified photo's ID.
-	If no photos have been classified, '0 Results' will be printed.
+		/**
+	* Gives the number of how many images have been classified into the database
+	* so far and lists each classified photos ID.
+	*
+	* @return Array[] of the classified photos ID
 	*/
 	function getClassified() {
 		// QUERY
@@ -508,10 +509,11 @@ class Swanson {
 		return $classified;
 	}
 
-	/*
-	Gives the number of how many images have been classified into the database
-	so far and lists each classified photo's entire properties.
-	If no photos have been classified, '0 Results' will be printed.
+		/**
+	* Lists each classified photo's entire properties.
+	* If no photos have been classified, '0 Results' will be printed.
+	*
+	* @return Array[] of all the classified photos properties
 	*/
 	function getClassifications() {
 		// QUERY
@@ -541,8 +543,10 @@ class Swanson {
 		return $classifications;
 	}
 
-	/*
-
+	/**
+	* Get all of the photos IDs
+	*
+	* @return Array[] of all the photo IDs from the database
 	*/
 	function getPhotos() {
 		// QUERY
@@ -576,11 +580,11 @@ class Swanson {
 		return $photo_ids;
 	}
 
-	/*
-	Prints the statistics of each Person and how many people there are with statistics in
-	the database.
-	Statistics include: Species Rate, Gender Rate, Age Rate and Number Rate with respect to correctness.
-	If there are no stats to print, '0 results' wil be printed.
+		/**
+	* Gets the statistics of each person
+	* including how often they are correct for species, gender, age and Number
+	*
+	* @return Array[] of the statistics for each person
 	*/
 	function getPersonStats() {
 		// QUERY
@@ -611,11 +615,11 @@ class Swanson {
 	}
 
 		/**
+		* Gets information about all the animals
 		*
-		*
-		* @param $classified
-		* @param $photo_ids
-		* @return
+		* @param Array[] $classified all the classified information
+		* @param Array[] $photo_ids photo IDs of the images
+		* @return Array[] containing all of the information about the animlas
 		*/
 		function getAnimals($classified, $photo_ids) {
 			// QUERY
@@ -653,6 +657,13 @@ class Swanson {
 			return [$data, $all_data];
 		}
 
+
+		/**
+	* Gets all of the correct classifications for each photo
+	* by getting the classifications done by Penn (person_id 311)
+	*
+	* @return Array[] all of the classifications done by person_id 311 (Penn's classificaitons)
+	*/
 	function getGoldStandard() {
 		// SAMPLE QUERY
 		$sql = "SELECT * FROM Animal WHERE person_id = 311 ORDER BY photo_id ASC;";
@@ -675,6 +686,13 @@ class Swanson {
 		return $gold_standard;
 	}
 
+		/**
+	* compares that classified photos produced by the algorithm to
+	* the classifications got by the GoldStandard displaying
+	* a decimal showing the number correctly classified over
+	* the correctly classified plus the wrongly classified members.
+	* it ignores all the classifications that are seeing no animals
+	*/
 	function goldClassifiedComparison() {
 		$gold_standard = $this->getGoldStandard();
 
@@ -764,6 +782,12 @@ class Swanson {
 		#echo "\n";
 	}
 
+		/**
+	* Populates the PersonStats for each user using all fo the classifications
+	*
+	* @param Array[] $all_data contains all the information from the the Animal table
+	* @param Array[] $classifications is an array of all the classifications
+	*/
 	function rateUsers($all_data, $classifications) {
 		# assume we have $all_data
 		#echo "Calculating the correctness rate of each user";
@@ -828,6 +852,15 @@ class Swanson {
 		}
 	}
 
+		/**
+	* Creates the Classification and PersonStats tables
+	* in the SQL database if they don't already exist
+	*
+	* Classifications contains: classifications_id, photo_id, species, gender, age, number,
+	* evenness, fraction_support, fraction_blanks, timestamp, number_of_classifications
+	*
+	* PersonStats contains: person_stats_id, person_id, species_rate, gender_rate, age_rate, number_rate
+	*/
 	function createTables() {
 		# Creating Classification table
 		$createTable = "CREATE TABLE IF NOT EXISTS `Classification` (".
@@ -876,6 +909,12 @@ class Swanson {
 
 	}
 
+		/**
+	* Clears all data from the table specified in $table_name
+	* and informs you of whether or not it has been successful
+	*
+	* @param string $table_name the name of the table to empty
+	*/
 	function emptyTable($table_name) {
 		$emptyTable = "TRUNCATE $table_name;";
 
