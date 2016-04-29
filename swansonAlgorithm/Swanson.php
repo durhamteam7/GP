@@ -31,9 +31,9 @@ class Swanson {
 		private $blank_animal = 86;
 
 		private $animal_limiting = false; # will be false in the end
-		private $get_animal_limit = 5000;
+		private $get_animal_limit = 1;
 		private $photo_limiting = false; # will be false in the end
-		private $get_photo_limit = 5000;
+		private $get_photo_limit = 1;
 
 		function __construct() {
 				$this->setupDB();
