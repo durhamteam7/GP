@@ -34,9 +34,8 @@ userApp.config(function($stateProvider, $urlRouterProvider) {
 var mapController = function($scope, $filter) {
 
   /** Generates pop-up html for a photo
-   * @memberof mapController
-   * @name getHTML
    * @param {Object} item photo JSON
+   * @returns {string} HTML string of popup
    */
     var getHTML = function(item) {
         var html = '<div>';
@@ -49,15 +48,17 @@ var mapController = function($scope, $filter) {
     };
 
     var seed = 1;
-
+    /** Generates pop-up html for a photo
+     * @memberof mapController
+     * @name random
+     * @returns {int} Produces a random number from a seed
+     */
     function random() {
         var x = Math.sin(seed++) * 10000;
         return x - Math.floor(x);
     }
 
     $scope.$watch("results", function(newVal, oldVal) {
-
-
         $scope.markers = {};
         for (var i = 0; i < $scope.results.length; i++) {
             if ($scope.results[i].Site !== null) {
@@ -123,31 +124,56 @@ var mapController = function($scope, $filter) {
 };
 
 
-
+/** Controller for the slideshow section of the userDash.
+ * @memberof userApp
+ * @ngdoc controller
+ * @name slideshowController
+ * @param $scope {service} controller scope
+ * @param $filter
+ */
 var slideshowController = function($scope, $timeout, QueueService) {
     var INTERVAL = 10000;
 
+    /** Setter for currentIndex
+     * @memberof slideshowController
+     * @param {number} index New slide index
+     */
     function setCurrentSlideIndex(index) {
         $scope.currentIndex = index;
     }
 
+    /** Conditional test for currentIndex
+     * @memberof slideshowController
+     * @function isCurrentSlideIndex
+     * @param {number} index Value to check against
+     * @return {boolean} True if current slide is index
+     */
     function isCurrentSlideIndex(index) {
         return $scope.currentIndex === index;
     }
 
+    /** Increments slide
+     * @memberof slideshowController
+     * @param {number} index Value to check against
+     * @return {boolean} True if current slide is index
+     */
     function nextSlide() {
         $scope.currentIndex = ($scope.currentIndex < $scope.results.length - 1) ? ++$scope.currentIndex : 0;
         $timeout(nextSlide, INTERVAL);
     }
 
-    function setCurrentAnimation(animation) {
+
+    /*function setCurrentAnimation(animation) {
         $scope.currentAnimation = animation;
     }
 
     function isCurrentAnimation(animation) {
         return $scope.currentAnimation === animation;
-    }
+    }*/
 
+    /** Make call to QueueService
+     * @memberof slideshowController
+     */
     function loadSlides() {
         QueueService.loadManifest($scope.results);
     }
@@ -175,6 +201,14 @@ var slideshowController = function($scope, $timeout, QueueService) {
     loadSlides();
 };
 
+/**
+ * @memberof userApp
+ * @ngdoc factory
+ * @name QueueService
+ * @param {scope} $rootScope Scope of controller
+ * @description
+ *   Queues loading of images
+ */
 userApp.factory('QueueService', function($rootScope) {
     var queue = new createjs.LoadQueue(true);
 
