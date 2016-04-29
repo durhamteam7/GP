@@ -1,14 +1,29 @@
 language: php
+
+sudo: false
+
 php:
-- 5.5
-#-5.4
-#- hhvm
+  - 5.5
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+env:
+  global:
+    secure: Yc+Xohkr/iEUU7FCQuSLXAE9ywNW9g6CfrM1Ki0Hl+fS15F3AXT7dFY8EyCJ4dP1/oI0dBmwrGWrltXV0XWIjGV1Ms3tefCgQpBBAqwT+hImzVP3RbpZW8Iyo2d0VgiDemQF1LWYD/pKu6d8WljTnv5D77NIMdEJjQ0uzeTLWdw=
 
 before_script:
   - composer update --prefer-source
 
 script:
-  - phpunit
+  - vendor/bin/phpunit
+
+after_script:
+  - CODECLIMATE_REPO_TOKEN=6fdcc9f41ae8f03876ddb127a094a262809518a20b798bdfbc06dbb117c831bb ./vendor/bin/test-reporter
+
+
+
 
 notifications:
   email:

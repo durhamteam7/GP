@@ -13,21 +13,21 @@
 		<script src="https://cdn.upress.co.il/ajax/libs/angularjs-slider/2.9.0/rzslider.js"></script>
 		<script src="http://bouil.github.io/angular-google-chart/ng-google-chart.js"></script>
 		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-		<script src="checklistModel.js"></script>
+		<script src="../commonDependancies/checklistModel.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
-		<script src="angular-toggle-switch.min.js"></script>
-		<link href="angular-toggle-switch.css" media="all" rel="stylesheet" type="text/css">
+		<script src="../commonDependancies/angular-toggle-switch.min.js"></script>
+		<link href="../commonDependancies/angular-toggle-switch.css" media="all" rel="stylesheet" type="text/css">
 		<script src="https://rawgit.com/brantwills/Angular-Paging/v2.2.0/dist/paging.min.js"></script>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
-		
+
 		<script src="https://cdn.rawgit.com/diosney/angular-bootstrap-datetimepicker-directive/master/angular-bootstrap-datetimepicker-directive.js"></script>
 
 		    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCpzag5AVnm8nqYpPnO_7kku6siPeNxLO0&libraries=places"></script>
-		    <script src="ngAutocomplete.js"></script>
+		    <script src="../commonDependancies/ngAutocomplete.js"></script>
 
-		
+
 		<script src="app.js"></script>
-		<script src="filters.js"></script>
+		<script src="../commonDependancies/filters.js"></script>
 		<style>
 		body {
 			-webkit-touch-callout: none; /* iOS Safari */
@@ -51,8 +51,8 @@
 		}
 
 		</style>
-		<link rel="stylesheet" href="loader.css">
-		
+		<link rel="stylesheet" href="../commonDependancies/loader.css">
+
 	</head>
 	<body ng-controller="MainController" ng-App="adminDash">
 		{{details}}
@@ -83,7 +83,7 @@
 						<form>
 							<span ng-repeat="filterCat in filters">
 							<span ng-repeat="filterData in filterCat | orderObjectBy | orderBy: 'order'">
-								
+
 								<h4>{{readable(filterData.id)}}</h4>
 
 								<span ng-if="filterData.type=='checkboxes'">
@@ -101,7 +101,7 @@
 												<a href="javascript:void(0)" ng-click="filterData.open[s]=!filterData.open[s]">{{filterData.open[s]?"-":"+"}} See {{filterData.open[s]?"less":"more"}}</a>
 											</span>
 									</div>
-									
+
 								</span>
 
 								<span ng-if="filterData.type=='boolean'">
@@ -128,7 +128,7 @@
 									</div>
 								</div>
 								<div class="row" ng-if="filterData.type=='dateTime'">
-									
+
 								<div class='col-md-12'>
 								<div class="form-group">
 									<div class='input-group date' id='datetimepicker6'>
@@ -139,7 +139,7 @@
 									</div>
 								</div>
 							</div>
-								
+
 							<div class='col-md-12'>
 								<div class="form-group">
 									<div class='input-group date' id='datetimepicker6'>
@@ -149,17 +149,17 @@
 									</span>
 									</div>
 								</div>
-							</div>	
-								
-									
+							</div>
+
+
 								</div>
 								<br>
 							</span>
 							</span>
 							<h4>OTHER</h4>
-							
+
 							<b>Location</b><br>
-							
+
 							<label>Postcode:</label>
 								<div class='input-group'>
 									<input type="text" class="form-control" ng-model="autocomplete" ng-autocomplete options="options" details="details" lat="filters.Site.lat.value" lon="filters.Site.lon.value" >
@@ -173,7 +173,7 @@
 									<input type="number" class="form-control" placeholder="radius">
 								</div>
 							</label>
-							
+
 						</form>
 					</div>
 				</div>
@@ -262,17 +262,17 @@
 						</div>
 					</div>
 					<hr>
-					
+
         <div>
             <p>Showing {{numResults == 0 ? 0 : ((currentPage-1) * pageSize) + 1}} to {{rowsShown()}} of {{numResults}} entries</p>
         </div>
-        <div class="row">	
-            <div paging page="currentPage" page-size="pageSize" total="numResults" paging-action="getResults(page)" hide-if-empty="true" show-prev-next="true" show-first-last="true"></div> 
+        <div class="row">
+            <div paging page="currentPage" page-size="pageSize" total="numResults" paging-action="getResults(page)" hide-if-empty="true" show-prev-next="true" show-first-last="true"></div>
    		 </div>
-					
-					
-					
-					
+
+
+
+
 				</div>
 				<div class="col-md-3" id="rightCol">
 					<!--Summary of the results of the filtered query-->
@@ -284,7 +284,7 @@
 					<div class="well" ng-controller="GraphsController">
 						<h1 class="h4">Graphs</h1>
 						<button type="button" class="btn" data-toggle="modal" data-target="#graphModal" >Open Graph Editor</button>
-						
+
 						<!-- Graphs Modal -->
 						<div id="graphModal" class="modal fade" role="dialog">
 							<div class="modal-dialog modal-lg">
@@ -319,7 +319,7 @@
 																	<option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters" ng-value="filterName">
 																	</option>
 																	<option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
-																
+
 															</select>
 														</div>
 													</div>
@@ -333,7 +333,7 @@
 																	</option>
 																	<option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
 																	<option value="countOfXaxis">COUNTOF({{readable(xName)}})</option>
-																
+
 															</select>
 														</div>
 													</div>

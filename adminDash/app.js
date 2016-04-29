@@ -1,4 +1,4 @@
-var adminApp = angular.module('adminDash', ['rzModule', 'ui.bootstrap', 'googlechart', "checklist-model", 'datetimepicker', 'toggle-switch', 'ngAutocomplete', 'bw.paging']);
+var adminApp = angular.module('adminDash', ['utilitiesModule','rzModule', 'ui.bootstrap', 'googlechart', "checklist-model", 'datetimepicker', 'toggle-switch', 'ngAutocomplete', 'bw.paging']);
 
 var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/"; //root of all img URLs
 
@@ -23,7 +23,7 @@ adminApp.factory('ajax', ['$http', function($http) {
             return $http.post(urls[env] + 'photo?pageNum=' + pageNum + '&pageSize=' + pageSize + '&sequence=' + isSequence, query).success(function() {});
         },
         getFullPhotos: function(query, isSequence) {
-            return $http.post(urls[0] + 'photo?sequence=' + isSequence, query).success(function() {});
+            return $http.post(urls[env] + 'photo?sequence=' + isSequence, query).success(function() {});
         },
         getPhotosCSV: function(query, isSequence) {
             return $http.post(urls[env] + 'photo?output=csv&sequence=' + isSequence, query).success(function() {});
@@ -35,7 +35,7 @@ adminApp.factory('ajax', ['$http', function($http) {
             return $http.get(urls[env] + 'persons').success(function() {});
         },
         getFilters: function() {
-            return $http.get('filters.json').success(function() {});
+            return $http.get('../commonDependancies/filters.json').success(function() {});
         }
     };
 }]);
@@ -135,7 +135,7 @@ adminApp.controller('MainController', ['$scope', 'ajax', function($scope, server
 
     /** Calculate how many results are on current page
      * @memberof MainController
-     * @function rowShown
+     * @function rowsShown
      * @returns {number} Number of results on the current page
      */
     $scope.rowsShown = function() {
@@ -190,9 +190,9 @@ adminApp.controller('MainController', ['$scope', 'ajax', function($scope, server
             console.log("Data:", data);
             $("#loader").fadeOut("slow");
             dataLines = data.split("\n");
-            for (i in dataLines) {
+            for (var i in dataLines) {
                 lineSplit = dataLines[i].split(",");
-                for (j in lineSplit) {
+                for (var j in lineSplit) {
                     //lineSplit[j].replace(/"/g, '"');
                 }
                 dataLines[i] = lineSplit.join(',');
@@ -240,7 +240,7 @@ adminApp.controller('MainController', ['$scope', 'ajax', function($scope, server
     $scope.getOptionName = function(optionNum) {
         for (var key in $scope.options) { //Try each struc type in options
             if ($scope.options[key].hasOwnProperty(optionNum)) { //if the optionNum is in the struc
-                return $scope.options[key][optionNum]; //return option name
+                return $scope.readable($scope.options[key][optionNum]); //return option name
             }
         }
     };
@@ -268,6 +268,7 @@ adminApp.controller('MainController', ['$scope', 'ajax', function($scope, server
         s = s.replace(/_id/, "");
         s = s.replace(/_/g, " ");
         s = s.replace(/([A-Z])/g, ' $1');
+        s = s.replace(/<\/?[^>]+(>|$)/g, "");
         s = s.replace(/^./, function(str) {
             return str.toUpperCase();
         });
