@@ -1,8 +1,9 @@
 var userApp = angular.module('userDash', ['utilitiesModule','rzModule', 'ui.bootstrap',"checklist-model",'datetimepicker','leaflet-directive','pageslide-directive','ui.router','ngAnimate','ngVis','rt.debounce']);
 
+//Allows for switching between dev local server and hosted server
 var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 
-var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/"
+var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/";
 
 userApp.config(function($stateProvider, $urlRouterProvider) {
   //
@@ -27,14 +28,14 @@ userApp.config(function($stateProvider, $urlRouterProvider) {
 var mapController = function($scope,$filter) {
 
         var getHTML = function(item){
-		   	var html = '<div>'
+		   	var html = '<div>';
 		   	var url = item.Photo.URL;
 		    html += '<a href="'+url+'" target="_blank"><img width=200 src="'+url+'"></a></div>';
 		    html += '<b>'+$scope.getOptionName(item.Classification[0].species)+'</b><br>';
 		    html += item.Site.site_name+'<br>';
 		    html += $filter('date')(item.taken,'dd/MM/yyyy HH:mm')+'';
 		    return html;
-		}
+		};
 
         var seed = 1;
         function random() {
@@ -48,8 +49,8 @@ var mapController = function($scope,$filter) {
         	$scope.markers = {};
         	for (var i = 0; i < $scope.results.length; i++)
         	{
-				if ($scope.results[i].Site != null){
-                    seed = $scope.results[i].Photo.photo_id
+				if ($scope.results[i].Site !== null){
+                    seed = $scope.results[i].Photo.photo_id;
 		        	$scope.markers["m"+i] = {
 		            lat: $scope.results[i].Site.lat+(0.5-random())*0.001,
 		            lng: $scope.results[i].Site.lon+(0.5-random())*0.001,
@@ -62,7 +63,7 @@ var mapController = function($scope,$filter) {
 		              iconAnchor:   [15, 5],
 		              shadowAnchor: [10, 0]
 		            }
-		          }
+		          };
 		        }
 		    }
         });
@@ -180,8 +181,8 @@ userApp.factory('QueueService', function($rootScope){
 
     return {
         loadManifest: loadManifest
-    }
-})
+    };
+});
 
 userApp.animation('.fade-in-animation', function ($window) {
     return {
@@ -278,12 +279,12 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
                 $scope.options = {};
                 for (var i = 0; i < data.length; i++) {
                     //console.log(data[i]["struc"])
-                    if (!$scope.options.hasOwnProperty(data[i]["struc"]) ){
-                        $scope.options[data[i]["struc"]] = {}
+                    if (!$scope.options.hasOwnProperty(data[i].struc) ){
+                        $scope.options[data[i].struc] = {};
                     }
                     //Check for and remove "Unknown"
                     //if (!(data[i]["option_name"] === "Unknown")){
-                        $scope.options[data[i]["struc"]][data[i]["option_id"]] = data[i]["option_name"];
+                        $scope.options[data[i].struc][data[i].option_id] = data[i].option_name;
                     //}*/ //Removed as breaks things
                 }
                 //console.log($scope.options)
@@ -293,22 +294,22 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
 
     $scope.getOptionName = function(optionNum){
         //Function to convert an option into human readable string
-        for (key in $scope.options){
+        for (var key in $scope.options){
             if($scope.options[key].hasOwnProperty(optionNum)){
                 return $scope.readable($scope.options[key][optionNum]);
             }
         }
         return "";
-    }
+    };
 
     $scope.getFilters = function(){
         serverComm.getFilters().success(function(data) {
-            console.log("FITLERS",data)
+            console.log("FITLERS",data);
                 //console.log(data);
-                $scope.filters = data
+                $scope.filters = data;
 
         });
-    }
+    };
 
      $scope.readable = function(string) {
         if (typeof string === "undefined")
@@ -320,8 +321,8 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
         string = string.replace(/([A-Z])/g, ' $1');
         string = string.replace(/<\/?[^>]+(>|$)/g, "");
         string = string.replace(/^./, function(str){ return str.toUpperCase(); });
-        return string
-    }
+        return string;
+    };
 
     $scope.isActive = function (viewLocation) {
         return viewLocation === $location.path();
@@ -332,7 +333,7 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
         $scope.getResults();
     }, true);
 
-  $scope.filters = {}
+  $scope.filters = {};
 
   $scope.getResults();
   $scope.getOptions();
