@@ -510,7 +510,7 @@ class Swanson {
 	}
 
 		/**
-	* lists each classified photo's entire properties.
+	* Lists each classified photo's entire properties.
 	* If no photos have been classified, '0 Results' will be printed.
 	*
 	* @return Array[] of all the classified photos properties
@@ -543,8 +543,8 @@ class Swanson {
 		return $classifications;
 	}
 
-		/**
-	* get all of the photos IDs
+	/**
+	* Get all of the photos IDs
 	*
 	* @return Array[] of all the photo IDs from the database
 	*/
@@ -581,7 +581,7 @@ class Swanson {
 	}
 
 		/**
-	* gets the statistics of each person
+	* Gets the statistics of each person
 	* including how often they are correct for species, gender, age and Number
 	*
 	* @return Array[] of the statistics for each person
@@ -615,7 +615,7 @@ class Swanson {
 	}
 
 		/**
-		* gets information about all the animals
+		* Gets information about all the animals
 		*
 		* @param Array[] $classified all the classified information
 		* @param Array[] $photo_ids photo IDs of the images
@@ -691,7 +691,7 @@ class Swanson {
 	* the classifications got by the GoldStandard displaying
 	* a decimal showing the number correctly classified over
 	* the correctly classified plus the wrongly classified members.
-	* it ignors all the classifications that are seeing no animals 
+	* it ignores all the classifications that are seeing no animals
 	*/
 	function goldClassifiedComparison() {
 		$gold_standard = $this->getGoldStandard();
@@ -853,7 +853,7 @@ class Swanson {
 	}
 
 		/**
-	* Creats the Classification and PersonStats tables
+	* Creates the Classification and PersonStats tables
 	* in the SQL database if they don't already exist
 	*
 	* Classifications contains: classifications_id, photo_id, species, gender, age, number,
@@ -910,8 +910,8 @@ class Swanson {
 	}
 
 		/**
-	* clears all data from the table specified in $table_name
-	* and informs you of wheather or not it has been successful
+	* Clears all data from the table specified in $table_name
+	* and informs you of whether or not it has been successful
 	*
 	* @param string $table_name the name of the table to empty
 	*/
