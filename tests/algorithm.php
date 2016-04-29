@@ -290,8 +290,11 @@ class Swanson {
 	function highest_vote($key, $subject)
 	{
 		$votes = $this->tally_votes($key, $subject);
-		sort($votes);
-		return $votes[0];
+		if (count($votes) > 0) {
+			sort($votes);
+			return $votes[0];
+		}
+		return 0;
 	}
 
 	# Decides based on the votes for a given key
@@ -299,7 +302,7 @@ class Swanson {
 	{
 	    $votes = $this->tally_votes($key, $subject);
 			$winner = "";
-			if (count($votes) <= 0) {
+			if (count($votes) > 0) {
 		    arsort($votes);
 
 		    echo "Votes Per $key";
