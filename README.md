@@ -1,5 +1,6 @@
 # GP
 [![Build Status](https://travis-ci.org/durhamteam7/GP.svg?branch=master)](https://travis-ci.org/durhamteam7/GP)
+[![Code Climate](https://codeclimate.com/github/durhamteam7/GP/badges/gpa.svg)](https://codeclimate.com/github/durhamteam7/GP)
 [![Test Coverage](https://codeclimate.com/github/durhamteam7/GP/badges/coverage.svg)](https://codeclimate.com/github/durhamteam7/GP/coverage)
 <br>
 Algorithm is in tests/ directory
