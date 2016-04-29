@@ -3,7 +3,7 @@
 <phpunit>
     <testsuites>
         <testsuite name="algorithm">
-            <directory>tests</directory>
+            <directory>swansonAlgorithm</directory>
         </testsuite>
     </testsuites>
 
@@ -16,13 +16,12 @@
                 <directory suffix=".php">./vendor</directory>
 								<directory suffix=".php">./adminDash</directory>
 								<directory suffix=".php">./userDash</directory>
-                <file>./tests/algorithmTest.php</file>
+                <directory suffix=".php">./swansonAlgorithm/tests</directory>
                 <file>./coverage-checker.php</file>
             </exclude>
         </whitelist>
         <blacklist>
             <directory>./vendor</directory>
-            <file>./tests/algorithmTest.php</file>
         </blacklist>
     </filter>
     <logging>
