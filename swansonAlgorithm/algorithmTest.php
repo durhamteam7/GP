@@ -145,6 +145,19 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, $this->s->calculate_pielou($array3));
     }
 
+    public function testFraction_support()
+    {
+        $empty_array = array();
+        $array = array(0 => 1);
+        $array2 = array(0 => 1, 1 => 1, 2 => 1);
+        $array3 = array(1 => 1, 2 => 1, 3 => 2);
+
+        $this->assertEquals(0, $this->s->fraction_support($empty_array));
+        $this->assertEquals(1, $this->s->fraction_support($array));
+        $this->assertEquals(1/3, $this->s->fraction_support($array2));
+        $this->assertEquals(0.5, $this->s->fraction_support($array3));
+    }
+
     public function testFraction_blanks()
     {
         $empty_array = array();
@@ -157,17 +170,43 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, $this->s->fraction_blanks($array2));
         $this->assertEquals(0.5, $this->s->fraction_blanks($array3));
     }
-    public function testFraction_support()
-    {
-        $empty_array = array();
-        $array = array(0 => 1);
-        $array2 = array(0 => 1, 1 => 1, 2 => 1);
-        $array3 = array(1 => 1, 2 => 1, 3 => 2);
 
-        $this->assertEquals(0, $this->s->fraction_support($empty_array));
-        $this->assertEquals(1, $this->s->fraction_support($array));
-        $this->assertEquals(1/3, $this->s->fraction_support($array2));
-        $this->assertEquals(0.5, $this->s->fraction_support($array3));
+    public function testGetClassified() {
+      $this->classified = $this->s->getClassified();
+      $this->assertTrue(count($this->classified) > 0);
+    }
+
+    public function testGetClassifications() {
+      $this->classifications = $this->s->getClassifications();
+      $this->assertTrue(count($this->classifications) > 0);
+    }
+
+    public function testGetPhotos() {
+      $this->photo_ids = $this->s->getPhotos();
+      $this->assertTrue(count($this->photo_ids) > 0);
+    }
+
+    public function testGetPersonStats() {
+      $this->person_stats = $this->s->getPersonStats();
+      $this->assertTrue(count($this->person_stats) > 0);
+    }
+
+    public function testGetAnimals() {
+      $d = $this->s->getAnimals($this->classified, $this->photo_ids);
+      $this->assertTrue(count($d) > 0);
+      $this->data = $d[0];
+      $this->all_data = $d[1];
+      $this->assertTrue(count($this->data) > 0);
+      $this->assertTrue(count($this->all_data) > 0);
+    }
+
+    public function testGetGoldStandard() {
+      $a = $this->s->getGoldStandard();
+      $this->assertTrue(count($a) > 0);
+    }
+
+    public function testGoldClassifiedComparison() {
+      //$this->assertEquals(2, 1);
     }
 }
 ?>
