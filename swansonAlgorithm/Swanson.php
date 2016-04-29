@@ -302,7 +302,7 @@ class Swanson {
 	function highest_vote($key, $subject)
 	{
 			$votes = $this->tally_votes($key, $subject);
-			print_r($votes);
+			#print_r($votes);
 			if (count($votes) > 0) {
 					arsort($votes);
 					$keys = array_keys($votes);
@@ -325,20 +325,19 @@ class Swanson {
 			if (count($votes) > 0) {
 		    	arsort($votes);
 
-		    #echo "Votes Per $key";
-		    #echo "\n";
-		    #print_r($votes);
-		    #echo "\n";
+			    #echo "Votes Per $key";
+			    #echo "\n";
+			    #print_r($votes);
+			    #echo "\n";
 
 		    	$keys = array_keys($votes);
 		    	$winner = $keys[0];
 
-		    #echo "Winning " . ucfirst($key);
-		    #echo "\n";
-		    #print_r($winner);
-		    #echo "\n";
-		    #echo "\n";
-
+			    #echo "Winning " . ucfirst($key);
+			    #echo "\n";
+			    #print_r($winner);
+			    #echo "\n";
+			    #echo "\n";
 			}
 	    return $winner;
 	}

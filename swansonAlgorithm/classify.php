@@ -3,7 +3,7 @@
 ini_set('memory_limit', '4096M');
 
 # import algorithm
-require_once("algorithm.php");
+require_once("Swanson.php");
 $s = new Swanson();
 
 # get the photo_ids of all available photos
