@@ -429,17 +429,100 @@
 
 <!--Modal for displaying more about the image when clicked-->
 <div id="{{result.Photo.photo_id}}" class="modal fade" role="dialog" ng-repeat="result in results">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">{{result.Photo.upload_filename}}</h4>
       </div>
-      <div class="modal-body">
-      	<a ng-href="{{result.Photo.URL}}" target="_blank">
-        <img ng-src="{{result.Photo.URL}}" width=400>
-    </a>
-      </div>
+      
+    <div class="modal-body">
+      	<div class="row">
+	        <div class="col-sm-6">
+	        	<a ng-href="{{result.Photo.URL}}" target="_blank">
+	        	<img ng-src="{{result.Photo.URL}}" width=400></a>
+	        </div>
+	        <div class="col-sm-5">
+	        					<div class="row">
+									<div class="col-sm-8"><h4>Photo</h4></div>
+								</div>
+								<div class="row" ng-if="!isSequence">
+									<div class="col-sm-3">Sequence:</div>
+									<div class="col-sm-8">{{result.Photo.sequence_id}}</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-3">Time:</div>
+									<div class="col-sm-8">{{result.Photo.taken | date:'dd/MM/yyyy HH:mm'}}</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-8"><h4>Site</h4></div>
+								</div>
+								<div class="row">
+									<div class="col-sm-3">Name:</div>
+									<div class="col-sm-8">{{result.Site.site_name}}</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-3">Landuse:</div>
+									<div class="col-sm-8">{{getOptionName(result.Site.landuse_id)}}</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-3">Habitat:</div>
+									<div class="col-sm-8">{{getOptionName(result.Site.habitat_id)}}</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-3">Water:</div>
+									<div class="col-sm-8">{{getOptionName(result.Site.water_id)}}</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-3">Purpose:</div>
+									<div class="col-sm-8">{{getOptionName(result.Site.purpose_id)}}</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-3">Location:</div>
+									<div class="col-sm-8">{{result.Site.grid_ref}}</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-3">Height:</div>
+									<div class="col-sm-8">{{result.Site.camera_height}}</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-3">Notes:</div>
+									<div class="col-sm-8">{{result.Site.notes}}</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-8"><h4>Classifications</h4></div>
+								</div>
+								<div class="row">
+									<div class="col-sm-8">
+										<table class='table table-bordered table-hover'>
+											<thead>
+												<tr>
+													<th>Species</th>
+													<th>Gender</th>
+													<th>Age</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="c in result.Classification">
+													<td>
+														{{getOptionName(c.species)}}
+													</td>
+													<td>
+														{{getOptionName(c.gender)}}
+													</td>
+													<td>
+														{{getOptionName(c.age)}}
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+	        
+       
+    </div>
+    </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
