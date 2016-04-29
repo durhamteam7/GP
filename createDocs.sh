@@ -14,10 +14,11 @@ else
    `npm install jsdoc angular-jsdoc`
 fi
 
+`./vendor/bin/phpdoc.php -d swansonAlgorithm/`
 #Create doc files
 echo "Creating Doc files"
 for file in *.js
 do
       echo $file
-      `node_modules/jsdoc/jsdoc.js --configure node_modules/angular-jsdoc/common/conf.json --template node_modules/angular-jsdoc/angular-template --destination docs ${file}`
+      `node_modules/jsdoc/jsdoc.js --configure node_modules/angular-jsdoc/common/conf.json --template node_modules/angular-jsdoc/angular-template --destination docs commonDependancies adminApp userDash ${file}`
 done
