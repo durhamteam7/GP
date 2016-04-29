@@ -1,4 +1,4 @@
-var userApp = angular.module('userDash', ['rzModule', 'ui.bootstrap',"checklist-model",'datetimepicker','leaflet-directive','pageslide-directive','ui.router','ngAnimate','ngVis','rt.debounce']);
+var userApp = angular.module('userDash', ['utilitiesModule','rzModule', 'ui.bootstrap',"checklist-model",'datetimepicker','leaflet-directive','pageslide-directive','ui.router','ngAnimate','ngVis','rt.debounce']);
 
 var urls = ["http://localhost:8080/","https://mammalweb.herokuapp.com/"];
 
@@ -213,7 +213,7 @@ userApp.factory('ajax', ['$http', function($http) {
       });
     },
     getFilters: function() {
-      return $http.get('../../adminDash/filters.json').success(function() {
+      return $http.get('../commonDependancies/filters.json').success(function() {
       });
     }
   };
@@ -229,8 +229,8 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
 
     $scope.results = []; //contains the results from the server
     $scope.options = {};
-    
-    
+
+
     //PAGE functions
     $scope.currentPage = 1;
     $scope.pageSize = 15;
@@ -241,7 +241,7 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
         moved = true;
         $scope.navbarOpen = true;
         $timeout($scope.hideNav, 15000);
-        
+
     };
 
     $scope.hideNav = function(){
@@ -287,7 +287,7 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
                     //}*/ //Removed as breaks things
                 }
                 //console.log($scope.options)
-                
+
         });
     };
 
@@ -295,7 +295,7 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
         //Function to convert an option into human readable string
         for (key in $scope.options){
             if($scope.options[key].hasOwnProperty(optionNum)){
-                return $scope.options[key][optionNum]
+                return $scope.readable($scope.options[key][optionNum]);
             }
         }
         return "";
@@ -306,10 +306,10 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
             console.log("FITLERS",data)
                 //console.log(data);
                 $scope.filters = data
-                
+
         });
     }
-    
+
      $scope.readable = function(string) {
         if (typeof string === "undefined")
         {
@@ -318,11 +318,12 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
         string = string.replace(/_id/,"");
         string = string.replace(/_/g, " ");
         string = string.replace(/([A-Z])/g, ' $1');
+        string = string.replace(/<\/?[^>]+(>|$)/g, "");
         string = string.replace(/^./, function(str){ return str.toUpperCase(); });
         return string
     }
 
-    $scope.isActive = function (viewLocation) { 
+    $scope.isActive = function (viewLocation) {
         return viewLocation === $location.path();
     };
 
@@ -337,4 +338,3 @@ userApp.controller('dataController',['$scope','$location','$timeout','ajax', fun
   $scope.getOptions();
   $scope.getFilters();
 }]);
-
