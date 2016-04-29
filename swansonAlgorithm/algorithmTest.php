@@ -9,6 +9,9 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     // contains the object handle of the string class
     private $s;
 
+    private $classified;
+    private $photo_ids;
+
     // constructor of the test suite
     function SwansonTest() {
         $this->s = new Swanson();
