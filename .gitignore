@@ -7,6 +7,8 @@
 /vendor/
 
 #***** Node ********
+/node_modules
+/docs
 /adminDash/node_modules
 /userDash/node_modules
 /adminDash/docs

@@ -190,9 +190,9 @@ adminApp.controller('MainController', ['$scope', 'ajax', function($scope, server
             console.log("Data:", data);
             $("#loader").fadeOut("slow");
             dataLines = data.split("\n");
-            for (i in dataLines) {
+            for (var i in dataLines) {
                 lineSplit = dataLines[i].split(",");
-                for (j in lineSplit) {
+                for (var j in lineSplit) {
                     //lineSplit[j].replace(/"/g, '"');
                 }
                 dataLines[i] = lineSplit.join(',');
