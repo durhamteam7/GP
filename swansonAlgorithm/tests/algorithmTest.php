@@ -1,8 +1,6 @@
 <?php
 
-// import algorithm
-#require_once("../../swansonAlgorithm/algorithm.php");
-require __DIR__ . '../algorithm.php';
+require "vendor/autoload.php";
 
 class SwansonTest extends PHPUnit_Framework_TestCase
 {
