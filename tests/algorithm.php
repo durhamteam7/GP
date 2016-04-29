@@ -178,13 +178,14 @@ class Swanson {
 	        array_push($all_outputs, $output);
 
 	    }
-		/*
-		Finally, we loop through the array of all image's values and classify the photos all at once, row-by-row.
-	        We will classify a photo if it has been retired (decided) and then transfer the values/properties etc. into the
-	        database via the 'updateClassifications' variable.
-	        The consequence of only classfying retired photos is that we do not store evenness values etc.
-	        for the photos which have yet to be retired (decided).
-	        */
+
+			/*
+			Finally, we loop through the array of all image's values and classify the photos all at once, row-by-row.
+      We will classify a photo if it has been retired (decided) and then transfer the values/properties etc. into the
+      database via the 'updateClassifications' variable.
+      The consequence of only classfying retired photos is that we do not store evenness values etc.
+      for the photos which have yet to be retired (decided).
+      */
 
 	    $i = 0; // A counter to keep track of the number of images we classify.
 	    $updateClassifications = "INSERT INTO Classification " .
@@ -210,11 +211,11 @@ class Swanson {
 	        	$Cfraction_support = $output["fraction_support"];
 	        	$Cfraction_blanks = $output["fraction_blanks"];
 
-				/*
-				Concatenating properties of image (including ID) with the current contents of the database.
-				*/
-				$updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now()),";
-				$i++; // Incremented after every classification of image
+						/*
+						Concatenating properties of image (including ID) with the current contents of the database.
+						*/
+						$updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now()),";
+						$i++; // Incremented after every classification of image
 	        }
 	    }
 
