@@ -87,18 +87,21 @@ class Swanson {
 	        while ($data[count($data) - 1]["photo_id"] == $subject[0]["photo_id"]) {
 	            $subject[] = array_pop($data);
 	        }
+
 	        $photo_id = $subject[0]["photo_id"];
 	        $number_of_classifications = count($subject);
-	        echo "Subject " . $photo_id;
-	        echo "\n";
-	        print_r($subject);
-	        echo "\n";
+	        #echo "Subject " . $photo_id;
+	        #echo "\n";
+	        #print_r($subject);
+	        #echo "\n";
+
 	        # Decide the winners
 	        $species = $this->decide_on("species", $subject);
 	        $gender = $this->decide_on("gender", $subject);
 	        $age = $this->decide_on("age", $subject);
 	        $number = $this->decide_on("number", $subject);
 	        $retired = false;
+
 	        # First Retirement Condition - Blank
 	        # Are the 5 first classifications blank?
 	        if ($number_of_classifications == $this->blank_condition) {
@@ -112,41 +115,48 @@ class Swanson {
 		            $retired = true;
 		        }
 	        }
+
 	        # Second Retirement Condition - Consensus
 	        # Are there 10 agreeing classifications? (Including blanks)
 	        if ($this->highest_vote("species", $subject) >= $this->consensus_condition) {
 	            $retired = true;
 	        }
+
 	        # Third Retirement Condition - Complete
 	        # Are there 25 or more classifications?
 	        if ($number_of_classifications >= $this->complete_condition) {
 	            $retired = true;
 	        }
-	        echo "Evenness Index";
-	        echo "\n";
+
+	        #echo "Evenness Index";
+	        #echo "\n";
 	        $votes = $this->tally_votes("species", $subject);
 	        $nlist = array_values($votes);
 	        $evenness = $this->calculate_pielou($nlist);
-	        print_r($evenness);
-	        echo "\n";
-	        echo "\n";
+	        #print_r($evenness);
+	        #echo "\n";
+	        #echo "\n";
+
 	        # Fourth Retirement Condition - No Consensus
 	        # Is the agreement too low?
 	        if ($evenness >= $this->agreement_condition) {
 	            $retired = false;
 	        }
-	        echo "Fraction Support";
-	        echo "\n";
+
+	        #echo "Fraction Support";
+	        #echo "\n";
 	        $fraction_support = $this->fraction_support($votes);
-	        print_r($fraction_support);
-	        echo "\n";
-	        echo "\n";
-	        echo "Fraction Blanks";
-	        echo "\n";
+	        #print_r($fraction_support);
+	        #echo "\n";
+	        #echo "\n";
+
+	        #echo "Fraction Blanks";
+	        #echo "\n";
 	        $fraction_blanks = $this->fraction_blanks($votes);
-	        print_r($fraction_blanks);
-	        echo "\n";
-	        echo "\n";
+	        #print_r($fraction_blanks);
+	        #echo "\n";
+	        #echo "\n";
+
 	        /* The array 'output' will store all the specification values of the image
 	        that have previously been calculated. */
 	        $output = array(
@@ -161,13 +171,15 @@ class Swanson {
 	            "fraction_support" => $fraction_support,
 	            "fraction_blanks" => $fraction_blanks
 	        );
+
 	        /*
 	        This will print the image values in human-readable form takne from the array
 	        and illustrate the relationships in the array.
 	        */
-	        echo "\n";
-	        print_r($output);
-	        echo "\n";
+
+	        #echo "\n";
+	        #print_r($output);
+	        #echo "\n";
 
 	        # Adding into the array of all image's values
 
@@ -313,19 +325,20 @@ class Swanson {
 			if (count($votes) > 0) {
 		    	arsort($votes);
 
-		    	echo "Votes Per $key";
-		    	echo "\n";
-		    	print_r($votes);
-		    	echo "\n";
+		    #echo "Votes Per $key";
+		    #echo "\n";
+		    #print_r($votes);
+		    #echo "\n";
 
 		    	$keys = array_keys($votes);
 		    	$winner = $keys[0];
 
-		    	echo "Winning " . ucfirst($key);
-		    	echo "\n";
-		    	print_r($winner);
-		    	echo "\n";
-		    	echo "\n";
+		    #echo "Winning " . ucfirst($key);
+		    #echo "\n";
+		    #print_r($winner);
+		    #echo "\n";
+		    #echo "\n";
+
 			}
 	    return $winner;
 	}
@@ -423,10 +436,6 @@ class Swanson {
 		}
 	}
 
-	# Takes a users classifications and all decided classifications
-	# and compares how well the user classifies
-	# INPUT: the key to check (species, gender, age, number), users classifications, all decided classifications
-	# OUTPUT: the correctness rate the user has for that key
 		/**
 	* Calculates the amount of votes that have classified the image as blank
 	* for an image that is ultimatly classified as containing an animal
@@ -466,11 +475,11 @@ class Swanson {
 	}
 
 		/**
-	* 
+	*
 	*
 	* @param $classified
-	* @param $photo_ids 
-	* @return 
+	* @param $photo_ids
+	* @return
 	*/
 	function getAnimals($classified, $photo_ids) {
 		// QUERY
@@ -501,9 +510,9 @@ class Swanson {
 		    echo "\n";
 		}
 
-		echo count($data) . " animals retrieved";
-		echo "\n";
-		echo "\n";
+		#echo count($data) . " animals retrieved";
+		#echo "\n";
+		#echo "\n";
 
 		return [$data, $all_data];
 	}
@@ -532,12 +541,12 @@ class Swanson {
 		    echo "\n";
 		}
 
-		echo "Getting already classified photo_ids";
-		echo "\n";
-		echo count($classified) . " classified entries retrieved";
-		echo "\n";
-		print_r($classified);
-		echo "\n";
+		#echo "Getting already classified photo_ids";
+		#echo "\n";
+		#echo count($classified) . " classified entries retrieved";
+		#echo "\n";
+		#print_r($classified);
+		#echo "\n";
 
 		return $classified;
 	}
@@ -566,11 +575,11 @@ class Swanson {
 		    echo "\n";
 		}
 
-		echo count($classifications) . " classifications retrieved";
-		echo "\n";
-		echo "\n";
-		print_r($classifications);
-		echo "\n";
+		#echo count($classifications) . " classifications retrieved";
+		#echo "\n";
+		#echo "\n";
+		#print_r($classifications);
+		#echo "\n";
 
 		return $classifications;
 	}
@@ -601,11 +610,11 @@ class Swanson {
 		    echo "\n";
 		}
 
-		echo count($photo_ids) . " photo_ids retrieved";
-		echo "\n";
-		print_r($photo_ids);
-		echo "\n";
-		echo "\n";
+		#echo count($photo_ids) . " photo_ids retrieved";
+		#echo "\n";
+		#print_r($photo_ids);
+		#echo "\n";
+		#echo "\n";
 
 		return $photo_ids;
 	}
@@ -635,11 +644,11 @@ class Swanson {
 		    echo "\n";
 		}
 
-		echo count($person_stats) . " person stats retrieved";
-		echo "\n";
-		echo "\n";
-		print_r($person_stats);
-		echo "\n";
+		#echo count($person_stats) . " person stats retrieved";
+		#echo "\n";
+		#echo "\n";
+		#print_r($person_stats);
+		#echo "\n";
 
 		return $person_stats;
 	}
@@ -731,37 +740,37 @@ class Swanson {
 		if (($same + $different) > 0) {
 			echo "Correctness against gold standard = " . ($same / ($same + $different));
 		}
-		echo "\n";
-		echo "<br>";
-		echo "\n";
-		echo "same results = ".$same;
-		echo "\n";
-		echo "<br>";
-		echo "\n";
-		echo "different results = ".$different;
-		echo "\n";
-		echo "<br>";
-		echo "\n";
-		echo "not classified = ".$notClassified;
-		echo "\n";
-		echo "<br>";
-		echo "\n";
-		echo "photo_ids where it differs:";
-		echo "\n";
-		print_r($different_classifications);
-		echo "\n";
-		echo "<br>";
-		echo "\n";
-		echo "\n";
+		#echo "\n";
+		#echo "<br>";
+		#echo "\n";
+		#echo "same results = ".$same;
+		#echo "\n";
+		#echo "<br>";
+		#echo "\n";
+		#echo "different results = ".$different;
+		#echo "\n";
+		#echo "<br>";
+		#echo "\n";
+		#echo "not classified = ".$notClassified;
+		#echo "\n";
+		#echo "<br>";
+		#echo "\n";
+		#echo "photo_ids where it differs:";
+		#echo "\n";
+		#print_r($different_classifications);
+		#echo "\n";
+		#echo "<br>";
+		#echo "\n";
+		#echo "\n";
 	}
 
 	function rateUsers($all_data, $classifications) {
 		# assume we have $all_data
-		echo "Calculating the correctness rate of each user";
-		echo "\n";
-		echo "species, gender, age, number";
-		echo "\n";
-		echo "\n";
+		#echo "Calculating the correctness rate of each user";
+		#echo "\n";
+		#echo "species, gender, age, number";
+		#echo "\n";
+		#echo "\n";
 
 		# Sorts the all_data array based on person_id
 		usort($all_data, function ($item1, $item2) {
@@ -792,10 +801,10 @@ class Swanson {
 
 		    $number_of_classifications = count($subject);
 
-		    echo "$person_id has $species_rate, $gender_rate, $age_rate, $number_rate";
-		    echo "\n";
-		    echo "on " . $number_of_classifications . " classifications";
-		    echo "\n";
+		    #echo "$person_id has $species_rate, $gender_rate, $age_rate, $number_rate";
+		    #echo "\n";
+		    #echo "on " . $number_of_classifications . " classifications";
+		    #echo "\n";
 
 		    #Output -- Needs to be made more efficient using the same method as in the Algorithm.PHP file.
 		    $updatePersonStats = "INSERT INTO PersonStats (person_id, species_rate, gender_rate, age_rate, number_rate, number_of_classifications) " .
