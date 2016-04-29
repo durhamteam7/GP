@@ -417,7 +417,7 @@ class Swanson {
 
 	# Takes a users classifications and all decided classifications
 	# and compares how well the user classifies
-	# INPUT: the key to check (species, gender, age, number), users classifications, all decided classifications
+	# INPUT: the key to check (species, gender, age, number), user's classifications, all decided classifications
 	# OUTPUT: the correctness rate the user has for that key
 	function getUserCorrectnessRate($key, $subject, $classifications)
 	{
