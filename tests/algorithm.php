@@ -65,7 +65,9 @@ class Swanson {
 		// Check connection
 		if ($this->mysqli->connect_error) {
 		    die("Connection failed: " . $this->mysqli->connect_error);
+				return false;
 		}
+		return true;
 	}
 
 	/**
@@ -292,6 +294,31 @@ class Swanson {
 		return $votes[0];
 	}
 
+	# Decides based on the votes for a given key
+	function decide_on($key, $subject)
+	{
+	    $votes = $this->tally_votes($key, $subject);
+			$winner = "";
+			if (count($votes) <= 0) {
+		    arsort($votes);
+
+		    echo "Votes Per $key";
+		    echo "\n";
+		    print_r($votes);
+		    echo "\n";
+
+		    $keys = array_keys($votes);
+		    $winner = $keys[0];
+
+		    echo "Winning " . ucfirst($key);
+		    echo "\n";
+		    print_r($winner);
+		    echo "\n";
+		    echo "\n";
+			}
+	    return $winner;
+	}
+
 	/**
  * Calculate the pielou evenness index of a list
  *
@@ -381,29 +408,6 @@ class Swanson {
 		{
 			return 0;
 		}
-	}
-
-	# Decides based on the votes for a given key
-	function decide_on($key, $subject)
-	{
-	    $votes = $this->tally_votes($key, $subject);
-	    arsort($votes);
-
-	    echo "Votes Per $key";
-	    echo "\n";
-	    print_r($votes);
-	    echo "\n";
-
-	    $keys = array_keys($votes);
-	    $winner = $keys[0];
-
-	    echo "Winning " . ucfirst($key);
-	    echo "\n";
-	    print_r($winner);
-	    echo "\n";
-	    echo "\n";
-
-	    return $winner;
 	}
 
 	# Takes a users classifications and all decided classifications

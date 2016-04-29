@@ -19,13 +19,8 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     }
 
     // tests if the database connection is set up
-      function testSetupDB() {
-      $connected = true;
-  		// Check connection
-  		if ($this->s->mysqli->connect_error) {
-          $connected = false;
-  		}
-      $this->assertEquals(true, $connected);
+    function testSetupDB() {
+      $this->assertEquals(true, $this->s->setupDB());
     }
 
 
@@ -144,5 +139,36 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1/3, $this->s->fraction_support($array2));
         $this->assertEquals(0.5, $this->s->fraction_support($array3));
     }
+
+    function testDecide_on()
+  	{
+        $empty_array = array();
+
+        $array = array(array("species" => ""));
+        $res = array("" => 1);
+
+        $array2 = array(array("species" => "badger"));
+        $res2 = array("animal" => 1);
+
+        $array3 = array(array("species" => "dog"),
+                        array("species" => "dog"));
+        $res3 = array("animal" => 2);
+
+        $array4 = array(array("species" => "cat"),
+                        array("species" => "deer"));
+        $res4 = array("animal" => 1, "species" => 1);
+
+        $array5 = array(array("species" => "deer"),
+                        array("species" => "deer"),
+                        array("species" => "badger"));
+        $res5 = array("animal" => 2, "species" => 1);
+
+        $this->assertEquals("", $this->s->decide_on("species", $empty_array));
+        $this->assertEquals("", $this->s->decide_on("species", $array));
+        $this->assertEquals("badger", $this->s->decide_on("species", $array2));
+        $this->assertEquals("dog", $this->s->decide_on("species", $array3));
+        $this->assertEquals("cat", $this->s->decide_on("species", $array4));
+        $this->assertEquals("deer", $this->s->decide_on("species", $array5));
+  	}
 }
 ?>
