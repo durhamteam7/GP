@@ -461,45 +461,6 @@ class Swanson {
 	}
 
 	/*
-
-	*/
-	function getAnimals($classified, $photo_ids) {
-		// QUERY
-		$sql = "SELECT * FROM Animal ORDER BY photo_id";
-		if ($this->animal_limiting) {
-			$sql .= " DESC LIMIT $this->get_animal_limit";
-		}
-		$sql .= ";";
-
-		// execute query
-		$result = $this->mysqli->query($sql);
-
-		$data = [];
-		$all_data = [];
-
-		// process result
-		if ($result->num_rows > 0) {
-		    while($row = $result->fetch_assoc()) {
-		        if (!in_array($row["photo_id"], $classified)) {
-		            if (in_array($row["photo_id"], $photo_ids)) {
-		                $data[] = $row;
-		            }
-		        }
-		        $all_data[] = $row;
-		    }
-		} else {
-		    echo "0 results";
-		    echo "\n";
-		}
-
-		#echo count($data) . " animals retrieved";
-		#echo "\n";
-		#echo "\n";
-
-		return [$data, $all_data];
-	}
-
-	/*
 	Gives the number of how many images have been classified into the database
 	so far and lists each classified photo's ID.
 	If no photos have been classified, '0 Results' will be printed.
@@ -633,6 +594,45 @@ class Swanson {
 		#echo "\n";
 
 		return $person_stats;
+	}
+
+	/*
+
+	*/
+	function getAnimals($classified, $photo_ids) {
+		// QUERY
+		$sql = "SELECT * FROM Animal ORDER BY photo_id";
+		if ($this->animal_limiting) {
+			$sql .= " DESC LIMIT $this->get_animal_limit";
+		}
+		$sql .= ";";
+
+		// execute query
+		$result = $this->mysqli->query($sql);
+
+		$data = [];
+		$all_data = [];
+
+		// process result
+		if ($result->num_rows > 0) {
+		    while($row = $result->fetch_assoc()) {
+		        if (!in_array($row["photo_id"], $classified)) {
+		            if (in_array($row["photo_id"], $photo_ids)) {
+		                $data[] = $row;
+		            }
+		        }
+		        $all_data[] = $row;
+		    }
+		} else {
+		    echo "0 results";
+		    echo "\n";
+		}
+
+		#echo count($data) . " animals retrieved";
+		#echo "\n";
+		#echo "\n";
+
+		return [$data, $all_data];
 	}
 
 	function getGoldStandard() {
