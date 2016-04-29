@@ -23,7 +23,7 @@ adminApp.factory('ajax', ['$http', function($http) {
             return $http.post(urls[env] + 'photo?pageNum=' + pageNum + '&pageSize=' + pageSize + '&sequence=' + isSequence, query).success(function() {});
         },
         getFullPhotos: function(query, isSequence) {
-            return $http.post(urls[0] + 'photo?sequence=' + isSequence, query).success(function() {});
+            return $http.post(urls[env] + 'photo?sequence=' + isSequence, query).success(function() {});
         },
         getPhotosCSV: function(query, isSequence) {
             return $http.post(urls[env] + 'photo?output=csv&sequence=' + isSequence, query).success(function() {});
@@ -135,7 +135,7 @@ adminApp.controller('MainController', ['$scope', 'ajax', function($scope, server
 
     /** Calculate how many results are on current page
      * @memberof MainController
-     * @function rowShown
+     * @function rowsShown
      * @returns {number} Number of results on the current page
      */
     $scope.rowsShown = function() {
