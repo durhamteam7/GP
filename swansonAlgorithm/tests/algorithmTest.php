@@ -1,5 +1,9 @@
 <?php
 
+# to run from root
+# phpunit swansonAlgorithm/tests --bootstrap vendor/autoload.php
+
+# auto load classes
 require "vendor/autoload.php";
 
 class SwansonTest extends PHPUnit_Framework_TestCase
@@ -7,9 +11,6 @@ class SwansonTest extends PHPUnit_Framework_TestCase
 
     // contains the object handle of the string class
     private $s;
-
-    private $classified;
-    private $photo_ids;
 
     // constructor of the test suite
     function SwansonTest() {
@@ -174,27 +175,27 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     }
 
     public function testGetClassified() {
-      $this->classified = $this->s->getClassified();
-      $this->assertTrue(count($this->classified) > 0);
+      $classified = $this->s->getClassified();
+      $this->assertTrue(count($classified) > 0);
     }
 
     public function testGetClassifications() {
-      $this->classifications = $this->s->getClassifications();
-      $this->assertTrue(count($this->classifications) > 0);
+      $classifications = $this->s->getClassifications();
+      $this->assertTrue(count($classifications) > 0);
     }
 
     public function testGetPhotos() {
-      $this->photo_ids = $this->s->getPhotos();
-      $this->assertTrue(count($this->photo_ids) > 0);
+      $photo_ids = $this->s->getPhotos();
+      $this->assertTrue(count($photo_ids) > 0);
     }
 
     public function testGetPersonStats() {
-      $this->person_stats = $this->s->getPersonStats();
-      $this->assertTrue(count($this->person_stats) > 0);
+      $person_stats = $this->s->getPersonStats();
+      $this->assertTrue(count($person_stats) > 0);
     }
 
     public function testGetAnimals() {
-      $d = $this->s->getAnimals($this->classified, $this->photo_ids);
+      $d = $this->s->getAnimals($this->s->getClassified(), $this->s->getPhotos());
       $this->assertTrue(count($d) > 0);
       $this->data = $d[0];
       $this->all_data = $d[1];
