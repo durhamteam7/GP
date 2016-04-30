@@ -10,28 +10,41 @@ class SwansonTest extends PHPUnit_Framework_TestCase
 {
 
     // contains the object handle of the string class
-    private $s;
+    private static $s;
 
-    private $classified;
-    private $photo_ids;
+    private static $classified;
+    private static $photo_ids;
+    private static $d;
+    private static $classifications;
 
-    // constructor of the test suite
-    function SwansonTest() {
-        $this->s = new Swanson();
-        $this->classified = $this->s->getClassified();
-        $this->photo_ids = $this->s->getPhotos();
+    // set up the test suite
+    static function setUpBeforeClass() {
+        echo "\n\n";
+        self::$s = new Swanson();
+        echo "class loaded\n";
+        self::$classified = self::$s->getClassified();
+        echo "get classified done\n";
+        self::$photo_ids = self::$s->getPhotos();
+        echo "get photos done\n";
+        self::$d = self::$s->getAnimals(self::$classified, self::$photo_ids);
+        echo "get animals done\n";
+        self::$classifications = self::$s->getClassifications();
+        echo "get classifications done\n";
+        echo "\n";
     }
-    function tearDown() {
+
+    static function tearDownAfterClass() {
         // delete your instance
-        unset($this->s);
+        unset($s);
     }
 
     // tests if the database connection is set up
     function testSetupDB() {
-        $this->assertEquals(true, $this->s->setupDB());
+        $this->assertEquals(true, self::$s->setupDB());
     }
 
     function testMain() {
+        self::$s->main(self::$d[0]);
         $this->assertEquals(true, true);
     }
 
@@ -58,12 +71,12 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                         array("species" => "badger"));
         $res5 = array("deer" => 2, "badger" => 1);
 
-        $this->assertEquals(array(), $this->s->tally_votes("species", $empty_array));
-        $this->assertEquals($res, $this->s->tally_votes("species", $array));
-        $this->assertEquals($res2, $this->s->tally_votes("species", $array2));
-        $this->assertEquals($res3, $this->s->tally_votes("species", $array3));
-        $this->assertEquals($res4, $this->s->tally_votes("species", $array4));
-        $this->assertEquals($res5, $this->s->tally_votes("species", $array5));
+        $this->assertEquals(array(), self::$s->tally_votes("species", $empty_array));
+        $this->assertEquals($res, self::$s->tally_votes("species", $array));
+        $this->assertEquals($res2, self::$s->tally_votes("species", $array2));
+        $this->assertEquals($res3, self::$s->tally_votes("species", $array3));
+        $this->assertEquals($res4, self::$s->tally_votes("species", $array4));
+        $this->assertEquals($res5, self::$s->tally_votes("species", $array5));
     }
 
    	function testHighest_vote()
@@ -89,12 +102,12 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                         array("species" => "badger"));
         $res5 = array("deer" => 2, "badger" => 1);
 
-        $this->assertEquals(0, $this->s->highest_vote("species", $empty_array));
-        $this->assertEquals(1, $this->s->highest_vote("species", $array));
-        $this->assertEquals(1, $this->s->highest_vote("species", $array2));
-        $this->assertEquals(2, $this->s->highest_vote("species", $array3));
-        $this->assertEquals(1, $this->s->highest_vote("species", $array4));
-        $this->assertEquals(2, $this->s->highest_vote("species", $array5));
+        $this->assertEquals(0, self::$s->highest_vote("species", $empty_array));
+        $this->assertEquals(1, self::$s->highest_vote("species", $array));
+        $this->assertEquals(1, self::$s->highest_vote("species", $array2));
+        $this->assertEquals(2, self::$s->highest_vote("species", $array3));
+        $this->assertEquals(1, self::$s->highest_vote("species", $array4));
+        $this->assertEquals(2, self::$s->highest_vote("species", $array5));
    	}
 
     function testDecide_on()
@@ -120,21 +133,21 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                         array("species" => "badger"));
         $res5 = array("deer" => 2, "badger" => 1);
 
-        $this->assertEquals("", $this->s->decide_on("species", $empty_array));
-        $this->assertEquals("", $this->s->decide_on("species", $array));
-        $this->assertEquals("badger", $this->s->decide_on("species", $array2));
-        $this->assertEquals("dog", $this->s->decide_on("species", $array3));
-        $this->assertEquals("cat", $this->s->decide_on("species", $array4));
-        $this->assertEquals("deer", $this->s->decide_on("species", $array5));
+        $this->assertEquals("", self::$s->decide_on("species", $empty_array));
+        $this->assertEquals("", self::$s->decide_on("species", $array));
+        $this->assertEquals("badger", self::$s->decide_on("species", $array2));
+        $this->assertEquals("dog", self::$s->decide_on("species", $array3));
+        $this->assertEquals("cat", self::$s->decide_on("species", $array4));
+        $this->assertEquals("deer", self::$s->decide_on("species", $array5));
   	}
 
     public function testCalculate_pielou()
     {
         $empty_array = array();
-        $this->assertEquals(0, $this->s->calculate_pielou($empty_array));
+        $this->assertEquals(0, self::$s->calculate_pielou($empty_array));
 
         $array = array(0);
-        $this->assertEquals(0, $this->s->calculate_pielou($array));
+        $this->assertEquals(0, self::$s->calculate_pielou($array));
 
         $array2 = array(2, 3, 4, 2);
         $lns = log(4);
@@ -144,7 +157,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                           (2/11) * log(2/11));
         $r = -array_sum($plnplist);
         $res = $r / $lns;
-        $this->assertEquals($res, $this->s->calculate_pielou($array2));
+        $this->assertEquals($res, self::$s->calculate_pielou($array2));
 
         $array3 = array(2, 2, 2, 2);
         $lns2 = log(4);
@@ -154,7 +167,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                            (2/8) * log(2/8));
         $r2 = -array_sum($plnplist2);
         $res2 = $r2 / $lns2;
-        $this->assertEquals(1, $this->s->calculate_pielou($array3));
+        $this->assertEquals(1, self::$s->calculate_pielou($array3));
     }
 
     public function testFraction_support()
@@ -164,10 +177,10 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $array2 = array(0 => 1, 1 => 1, 2 => 1);
         $array3 = array(1 => 1, 2 => 1, 3 => 2);
 
-        $this->assertEquals(0, $this->s->fraction_support($empty_array));
-        $this->assertEquals(1, $this->s->fraction_support($array));
-        $this->assertEquals(1/3, $this->s->fraction_support($array2));
-        $this->assertEquals(0.5, $this->s->fraction_support($array3));
+        $this->assertEquals(0, self::$s->fraction_support($empty_array));
+        $this->assertEquals(1, self::$s->fraction_support($array));
+        $this->assertEquals(1/3, self::$s->fraction_support($array2));
+        $this->assertEquals(0.5, self::$s->fraction_support($array3));
     }
 
     public function testFraction_blanks()
@@ -177,10 +190,10 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $array2 = array(86 => 1);
         $array3 = array(0 => 1, 1 => 1, 86 => 2);
 
-        $this->assertEquals(0, $this->s->fraction_blanks($empty_array));
-        $this->assertEquals(0, $this->s->fraction_blanks($array));
-        $this->assertEquals(1, $this->s->fraction_blanks($array2));
-        $this->assertEquals(0.5, $this->s->fraction_blanks($array3));
+        $this->assertEquals(0, self::$s->fraction_blanks($empty_array));
+        $this->assertEquals(0, self::$s->fraction_blanks($array));
+        $this->assertEquals(1, self::$s->fraction_blanks($array2));
+        $this->assertEquals(0.5, self::$s->fraction_blanks($array3));
     }
 
     public function testGetUserCorrectnessRate() {
@@ -188,50 +201,52 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     }
 
     public function testGetClassified() {
-        $this->assertTrue(count($this->classified) > 0);
+        $this->assertTrue(count(self::$classified) > 0);
     }
 
     public function testGetClassifications() {
-        $classifications = $this->s->getClassifications();
-        $this->assertTrue(count($classifications) > 0);
+        $this->assertTrue(count(self::$classifications) > 0);
     }
 
     public function testGetPhotos() {
-        $this->assertTrue(count($this->photo_ids) > 0);
+        $this->assertTrue(count(self::$photo_ids) > 0);
     }
 
     public function testGetPersonStats() {
-        $person_stats = $this->s->getPersonStats();
+        $person_stats = self::$s->getPersonStats();
         $this->assertTrue(count($person_stats) > 0);
     }
 
     public function testGetAnimals() {
-        $d = $this->s->getAnimals($this->classified, $this->photos);
-        $this->assertTrue(count($d) > 0);
-        $this->data = $d[0];
-        $this->all_data = $d[1];
-        $this->assertTrue(count($this->data) > 0);
-        $this->assertTrue(count($this->all_data) > 0);
+        $this->assertTrue(self::$d !== NULL);
+        #$this->data = $d[0];
+        #$this->all_data = $d[1];
+        #$this->assertTrue(count($this->data) > 0);
+        #$this->assertTrue(count($this->all_data) > 0);
     }
 
     public function testGetGoldStandard() {
-        $a = $this->s->getGoldStandard();
+        $a = self::$s->getGoldStandard();
         $this->assertTrue(count($a) > 0);
     }
 
     public function testGoldClassifiedComparison() {
+        self::$s->goldClassifiedComparison();
         $this->assertEquals(true, true);
     }
 
     public function testRateUsers() {
+        //self::$s->rateUsers(self::$d[1], self::$classifications);
         $this->assertEquals(true, true);
     }
 
     public function testCreateTables() {
+        self::$s->createTables();
         $this->assertEquals(true, true);
     }
 
     public function testEmptyTable() {
+        self::$s->emptyTable("asd");
         $this->assertEquals(true, true);
     }
 }
