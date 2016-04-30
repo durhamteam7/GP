@@ -129,7 +129,9 @@ var mapController = function($scope, $filter) {
  * @param $filter
  */
 var slideshowController = function($scope, $timeout, QueueService) {
-    var INTERVAL = 10000;
+    var INTERVAL = 5000;
+
+    var timeoutPromise;
 
     /** Setter for currentIndex
      * @memberof slideshowController
@@ -154,10 +156,23 @@ var slideshowController = function($scope, $timeout, QueueService) {
      * @param {number} index Value to check against
      * @return {boolean} True if current slide is index
      */
-    function nextSlide() {
+    $scope.nextSlide = function() {
         $scope.currentIndex = ($scope.currentIndex < $scope.results.length - 1) ? ++$scope.currentIndex : 0;
-        $timeout(nextSlide, INTERVAL);
-    }
+        timeoutPromise = $timeout($scope.nextSlide, INTERVAL);
+    };
+    $scope.previousSlide = function() {
+        $scope.currentIndex = ($scope.currentIndex < $scope.results.length - 1) ? --$scope.currentIndex : 0;
+        timeoutPromise = $timeout($scope.nextSlide, INTERVAL);
+    };
+
+    $scope.nextSlideOnPress = function() {
+        $timeout.cancel(timeoutPromise);
+        $scope.nextSlide();
+    };
+    $scope.previousSlideOnPress = function() {
+        $timeout.cancel(timeoutPromise);
+        $scope.previousSlide();
+    };
 
 
     /*function setCurrentAnimation(animation) {
@@ -183,7 +198,7 @@ var slideshowController = function($scope, $timeout, QueueService) {
 
     $scope.loaded = false;
 
-    $timeout(nextSlide, INTERVAL);
+    timeoutPromise = $timeout($scope.nextSlide, INTERVAL);
 
     $scope.progress = 0;
     $scope.loaded = true;
