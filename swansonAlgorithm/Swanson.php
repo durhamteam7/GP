@@ -216,13 +216,13 @@ class Swanson {
 		        array_push($all_outputs, $output);
 		    }
 
-				/*
-				Finally, we loop through the array of all image's values and classify the photos all at once, row-by-row.
-	      We will classify a photo if it has been retired (decided) and then transfer the values/properties etc. into the
-	      database via the 'updateClassifications' variable.
-	      The consequence of only classfying retired photos is that we do not store evenness values etc.
-	      for the photos which have yet to be retired (decided).
-	      */
+		/*
+		Finally, we loop through the array of all image's values and classify the photos all at once, row-by-row.
+	      	We will classify a photo if it has been retired (decided) and then transfer the values/properties etc. into the
+	      	database via the 'updateClassifications' variable.
+		 The consequence of only classfying retired photos is that we do not store evenness values etc.
+	      	for the photos which have yet to be retired (decided).
+	      	*/
 
 		    $i = 0; // A counter to keep track of the number of images we classify.
 		    $updateClassifications = "INSERT INTO Classification " .
