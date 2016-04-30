@@ -19,7 +19,7 @@ $result = $mysqli->query($sql);
 if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
-				//Convert
+        //Convert
         $latLong = gridRefToLatLongAPI(normaliseGridRef($row['grid_ref']));
         //write back
         $updateStr = 'UPDATE Site SET lat='.$latLong[0].', lon='.$latLong[1].' WHERE site_id = '.$row['site_id'].';';
