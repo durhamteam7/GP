@@ -7,7 +7,8 @@
         <b>{{getOptionName(slide.Classification[0].species)}}</b> in {{slide.Site.site_name}}</br>
         taken on {{slide.Photo.taken | date:'dd/MM/yyyy HH:mm'}}
     </div>
+    <div id="slideshowButtons">
+      <button class="btn btn-default btn-sm" ng-click="nextSlideOnPress()">Next Slide</button>
+      <button class="btn btn-default btn-sm" ng-click="previousSlideOnPress()">Previous Slide</button>
+    </div>
 </div>
-
-
-    

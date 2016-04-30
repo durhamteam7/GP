@@ -62,22 +62,22 @@ class Swanson {
 		private $blank_animal = 86;
 
 		/**
-		 * Some blah blah about what this is useful for
+		 * Determines whether we want to limit our animal select statement or not
 		 * @var boolean $animal_limiting
 		 */
 		private $animal_limiting = false; # will be false in the end
 		/**
-		 * Some blah blah about what this is useful for
+		 * The limit on the animal select query
 		 * @var int $get_animal_limit
 		 */
 		private $get_animal_limit = 1000;
 		/**
-		 * Some blah blah about what this is useful for
+		 * Determines whether we want to limit our photo select statement or not
 		 * @var boolean $photo_limiting
 		 */
 		private $photo_limiting = false; # will be false in the end
 		/**
-		 * Some blah blah about what this is useful for
+		 * The limit on the photo select query
 		 * @var int $get_photo_limit
 		 */
 		private $get_photo_limit = 1000;
@@ -263,13 +263,13 @@ class Swanson {
 		        array_push($all_outputs, $output);
 		    }
 
-				/*
-				Finally, we loop through the array of all image's values and classify the photos all at once, row-by-row.
-	      We will classify a photo if it has been retired (decided) and then transfer the values/properties etc. into the
-	      database via the 'updateClassifications' variable.
-	      The consequence of only classfying retired photos is that we do not store evenness values etc.
-	      for the photos which have yet to be retired (decided).
-	      */
+		/*
+		Finally, we loop through the array of all image's values and classify the photos all at once, row-by-row.
+	      	We will classify a photo if it has been retired (decided) and then transfer the values/properties etc. into the
+	      	database via the 'updateClassifications' variable.
+		 The consequence of only classfying retired photos is that we do not store evenness values etc.
+	      	for the photos which have yet to be retired (decided).
+	      	*/
 
 		    $i = 0; // A counter to keep track of the number of images we classify.
 		    $updateClassifications = "INSERT INTO Classification " .
@@ -294,11 +294,11 @@ class Swanson {
 			        	$Cfraction_support = $output["fraction_support"];
 			        	$Cfraction_blanks = $output["fraction_blanks"];
 
-								/*
-								Concatenating properties of image (including ID) with the current contents of the database.
-								*/
-								$updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now()),";
-								$i++; // Incremented after every classification of image
+					/*
+					Concatenating properties of image (including ID) with the current contents of the database.
+					*/
+					$updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now()),";
+					$i++; // Incremented after every classification of image
 		        }
 		    }
 
@@ -902,18 +902,22 @@ class Swanson {
 				    #echo "on " . $number_of_classifications . " classifications";
 				    #echo "\n";
 
-				    #Output -- Needs to be made more efficient using the same method as in the Algorithm.PHP file.
-						$output = array(
-								"person_id" => $person_id,
-						    "species_rate" => $species_rate,
-						    "gender_rate" => $gender_rate,
-						    "age_rate" => $age_rate,
-						    "number_rate" => $number_rate,
-						    "number_of_classifications" => $number_of_classifications
-						);
-			      /*
-	        	The array 'all_outputs' will be the container for each $subject and therefore its
-	        	properties. By keeping all the images and their respective properties in this array,
+				    /*
+				    The array 'output' will store all the subject values of the classifications
+				    for the photo that has previously been calculated.
+				    */
+				    $output = array(
+					    	"person_id" => $person_id,
+					    	'species_rate' => $species_rate,
+					    	'gender_rate' => $gender_rate,
+					    	'age_rate' => $age_rate,
+					    	'number_rate' => $number_rate,
+					    	'number_of_classifications' => $number_of_classifications
+			    	);
+
+			     	/*
+	        	The array 'all_outputs' will be the container for each $output and therefore its
+	        	properties. By keeping all the $output arrays and their respective properties in this array,
 	        	we will be able to access and tranfer all properties and values of each feature at once
 	        	and insert them into our database more efficiently.
 	        	*/
@@ -921,20 +925,23 @@ class Swanson {
 		    }
 
 				/*
-				Finally, we loop through the array of all subjects' values and classify  all at once, row-by-row.
-    		We will classify a photo if it has been retired (decided) and then transfer the values/properties etc. into the
-    		database via the 'updateClassifications' variable.
-    		The consequence of only classfying retired photos is that we do not store evenness values etc.
-    		for the photos which have yet to be retired (decided).
+				Finally, we loop through the array of all subjects' values and update all stats at once, per person all, row-by-row.
+    		We will transfer the values/properties etc. into the
+    		database via the 'updatePersonStats' variable.
     		*/
 
     		$i = 0;
 
-		    $updatePersonStats = "INSERT INTO PersonStats (person_id, species_rate, gender_rate, age_rate, number_rate, number_of_classifications) " .
-		    "VALUES ";
+		    $updatePersonStats = "INSERT INTO PersonStats " .
+													    "(person_id, species_rate, gender_rate, age_rate, number_rate, number_of_classifications) " .
+													    "VALUES ";
 
 		    foreach ($all_outputs as $output)
 		    {
+			    	/*
+						Outputs will have all their properties stored in local variables and then contatenated into the
+				    'updatePersonStats' variable's contents to be stored in the database.
+			    	*/
 			    	$thePerson_id = $output["person_id"];
 			    	$theSpecies_rate = $output["species_rate"];
 			    	$theGender_rate = $output["gender_rate"];
@@ -942,6 +949,9 @@ class Swanson {
 			    	$theNumber_rate = $output["number_rate"];
 			    	$theNumber_of_classifications = $output["number_of_classifications"];
 
+							/*
+						Concatenating properties of subject (including person_id) with the current contents of the database.
+							*/
 				    $updatePersonStats .= "('$thePerson_id', '$theSpecies_rate', '$theGender_rate', '$theAge_rate', '$theNumber_rate', '$theNumber_of_classifications'),";
 				    $i++;
 				}
@@ -952,6 +962,11 @@ class Swanson {
 															" number_rate=VALUES(number_rate), number_of_classifications=VALUES(number_of_classifications);";
 
 		    #echo $updatePersonStats . "\n";
+
+		    /*
+		    We will check if the update of the person stats with the subject properties was successful or
+		    if it wasn't, and echo the appropriate message depending on the answer.
+	    	*/
 
 				if ($i > 0)
 		    {

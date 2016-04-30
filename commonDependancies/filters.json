@@ -65,6 +65,11 @@
 		"value":null,
 		"coordType":"longitude",
 		"order":2
+	},
+	"radius":{
+		"type":"",
+		"value":"",
+		"order":3
 	}
 	},
 	"Photo":{
@@ -84,5 +89,5 @@
 	   "order":1
 	}
 	}
-        
+
 }
