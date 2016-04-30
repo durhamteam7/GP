@@ -23,6 +23,7 @@ class Swanson {
 		private $mysqli;
 		private $env = 1;
 
+		# these variables control which 
 		private $blank_condition = 1;		#5
 		private $consensus_condition = 1;	#10
 		private $complete_condition = 2;	#25

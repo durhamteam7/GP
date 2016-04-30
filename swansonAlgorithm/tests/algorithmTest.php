@@ -61,7 +61,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
   				  "gender" => 0,
   				  "age" => 0,
   				  "number" => 1,
-  				  "timestamp" ""
+  				  "timestamp" => ""
           ),
           array(
   				  "animal_id" => 2,
@@ -70,7 +70,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
   				  "gender" => 1,
   				  "age" => 5,
   				  "number" => 1,
-  				  "timestamp" ""
+  				  "timestamp" => ""
           ),
           array(
   				  "animal_id" => 3,
@@ -79,7 +79,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
   				  "gender" => 5,
   				  "age" => 0,
   				  "number" => 1,
-  				  "timestamp" ""
+  				  "timestamp" => ""
           ),
           array(
   				  "animal_id" => 4,
@@ -88,7 +88,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
   				  "gender" => 1,
   				  "age" => 5,
   				  "number" => 1,
-  				  "timestamp" ""
+  				  "timestamp" => ""
           ),
           array(
   				  "animal_id" => 5,
@@ -97,7 +97,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
   				  "gender" => 1,
   				  "age" => 5,
   				  "number" => 1,
-  				  "timestamp" ""
+  				  "timestamp" => ""
           )
         );
         self::$s->main($data);
