@@ -806,8 +806,7 @@ class Swanson {
 				#echo "\n";
 		}
 
-									/**
-			/**
+		/**
 		* Populates the PersonStats for each user using all of the classifications
 		*
 		* @param Array[] $all_data contains all the information from the the Animal table
@@ -879,20 +878,24 @@ class Swanson {
 
 
 				/*
-				Finally, we loop through the array of all subjects' values and classify  all at once, row-by-row.
-	      		We will classify a photo if it has been retired (decided) and then transfer the values/properties etc. into the
-	      		database via the 'updateClassifications' variable.
-	      		The consequence of only classfying retired photos is that we do not store evenness values etc.
-	      		for the photos which have yet to be retired (decided).
+				Finally, we loop through the array of all subjects' values and update all stats at once, per person all, row-by-row.
+	      		We will transfer the values/properties etc. into the
+	      		database via the 'updatePersonStats' variable.
 	      		*/
 
 	      		$i = 0;
 
-			    $updatePersonStats = "INSERT INTO PersonStats (person_id, species_rate, gender_rate, age_rate, number_rate, number_of_classifications) " .
+			    $updatePersonStats = "INSERT INTO PersonStats " .
+			    "(person_id, species_rate, gender_rate, age_rate, number_rate, number_of_classifications) " .
 			    "VALUES ";
 
 			    foreach ($all_outputs as $output) 
 			    {
+			    	/*
+					Outputs will have all their properties stored in local variables and then contatenated into the
+				    'updatePersonStats' variable's contents to be stored in the database.
+			    	*/
+
 			    	$thePerson_id = $output["person_id"];
 			    	$theSpecies_rate = $output["species_rate"];
 			    	$theGender_rate = $output["gender_rate"];
@@ -900,10 +903,12 @@ class Swanson {
 			    	$theNumber_rate = $output["number_rate"];
 			    	$theNumber_of_classifications["number_of_classifications"];
 			    
+			    	/*
+					Concatenating properties of subject (including person_id) with the current contents of the database.
+			    	*/
+			    	$updatePersonStats .= "('$thePerson_id', '$theSpecies_rate', '$theGender_rate', '$theAge_rate', '$theNumber_rate', '$theNumber_of_classifications'),";
 
-			    $updatePersonStats .= "('$thePerson_id' '$theSpecies_rate', '$theGender_rate', '$theAge_rate', '$theNumber_rate', '$theNumber_of_classifications'),";
-
-			    $i++;
+			    	$i++;
 				
 				}
 
@@ -911,6 +916,11 @@ class Swanson {
 				$updatePersonStats = substr($updatePersonStats, 0, -1) . ";";
 
 			    #echo $updatePersonStats . "\n";
+
+			    /*			    
+			    We will check if the update of the person stats with the subject properties was successful or
+			    if it wasn't, and echo the appropriate message depending on the answer.
+		    	*/
 
 				if ($i > 0)
 			    {
