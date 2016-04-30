@@ -88,6 +88,9 @@ class Swanson {
 		        $subject = array(array_pop($data));
 		        while ($data[count($data) - 1]["photo_id"] == $subject[0]["photo_id"]) {
 		            $subject[] = array_pop($data);
+								if (count($data) <= 0) {
+									break;
+								}
 		        }
 
 		        $photo_id = $subject[0]["photo_id"];
@@ -707,11 +710,11 @@ class Swanson {
 				$classifications = [];
 
 				// process result into an array with the photo_id as the key and the species as the value
-				if($result->num_rows > 0)
+				if ($result->num_rows > 0)
 				{
-						while($row = $result->fetch_assoc())
+						while ($row = $result->fetch_assoc())
 						{
-							$classifications[$row[photo_id]] = $row[species];
+							$classifications[$row['photo_id']] = $row['species'];
 						}
 				}
 				else
@@ -735,13 +738,13 @@ class Swanson {
 
 				for($x=0; $x<count($gold_standard); $x++)
 				{
-						$photo_id = $gold_standard[$x][photo_id];
+						$photo_id = $gold_standard[$x]['photo_id'];
 						# Ignore "Don't know" classifications
-						if (!in_array($gold_standard[$x][species], array(96, 97)))
+						if (!in_array($gold_standard[$x]['species'], array(96, 97)))
 						{
 								if (array_key_exists($photo_id, $classifications))
 								{
-										if ($classifications[$photo_id] == $gold_standard[$x][species])
+										if ($classifications[$photo_id] == $gold_standard[$x]['species'])
 										{
 											$same++;
 										}
@@ -896,8 +899,7 @@ class Swanson {
 
 				# Creating PersonStats table
 				$createTable = "CREATE TABLE IF NOT EXISTS PersonStats (".
-				    "person_stats_id INT(11) AUTO_INCREMENT PRIMARY KEY,".
-				    "person_id INT NOT NULL,".
+				    "person_id INT NOT NULL PRIMARY KEY,".
 				    "species_rate DECIMAL(10, 9) NOT NULL,".
 				    "gender_rate DECIMAL(10, 9) NOT NULL,".
 				    "age_rate DECIMAL(10, 9) NOT NULL,".

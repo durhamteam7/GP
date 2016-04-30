@@ -4,6 +4,9 @@
 require_once("Swanson.php");
 $s = new Swanson();
 
+# creates the new tables Classification and PersonStats
+$photo_ids = $s->createTables();
+
 # get the photo_ids of all available photos
 $photo_ids = $s->getPhotos();
 
