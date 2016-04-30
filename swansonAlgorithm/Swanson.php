@@ -858,8 +858,7 @@ class Swanson {
 		        	we will be able to access and tranfer all properties and values of each feature at once
 		        	and insert them into our database more efficiently.
 		        	*/
-		        	array_push($all_outputs, $output);
-
+		        	array_push($all_outputs, $subject);
 				    }
 
 
