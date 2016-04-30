@@ -88,6 +88,9 @@ class Swanson {
 		        $subject = array(array_pop($data));
 		        while ($data[count($data) - 1]["photo_id"] == $subject[0]["photo_id"]) {
 		            $subject[] = array_pop($data);
+								if (count($data) <= 0) {
+									break;
+								}
 		        }
 
 		        $photo_id = $subject[0]["photo_id"];
@@ -707,11 +710,11 @@ class Swanson {
 				$classifications = [];
 
 				// process result into an array with the photo_id as the key and the species as the value
-				if($result->num_rows > 0)
+				if ($result->num_rows > 0)
 				{
-						while($row = $result->fetch_assoc())
+						while ($row = $result->fetch_assoc())
 						{
-							$classifications[$row[photo_id]] = $row[species];
+							$classifications[$row['photo_id']] = $row['species'];
 						}
 				}
 				else
