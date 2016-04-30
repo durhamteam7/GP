@@ -319,7 +319,7 @@ adminApp.controller('GraphsController', ['$scope', 'ajax', function($scope, serv
         var typeMap = {
             "checkboxes": "string",
             "slider": "number",
-            "boolean": "number",
+            "boolean": "string",
             "dateTime": "datetime",
             "coord": "number"
         };
