@@ -288,6 +288,9 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
 						return $scope.getOptionName(val);
 					case "dateTime":
 						return new Date(val);
+          case "boolean":
+            var boolStrings = ["No","Yes"];
+            return boolStrings[val];
 					default:
 						return val;
 				}
