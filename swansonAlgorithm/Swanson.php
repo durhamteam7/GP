@@ -54,7 +54,7 @@ class Swanson {
 						$password = "";
 						$db = "Cljdw32_MammalWeb";
 				}
-				else {
+				else if ($this->env == 1) {
 						$servername = "db4free.net";
 						$username = "mammalweb";
 						$password = "aliSwans0n";
