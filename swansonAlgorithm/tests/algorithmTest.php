@@ -38,15 +38,24 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         unset($s);
     }
 
+    function getEnv() {
+      $this->assertEquals(1, self::$s->getEnv());
+    }
+
+    function setEnv() {
+      self::$s->setEnv(0);
+      $this->assertEquals(0, self::$s->getEnv());
+    }
+
     // tests if the database connection is set up
     function testSetupDB() {
-        self::$s->changeEnv(0);
+        self::$s->setEnv(0);
         $this->assertEquals(true, self::$s->setupDB());
-        self::$s->changeEnv(1);
+        self::$s->setEnv(1);
         $this->assertEquals(true, self::$s->setupDB());
-        self::$s->changeEnv(2);
+        self::$s->setEnv(2);
         $this->assertEquals(false, self::$s->setupDB());
-        self::$s->changeEnv(1);
+        self::$s->setEnv(1);
     }
 
     function testMain() {

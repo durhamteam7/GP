@@ -47,7 +47,11 @@ class Swanson {
 				$this->mysqli->close();
 		}
 
-		function changeEnv($e) {
+		function getEnv() {
+			return $this->env;
+		}
+
+		function setEnv($e) {
 			$this->env = $e;
 		}
 
