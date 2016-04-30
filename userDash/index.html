@@ -172,8 +172,8 @@
                     <li ng-class="{ active: isActive('/slideshow')}"><a ui-sref="slideshow">Slideshow</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#" ng-click="filtersOpen=!filtersOpen"><span class="glyphicon glyphicon-filter"></span></a></li>
                     <li><a href="#" ng-click="timelineOpen=!timelineOpen"><span class="glyphicon glyphicon-calendar"></span></a></li>
+                    <li><a href="javascript:void()" ng-click="filtersOpen=!filtersOpen"><span class="glyphicon glyphicon-filter"></span></a></li>
                 </ul>
 
             </div>
@@ -190,6 +190,65 @@
     </div>
     <applet></applet>
 
+    <div pageslide ps-open="filtersOpen" class="slideRight">
+    	<div style="padding:20px;overflow-y:scroll;height:100%">
+                     <span ng-repeat="filterCat in filters">
+                  <span ng-repeat="filterData in filterCat | orderObjectBy | orderBy: 'order'">
+
+                    <h4>{{readable(filterData.id)}}</h4>
+
+                    <span ng-if="filterData.type=='checkboxes'">
+                      <div ng-repeat="s in filterData.struc">
+                        <span ng-if="filterData.struc.length > 1">
+                          <b>{{readable(s)}}</b>
+                        </span>
+                        <div class="checkbox" ng-repeat="(id,name) in options[s] | objectLimitTo:(!filterData.open[s]?3:(options[s] | keylength))">
+                          <label>
+                            <input type="checkbox" checklist-model="filterData.value" checklist-value="id"> {{name}}
+                          </label>
+
+                        </div>
+                          <span ng-if="(options[s] | keylength)> 5">
+                            <a href="javascript:void(0)" ng-click="filterData.open[s]=!filterData.open[s]">{{filterData.open[s]?"-":"+"}} See {{filterData.open[s]?"less":"more"}}</a>
+                          </span>
+                      </div>
+
+                    </span>
+
+                    <span ng-if="filterData.type=='boolean'">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" checklist-model="filterData.value" checklist-value="true" ng-click="((filterData.value.length==1)?(filterData.value=[true]):1)"> Yes
+                        </label>
+
+                      </div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" checklist-model="filterData.value" checklist-value="false" ng-click="((filterData.value.length==1)?(filterData.value=[false]):1)"> No
+                        </label>
+                      </div>
+                    </span>
+
+                    <div class="row" ng-if="filterData.type=='slider'">
+                      <rzslider rz-slider-model="filterData.minValue" rz-slider-high="filterData.maxValue" rz-slider-options="filterData.options"></rzslider>
+                      <div class="col-md-6">
+                        <input type="number" class="form-control" step="1" ng-model="filterData.minValue"  />
+                      </div>
+                      <div class = "col-md-6">
+                        <input type="number" class="form-control" step="1" ng-model="filterData.maxValue"  />
+                      </div>
+                    </div>
+
+                    <br>
+                  </span>
+                  </span>
+
+
+
+
+
+    	</div>
+    </div>
 
     <div ui-view></div>
 </body>
