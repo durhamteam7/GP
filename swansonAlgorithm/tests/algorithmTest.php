@@ -65,7 +65,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $data = array(
           array(
   				  "animal_id" => 1,
-  				  "photo_id" => 1000,
+  				  "photo_id" => 999999,
   				  "species" => 86,
   				  "gender" => 0,
   				  "age" => 0,
@@ -74,7 +74,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
           ),
           array(
   				  "animal_id" => 2,
-  				  "photo_id" => 1000,
+  				  "photo_id" => 999999,
   				  "species" => 86,
   				  "gender" => 1,
   				  "age" => 5,
@@ -83,7 +83,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
           ),
           array(
   				  "animal_id" => 3,
-  				  "photo_id" => 1000,
+  				  "photo_id" => 999999,
   				  "species" => 86,
   				  "gender" => 5,
   				  "age" => 0,
@@ -92,7 +92,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
           ),
           array(
   				  "animal_id" => 4,
-  				  "photo_id" => 1000,
+  				  "photo_id" => 999999,
   				  "species" => 86,
   				  "gender" => 1,
   				  "age" => 5,
@@ -101,7 +101,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
           ),
           array(
   				  "animal_id" => 5,
-  				  "photo_id" => 1000,
+  				  "photo_id" => 999999,
   				  "species" => 86,
   				  "gender" => 1,
   				  "age" => 5,
@@ -263,8 +263,11 @@ class SwansonTest extends PHPUnit_Framework_TestCase
 
     public function testGetUserCorrectnessRate() {
       $subject = array();
-      $person_stats = self::$s->getPersonStats("species", $subject, self::$classifications);
-      $this->assertEquals(true, true);
+      $subject = array();
+      $subject = array();
+      $this->assertEquals(0, self::$s->getUserCorrectnessRate("species", $subject, self::$classifications));
+      $this->assertEquals(0, self::$s->getUserCorrectnessRate("species", $subject2, self::$classifications));
+      $this->assertEquals(0, self::$s->getUserCorrectnessRate("species", $subject3, self::$classifications));
     }
 
     public function testGetClassified() {

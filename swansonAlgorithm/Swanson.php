@@ -78,7 +78,7 @@ class Swanson {
 
 				// Check connection
 				if ($this->mysqli->connect_error) {
-				    die("Connection failed: " . $this->mysqli->connect_error);
+				    echo "Connection failed: " . $this->mysqli->connect_error;
 						return false;
 				}
 				return true;
