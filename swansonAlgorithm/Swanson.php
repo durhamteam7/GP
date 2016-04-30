@@ -247,11 +247,11 @@ class Swanson {
 			        	$Cfraction_support = $output["fraction_support"];
 			        	$Cfraction_blanks = $output["fraction_blanks"];
 
-								/*
-								Concatenating properties of image (including ID) with the current contents of the database.
-								*/
-								$updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now()),";
-								$i++; // Incremented after every classification of image
+					/*
+					Concatenating properties of image (including ID) with the current contents of the database.
+					*/
+					$updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now()),";
+					$i++; // Incremented after every classification of image
 		        }
 		    }
 
