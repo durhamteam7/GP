@@ -67,10 +67,18 @@ adminApp.controller('MainController', ['$scope', 'ajax', function($scope, server
     /**
      * @memberof MainController
      * @property persons
-     * @description Storts an array of objects of user stats information
+     * @description Stores an array of objects of user stats information
      * @type array
      */
     $scope.persons = [];
+
+    /**
+     * @memberof MainController
+     * @property filterOpen
+     * @description Stores the open/closed status of checkbox filters
+     * @type object
+     */
+    $scope.filterOpen = {};
 
     /** Makes call to factory method to get person data
      * @memberof MainController

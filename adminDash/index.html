@@ -90,6 +90,7 @@
                     <br>
 
                     <form>
+                      {{filterOpen}}
                         <span ng-repeat="filterCat in filters">
 							<span ng-repeat="filterData in filterCat | orderObjectBy | orderBy: 'order'">
 
@@ -100,14 +101,14 @@
 										<span ng-if="filterData.struc.length > 1">
 											<b>{{readable(s)}}</b>
 										</span>
-                        <div class="checkbox" ng-repeat="(id,name) in options[s] | objectLimitTo:(!filterData.open[s]?3:(options[s] | keylength))">
+                        <div class="checkbox" ng-repeat="(id,name) in options[s] | objectLimitTo:(!filterOpen[s]?3:(options[s] | keylength))">
                             <label>
                                 <input type="checkbox" checklist-model="filterData.value" checklist-value="id"> {{name}}
                             </label>
 
                         </div>
                         <span ng-if="(options[s] | keylength)> 5">
-												<a href="javascript:void(0)" ng-click="filterData.open[s]=!filterData.open[s]">{{filterData.open[s]?"-":"+"}} See {{filterData.open[s]?"less":"more"}}</a>
+												<a href="javascript:void(0)" ng-click="filterOpen[s]=!filterOpen[s]">{{filterOpen[s]?"-":"+"}} See {{filterOpen[s]?"less":"more"}}</a>
 											</span>
                 </div>
 
