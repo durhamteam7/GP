@@ -93,7 +93,7 @@
                         <span ng-repeat="filterCat in filters">
 							<span ng-repeat="filterData in filterCat | orderObjectBy | orderBy: 'order'">
 
-								<h4 ng-if='filterData.type!="coord" && filterData.type!=""'>{{readable(filterData.id)}}</h4>
+								<h4 ng-if='filterData.type!="coord" && filterData.type!="radius"'>{{readable(filterData.id)}}</h4>
 
 								<span ng-if="filterData.type=='checkboxes'">
 									<div ng-repeat="s in filterData.struc">
@@ -178,6 +178,10 @@
                 <br>
                 <div class='input-group'>
                     <input class="form-control" placeholder="radius" ng-model="filters.Site.radius.value" valid-number>
+                    <span class="input-group-addon">
+										km
+                    </span>
+
                 </div>
                 </label>
 
@@ -190,9 +194,9 @@
             <h5>
 					<span ng-repeat="filterCat in filters">
 					<span ng-repeat="(name,f) in filterCat">
-						<span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='slider' && (f.minValue!=f.options.floor || f.maxValue!=f.options.ceil)">{{readable(name)}}:
+						<span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='slider' && (f.minValue!=f.options.floor || f.maxValue!=f.options.ceil)">
 							<b>
-							<span ng-if="f.minValue!=f.options.floor">&gt;= {{f.minValue}}</span> <span ng-if="f.maxValue!=f.options.ceil">&lt;= {{f.maxValue}}</span>
+							<span ng-if="f.minValue!=f.options.floor"> {{f.minValue}}</span> &lt;= {{readable(name)}} <span ng-if="f.maxValue!=f.options.ceil">&lt;= {{f.maxValue}}</span>
 							</b>
 							<a href="javascript:void(0)" style="color:white" ng-click="f.minValue=f.options.floor;f.maxValue=f.options.ceil;"><span class="glyphicon glyphicon-remove"></span></a>
 						</span>
@@ -206,9 +210,8 @@
 						</span>
 
 						<span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='dateTime' && f.minValue!=''">
-							{{readable(name)}}:
 							<b>
-								{{f.minValue!=""?'>='+f.minValue:''}} {{f.maxValue!=""?'<='+f.maxValue:''}}
+								{{f.minValue!=""?f.minValue+' <=':''}} {{readable(name)}} {{f.maxValue!=""?'<= '+f.maxValue:''}}
 							</b>
 							<a href="javascript:void(0)" style="color:white" ng-click="f.minValue='';f.maxValue=''"><span class="glyphicon glyphicon-remove"></span></a>
 						</span>
@@ -220,9 +223,9 @@
 							<a href="javascript:void(0)" style="color:white" ng-click="f.value.splice(f.value.indexOf(v),1)" ><span class="glyphicon glyphicon-remove"></span></a>
 						</span>
 
-						<span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='coord'&&f.value!=null">{{readable(name)}}:
+						<span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='coord'&&f.value!=null&&name=='lat'">
 							<b>
-							{{f.value}}
+              {{details.address_components[0].short_name}}, < {{filterCat.radius.value}}km
 							</b>
 							<a href="javascript:void(0)" style="color:white" ng-click="filterCat.lat=null;filterCat.lon=null" ><span class="glyphicon glyphicon-remove"></span></a>
 						</span>
