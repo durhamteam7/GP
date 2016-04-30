@@ -192,8 +192,8 @@ var slideshowController = function($scope, $timeout, QueueService) {
 
     $scope.setCurrentSlideIndex = setCurrentSlideIndex;
     $scope.isCurrentSlideIndex = isCurrentSlideIndex;
-    $scope.setCurrentAnimation = setCurrentAnimation;
-    $scope.isCurrentAnimation = isCurrentAnimation;
+    //$scope.setCurrentAnimation = setCurrentAnimation;
+    //$scope.isCurrentAnimation = isCurrentAnimation;
 
     loadSlides();
 };
