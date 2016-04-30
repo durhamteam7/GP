@@ -44,15 +44,15 @@ class Swanson {
 		}
 
 		function __destruct() {
-				$this->mysqli->close();
+				$this->closeDB();
 		}
 
 		function getEnv() {
-			return $this->env;
+				return $this->env;
 		}
 
 		function setEnv($e) {
-			$this->env = $e;
+				$this->env = $e;
 		}
 
 		/**
@@ -85,6 +85,10 @@ class Swanson {
 						return false;
 				}
 				return true;
+		}
+
+		function closeDB() {
+			$this->mysqli->close();
 		}
 
 		/**
@@ -808,7 +812,7 @@ class Swanson {
 		* @param Array[] $all_data contains all the information from the the Animal table
 		* @param Array[] $classifications is an array of all the classifications
 		*/
-		function rateUsers($all_data, $classifications) 
+		function rateUsers($all_data, $classifications)
 		{
 				# assume we have $all_data
 				#echo "Calculating the correctness rate of each user";
@@ -855,7 +859,7 @@ class Swanson {
 		        	and insert them into our database more efficiently.
 		        	*/
 		        	array_push($all_outputs, $output);
-				    
+
 				    }
 
 
@@ -872,7 +876,7 @@ class Swanson {
 			    $updatePersonStats = "INSERT INTO PersonStats (person_id, species_rate, gender_rate, age_rate, number_rate, number_of_classifications) " .
 			    "VALUES ";
 
-			    foreach ($all_outputs as $output) 
+			    foreach ($all_outputs as $output)
 			    {
 			    	$thePerson_id = $output["person_id"];
 			    	$theSpecies_rate = $output["species_rate"];
@@ -880,12 +884,12 @@ class Swanson {
 			    	$theAge_rate = $output["age_rate"];
 			    	$theNumber_rate = $output["number_rate"];
 			    	$theNumber_of_classifications["number_of_classifications"];
-			    
+
 
 			    $updatePersonStats .= "('$thePerson_id' '$theSpecies_rate', '$theGender_rate', '$theAge_rate', '$theNumber_rate', ''$theNumber_of_classifications),";
 
 			    $i++;
-				
+
 				}
 
 				# Replace the last character with a semicolon -> ;
