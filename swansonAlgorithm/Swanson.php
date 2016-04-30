@@ -65,12 +65,12 @@ class Swanson {
 		 * Determines whether we want to limit our animal select statement or not
 		 * @var boolean $animal_limiting
 		 */
-		private $animal_limiting = false; # will be false in the end
+		private $animal_limiting = true; # will be false in the end
 		/**
 		 * The limit on the animal select query
 		 * @var int $get_animal_limit
 		 */
-		private $get_animal_limit = 1000;
+		private $get_animal_limit = 1;
 		/**
 		 * Determines whether we want to limit our photo select statement or not
 		 * @var boolean $photo_limiting
@@ -80,7 +80,7 @@ class Swanson {
 		 * The limit on the photo select query
 		 * @var int $get_photo_limit
 		 */
-		private $get_photo_limit = 20000;
+		private $get_photo_limit = 1;
 
 		function __construct() {
 				$this->setupDB();
