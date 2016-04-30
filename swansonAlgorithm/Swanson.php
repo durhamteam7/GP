@@ -807,6 +807,7 @@ class Swanson {
 		}
 
 									/**
+			/**
 		* Populates the PersonStats for each user using all of the classifications
 		*
 		* @param Array[] $all_data contains all the information from the the Animal table
@@ -854,9 +855,9 @@ class Swanson {
 
 				    /*
 				    The array 'output' will store all the subject values of the classifications
-				    for one photo that have previously been calculated.
+				    for the photo that has previously been calculated.
 				    */
-				    
+
 				    $output = array(
 				    	"person_id" => $person_id,
 				    	'species_rate' => $species_rate,
@@ -867,8 +868,8 @@ class Swanson {
 				    	);
 
 				     /*
-		        	The array 'all_outputs' will be the container for each $subject and therefore its
-		        	properties. By keeping all the  and their respective properties in this array,
+		        	The array 'all_outputs' will be the container for each $output and therefore its
+		        	properties. By keeping all the $output arrays and their respective properties in this array,
 		        	we will be able to access and tranfer all properties and values of each feature at once
 		        	and insert them into our database more efficiently.
 		        	*/
