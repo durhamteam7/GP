@@ -65,16 +65,19 @@ class Swanson {
 						$username = "nobody";
 						$password = "";
 						$db = "Cljdw32_MammalWeb";
+
+						// Create connection
+						$this->mysqli = new mysqli($servername, $username, $password, $db);
 				}
 				else if ($this->env == 1) {
 						$servername = "db4free.net";
 						$username = "mammalweb";
 						$password = "aliSwans0n";
 						$db = "mammalweb";
-				}
 
-				// Create connection
-				$this->mysqli = new mysqli($servername, $username, $password, $db);
+						// Create connection
+						$this->mysqli = new mysqli($servername, $username, $password, $db);
+				}
 
 				// Check connection
 				if ($this->mysqli->connect_error) {
