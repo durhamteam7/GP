@@ -67,7 +67,7 @@
 		"order":2
 	},
 	"radius":{
-		"type":"",
+		"type":"radius",
 		"value":"",
 		"order":3
 	}
