@@ -1,7 +1,7 @@
 <?php
 
 # import algorithm
-require_once("Swanson.php");
+require_once 'Swanson.php';
 $s = new Swanson();
 
 # creates the new tables Classification and PersonStats
@@ -34,5 +34,3 @@ $person_stats = $s->getPersonStats();
 
 # compare against fold standard set
 $s->goldClassifiedComparison();
-
-?>
