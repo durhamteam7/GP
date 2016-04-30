@@ -73,7 +73,7 @@ class Swanson
          *
          * @var bool
          */
-        private $animal_limiting = true; # will be false in the end
+        private $animal_limiting = false; # will be false in the end
         /**
          * The limit on the animal select query.
          *
@@ -85,7 +85,7 @@ class Swanson
          *
          * @var bool
          */
-        private $photo_limiting = true; # will be false in the end
+        private $photo_limiting = false; # will be false in the end
         /**
          * The limit on the photo select query.
          *
@@ -946,9 +946,9 @@ class Swanson
 
                 if ($i > 0) {
                     if ($this->mysqli->query($updatePersonStats) === true) {
-                        echo "Record updated successfully\n";
+                        #echo "Record updated successfully\n";
                     } else {
-                        echo 'Error updating record: '.$this->mysqli->error."\n";
+                        #echo 'Error updating record: '.$this->mysqli->error."\n";
                     }
                 }
         }
