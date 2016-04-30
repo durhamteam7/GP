@@ -8,8 +8,8 @@ Each image was circulated to multiple users and retired after meeting the follow
 
  - the first five classifications were “nothing here” (blank)
  - ten non-consecutive “nothing here” classifications (blank_consensus)
- - ten matching classifications of species or species - combination, not necessarily consecutive (consensus). 
- 
+ - ten matching classifications of species or species - combination, not necessarily consecutive (consensus).
+
 If none of these criteria were  met, the image was circulated until accumulating 25 species classifications (complete).
 
 ## Administrator Dashboard
@@ -21,11 +21,18 @@ If none of these criteria were  met, the image was circulated until accumulating
 
 ## User-facing Dashboard
 - **Map** - Displays the locations of animals on a map using icons. Uses [Leaflet](http://leafletjs.com/)
-- **Timeline** - Timeline of classifications, linked with map. 
+- **Timeline** - Timeline of classifications, linked with map.
 - **Slideshow** - Slideshow of images, includes basic information.
 
 # Usage
-Run php
+Run the algorithm from root using:
+```bash
+php swansonAlgorithm/classify.php
+```
+Unit tests are located in swansonAlgorithm/tests/algorithmTest.php. Run them from root using:
+```bash
+phpunit swansonAlgorithm/tests --bootstrap vendor/autoload.php
+```
 
 # Documentation
 The project is documented using [Angular-JSDoc](https://github.com/allenhwkim/angular-jsdoc) and [phpDocumentor](https://www.phpdoc.org/)

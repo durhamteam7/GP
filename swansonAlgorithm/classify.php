@@ -5,6 +5,7 @@ require_once 'Swanson.php';
 $s = new Swanson();
 
 # creates the new tables Classification and PersonStats
+# only needs to run once, comment out when they've been created
 $photo_ids = $s->createTables();
 
 # get the photo_ids of all available photos
