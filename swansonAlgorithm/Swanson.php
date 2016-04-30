@@ -19,24 +19,67 @@ ini_set('memory_limit', '4096M');
  * @author     Team7
  */
 class Swanson {
-
+		/**
+		 * The object that handles the mysql database connection
+		 * @var mysqli $mysqli
+		 */
 		private $mysqli;
+		/**
+		 * specifies the environment, i.e. which database server to connect to
+		 * @var int $env
+		 */
 		private $env = 1;
 
 		# These variables control which photos get retired.
 		# As the number of user classifications grow,
 		# these variables will need to be updated to values
 		# similar to those in Swanson
+		/**
+		 * The streak of first classifications that need to be blank to retire photo
+		 * @var int $blank_condition
+		 */
 		private $blank_condition = 1;		#5 in Swanson
+		/**
+		 * The number of classifications that need to agree to retire photo
+		 * @var int $consensus_condition
+		 */
 		private $consensus_condition = 1;	#10 in Swanson
+		/**
+		 * The maximum number of classifications needed before we retire photo
+		 * @var int $complete_condition
+		 */
 		private $complete_condition = 2;	#25 in Swanson
+		/**
+		 * Defines a minimum evenness value: any photo with a greater than or equal evenness will be retired
+		 * @var int $agreement_condition
+		 */
 		private $agreement_condition = 1;	#1 in Swanson
 
+		/**
+		 * The database value for a blank classification
+		 * @var int $blank_animal
+		 */
 		private $blank_animal = 86;
 
-		private $animal_limiting = true; # will be false in the end
+		/**
+		 * Some blah blah about what this is useful for
+		 * @var boolean $animal_limiting
+		 */
+		private $animal_limiting = false; # will be false in the end
+		/**
+		 * Some blah blah about what this is useful for
+		 * @var int $get_animal_limit
+		 */
 		private $get_animal_limit = 1000;
-		private $photo_limiting = true; # will be false in the end
+		/**
+		 * Some blah blah about what this is useful for
+		 * @var boolean $photo_limiting
+		 */
+		private $photo_limiting = false; # will be false in the end
+		/**
+		 * Some blah blah about what this is useful for
+		 * @var int $get_photo_limit
+		 */
 		private $get_photo_limit = 1000;
 
 		function __construct() {
@@ -53,6 +96,10 @@ class Swanson {
 
 		function setEnv($e) {
 				$this->env = $e;
+		}
+
+		function getConn() {
+				return $this->mysqli;
 		}
 
 		/**
@@ -81,7 +128,7 @@ class Swanson {
 
 				// Check connection
 				if ($this->mysqli->connect_error) {
-				    echo "Connection failed: " . $this->mysqli->connect_error;
+				    #echo "Connection failed: " . $this->mysqli->connect_error;
 						return false;
 				}
 				return true;
@@ -272,11 +319,11 @@ class Swanson {
 		    {
 				    if ($this->mysqli->query($updateClassifications) === TRUE)
 				    {
-				        echo "Record updated successfully\n";
+				        #echo "Record updated successfully\n";
 				    }
 				    else
 				    {
-				        echo "Error updating record: " . $this->mysqli->error . "\n";
+				        #echo "Error updating record: " . $this->mysqli->error . "\n";
 				    }
 		    }
 		}
@@ -516,8 +563,8 @@ class Swanson {
 				        $classified[] = $row["photo_id"];
 				    }
 				} else {
-				    echo "0 results";
-				    echo "\n";
+				    #echo "0 results";
+				    #echo "\n";
 				}
 
 				#echo "Getting already classified photo_ids";
@@ -551,8 +598,8 @@ class Swanson {
 				        $classifications[] = $row;
 				    }
 				} else {
-				    echo "0 results";
-				    echo "\n";
+				    #echo "0 results";
+				    #echo "\n";
 				}
 
 				#echo count($classifications) . " classifications retrieved";
@@ -571,7 +618,7 @@ class Swanson {
 		*/
 		function getPhotos() {
 				// QUERY
-				$sql = "SELECT * FROM Photo ORDER BY photo_id DESC";
+				$sql = "SELECT * FROM Photo ORDER BY photo_id ASC";
 				if ($this->photo_limiting) {
 					$sql .= " LIMIT $this->get_photo_limit";
 				}
@@ -588,8 +635,8 @@ class Swanson {
 				        $photo_ids[] = $row["photo_id"];
 				    }
 				} else {
-				    echo "0 results";
-				    echo "\n";
+				    #echo "0 results";
+				    #echo "\n";
 				}
 
 				#echo count($photo_ids) . " photo_ids retrieved";
@@ -622,8 +669,8 @@ class Swanson {
 				        $person_stats[] = $row;
 				    }
 				} else {
-				    echo "0 results";
-				    echo "\n";
+				    #echo "0 results";
+				    #echo "\n";
 				}
 
 				#echo count($person_stats) . " person stats retrieved";
@@ -644,7 +691,7 @@ class Swanson {
 			*/
 			function getAnimals($classified, $photo_ids) {
 					// QUERY
-					$sql = "SELECT * FROM Animal ORDER BY photo_id DESC";
+					$sql = "SELECT * FROM Animal ORDER BY photo_id ASC";
 					if ($this->animal_limiting) {
 						$sql .= " LIMIT $this->get_animal_limit";
 					}
@@ -668,8 +715,8 @@ class Swanson {
 						        $all_data[] = $row;
 						    }
 						} else {
-						    echo "0 results";
-						    echo "\n";
+						    #echo "0 results";
+						    #echo "\n";
 						}
 
 						#echo count($data) . " animals retrieved";
@@ -703,8 +750,8 @@ class Swanson {
 				        $gold_standard[] = $row;
 				    }
 				} else {
-				    echo "0 results";
-				    echo "\n";
+				    #echo "0 results";
+				    #echo "\n";
 				}
 
 				return $gold_standard;
@@ -780,7 +827,7 @@ class Swanson {
 						}
 				}
 				if (($same + $different) > 0) {
-						echo "Correctness against gold standard = " . ($same / ($same + $different));
+						#echo "Correctness against gold standard = " . ($same / ($same + $different));
 				}
 				#echo "\n";
 				#echo "<br>";
@@ -806,7 +853,7 @@ class Swanson {
 				#echo "\n";
 		}
 
-						/**
+		/**
 		* Populates the PersonStats for each user using all of the classifications
 		*
 		* @param Array[] $all_data contains all the information from the the Animal table
@@ -829,10 +876,12 @@ class Swanson {
 				/* This array 'all_outputs' will contain all arrays of the $subject once the while loop below has completed. */
 				$all_outputs = array();
 
-				while (count($all_data) > 0) {
-				    # populate the subject variable with all classifications for one photo
+				while (count($all_data) > 0)
+				{
+		    		# populate the subject variable with all classifications for one photo
 				    # subject will contain all rows with that photo_id
 				    $subject = array(array_pop($all_data));
+
 				    while ($all_data[count($all_data) - 1]["person_id"] == $subject[0]["person_id"]) {
 				        $subject[] = array_pop($all_data);
 				    }
@@ -840,76 +889,84 @@ class Swanson {
 				        if ($item1['photo_id'] == $item2['photo_id']) return 0;
 				        return $item1['photo_id'] < $item2['photo_id'] ? -1 : 1;
 				    });
+
 				    $person_id = $subject[0]["person_id"];
 				    $species_rate = $this->getUserCorrectnessRate("species", $subject, $classifications);
 				    $gender_rate = $this->getUserCorrectnessRate("gender", $subject, $classifications);
 				    $age_rate = $this->getUserCorrectnessRate("age", $subject, $classifications);
 				    $number_rate = $this->getUserCorrectnessRate("number", $subject, $classifications);
 				    $number_of_classifications = count($subject);
+
 				    #echo "$person_id has $species_rate, $gender_rate, $age_rate, $number_rate";
 				    #echo "\n";
 				    #echo "on " . $number_of_classifications . " classifications";
 				    #echo "\n";
+
 				    #Output -- Needs to be made more efficient using the same method as in the Algorithm.PHP file.
-
-				     /*
-		        	The array 'all_outputs' will be the container for each $subject and therefore its
-		        	properties. By keeping all the images and their respective properties in this array,
-		        	we will be able to access and tranfer all properties and values of each feature at once
-		        	and insert them into our database more efficiently.
-		        	*/
-		        	array_push($all_outputs, $subject);
-				    }
-
+						$output = array(
+								"person_id" => $person_id,
+						    "species_rate" => $species_rate,
+						    "gender_rate" => $gender_rate,
+						    "age_rate" => $age_rate,
+						    "number_rate" => $number_rate,
+						    "number_of_classifications" => $number_of_classifications
+						);
+			      /*
+	        	The array 'all_outputs' will be the container for each $subject and therefore its
+	        	properties. By keeping all the images and their respective properties in this array,
+	        	we will be able to access and tranfer all properties and values of each feature at once
+	        	and insert them into our database more efficiently.
+	        	*/
+	        	array_push($all_outputs, $output);
+		    }
 
 				/*
 				Finally, we loop through the array of all subjects' values and classify  all at once, row-by-row.
-	      		We will classify a photo if it has been retired (decided) and then transfer the values/properties etc. into the
-	      		database via the 'updateClassifications' variable.
-	      		The consequence of only classfying retired photos is that we do not store evenness values etc.
-	      		for the photos which have yet to be retired (decided).
-	      		*/
+    		We will classify a photo if it has been retired (decided) and then transfer the values/properties etc. into the
+    		database via the 'updateClassifications' variable.
+    		The consequence of only classfying retired photos is that we do not store evenness values etc.
+    		for the photos which have yet to be retired (decided).
+    		*/
 
-	      		$i = 0;
+    		$i = 0;
 
-			    $updatePersonStats = "INSERT INTO PersonStats (person_id, species_rate, gender_rate, age_rate, number_rate, number_of_classifications) " .
-			    "VALUES ";
+		    $updatePersonStats = "INSERT INTO PersonStats (person_id, species_rate, gender_rate, age_rate, number_rate, number_of_classifications) " .
+		    "VALUES ";
 
-			    foreach ($all_outputs as $output)
-			    {
+		    foreach ($all_outputs as $output)
+		    {
 			    	$thePerson_id = $output["person_id"];
 			    	$theSpecies_rate = $output["species_rate"];
 			    	$theGender_rate = $output["gender_rate"];
 			    	$theAge_rate = $output["age_rate"];
 			    	$theNumber_rate = $output["number_rate"];
-			    	$theNumber_of_classifications["number_of_classifications"];
+			    	$theNumber_of_classifications = $output["number_of_classifications"];
 
-
-			    $updatePersonStats .= "('$thePerson_id' '$theSpecies_rate', '$theGender_rate', '$theAge_rate', '$theNumber_rate', ''$theNumber_of_classifications),";
-
-			    $i++;
-
+				    $updatePersonStats .= "('$thePerson_id', '$theSpecies_rate', '$theGender_rate', '$theAge_rate', '$theNumber_rate', '$theNumber_of_classifications'),";
+				    $i++;
 				}
+				# Remove the last comma
+				$updatePersonStats = substr($updatePersonStats, 0, -1) . "";
+				$updatePersonStats .= " ON DUPLICATE KEY UPDATE".
+															" person_id=VALUES(person_id), species_rate=VALUES(species_rate), gender_rate=VALUES(gender_rate), age_rate=VALUES(age_rate),".
+															" number_rate=VALUES(number_rate), number_of_classifications=VALUES(number_of_classifications);";
 
-				# Replace the last character with a semicolon -> ;
-				$updatePersonStats = substr($updatePersonStats, 0, -1) . ";";
-
-			    #echo $updatePersonStats . "\n";
+		    #echo $updatePersonStats . "\n";
 
 				if ($i > 0)
-			    {
-					    if ($this->mysqli->query($updatePersonStats) === TRUE)
-					    {
-					        echo "Record updated successfully\n";
-					    }
-					    else
-					    {
-					        echo "Error updating record: " . $this->mysqli->error . "\n";
-					    }
-			    }
+		    {
+				    if ($this->mysqli->query($updatePersonStats) === TRUE)
+				    {
+				        echo "Record updated successfully\n";
+				    }
+				    else
+				    {
+				        echo "Error updating record: " . $this->mysqli->error . "\n";
+				    }
+		    }
 		}
 
-			/**
+		/**
 		* Creates the Classification and PersonStats tables
 		* in the SQL database if they don't already exist
 		*
@@ -921,32 +978,32 @@ class Swanson {
 		function createTables() {
 				# Creating Classification table
 				$createTable = "CREATE TABLE IF NOT EXISTS `Classification` (".
-				  "`classification_id` int(11) NOT NULL AUTO_INCREMENT,".
-				  "`photo_id` int(11) NOT NULL,".
-				  "`species` int(11) NOT NULL,".
-				  "`gender` int(11) NOT NULL,".
-				  "`age` int(11) NOT NULL,".
-				  "`number` int(4) NOT NULL,".
-				  "`evenness` decimal(10,9) NOT NULL,".
-				  "`fraction_support` decimal(10,9) NOT NULL,".
-				  "`fraction_blanks` decimal(10,9) NOT NULL,".
-				  "`timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,".
-				  "`number_of_classifications` int(11) NOT NULL,".
-				  "PRIMARY KEY (`classification_id`),".
-				  "KEY `photo_id` (`photo_id`)".
-				") ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+												  "`classification_id` int(11) NOT NULL AUTO_INCREMENT,".
+												  "`photo_id` int(11) NOT NULL,".
+												  "`species` int(11) NOT NULL,".
+												  "`gender` int(11) NOT NULL,".
+												  "`age` int(11) NOT NULL,".
+												  "`number` int(4) NOT NULL,".
+												  "`evenness` decimal(10,9) NOT NULL,".
+												  "`fraction_support` decimal(10,9) NOT NULL,".
+												  "`fraction_blanks` decimal(10,9) NOT NULL,".
+												  "`timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,".
+												  "`number_of_classifications` int(11) NOT NULL,".
+												  "PRIMARY KEY (`classification_id`),".
+												  "KEY `photo_id` (`photo_id`)".
+											") ENGINE=InnoDB DEFAULT CHARSET=latin1;";
 				if ($this->mysqli->query($createTable) === TRUE) {
-				    echo "Classification table created successfully\n";
+				    #echo "Classification table created successfully\n";
 				} else {
-				    echo "Error creating Classification table: " . $this->mysqli->error . "\n";
+				    #echo "Error creating Classification table: " . $this->mysqli->error . "\n";
 				}
 
 				$alterTable = "ALTER TABLE `Classification` ".
-				  "ADD CONSTRAINT `Classification_ibfk_1` FOREIGN KEY (`photo_id`) REFERENCES `Photo` (`photo_id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+				  	"ADD CONSTRAINT `Classification_ibfk_1` FOREIGN KEY (`photo_id`) REFERENCES `Photo` (`photo_id`) ON DELETE CASCADE ON UPDATE CASCADE;";
 				if ($this->mysqli->query($alterTable) === TRUE) {
-				    echo "Classification table altered successfully\n";
+				    #echo "Classification table altered successfully\n";
 				} else {
-				    echo "Error altering Classification table: " . $this->mysqli->error . "\n";
+				    #echo "Error altering Classification table: " . $this->mysqli->error . "\n";
 				}
 
 				# Creating PersonStats table
@@ -958,9 +1015,9 @@ class Swanson {
 				    "number_rate DECIMAL(10, 9) NOT NULL".
 				");";
 				if ($this->mysqli->query($createTable) === TRUE) {
-				    echo "PersonStats table created successfully\n";
+				    #echo "PersonStats table created successfully\n";
 				} else {
-				    echo "Error creating PersonStats table: " . $this->mysqli->error . "\n";
+				    #echo "Error creating PersonStats table: " . $this->mysqli->error . "\n";
 				}
 
 		}
@@ -975,11 +1032,11 @@ class Swanson {
 				$emptyTable = "TRUNCATE $table_name;";
 
 				if ($this->mysqli->query($emptyTable) === TRUE) {
-				    echo "Record updated successfully";
-				    echo "\n";
+				    #echo "Record updated successfully";
+				    #echo "\n";
 				} else {
-				    echo "Error updating record: " . $this->mysqli->error;
-				    echo "\n";
+				    #echo "Error updating record: " . $this->mysqli->error;
+				    #echo "\n";
 				}
 		}
 }
