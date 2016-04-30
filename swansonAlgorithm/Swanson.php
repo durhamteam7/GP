@@ -806,13 +806,13 @@ class Swanson {
 				#echo "\n";
 		}
 
-						/**
+									/**
 		* Populates the PersonStats for each user using all of the classifications
 		*
 		* @param Array[] $all_data contains all the information from the the Animal table
 		* @param Array[] $classifications is an array of all the classifications
 		*/
-		function rateUsers($all_data, $classifications)
+		function rateUsers($all_data, $classifications) 
 		{
 				# assume we have $all_data
 				#echo "Calculating the correctness rate of each user";
@@ -852,13 +852,28 @@ class Swanson {
 				    #echo "\n";
 				    #Output -- Needs to be made more efficient using the same method as in the Algorithm.PHP file.
 
+				    /*
+				    The array 'output' will store all the subject values of the classifications
+				    for one photo that have previously been calculated.
+				    */
+				    
+				    $output = array(
+				    	"person_id" => $person_id,
+				    	'species_rate' => $species_rate,
+				    	'gender_rate' => $gender_rate,
+				    	'age_rate' => $age_rate,
+				    	'number_rate' => $number_rate,
+				    	'number_of_classifications' => $number_of_classifications
+				    	);
+
 				     /*
 		        	The array 'all_outputs' will be the container for each $subject and therefore its
-		        	properties. By keeping all the images and their respective properties in this array,
+		        	properties. By keeping all the  and their respective properties in this array,
 		        	we will be able to access and tranfer all properties and values of each feature at once
 		        	and insert them into our database more efficiently.
 		        	*/
-		        	array_push($all_outputs, $subject);
+		        	array_push($all_outputs, $output);
+				    
 				    }
 
 
@@ -875,7 +890,7 @@ class Swanson {
 			    $updatePersonStats = "INSERT INTO PersonStats (person_id, species_rate, gender_rate, age_rate, number_rate, number_of_classifications) " .
 			    "VALUES ";
 
-			    foreach ($all_outputs as $output)
+			    foreach ($all_outputs as $output) 
 			    {
 			    	$thePerson_id = $output["person_id"];
 			    	$theSpecies_rate = $output["species_rate"];
@@ -883,12 +898,12 @@ class Swanson {
 			    	$theAge_rate = $output["age_rate"];
 			    	$theNumber_rate = $output["number_rate"];
 			    	$theNumber_of_classifications["number_of_classifications"];
+			    
 
-
-			    $updatePersonStats .= "('$thePerson_id' '$theSpecies_rate', '$theGender_rate', '$theAge_rate', '$theNumber_rate', ''$theNumber_of_classifications),";
+			    $updatePersonStats .= "('$thePerson_id' '$theSpecies_rate', '$theGender_rate', '$theAge_rate', '$theNumber_rate', '$theNumber_of_classifications'),";
 
 			    $i++;
-
+				
 				}
 
 				# Replace the last character with a semicolon -> ;
