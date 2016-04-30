@@ -383,6 +383,7 @@ adminApp.controller('GraphsController', ['$scope', 'ajax', function($scope, serv
             //set axis titles
             $scope.chartObject.options.vAxis.title = $scope.readable(yNameSplit[1]);
             $scope.chartObject.options.hAxis.title = $scope.readable(xNameSplit[1]);
+            $scope.chartObject.options.title = "Graph of "+$scope.readable(xNameSplit[1])+" against "+$scope.readable(yNameSplit[1]);
 
             //check types of variables
             var xField = $scope.filters[xNameSplit[0]][xNameSplit[1]];
