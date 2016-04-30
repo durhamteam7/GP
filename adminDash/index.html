@@ -180,7 +180,7 @@
                 </div>
                 <br>
                 <div class='input-group'>
-                    <input type="number" class="form-control" placeholder="radius">
+                    <input type="number" class="form-control" placeholder="radius" ng-model="filters.Site.radius.value">
                 </div>
                 </label>
 
@@ -227,7 +227,7 @@
 							<b>
 							{{f.value}}
 							</b>
-							<a href="javascript:void(0)" style="color:white" ng-click="f.value=null" ><span class="glyphicon glyphicon-remove"></span></a>
+							<a href="javascript:void(0)" style="color:white" ng-click="filterCat.lat=null;filterCat.lon=null" ><span class="glyphicon glyphicon-remove"></span></a>
 						</span>
 					</span>
 					</span>
