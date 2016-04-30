@@ -23,11 +23,14 @@ class Swanson {
 		private $mysqli;
 		private $env = 1;
 
-		# these variables control which 
-		private $blank_condition = 1;		#5
-		private $consensus_condition = 1;	#10
-		private $complete_condition = 2;	#25
-		private $agreement_condition = 1;	#1
+		# These variables control which photos get retired.
+		# As the number of user classifications grow,
+		# these variables will need to be updated to values
+		# similar to those in Swanson
+		private $blank_condition = 1;		#5 in Swanson
+		private $consensus_condition = 1;	#10 in Swanson
+		private $complete_condition = 2;	#25 in Swanson
+		private $agreement_condition = 1;	#1 in Swanson
 
 		private $blank_animal = 86;
 
@@ -42,6 +45,10 @@ class Swanson {
 
 		function __destruct() {
 				$this->mysqli->close();
+		}
+
+		function changeEnv($e) {
+			$this->env = $e;
 		}
 
 		/**

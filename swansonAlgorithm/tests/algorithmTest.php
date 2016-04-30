@@ -40,13 +40,13 @@ class SwansonTest extends PHPUnit_Framework_TestCase
 
     // tests if the database connection is set up
     function testSetupDB() {
-        self::$s->env = 0;
+        self::$s->changeEnv(0);
         $this->assertEquals(true, self::$s->setupDB());
-        self::$s->env = 1;
+        self::$s->changeEnv(1);
         $this->assertEquals(true, self::$s->setupDB());
-        self::$s->env = 2;
+        self::$s->changeEnv(2);
         $this->assertEquals(false, self::$s->setupDB());
-        self::$s->env = 1;
+        self::$s->changeEnv(1);
     }
 
     function testMain() {
