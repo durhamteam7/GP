@@ -20,8 +20,9 @@ If none of these criteria were  met, the image was circulated until accumulating
 - **CSV** - Download any search in CSV format compatible with R or Python based analyses software
 
 ## User-facing Dashboard
-- Map
-- Slideshow
+- **Map** - Displays the locations of animals on a map using icons. Uses [Leaflet](http://leafletjs.com/)
+- **Timeline** - Timeline of classifications, linked with map. 
+- **Slideshow** - Slideshow of images, includes basic information.
 
 # Usage
 Run php
