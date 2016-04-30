@@ -1,4 +1,4 @@
-var utilitiesModule = angular.module('utilitiesModule',[]);
+var utilitiesModule = angular.module('utilities',[]);
 
 /**
  * Gets number of keys of an object

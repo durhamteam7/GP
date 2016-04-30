@@ -41,7 +41,8 @@
 
     <script src="app.js"></script>
     <script src="timeline.js"></script>
-    <script src="../commonDependancies/filters.js"></script>
+    <script src="../commonDependancies/utilities.js"></script>
+    <script src="../commonDependancies/serverComms.js"></script>
     <!--<script src="slideshowController.js"></script>-->
 
     <style>
@@ -60,22 +61,22 @@
             /* non-prefixed version, currently
 		not supported by any browser */
         }
-        
+
         #map {
             height: 100%;
             width: 100%;
         }
-        
+
         .navbar {
             margin: 0;
             height: inherit !important;
             min-height: 0px !important;
         }
-        
+
         body {
             background-color: black;
         }
-        
+
         .slideRight {
             background: #101010;
             top: 50px !important;
@@ -84,7 +85,7 @@
             z-index: 999999 !important;
             color: #9d9d9d;
         }
-        
+
         .slideBottom {
             background: #101010;
             bottom: 0 !important;
@@ -92,52 +93,52 @@
             opacity: 0.7;
             height: 40% !important;
         }
-        
+
         .page {
             height: 100% !important;
             overflow: hidden;
         }
-        
+
         html {
             overflow-x: hidden;
         }
-        
+
         #infoBox {
             position: absolute;
             bottom: 20px;
             right: 20px;
             opacity: 0.7;
         }
-        
+
         .fullBg {
             width: 100%;
             height: calc(100% + 55px) !important;
         }
-        
+
         .navbar-brand {
             padding-top: 0;
             padding-bottom: 0;
         }
-        
+
         .navbar-inverse {
             border: 0;
         }
-        
+
         .leaflet-top {
             margin-top: 60px !important;
         }
-        
+
         ::-webkit-scrollbar-track {
             -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
             border-radius: 0px;
             background-color: #101010;
         }
-        
+
         ::-webkit-scrollbar {
             width: 12px;
             background-color: #F5F5F5;
         }
-        
+
         ::-webkit-scrollbar-thumb {
             border-radius: 10px;
             -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
@@ -171,8 +172,8 @@
                     <li ng-class="{ active: isActive('/slideshow')}"><a ui-sref="slideshow">Slideshow</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#" ng-click="filtersOpen=!filtersOpen"><span class="glyphicon glyphicon-filter"></span></a></li>
                     <li><a href="#" ng-click="timelineOpen=!timelineOpen"><span class="glyphicon glyphicon-calendar"></span></a></li>
+                    <li><a href="javascript:void()" ng-click="filtersOpen=!filtersOpen"><span class="glyphicon glyphicon-filter"></span></a></li>
                 </ul>
 
             </div>
@@ -189,6 +190,65 @@
     </div>
     <applet></applet>
 
+    <div pageslide ps-open="filtersOpen" class="slideRight">
+    	<div style="padding:20px;overflow-y:scroll;height:100%">
+                     <span ng-repeat="filterCat in filters">
+                  <span ng-repeat="filterData in filterCat | orderObjectBy | orderBy: 'order'">
+
+                    <h4>{{readable(filterData.id)}}</h4>
+
+                    <span ng-if="filterData.type=='checkboxes'">
+                      <div ng-repeat="s in filterData.struc">
+                        <span ng-if="filterData.struc.length > 1">
+                          <b>{{readable(s)}}</b>
+                        </span>
+                        <div class="checkbox" ng-repeat="(id,name) in options[s] | objectLimitTo:(!filterData.open[s]?3:(options[s] | keylength))">
+                          <label>
+                            <input type="checkbox" checklist-model="filterData.value" checklist-value="id"> {{name}}
+                          </label>
+
+                        </div>
+                          <span ng-if="(options[s] | keylength)> 5">
+                            <a href="javascript:void(0)" ng-click="filterData.open[s]=!filterData.open[s]">{{filterData.open[s]?"-":"+"}} See {{filterData.open[s]?"less":"more"}}</a>
+                          </span>
+                      </div>
+
+                    </span>
+
+                    <span ng-if="filterData.type=='boolean'">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" checklist-model="filterData.value" checklist-value="true" ng-click="((filterData.value.length==1)?(filterData.value=[true]):1)"> Yes
+                        </label>
+
+                      </div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" checklist-model="filterData.value" checklist-value="false" ng-click="((filterData.value.length==1)?(filterData.value=[false]):1)"> No
+                        </label>
+                      </div>
+                    </span>
+
+                    <div class="row" ng-if="filterData.type=='slider'">
+                      <rzslider rz-slider-model="filterData.minValue" rz-slider-high="filterData.maxValue" rz-slider-options="filterData.options"></rzslider>
+                      <div class="col-md-6">
+                        <input type="number" class="form-control" step="1" ng-model="filterData.minValue"  />
+                      </div>
+                      <div class = "col-md-6">
+                        <input type="number" class="form-control" step="1" ng-model="filterData.maxValue"  />
+                      </div>
+                    </div>
+
+                    <br>
+                  </span>
+                  </span>
+
+
+
+
+
+    	</div>
+    </div>
 
     <div ui-view></div>
 </body>

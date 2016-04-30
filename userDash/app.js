@@ -1,7 +1,4 @@
-var userApp = angular.module('userDash', ['utilitiesModule', 'rzModule', 'ui.bootstrap', "checklist-model", 'datetimepicker', 'leaflet-directive', 'pageslide-directive', 'ui.router', 'ngAnimate', 'ngVis', 'rt.debounce']);
-
-//Allows for switching between dev local server and hosted server
-var urls = ["http://localhost:8080/", "https://mammalweb.herokuapp.com/"];
+var userApp = angular.module('userDash', ['utilities','serverComms', 'rzModule', 'ui.bootstrap', "checklist-model", 'datetimepicker', 'leaflet-directive', 'pageslide-directive', 'ui.router', 'ngAnimate', 'ngVis', 'rt.debounce']);
 
 var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/";
 
@@ -195,8 +192,8 @@ var slideshowController = function($scope, $timeout, QueueService) {
 
     $scope.setCurrentSlideIndex = setCurrentSlideIndex;
     $scope.isCurrentSlideIndex = isCurrentSlideIndex;
-    $scope.setCurrentAnimation = setCurrentAnimation;
-    $scope.isCurrentAnimation = isCurrentAnimation;
+    //$scope.setCurrentAnimation = setCurrentAnimation;
+    //$scope.isCurrentAnimation = isCurrentAnimation;
 
     loadSlides();
 };
@@ -252,24 +249,7 @@ userApp.animation('.fade-in-animation', function($window) {
 
 
 
-// Ajax Service
-userApp.factory('ajax', ['$http', function($http) {
-    return {
-        getPhotos: function(query, pageNum, pageSize) {
-            return $http.post(urls[1] + 'photo?sequence=true&pageNum=' + pageNum + '&pageSize=' + pageSize, query).success(function() {});
-        },
-        getPhotosCSV: function(query, isSequence) {
-            return $http.post(urls[1] + 'photo?output=csv&sequence=' + isSequence, query).success(function() {});
-        },
-        getOptions: function() {
-            return $http.get(urls[1] + 'options').success(function() {});
-        },
-        getFilters: function() {
-            return $http.get('../commonDependancies/filters.json').success(function() {});
-        }
-    };
 
-}]);
 
 //data controller
 userApp.controller('dataController', ['$scope', '$location', '$timeout', 'ajax', function($scope, $location, $timeout, serverComm) {
