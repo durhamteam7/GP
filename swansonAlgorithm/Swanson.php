@@ -884,6 +884,9 @@ class Swanson {
 
 				    while ($all_data[count($all_data) - 1]["person_id"] == $subject[0]["person_id"]) {
 				        $subject[] = array_pop($all_data);
+								if (count($all_data) <= 0) {
+									break;
+								}
 				    }
 				    usort($subject, function ($item1, $item2) {
 				        if ($item1['photo_id'] == $item2['photo_id']) return 0;
