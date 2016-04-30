@@ -314,7 +314,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     }
 
     public function testRateUsers() {
-        #self::$s->rateUsers(self::$d[1], self::$classifications);
+        self::$s->rateUsers(self::$d[1], self::$classifications);
         $this->assertEquals(true, true);
     }
 
@@ -324,8 +324,35 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     }
 
     public function testEmptyTable() {
-        self::$s->emptyTable("asd");
-        $this->assertEquals(true, true);
+        # Creating Test table
+        $createTable = "CREATE TABLE IF NOT EXISTS Test (".
+            "test_id INT NOT NULL PRIMARY KEY".
+        ");";
+        if (self::$s->getConn()->query($createTable) === TRUE) {
+            #echo "Test table created successfully\n";
+        } else {
+            echo "Error creating Test table: " . self::$s->getConn()->error . "\n";
+        }
+
+        $insert = "INSERT INTO Test VALUES ('1');";
+        if (self::$s->getConn()->query($insert) === TRUE) {
+            #echo "Insert successful\n";
+        } else {
+            echo "Error inserting: " . self::$s->getConn()->error . "\n";
+        }
+
+        // empty table
+        self::$s->emptyTable("Test");
+
+        // select everything from our new table
+        $select = "SELECT * FROM Test;";
+
+				// execute query
+				$result = self::$s->getConn()->query($select);
+				// process result
+
+        // test to see if table was emptied
+        $this->assertEquals(false, $result->num_rows > 0);
     }
 }
 ?>
