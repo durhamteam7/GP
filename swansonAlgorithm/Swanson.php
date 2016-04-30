@@ -738,13 +738,13 @@ class Swanson {
 
 				for($x=0; $x<count($gold_standard); $x++)
 				{
-						$photo_id = $gold_standard[$x][photo_id];
+						$photo_id = $gold_standard[$x]['photo_id'];
 						# Ignore "Don't know" classifications
-						if (!in_array($gold_standard[$x][species], array(96, 97)))
+						if (!in_array($gold_standard[$x]['species'], array(96, 97)))
 						{
 								if (array_key_exists($photo_id, $classifications))
 								{
-										if ($classifications[$photo_id] == $gold_standard[$x][species])
+										if ($classifications[$photo_id] == $gold_standard[$x]['species'])
 										{
 											$same++;
 										}
