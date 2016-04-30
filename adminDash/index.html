@@ -93,7 +93,7 @@
                         <span ng-repeat="filterCat in filters">
 							<span ng-repeat="filterData in filterCat | orderObjectBy | orderBy: 'order'">
 
-								<h4>{{readable(filterData.id)}}</h4>
+								<h4 ng-if='filterData.type!="coord" && filterData.type!=""'>{{readable(filterData.id)}}</h4>
 
 								<span ng-if="filterData.type=='checkboxes'">
 									<div ng-repeat="s in filterData.struc">
@@ -162,12 +162,10 @@
 
 
                 </div>
-                <br>
                 </span>
                 </span>
-
-                <b>Location</b>
                 <br>
+                <h4>Location</h4>
 
                 <label>Postcode:</label>
                 <div class='input-group'>
