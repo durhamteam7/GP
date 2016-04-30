@@ -23,10 +23,14 @@ class Swanson {
 		private $mysqli;
 		private $env = 1;
 
-		private $blank_condition = 1;		#5
-		private $consensus_condition = 1;	#10
-		private $complete_condition = 2;	#25
-		private $agreement_condition = 1;	#1
+		# These variables control which photos get retired.
+		# As the number of user classifications grow,
+		# these variables will need to be updated to values
+		# similar to those in Swanson
+		private $blank_condition = 1;		#5 in Swanson
+		private $consensus_condition = 1;	#10 in Swanson
+		private $complete_condition = 2;	#25 in Swanson
+		private $agreement_condition = 1;	#1 in Swanson
 
 		private $blank_animal = 86;
 
@@ -40,7 +44,15 @@ class Swanson {
 		}
 
 		function __destruct() {
-				$this->mysqli->close();
+				$this->closeDB();
+		}
+
+		function getEnv() {
+				return $this->env;
+		}
+
+		function setEnv($e) {
+				$this->env = $e;
 		}
 
 		/**
@@ -53,23 +65,30 @@ class Swanson {
 						$username = "nobody";
 						$password = "";
 						$db = "Cljdw32_MammalWeb";
+
+						// Create connection
+						$this->mysqli = new mysqli($servername, $username, $password, $db);
 				}
-				else {
+				else if ($this->env == 1) {
 						$servername = "db4free.net";
 						$username = "mammalweb";
 						$password = "aliSwans0n";
 						$db = "mammalweb";
-				}
 
-				// Create connection
-				$this->mysqli = new mysqli($servername, $username, $password, $db);
+						// Create connection
+						$this->mysqli = new mysqli($servername, $username, $password, $db);
+				}
 
 				// Check connection
 				if ($this->mysqli->connect_error) {
-				    die("Connection failed: " . $this->mysqli->connect_error);
+				    echo "Connection failed: " . $this->mysqli->connect_error;
 						return false;
 				}
 				return true;
+		}
+
+		function closeDB() {
+			$this->mysqli->close();
 		}
 
 		/**
@@ -197,13 +216,13 @@ class Swanson {
 		        array_push($all_outputs, $output);
 		    }
 
-				/*
-				Finally, we loop through the array of all image's values and classify the photos all at once, row-by-row.
-	      We will classify a photo if it has been retired (decided) and then transfer the values/properties etc. into the
-	      database via the 'updateClassifications' variable.
-	      The consequence of only classfying retired photos is that we do not store evenness values etc.
-	      for the photos which have yet to be retired (decided).
-	      */
+		/*
+		Finally, we loop through the array of all image's values and classify the photos all at once, row-by-row.
+	      	We will classify a photo if it has been retired (decided) and then transfer the values/properties etc. into the
+	      	database via the 'updateClassifications' variable.
+		 The consequence of only classfying retired photos is that we do not store evenness values etc.
+	      	for the photos which have yet to be retired (decided).
+	      	*/
 
 		    $i = 0; // A counter to keep track of the number of images we classify.
 		    $updateClassifications = "INSERT INTO Classification " .
@@ -228,11 +247,11 @@ class Swanson {
 			        	$Cfraction_support = $output["fraction_support"];
 			        	$Cfraction_blanks = $output["fraction_blanks"];
 
-								/*
-								Concatenating properties of image (including ID) with the current contents of the database.
-								*/
-								$updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now()),";
-								$i++; // Incremented after every classification of image
+					/*
+					Concatenating properties of image (including ID) with the current contents of the database.
+					*/
+					$updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now()),";
+					$i++; // Incremented after every classification of image
 		        }
 		    }
 
@@ -787,74 +806,133 @@ class Swanson {
 				#echo "\n";
 		}
 
-			/**
-		* Populates the PersonStats for each user using all fo the classifications
+		/**
+		* Populates the PersonStats for each user using all of the classifications
 		*
 		* @param Array[] $all_data contains all the information from the the Animal table
 		* @param Array[] $classifications is an array of all the classifications
 		*/
-		function rateUsers($all_data, $classifications) {
+		function rateUsers($all_data, $classifications) 
+		{
 				# assume we have $all_data
 				#echo "Calculating the correctness rate of each user";
 				#echo "\n";
 				#echo "species, gender, age, number";
 				#echo "\n";
 				#echo "\n";
-
 				# Sorts the all_data array based on person_id
 				usort($all_data, function ($item1, $item2) {
 				    if ($item1['person_id'] == $item2['person_id']) return 0;
 				    return $item1['person_id'] < $item2['person_id'] ? -1 : 1;
 				});
 
-				while (count($all_data) > 0) {
+				/* This array 'all_outputs' will contain all arrays of the $subject once the while loop below has completed. */
+				$all_outputs = array();
 
+				while (count($all_data) > 0) {
 				    # populate the subject variable with all classifications for one photo
 				    # subject will contain all rows with that photo_id
 				    $subject = array(array_pop($all_data));
 				    while ($all_data[count($all_data) - 1]["person_id"] == $subject[0]["person_id"]) {
 				        $subject[] = array_pop($all_data);
 				    }
-
 				    usort($subject, function ($item1, $item2) {
 				        if ($item1['photo_id'] == $item2['photo_id']) return 0;
 				        return $item1['photo_id'] < $item2['photo_id'] ? -1 : 1;
 				    });
-
 				    $person_id = $subject[0]["person_id"];
-
 				    $species_rate = $this->getUserCorrectnessRate("species", $subject, $classifications);
 				    $gender_rate = $this->getUserCorrectnessRate("gender", $subject, $classifications);
 				    $age_rate = $this->getUserCorrectnessRate("age", $subject, $classifications);
 				    $number_rate = $this->getUserCorrectnessRate("number", $subject, $classifications);
-
 				    $number_of_classifications = count($subject);
-
 				    #echo "$person_id has $species_rate, $gender_rate, $age_rate, $number_rate";
 				    #echo "\n";
 				    #echo "on " . $number_of_classifications . " classifications";
 				    #echo "\n";
-
 				    #Output -- Needs to be made more efficient using the same method as in the Algorithm.PHP file.
-				    $updatePersonStats = "INSERT INTO PersonStats (person_id, species_rate, gender_rate, age_rate, number_rate, number_of_classifications) " .
-				    "VALUES ('$person_id', '$species_rate', '$gender_rate', '$age_rate', '$number_rate', '$number_of_classifications') " .
-				    "ON DUPLICATE KEY UPDATE person_id=person_id," .
-				    "species_rate='$species_rate'," .
-				    "gender_rate='$gender_rate'," .
-				    "age_rate='$age_rate'," .
-				    "number_rate='$number_rate'," .
-				    "number_of_classifications='$number_of_classifications';";
 
-				    #echo $updatePersonStats . "\n";
+				    /*
+				    The array 'output' will store all the subject values of the classifications
+				    for the photo that has previously been calculated.
+				    */
 
-				    if ($this->mysqli->query($updatePersonStats) === TRUE) {
-				        echo "Record updated successfully";
-				        echo "\n";
-				    } else {
-				        echo "Error updating record: " . $this->mysqli->error;
-				        echo "\n";
+				    $output = array(
+				    	"person_id" => $person_id,
+				    	'species_rate' => $species_rate,
+				    	'gender_rate' => $gender_rate,
+				    	'age_rate' => $age_rate,
+				    	'number_rate' => $number_rate,
+				    	'number_of_classifications' => $number_of_classifications
+				    	);
+
+				     /*
+		        	The array 'all_outputs' will be the container for each $output and therefore its
+		        	properties. By keeping all the $output arrays and their respective properties in this array,
+		        	we will be able to access and tranfer all properties and values of each feature at once
+		        	and insert them into our database more efficiently.
+		        	*/
+		        	array_push($all_outputs, $output);
+				    
 				    }
+
+
+				/*
+				Finally, we loop through the array of all subjects' values and update all stats at once, per person all, row-by-row.
+	      		We will transfer the values/properties etc. into the
+	      		database via the 'updatePersonStats' variable.
+	      		*/
+
+	      		$i = 0;
+
+			    $updatePersonStats = "INSERT INTO PersonStats " .
+			    "(person_id, species_rate, gender_rate, age_rate, number_rate, number_of_classifications) " .
+			    "VALUES ";
+
+			    foreach ($all_outputs as $output) 
+			    {
+			    	/*
+					Outputs will have all their properties stored in local variables and then contatenated into the
+				    'updatePersonStats' variable's contents to be stored in the database.
+			    	*/
+
+			    	$thePerson_id = $output["person_id"];
+			    	$theSpecies_rate = $output["species_rate"];
+			    	$theGender_rate = $output["gender_rate"];
+			    	$theAge_rate = $output["age_rate"];
+			    	$theNumber_rate = $output["number_rate"];
+			    	$theNumber_of_classifications["number_of_classifications"];
+			    
+			    	/*
+					Concatenating properties of subject (including person_id) with the current contents of the database.
+			    	*/
+			    	$updatePersonStats .= "('$thePerson_id', '$theSpecies_rate', '$theGender_rate', '$theAge_rate', '$theNumber_rate', '$theNumber_of_classifications'),";
+
+			    	$i++;
+				
 				}
+
+				# Replace the last character with a semicolon -> ;
+				$updatePersonStats = substr($updatePersonStats, 0, -1) . ";";
+
+			    #echo $updatePersonStats . "\n";
+
+			    /*			    
+			    We will check if the update of the person stats with the subject properties was successful or
+			    if it wasn't, and echo the appropriate message depending on the answer.
+		    	*/
+
+				if ($i > 0)
+			    {
+					    if ($this->mysqli->query($updatePersonStats) === TRUE)
+					    {
+					        echo "Record updated successfully\n";
+					    }
+					    else
+					    {
+					        echo "Error updating record: " . $this->mysqli->error . "\n";
+					    }
+			    }
 		}
 
 			/**

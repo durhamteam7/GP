@@ -38,13 +38,82 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         unset($s);
     }
 
+    function getEnv() {
+      $this->assertEquals(1, self::$s->getEnv());
+    }
+
+    function setEnv() {
+      self::$s->setEnv(0);
+      $this->assertEquals(0, self::$s->getEnv());
+    }
+
     // tests if the database connection is set up
     function testSetupDB() {
+        #self::$s->setEnv(2);
+        #echo "testing env = " . self::$s->getEnv();
+        #$this->assertEquals(false, self::$s->setupDB());
+
+        #self::$s->setEnv(0);
+        #echo "testing env = " . self::$s->getEnv();
+        #$this->assertEquals(true, self::$s->setupDB());
+
+        self::$s->setEnv(1);
+        #echo "testing env = " . self::$s->getEnv();
         $this->assertEquals(true, self::$s->setupDB());
     }
 
     function testMain() {
         self::$s->main(self::$d[0]);
+        $this->assertEquals(true, true);
+
+        $data = array(
+          array(
+  				  "animal_id" => 1,
+  				  "photo_id" => 999999,
+  				  "species" => 86,
+  				  "gender" => 0,
+  				  "age" => 0,
+  				  "number" => 1,
+  				  "timestamp" => ""
+          ),
+          array(
+  				  "animal_id" => 2,
+  				  "photo_id" => 999999,
+  				  "species" => 86,
+  				  "gender" => 1,
+  				  "age" => 5,
+  				  "number" => 1,
+  				  "timestamp" => ""
+          ),
+          array(
+  				  "animal_id" => 3,
+  				  "photo_id" => 999999,
+  				  "species" => 86,
+  				  "gender" => 5,
+  				  "age" => 0,
+  				  "number" => 1,
+  				  "timestamp" => ""
+          ),
+          array(
+  				  "animal_id" => 4,
+  				  "photo_id" => 999999,
+  				  "species" => 86,
+  				  "gender" => 1,
+  				  "age" => 5,
+  				  "number" => 1,
+  				  "timestamp" => ""
+          ),
+          array(
+  				  "animal_id" => 5,
+  				  "photo_id" => 999999,
+  				  "species" => 86,
+  				  "gender" => 1,
+  				  "age" => 5,
+  				  "number" => 1,
+  				  "timestamp" => ""
+          )
+        );
+        self::$s->main($data);
         $this->assertEquals(true, true);
     }
 
@@ -197,18 +266,26 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     }
 
     public function testGetUserCorrectnessRate() {
-      $this->assertEquals(true, true);
+      $subject = array();
+      $subject2 = array();
+      $subject3 = array();
+      $this->assertEquals(0, self::$s->getUserCorrectnessRate("species", $subject, self::$classifications));
+      $this->assertEquals(0, self::$s->getUserCorrectnessRate("species", $subject2, self::$classifications));
+      $this->assertEquals(0, self::$s->getUserCorrectnessRate("species", $subject3, self::$classifications));
     }
 
     public function testGetClassified() {
+        self::$s->getClassified();
         $this->assertTrue(count(self::$classified) > 0);
     }
 
     public function testGetClassifications() {
+        self::$s->getClassifications();
         $this->assertTrue(count(self::$classifications) > 0);
     }
 
     public function testGetPhotos() {
+        self::$s->getPhotos();
         $this->assertTrue(count(self::$photo_ids) > 0);
     }
 
@@ -218,6 +295,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     }
 
     public function testGetAnimals() {
+        self::$s->getAnimals(self::$classified, self::$photo_ids);
         $this->assertTrue(self::$d !== NULL);
         #$this->data = $d[0];
         #$this->all_data = $d[1];
@@ -236,7 +314,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     }
 
     public function testRateUsers() {
-        //self::$s->rateUsers(self::$d[1], self::$classifications);
+        #self::$s->rateUsers(self::$d[1], self::$classifications);
         $this->assertEquals(true, true);
     }
 
