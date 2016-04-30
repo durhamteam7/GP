@@ -258,7 +258,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-3">Site:</div>
-                            <div class="col-sm-8"><a href="#">{{result.Site.site_name}}</a></div>
+                            <div class="col-sm-8">{{result.Site.site_name}}</div>
                         </div>
                         <div class="row">
                             <div class="col-sm-3">Time:</div>
@@ -266,7 +266,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-3">Animals:</div>
-                            <div class="col-sm-8"><a ng-repeat="c in result.Classification" href="#">{{getOptionName(c.species)}} </a></div>
+                            <div class="col-sm-8"ng-repeat="c in result.Classification">{{getOptionName(c.species)}}</div>
                         </div>
                         <br>
                     </div>
