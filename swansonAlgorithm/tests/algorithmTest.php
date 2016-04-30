@@ -46,6 +46,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, self::$s->setupDB());
         self::$s->env = 2;
         $this->assertEquals(false, self::$s->setupDB());
+        self::$s->env = 1;
     }
 
     function testMain() {
