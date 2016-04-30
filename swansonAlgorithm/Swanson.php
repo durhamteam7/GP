@@ -30,10 +30,10 @@ class Swanson {
 
 		private $blank_animal = 86;
 
-		private $animal_limiting = false; # will be false in the end
-		private $get_animal_limit = 1;
-		private $photo_limiting = false; # will be false in the end
-		private $get_photo_limit = 1;
+		private $animal_limiting = true; # will be false in the end
+		private $get_animal_limit = 1000;
+		private $photo_limiting = true; # will be false in the end
+		private $get_photo_limit = 1000;
 
 		function __construct() {
 				$this->setupDB();
@@ -549,9 +549,9 @@ class Swanson {
 		*/
 		function getPhotos() {
 				// QUERY
-				$sql = "SELECT * FROM Photo ORDER BY photo_id";
+				$sql = "SELECT * FROM Photo ORDER BY photo_id DESC";
 				if ($this->photo_limiting) {
-					$sql .= " DESC LIMIT $this->get_photo_limit";
+					$sql .= " LIMIT $this->get_photo_limit";
 				}
 				$sql .= ";";
 
@@ -622,38 +622,41 @@ class Swanson {
 			*/
 			function getAnimals($classified, $photo_ids) {
 					// QUERY
-					$sql = "SELECT * FROM Animal ORDER BY photo_id";
+					$sql = "SELECT * FROM Animal ORDER BY photo_id DESC";
 					if ($this->animal_limiting) {
-						$sql .= " DESC LIMIT $this->get_animal_limit";
+						$sql .= " LIMIT $this->get_animal_limit";
 					}
 					$sql .= ";";
 
 					// execute query
 					$result = $this->mysqli->query($sql);
 
-					$data = [];
-					$all_data = [];
+					if (count($result) > 0) {
+						$data = [];
+						$all_data = [];
 
-					// process result
-					if ($result->num_rows > 0) {
-					    while($row = $result->fetch_assoc()) {
-					        if (!in_array($row["photo_id"], $classified)) {
-					            if (in_array($row["photo_id"], $photo_ids)) {
-					                $data[] = $row;
-					            }
-					        }
-					        $all_data[] = $row;
-					    }
-					} else {
-					    echo "0 results";
-					    echo "\n";
+						// process result
+						if ($result->num_rows > 0) {
+						    while($row = $result->fetch_assoc()) {
+						        if (!in_array($row["photo_id"], $classified)) {
+						            if (in_array($row["photo_id"], $photo_ids)) {
+						                $data[] = $row;
+						            }
+						        }
+						        $all_data[] = $row;
+						    }
+						} else {
+						    echo "0 results";
+						    echo "\n";
+						}
+
+						#echo count($data) . " animals retrieved";
+						#echo "\n";
+						#echo "\n";
+
+						return [$data, $all_data];
 					}
-
-					#echo count($data) . " animals retrieved";
-					#echo "\n";
-					#echo "\n";
-
-					return [$data, $all_data];
+					return NULL;
 			}
 
 
