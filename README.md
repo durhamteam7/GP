@@ -29,7 +29,7 @@ Run the algorithm from root using:
 ```bash
 php swansonAlgorithm/classify.php
 ```
-Unit tests are located in swansonAlgorithm/tests/algorithmTest.php. Run them from root using:
+Unit tests written using [PHPUnit](https://phpunit.de/) and are located in swansonAlgorithm/tests/algorithmTest.php. Run them from root using:
 ```bash
 phpunit swansonAlgorithm/tests --bootstrap vendor/autoload.php
 ```
