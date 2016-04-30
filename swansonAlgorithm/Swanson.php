@@ -169,7 +169,7 @@ class Swanson
             while (count($data) > 0) {
                 # This loop populates the 'subject' variable with all classifications for one photo
                 # The array 'subject' will contain all rows with that photo_id
-								if (count($all_data) > 0) {
+								if (count($data) > 0) {
 		                $subject = array(array_pop($data));
 		                while ($data[count($data) - 1]['photo_id'] == $subject[0]['photo_id']) {
 		                    $subject[] = array_pop($data);
