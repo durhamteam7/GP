@@ -1,7 +1,5 @@
 <?php
 
-ini_set('memory_limit', '4096M');
-
 # import algorithm
 require_once("Swanson.php");
 $s = new Swanson();

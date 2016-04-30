@@ -12,9 +12,14 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     // contains the object handle of the string class
     private $s;
 
+    private $classified;
+    private $photo_ids;
+
     // constructor of the test suite
     function SwansonTest() {
         $this->s = new Swanson();
+        $this->classified = $this->s->getClassified();
+        $this->photo_ids = $this->s->getPhotos();
     }
     function tearDown() {
         // delete your instance
@@ -23,7 +28,11 @@ class SwansonTest extends PHPUnit_Framework_TestCase
 
     // tests if the database connection is set up
     function testSetupDB() {
-      $this->assertEquals(true, $this->s->setupDB());
+        $this->assertEquals(true, $this->s->setupDB());
+    }
+
+    function testMain() {
+        $this->assertEquals(true, true);
     }
 
     public function testTally_votes()
@@ -174,42 +183,56 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0.5, $this->s->fraction_blanks($array3));
     }
 
+    public function testGetUserCorrectnessRate() {
+      $this->assertEquals(true, true);
+    }
+
     public function testGetClassified() {
-      $classified = $this->s->getClassified();
-      $this->assertTrue(count($classified) > 0);
+        $this->assertTrue(count($this->classified) > 0);
     }
 
     public function testGetClassifications() {
-      $classifications = $this->s->getClassifications();
-      $this->assertTrue(count($classifications) > 0);
+        $classifications = $this->s->getClassifications();
+        $this->assertTrue(count($classifications) > 0);
     }
 
     public function testGetPhotos() {
-      $photo_ids = $this->s->getPhotos();
-      $this->assertTrue(count($photo_ids) > 0);
+        $this->assertTrue(count($this->photo_ids) > 0);
     }
 
     public function testGetPersonStats() {
-      $person_stats = $this->s->getPersonStats();
-      $this->assertTrue(count($person_stats) > 0);
+        $person_stats = $this->s->getPersonStats();
+        $this->assertTrue(count($person_stats) > 0);
     }
 
     public function testGetAnimals() {
-      $d = $this->s->getAnimals($this->s->getClassified(), $this->s->getPhotos());
-      $this->assertTrue(count($d) > 0);
-      $this->data = $d[0];
-      $this->all_data = $d[1];
-      $this->assertTrue(count($this->data) > 0);
-      $this->assertTrue(count($this->all_data) > 0);
+        $d = $this->s->getAnimals($this->classified, $this->photos);
+        $this->assertTrue(count($d) > 0);
+        $this->data = $d[0];
+        $this->all_data = $d[1];
+        $this->assertTrue(count($this->data) > 0);
+        $this->assertTrue(count($this->all_data) > 0);
     }
 
     public function testGetGoldStandard() {
-      $a = $this->s->getGoldStandard();
-      $this->assertTrue(count($a) > 0);
+        $a = $this->s->getGoldStandard();
+        $this->assertTrue(count($a) > 0);
     }
 
     public function testGoldClassifiedComparison() {
-      //$this->assertEquals(2, 1);
+        $this->assertEquals(true, true);
+    }
+
+    public function testRateUsers() {
+        $this->assertEquals(true, true);
+    }
+
+    public function testCreateTables() {
+        $this->assertEquals(true, true);
+    }
+
+    public function testEmptyTable() {
+        $this->assertEquals(true, true);
     }
 }
 ?>
