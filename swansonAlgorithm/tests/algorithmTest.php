@@ -263,7 +263,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
 
     public function testGetUserCorrectnessRate() {
       $subject = array();
-      $person_stats = self::$s->getPersonStats("species", $subject, self::$classifcations);
+      $person_stats = self::$s->getPersonStats("species", $subject, self::$classifications);
       $this->assertEquals(true, true);
     }
 
