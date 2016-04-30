@@ -129,18 +129,6 @@ adminApp.controller('MainController', ['$scope', 'ajax', function($scope, server
         });
     };
 
-    /** Make request to results method in factory to get all results
-     * @memberof MainController
-     * @function getFullResults
-     */
-    $scope.getFullResults = function() {
-        $("#loader").fadeTo("fast", 0.7);
-        serverComm.getFullPhotos($scope.filters, $scope.isSequence).success(function(data) {
-            $scope.fullResults = data.rows;
-            $("#loader").fadeOut("slow");
-        });
-    };
-
     /** Gets and downloads CSV data for current query
      * @memberof MainController
      * @function downloadCSV
@@ -265,7 +253,7 @@ adminApp.controller('MainController', ['$scope', 'ajax', function($scope, server
  * @name GraphsController
  * @param $scope {service} controller scope
  */
-adminApp.controller('GraphsController', ['$scope', function($scope) {
+adminApp.controller('GraphsController', ['$scope', 'ajax', function($scope, serverComm) {
 
     /**
      * @memberof GraphsController
@@ -294,6 +282,19 @@ adminApp.controller('GraphsController', ['$scope', function($scope) {
 					default:
 						return val;
 				}
+    };
+
+    /** Make request to results method in factory to get all results
+     * @memberof MainController
+     * @function getFullResults
+     */
+    $scope.getFullResults = function() {
+        $("#loader").fadeTo("fast", 0.7);
+        serverComm.getFullPhotos($scope.filters, $scope.isSequence).success(function(data) {
+            $scope.fullResults = data.rows;
+            $scope.makeData();
+            $("#loader").fadeOut("slow");
+        });
     };
 
     /** Formats the results into correct GoogleCharts format based on choice of x,y axis
