@@ -407,7 +407,7 @@ userApp.controller('dataController', ['$scope', '$location', '$timeout', 'ajax',
 
     $scope.getResults = function() {
         $("#loader").fadeTo("fast", 0.7);
-        serverComm.getPhotos($scope.filters, 1, 100,true).success(function(data) {
+        serverComm.getPhotos($scope.filters, 1, 100,true,$scope.person_id,$scope.isFavourites).success(function(data) {
             console.log("Data:", data);
             $scope.results = data.rows;
             $scope.numResults = data.count;
@@ -417,6 +417,15 @@ userApp.controller('dataController', ['$scope', '$location', '$timeout', 'ajax',
 
                 $scope.results[i].Photo.URL = mammalwebBaseURL + parts[parts.length - 2] + "/" + parts[parts.length - 1] + "/" + result.Photo.filename;
             }
+            $("#loader").fadeOut("slow");
+        });
+    };
+
+    $scope.getFullResults = function() {
+        $("#loader").fadeTo("fast", 0.7);
+        serverComm.getFullPhotos($scope.filters, $scope.isSequence).success(function(data) {
+            $scope.results = data.rows;
+            console.log("Got full data");
             $("#loader").fadeOut("slow");
         });
     };
