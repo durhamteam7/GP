@@ -370,7 +370,7 @@
                                                         <select class="form-control ng-pristine ng-valid" id="x-axis" ng-model="xName" ng-change="chartSelectionChange();makeData();">
                                                             <option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters" ng-value="filterName">
                                                             </option>
-                                                            <option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)' ng-selected="filterName=='species'">{{readable(filterName)}}</option>
+                                                            <option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-if='filterData.type!="coord" && filterData.type!="radius"' ng-value='(catName + "." + filterName)' ng-selected="filterName=='species'">{{readable(filterName)}}</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -382,7 +382,7 @@
                                                         <select class="form-control ng-pristine ng-valid" id="y-axis" ng-model="yName" ng-change="chartSelectionChange();makeData();">
                                                             <option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters">
                                                             </option>
-                                                            <option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
+                                                            <option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-if='filterData.type!="coord" && filterData.type!="radius"' ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
                                                             <option value="countOfXaxis">COUNTOF({{readable(xName) | removeTableName}})</option>
                                                         </select>
                                                     </div>

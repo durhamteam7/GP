@@ -134,7 +134,7 @@ var mapController = function($scope, $filter) {
  * @param $filter
  */
 var slideshowController = function($scope, $timeout, QueueService) {
-    var INTERVAL = 60000;
+    var INTERVAL = 10000;
 
     var timeoutPromise;
 
