@@ -523,7 +523,33 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <a ng-href="{{result.Photo.URL}}" target="_blank">
-                                    <img ng-src="{{result.Photo.URL}}" width=400></a>
+                                    <img ng-src="{{result.Photo.URL}}" width=400>
+                                </a>
+                                <div class="row">
+                                    <div class="col-sm-8"><br>
+                                <table class='table table-bordered table-hover'>
+                                    <thead>
+                                        <tr>
+                                            <th>Species</th>
+                                            <th>Gender</th>
+                                            <th>Age</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="c in result.Classification">
+                                            <td>
+                                                {{getOptionName(c.species)}}
+                                            </td>
+                                            <td>
+                                                {{getOptionName(c.gender)}}
+                                            </td>
+                                            <td>
+                                                {{getOptionName(c.age)}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                </div></div>
                             </div>
                             <div class="col-sm-5">
                                 <div class="row">
@@ -537,6 +563,10 @@
                                 <div class="row">
                                     <div class="col-sm-3">Time:</div>
                                     <div class="col-sm-8">{{result.Photo.taken | date:'dd/MM/yyyy HH:mm'}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">Favourites:</div>
+                                    <div class="col-sm-8">{{result.Favourites.length}}</div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-8">
@@ -573,36 +603,6 @@
                                 <div class="row">
                                     <div class="col-sm-3">Notes:</div>
                                     <div class="col-sm-8">{{result.Site.notes}}</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-8">
-                                        <h4>Classifications</h4></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-8">
-                                        <table class='table table-bordered table-hover'>
-                                            <thead>
-                                                <tr>
-                                                    <th>Species</th>
-                                                    <th>Gender</th>
-                                                    <th>Age</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr ng-repeat="c in result.Classification">
-                                                    <td>
-                                                        {{getOptionName(c.species)}}
-                                                    </td>
-                                                    <td>
-                                                        {{getOptionName(c.gender)}}
-                                                    </td>
-                                                    <td>
-                                                        {{getOptionName(c.age)}}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
                                 </div>
                             </div>
 
