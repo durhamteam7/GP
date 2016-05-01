@@ -27,6 +27,12 @@ serverCommsModule.factory('ajax', ['$http', function($http) {
         getOptions: function() {
             return $http.get(urls[env] + 'options').success(function() {});
         },
+        getAlgorithmSettings: function() {
+            return $http.get(urls[env] + 'algorithmSettings').success(function() {});
+        },
+        updateAlgorithmSettings: function(settings) {
+            return $http.post(urls[env] + 'algorithmSettings', settings).success(function() {});
+        },
         getPersons: function() {
             return $http.get(urls[env] + 'persons').success(function() {});
         },

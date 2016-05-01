@@ -60,6 +60,10 @@
                 background-color: #0db9f0 !important;
             }
 
+            .switch-default {
+
+            }
+
             .filterIndicator {
                 margin:5px;
                 font-weight:normal;
@@ -88,9 +92,8 @@
                 <div class="col-md-3" id="leftCol">
                     <div class="well" id="filters">
                         <div class="row">
-                            <div class='col-md-2'></div>
-                            <div class='col-md-34'>
-                                <toggle-switch class="switch-default" on-label='Sequence' off-label='Image' ng-model="isSequence"></toggle-switch>
+                            <div class='col-md-8 col-md-offset-2'>
+                                <toggle-switch class="switch-default" on-label='Sequence' off-label='Image' ng-model="isSequence" style="margin:auto;"></toggle-switch>
                             </div>
                         </div>
                         <br>
@@ -426,6 +429,69 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Well containing the user ratings system modal-->
+                <div class="well">
+                    <h1 class="h4">Algorithm Settings</h1>
+                    <button class="btn" data-toggle="modal" data-target="#settingsModal">View Settings</button>
+                    <!--User Ratings Modal-->
+                    <div id="settingsModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Algorithm Settings</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <div class="form-group">
+                                                <label for="blank_condition">
+                                                    Blank Condition
+                                                </label>
+                                                <input class="form-control" type="number" name="blank_condition" ng-model="algorithmSettings.blank_condition">
+                                                <p class="help-block">An image will be retired if the first {{algorithmSettings.blank_condition}} classifications are blank</p>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="consensus_condition">
+                                                    Consensus Condition
+                                                </label>
+                                                <input class="form-control" type="number" name="consensus_condition" ng-model="algorithmSettings.consensus_condition">
+                                                <p class="help-block">An image will be retired if the first {{algorithmSettings.consensus_condition}} classifications agree</p>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="complete_condition">
+                                                    Complete Condition
+                                                </label>
+                                                <input class="form-control" type="number" name="complete_condition" ng-model="algorithmSettings.complete_condition">
+                                                <p class="help-block">An image will be retired after {{algorithmSettings.complete_condition}} classifications</p>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="agreement_condition">
+                                                    Agreement Condition
+                                                </label>
+                                                <input class="form-control" type="number" name="agreement_condition" ng-model="algorithmSettings.agreement_condition">
+                                                <p class="help-block">An image with an evenness over {{algorithmSettings.agreement_condition}} will not be retired</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <strong>Warning!</strong>
+                                            <p>
+                                                After updating these values, all information about classified photos will be removed.
+                                                The algorithm will then run again with the new settings. It could take up to an hour to finish.
+                                            </p>
+                                            <button class="btn btn-danger" ng-click="updateAlgorithmSettings(algorithmSettings);">Update and rerun algorithm</button>
                                         </div>
                                     </div>
                                 </div>

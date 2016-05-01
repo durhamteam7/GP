@@ -47,25 +47,25 @@ class Swanson
      *
      * @var int
      */
-    private $blank_condition = 1;        /* 5 in Swanson */
+    private $blank_condition;        /* 5 in Swanson */
     /**
      * The number of classifications that need to agree to retire photo.
      *
      * @var int
      */
-    private $consensus_condition = 1;    /* 10 in Swanson */
+    private $consensus_condition;    /* 10 in Swanson */
     /**
      * The maximum number of classifications needed before we retire photo.
      *
      * @var int
      */
-    private $complete_condition = 2;     /* 25 in Swanson */
+    private $complete_condition;     /* 25 in Swanson */
     /**
      * Defines a minimum evenness value: any photo with a greater than or equal evenness will be retired.
      *
-     * @var int
+     * @var float
      */
-    private $agreement_condition = 1;    /* 1 in Swanson */
+    private $agreement_condition;    /* 1.0 in Swanson */
 
     /**
      * The database value for a blank classification.
@@ -102,6 +102,7 @@ class Swanson
     public function __construct()
     {
         $this->setupDB();
+        $this->loadAlgorithmSettings();
     }
 
     public function __destruct()
@@ -153,6 +154,33 @@ class Swanson
             return false;
         }
         return true;
+    }
+
+    public function loadAlgorithmSettings() {
+          /* QUERY */
+          $sql = 'SELECT * FROM AlgorithmSettings LIMIT 1;';
+
+          /* execute query */
+          $result = $this->mysqli->query($sql);
+
+          $settings;
+
+          /* process result */
+          if ($result->num_rows > 0) {
+              while ($row = $result->fetch_assoc()) {
+                  $settings = $row;
+              }
+
+              /* Set our variables to the values in the DB */
+              $this->blank_condition = $settings['blank_condition'];
+              $this->consensus_condition = $settings['consensus_condition'];
+              $this->complete_condition = $settings['complete_condition'];
+              $this->agreement_condition = $settings['agreement_condition'];
+          }
+    }
+
+    public function getAlgorithmSettings() {
+        return array($this->blank_condition, $this->consensus_condition, $this->complete_condition, $this->agreement_condition);
     }
 
     public function closeDB()
@@ -942,6 +970,31 @@ class Swanson
             /* echo "PersonStats table created successfully\n"; */
         } else {
             /* echo "Error creating PersonStats table: " . $this->mysqli->error . "\n"; */
+        }
+
+        /* Creating AlgorithmSettings table */
+        $createTable = 'CREATE TABLE IF NOT EXISTS AlgorithmSettings ('.
+            'settings_id INT NOT NULL PRIMARY KEY,'.
+            'blank_condition INT NOT NULL,'.
+            'consensus_condition INT NOT NULL,'.
+            'complete_condition INT NOT NULL,'.
+            'agreement_condition DECIMAL(2, 1) NOT NULL'.
+        ');';
+        if ($this->mysqli->query($createTable) === true) {
+            /* echo "AlgorithmSettings table created successfully\n"; */
+        } else {
+            /* echo "Error creating AlgorithmSettings table: " . $this->mysqli->error . "\n"; */
+        }
+
+        /* Creating Favourites table */
+        $createTable = 'CREATE TABLE IF NOT EXISTS Favourites ('.
+            'person_id INT NOT NULL PRIMARY KEY,'.
+            'photo_id INT NOT NULL,'.
+        ');';
+        if ($this->mysqli->query($createTable) === true) {
+            /* echo "Favourites table created successfully\n"; */
+        } else {
+            /* echo "Error creating Favourites table: " . $this->mysqli->error . "\n"; */
         }
     }
 
