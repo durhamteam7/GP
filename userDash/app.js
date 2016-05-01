@@ -284,6 +284,11 @@ userApp.controller('dataController', ['$scope', '$location', '$timeout', 'ajax',
      */
     $scope.filterOpen = {};
 
+    $scope.$watch('filtersOpen', function(newVal, oldVal) {
+    $timeout(function() {
+        $scope.$broadcast('rzSliderForceRender');
+    },700);
+});
 
     //PAGE functions
     $scope.currentPage = 1;
