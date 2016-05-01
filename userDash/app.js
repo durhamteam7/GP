@@ -407,7 +407,7 @@ userApp.controller('dataController', ['$scope', '$location', '$timeout', 'ajax',
 
     $scope.getResults = function() {
         $("#loader").fadeTo("fast", 0.7);
-        serverComm.getPhotos($scope.filters, 1, 100,true).success(function(data) {
+        serverComm.getPhotos($scope.filters, 1, 100,true,$scope.person_id,$scope.isFavourites).success(function(data) {
             console.log("Data:", data);
             $scope.results = data.rows;
             $scope.numResults = data.count;
