@@ -4,7 +4,7 @@
          ng-if="isCurrentSlideIndex($index)" ng-src="{{slide.Photo.URL}}" class="fullBg {{currentAnimation}}" >
     <div class="well" id="infoBox" ng-show="loaded" ng-repeat="slide in results track by $index"
          ng-if="isCurrentSlideIndex($index)">
-        <a href="javascript:void()" ng-click="addFavourite(slide)"><span class="glyphicon glyphicon-star" style="{{isFavourite(slide)?'color:orange':''}}"></span></a> <b>{{getOptionName(slide.Classification[0].species)}}</b> in {{slide.Site.site_name}}</br>
+        <a href="javascript:void()" style="color:black" ng-click="addFavourite(slide)"><span class="glyphicon glyphicon-star" style="{{isFavourite(slide)?'color:orange':''}}"></span></a> <b>{{getOptionName(slide.Classification[0].species)}}</b> in {{slide.Site.site_name}}</br>
         taken on {{slide.Photo.taken | date:'dd/MM/yyyy HH:mm'}}
     </div>
       <a href="javascript:void()" id="leftButton" ng-click="previousSlideOnPress()"><span class="glyphicon glyphicon-chevron-left"></span></a>
