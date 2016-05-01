@@ -2,7 +2,7 @@ var serverCommsModule = angular.module('serverComms',[]);
 
 //Allows for switching between dev local server and hosted server
 var urls = ["http://localhost:8080/", "https://mammalweb.herokuapp.com/"];
-var env = 0; // GLOBAL VARIABLE FOR ENVIRONMENT (0:Dev,1:Production)
+var env = 1; // GLOBAL VARIABLE FOR ENVIRONMENT (0:Dev,1:Production)
 
 /**
  * @memberof serverComms
