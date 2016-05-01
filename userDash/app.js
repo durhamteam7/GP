@@ -513,6 +513,9 @@ userApp.controller('dataController', ['$scope', '$location', '$timeout', 'ajax',
       return false;
     }
 
+    $scope.$watch('isFavourites', function(newVal, oldVal) {
+      $scope.getResults();
+    });
 
     $scope.$watch('filters', function(newVal, oldVal) {
         $scope.getResults();
