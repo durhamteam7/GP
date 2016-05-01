@@ -240,6 +240,12 @@ class Swanson
                 $retired = false;
             }
 
+						/* calculate the fraction support */
+						$fraction_support = $this->fraction_support($votes);
+
+						/* calculate the fraction blanks */
+						$fraction_blanks = $this->fraction_blanks($votes);
+
             /**
 						 * The array 'output' will store all the specification values of the image
              * that have previously been calculated.
