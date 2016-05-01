@@ -309,7 +309,9 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div google-chart chart="chartObject" style="{{chartStyle}}"></div>
+                                        <div class="col-xs-12">
+                                            <div google-chart chart="chartObject" style="{{chartStyle}}" id="chart"></div>
+                                        </div>
                                     </div>
 
                                     <div class="row">
@@ -369,6 +371,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!--Well for the download CSV functionality-->
                 <div class="well">
                     <h1 class="h4">Export CSV</h1>
@@ -547,8 +550,5 @@
 
             </div>
         </div>
-
-
     </body>
-
 </html>
