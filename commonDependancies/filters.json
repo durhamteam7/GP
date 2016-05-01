@@ -22,72 +22,71 @@
 		   "open": {}
 		},
 		"evenness":{
-		   "type":"slider",
-		   "minValue": 0.0,
-		   "maxValue": 1.0,
-		   "options": {
-		       "floor": 0.0,
-		       "ceil": 1.0,
-		       "step": 0.1,
-		       "precision": 1
-		    },
-		   "order":4
-		 },
-		 "number_of_classifications":{
-		     "type":"slider",
-		     "minValue": 0,
-		     "maxValue": 100,
-		     "options": {
-		         "floor": 0,
-		         "ceil": 100,
-		         "step": 1,
-		         "precision": 1
-		     },
-		     "order":5
-	 }
+			"type":"slider",
+			"minValue": 0.0,
+			"maxValue": 1.0,
+			"options": {
+				"floor": 0.0,
+				"ceil": 1.0,
+				"step": 0.1,
+				"precision": 1
+	    },
+			"order":4
+		},
+		"number_of_classifications":{
+			"type":"slider",
+			"minValue": 0,
+			"maxValue": 100,
+			"options": {
+				"floor": 0,
+				"ceil": 100,
+				"step": 1,
+				"precision": 1
+			},
+			"order":5
+		}
 	},
 	"Site":{
-	 "habitat_id":{
-	   "type":"checkboxes",
-	   "value":[],
-	   "struc":["habitat"],
-	   "order":0,
-	   "open": {}
-	},
-	"lat":{
-		"type":"coord",
-		"value":null,
-		"coordType":"latitude",
-		"order":1
-	},
-	"lon":{
-		"type":"coord",
-		"value":null,
-		"coordType":"longitude",
-		"order":2
-	},
-	"radius":{
-		"type":"radius",
-		"value":"",
-		"order":3
-	}
+		"habitat_id":{
+		   "type":"checkboxes",
+		   "value":[],
+		   "struc":["habitat"],
+		   "order":0,
+		   "open": {}
+		},
+		"lat":{
+			"type":"coord",
+			"value":null,
+			"coordType":"latitude",
+			"order":1
+		},
+		"lon":{
+			"type":"coord",
+			"value":null,
+			"coordType":"longitude",
+			"order":2
+		},
+		"radius":{
+			"type":"radius",
+			"value":"",
+			"order":3
+		}
 	},
 	"Photo":{
-	"contains_human":{
-	   "type":"boolean",
-	   "value":[],
-	   "order":0
-	},
-	"taken":{
-	   "type":"dateTime",
-	   "icon": "glyphicon-calendar",
-	   "minValue": "",
-	   "maxValue": "",
-	   "options":{
-	   	"format":"DD/MM/YYYY"
-	   },
-	   "order":1
+		"contains_human":{
+			"type":"boolean",
+			"value":[],
+			"order":0
+		},
+		"taken":{
+			"type":"dateTime",
+			"icon": "glyphicon-calendar",
+			"minValue": "",
+			"maxValue": "",
+			"options":{
+				"format":"DD/MM/YYYY"
+			},
+			"order":1
+		}
 	}
-	}
-
 }
