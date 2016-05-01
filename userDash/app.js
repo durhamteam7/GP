@@ -276,6 +276,14 @@ userApp.controller('dataController', ['$scope', '$location', '$timeout', 'ajax',
     $scope.results = []; //contains the results from the server
     $scope.options = {};
 
+    /**
+     * @memberof dataController
+     * @property filterOpen
+     * @description Stores the open/closed status of checkbox filters
+     * @type object
+     */
+    $scope.filterOpen = {};
+
 
     //PAGE functions
     $scope.currentPage = 1;
