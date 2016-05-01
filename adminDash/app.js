@@ -48,6 +48,14 @@ adminApp.controller('MainController', ['$scope', 'ajax', 'sharedProperties', fun
 
     /**
      * @memberof MainController
+     * @property algorithmSettings
+     * @description contains the settings defining how the algorithm runs
+     * @type array
+     */
+    $scope.algorithmSettings = {};
+
+    /**
+     * @memberof MainController
      * @property filters
      * @type object
      * @description
@@ -224,6 +232,29 @@ adminApp.controller('MainController', ['$scope', 'ajax', 'sharedProperties', fun
         });
     };
 
+    /** Gets options from database
+     * @memberof MainController
+     * @function getAlgorithmSettings
+     */
+    $scope.getAlgorithmSettings = function() {
+        $("#loader").fadeTo("fast", 0.7);
+        serverComm.getAlgorithmSettings().success(function(data) {
+            $scope.algorithmSettings = data[0];
+            console.log($scope.algorithmSettings);
+        });
+    };
+
+    /** Gets options from database
+     * @memberof MainController
+     * @function getAlgorithmSettings
+     */
+    $scope.updateAlgorithmSettings = function(settings) {
+        $("#loader").fadeTo("fast", 0.7);
+        serverComm.updateAlgorithmSettings(settings).success(function() {
+            $("#loader").fadeOut("slow");
+        });
+    };
+
     /** Converts a string into a human-readable format
      * @memberof MainController
      * @function readable
@@ -261,6 +292,8 @@ adminApp.controller('MainController', ['$scope', 'ajax', 'sharedProperties', fun
     $scope.getOptions();
     $scope.getFilters();
     $scope.getPersons();
+
+    $scope.getAlgorithmSettings();
 
 }]);
 
