@@ -32,6 +32,10 @@ serverCommsModule.factory('ajax', ['$http', function($http) {
         },
         getFilters: function() {
             return $http.get('../commonDependancies/filters.json').success(function() {});
+        },
+        setFavourite: function(person_id,photo_id,isSet){
+          body = {"person_id":person_id,"photo_id":photo_id,"isSet":isSet};
+          return $http.post('../commonDependancies/setFavourite.json',body).success(function() {});
         }
     };
 }]);
