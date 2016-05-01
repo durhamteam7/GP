@@ -178,7 +178,7 @@
                     <li ng-class="{ active: isActive('/slideshow')}"><a ui-sref="slideshow">Slideshow</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li ng-if="isActive('/map')"><a href="#" ng-click="timelineOpen=!timelineOpen"><span class="glyphicon glyphicon-calendar"></span></a></li>
+                    <li><a href="javascript:void()" ng-click="timelineOpen=!timelineOpen"><span ng-if="isActive('/map')" class="glyphicon glyphicon-calendar"></span></a></li>
                     <li><a href="javascript:void()" ng-click="filtersOpen=!filtersOpen"><span class="glyphicon glyphicon-filter"></span></a></li>
                 </ul>
 
