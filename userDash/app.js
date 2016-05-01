@@ -1,4 +1,4 @@
-var userApp = angular.module('userDash', ['utilities','serverComms', 'rzModule', 'ui.bootstrap', "checklist-model", 'datetimepicker', 'leaflet-directive', 'pageslide-directive', 'ui.router', 'ngAnimate', 'ngVis', 'rt.debounce']);
+var userApp = angular.module('userDash', ['utilities','serverComms', 'rzModule', 'ui.bootstrap', "checklist-model", 'datetimepicker', 'leaflet-directive', 'pageslide-directive', 'ui.router', 'ngAnimate', 'ngVis', 'rt.debounce','toggle-switch']);
 
 var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/";
 
