@@ -323,7 +323,6 @@ adminApp.controller('GraphsController', ['$scope', 'ajax', function($scope, serv
         }
 
 				//Map for filter type to GoogleCharts data type
-				// TODO: refactor into filter.json
         var typeMap = {
             "checkboxes": "string",
             "slider": "number",
