@@ -21,6 +21,27 @@ utilitiesModule.filter('keylength', function(){
 });
 
 /**
+ * Gets field name only
+ *
+ * @memberof utilitiesModule
+ * @ngdoc filter
+ * @name removeTableName
+ * @param {String} input path in dot notation
+ * @returns {String} field name
+ *
+ */
+utilitiesModule.filter('removeTableName', function(){
+  return function(input){
+    if (input == undefined)
+    {
+      return "";
+    }
+    var stringSplit = input.split(".");
+    return stringSplit[stringSplit.length-1];
+  };
+});
+
+/**
  * Angular's LimitTo for Objects
  *
  * @memberof utilitiesModule
