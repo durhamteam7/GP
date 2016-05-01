@@ -523,6 +523,25 @@ userApp.controller('dataController', ['$scope', '$location', '$timeout', 'ajax',
 
     $scope.filters = {};
 
+    function getQueryParams(qs) {
+        qs = qs.split('+').join(' ');
+        var params = {},
+            tokens,
+            re = /[?&]?([^=]+)=([^&]*)/g;
+        while (tokens = re.exec(qs)) {
+            params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+        }
+        return params;
+    }
+
+    function setPersonID(){
+        qParam = getQueryParams(document.location.search).person_id;
+        if (qParam !== ""){
+          $scope.person_id = qParam;
+        }
+        console.log($scope.person_id);
+    }
+    setPersonID();
     $scope.getResults();
     $scope.getOptions();
     $scope.getFilters();
