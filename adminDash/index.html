@@ -59,6 +59,12 @@
                 color: white !important;
                 background-color: #0db9f0 !important;
             }
+
+            .filterIndicator {
+                margin:5px;
+                font-weight:normal;
+                line-height:2 !important;
+            }
         </style>
         <link rel="stylesheet" href="../commonDependancies/loader.css">
 
@@ -192,14 +198,14 @@
                 <h5>
 					<span ng-repeat="filterCat in filters">
 					<span ng-repeat="(name,f) in filterCat">
-						<span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='slider' && (f.minValue!=f.options.floor || f.maxValue!=f.options.ceil)">
+						<span class="label label-default filterIndicator" ng-if="f.type=='slider' && (f.minValue!=f.options.floor || f.maxValue!=f.options.ceil)">
 							<b>
-							<span ng-if="f.minValue!=f.options.floor"> {{f.minValue}}</span> &lt;= {{readable(name)}} <span ng-if="f.maxValue!=f.options.ceil">&lt;= {{f.maxValue}}</span>
+							<span ng-if="f.minValue!=f.options.floor"> {{f.minValue}} &lt;=</span> {{readable(name)}} <span ng-if="f.maxValue!=f.options.ceil">&lt;= {{f.maxValue}}</span>
 							</b>
 							<a href="javascript:void(0)" style="color:white" ng-click="f.minValue=f.options.floor;f.maxValue=f.options.ceil;"><span class="glyphicon glyphicon-remove"></span></a>
 						</span>
 
-						<span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='boolean' && f.value.length>0">
+						<span class="label label-default filterIndicator" ng-if="f.type=='boolean' && f.value.length>0">
 							{{readable(name)}}:
 							<b>
 								{{(f.value[0]?'yes':'no')}}
@@ -207,21 +213,21 @@
 							<a href="javascript:void(0)" style="color:white" ng-click="f.value=[]"><span class="glyphicon glyphicon-remove"></span></a>
 						</span>
 
-						<span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='dateTime' && f.minValue!=''">
+						<span class="label label-default filterIndicator" ng-if="f.type=='dateTime' && f.minValue!=''">
 							<b>
 								{{f.minValue!=""?f.minValue+' <=':''}} {{readable(name)}} {{f.maxValue!=""?'<= '+f.maxValue:''}}
 							</b>
 							<a href="javascript:void(0)" style="color:white" ng-click="f.minValue='';f.maxValue=''"><span class="glyphicon glyphicon-remove"></span></a>
 						</span>
 
-						<span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='checkboxes'" ng-repeat="v in f.value">{{readable(name)}}:
+						<span class="label label-default filterIndicator" ng-if="f.type=='checkboxes'" ng-repeat="v in f.value">{{readable(name)}}:
 							<b>
 							{{getOptionName(v)}}
 							</b>
 							<a href="javascript:void(0)" style="color:white" ng-click="f.value.splice(f.value.indexOf(v),1)" ><span class="glyphicon glyphicon-remove"></span></a>
 						</span>
 
-						<span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='coord'&&f.value!=null&&name=='lat'">
+						<span class="label label-default filterIndicator" ng-if="f.type=='coord'&&f.value!=null&&name=='lat'">
 							<b>
               {{details.address_components[0].short_name}}, < {{filterCat.radius.value}}km
 							</b>
