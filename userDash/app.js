@@ -421,6 +421,15 @@ userApp.controller('dataController', ['$scope', '$location', '$timeout', 'ajax',
         });
     };
 
+    $scope.getFullResults = function() {
+        $("#loader").fadeTo("fast", 0.7);
+        serverComm.getFullPhotos($scope.filters, $scope.isSequence).success(function(data) {
+            $scope.results = data.rows;
+            console.log("Got full data");
+            $("#loader").fadeOut("slow");
+        });
+    };
+
     $scope.getOptions = function() {
         //console.log("get options");
         $("#loader").fadeTo("fast", 0.7);
