@@ -194,7 +194,7 @@
 					<span ng-repeat="(name,f) in filterCat">
 						<span class="label label-default" style="font-weight:normal;margin:5px" ng-if="f.type=='slider' && (f.minValue!=f.options.floor || f.maxValue!=f.options.ceil)">
 							<b>
-							<span ng-if="f.minValue!=f.options.floor"> {{f.minValue}}</span> &lt;= {{readable(name)}} <span ng-if="f.maxValue!=f.options.ceil">&lt;= {{f.maxValue}}</span>
+							<span ng-if="f.minValue!=f.options.floor"> {{f.minValue}} &lt;=</span> {{readable(name)}} <span ng-if="f.maxValue!=f.options.ceil">&lt;= {{f.maxValue}}</span>
 							</b>
 							<a href="javascript:void(0)" style="color:white" ng-click="f.minValue=f.options.floor;f.maxValue=f.options.ceil;"><span class="glyphicon glyphicon-remove"></span></a>
 						</span>
