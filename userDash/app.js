@@ -45,7 +45,7 @@ var mapController = function($scope, $filter) {
     };
 
     var seed = 1;
-    /** Generates pop-up html for a photo
+    /** Generates a random decimal
      * @memberof mapController
      * @name random
      * @returns {int} Produces a random number from a seed
@@ -301,7 +301,7 @@ userApp.controller('dataController', ['$scope', '$location', '$timeout', 'ajax',
 
     $scope.getResults = function() {
         $("#loader").fadeTo("fast", 0.7);
-        serverComm.getPhotos($scope.filters, 1, 100).success(function(data) {
+        serverComm.getPhotos($scope.filters, 1, 100,true).success(function(data) {
             console.log("Data:", data);
             $scope.results = data.rows;
             $scope.numResults = data.count;
