@@ -129,7 +129,7 @@ var mapController = function($scope, $filter) {
  * @param $filter
  */
 var slideshowController = function($scope, $timeout, QueueService) {
-    var INTERVAL = 5000;
+    var INTERVAL = 60000;
 
     var timeoutPromise;
 
@@ -273,6 +273,8 @@ userApp.controller('dataController', ['$scope', '$location', '$timeout', 'ajax',
     $scope.navbarOpen = true;
     $scope.results = "data";
 
+    $scope.person_id = 310;
+
     $scope.results = []; //contains the results from the server
     $scope.options = {};
 
@@ -385,6 +387,31 @@ userApp.controller('dataController', ['$scope', '$location', '$timeout', 'ajax',
     $scope.isActive = function(viewLocation) {
         return viewLocation === $location.path();
     };
+
+    $scope.addFavourite = function(slide){
+      for (var i in slide.Favourites){
+        if (slide.Favourites[i].person_id == $scope.person_id){
+          console.log("Removing faovurite",slide)
+          console.log(slide.Favourites);
+          delete slide.Favourites[i];
+          console.log(slide.Favourites);
+          serverComm.setFavourite($scope.person_id,slide.Photo.photo_id,false);
+          return true;
+        }
+      }
+      console.log("Adding faovurite",slide)
+      slide.Favourites.push({person_id:$scope.person_id,photo_id:slide.Photo.photo_id});
+      serverComm.setFavourite($scope.person_id,slide.Photo.photo_id,true);
+    }
+
+    $scope.isFavourite = function(slide){
+      for (var i in slide.Favourites){
+        if (slide.Favourites[i].person_id == $scope.person_id){
+          return true;
+        }
+      }
+      return false;
+    }
 
 
     $scope.$watch('filters', function(newVal, oldVal) {
