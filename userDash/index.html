@@ -61,22 +61,22 @@
             /* non-prefixed version, currently
 		not supported by any browser */
         }
-
+        
         #map {
             height: 100%;
             width: 100%;
         }
-
+        
         .navbar {
             margin: 0;
             height: inherit !important;
             min-height: 0px !important;
         }
-
+        
         body {
             background-color: black;
         }
-
+        
         .slideRight {
             background: #101010;
             top: 50px !important;
@@ -85,66 +85,66 @@
             z-index: 999999 !important;
             color: #9d9d9d;
         }
-
+        
         .slideBottom {
             background: #101010;
             bottom: 0 !important;
             position: absolute !important;
             opacity: 0.7;
         }
-
+        
         .page {
             height: 100% !important;
             overflow: hidden;
         }
-
+        
         html {
             overflow-x: hidden;
         }
-
+        
         #infoBox {
             position: absolute;
             bottom: 20px;
             right: 20px;
             opacity: 0.7;
         }
-
+        
         #slideshowButtons {
             position: absolute;
             bottom: 20px;
             left: 20px;
             opacity: 0.7;
         }
-
+        
         .fullBg {
             width: 100%;
             height: calc(100% + 55px) !important;
         }
-
+        
         .navbar-brand {
             padding-top: 0;
             padding-bottom: 0;
         }
-
+        
         .navbar-inverse {
             border: 0;
         }
-
+        
         .leaflet-top {
             margin-top: 60px !important;
         }
-
+        
         ::-webkit-scrollbar-track {
             -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
             border-radius: 0px;
             background-color: #101010;
         }
-
+        
         ::-webkit-scrollbar {
             width: 12px;
             background-color: #F5F5F5;
         }
-
+        
         ::-webkit-scrollbar-thumb {
             border-radius: 10px;
             -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
@@ -197,8 +197,8 @@
     <applet></applet>
 
     <div pageslide ps-open="filtersOpen" class="slideRight">
-    	<div style="padding:20px;overflow-y:scroll;height:100%">
-        <span ng-repeat="filterCat in filters">
+        <div style="padding:20px;overflow-y:scroll;height:100%">
+            <span ng-repeat="filterCat in filters">
 <span ng-repeat="filterData in filterCat | orderObjectBy | orderBy: 'order'">
 
 <h4 ng-if='filterData.type!="coord" && filterData.type!="radius"'>{{readable(filterData.id)}}</h4>
@@ -208,20 +208,20 @@
     <span ng-if="filterData.struc.length > 1">
       <b>{{readable(s)}}</b>
     </span>
-        <div class="checkbox" ng-repeat="(id,name) in options[s] | objectLimitTo:(!filterOpen[s]?3:(options[s] | keylength))">
-            <label>
-                <input type="checkbox" checklist-model="filterData.value" checklist-value="id"> {{name}}
-            </label>
+            <div class="checkbox" ng-repeat="(id,name) in options[s] | objectLimitTo:(!filterOpen[s]?3:(options[s] | keylength))">
+                <label>
+                    <input type="checkbox" checklist-model="filterData.value" checklist-value="id"> {{name}}
+                </label>
 
-        </div>
-        <span ng-if="(options[s] | keylength)> 5">
+            </div>
+            <span ng-if="(options[s] | keylength)> 5">
         <a href="javascript:void(0)" ng-click="filterOpen[s]=!filterOpen[s]">{{filterOpen[s]?"-":"+"}} See {{filterOpen[s]?"less":"more"}}</a>
       </span>
-</div>
+        </div>
 
-</span>
+        </span>
 
-<span ng-if="filterData.type=='boolean'">
+        <span ng-if="filterData.type=='boolean'">
   <div class="checkbox">
     <label>
       <input type="checkbox" checklist-model="filterData.value" checklist-value="true" ng-click="((filterData.value.length==1)?(filterData.value=[true]):1)"> Yes
@@ -235,44 +235,44 @@
   </div>
 </span>
 
-<div class="row" ng-if="filterData.type=='slider'">
-    <rzslider rz-slider-model="filterData.minValue" rz-slider-high="filterData.maxValue" rz-slider-options="filterData.options"></rzslider>
-    <div class="col-md-6">
-        <input type="number" class="form-control" step="1" ng-model="filterData.minValue" />
-    </div>
-    <div class="col-md-6">
-        <input type="number" class="form-control" step="1" ng-model="filterData.maxValue" />
-    </div>
-</div>
-<div class="row" ng-if="filterData.type=='dateTime'">
-
-    <div class='col-md-12'>
-        <div class="form-group">
-            <div class='input-group date' id='datetimepicker6'>
-                <input type='text' class="form-control" placeholder="from..." datetimepicker ng-model="filterData.minValue" datetimepicker-options="{{filterData.options}}" />
-                <span class="input-group-addon">
-    <span class="glyphicon {{filterData.icon}}"></span>
-                </span>
+        <div class="row" ng-if="filterData.type=='slider'">
+            <rzslider rz-slider-model="filterData.minValue" rz-slider-high="filterData.maxValue" rz-slider-options="filterData.options"></rzslider>
+            <div class="col-md-6">
+                <input type="number" class="form-control" step="1" ng-model="filterData.minValue" />
+            </div>
+            <div class="col-md-6">
+                <input type="number" class="form-control" step="1" ng-model="filterData.maxValue" />
             </div>
         </div>
-    </div>
+        <div class="row" ng-if="filterData.type=='dateTime'">
 
-    <div class='col-md-12'>
-        <div class="form-group">
-            <div class='input-group date' id='datetimepicker6'>
-                <input type='text' class="form-control" placeholder="...to" datetimepicker ng-model="filterData.maxValue" datetimepicker-options="{{filterData.options}}" />
-                <span class="input-group-addon">
+            <div class='col-md-12'>
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepicker6'>
+                        <input type='text' class="form-control" placeholder="from..." datetimepicker ng-model="filterData.minValue" datetimepicker-options="{{filterData.options}}" />
+                        <span class="input-group-addon">
     <span class="glyphicon {{filterData.icon}}"></span>
-                </span>
+                        </span>
+                    </div>
+                </div>
             </div>
+
+            <div class='col-md-12'>
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepicker6'>
+                        <input type='text' class="form-control" placeholder="...to" datetimepicker ng-model="filterData.maxValue" datetimepicker-options="{{filterData.options}}" />
+                        <span class="input-group-addon">
+    <span class="glyphicon {{filterData.icon}}"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
+        </span>
+        </span>
     </div>
-
-
-</div>
-</span>
-</span>
-    	</div>
     </div>
 
     <div ui-view></div>
