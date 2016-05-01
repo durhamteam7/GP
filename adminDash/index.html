@@ -6,7 +6,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/locale/en-gb.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://bootswatch.com/simplex/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/2.10.2/rzslider.min.css" />
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.js"></script>
@@ -50,24 +50,57 @@
                 color: #f5f5f5;
             }
 
+            .ats-switch {
+                border: 1px solid #dddddd;
+                border-radius: 6px;
+                cursor: pointer;
+                display: inline-block;
+                text-align: left;
+                overflow: hidden;
+                line-height: 8px;
+                min-width: 100px;
+            }
+
             .switch-right {
                 color: white !important;
-                background-color: #0db9f0 !important;
+                background-color: #d9230f !important;
             }
 
             .switch-left {
                 color: white !important;
-                background-color: #0db9f0 !important;
+                background-color: #d9230f !important;
             }
 
-            .switch-default {
+            rzslider .rz-pointer {
+                background-color: #d9230f;
+            }
 
+            rzslider .rz-bar.rz-selection {
+                background: #d9230f;
+            }
+
+            rzslider .rz-pointer.rz-active:after {
+                background-color: #900000;
             }
 
             .filterIndicator {
                 margin:5px;
                 font-weight:normal;
                 line-height:2 !important;
+            }
+
+            img {
+              border-radius: 6px;
+            }
+
+            .btn-default {
+                color: #ffffff;
+                background-image: -webkit-linear-gradient(#afaaaa, #a7a9a9 6%, #3f4141);
+                background-image: -o-linear-gradient(#afaaaa, #a7a9a9 6%, #3f4141);
+                background-image: -webkit-gradient(linear, left top, left bottom, from(#4f5151), color-stop(6%, #474949), to(#3f4141));
+                background-image: linear-gradient(#afaaaa, #a7a9a9 6%, #a0a1a1);
+                background-color: #a7a9a9 !important;
+                border-color: #999999;
             }
         </style>
         <link rel="stylesheet" href="../commonDependancies/loader.css">
@@ -299,7 +332,7 @@
                 <!--Well containing graphs modal button-->
                 <div class="well" ng-controller="GraphsController">
                     <h1 class="h4">Graphs</h1>
-                    <button type="button" class="btn" data-toggle="modal" data-target="#graphModal" ng-click="makeData();">Open Graph Editor</button>
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#graphModal" ng-click="makeData();">Open Graph Editor</button>
 
                     <!-- Graphs Modal -->
                     <div id="graphModal" class="modal fade" role="dialog">
@@ -358,7 +391,7 @@
                                         <!--Button to load full dataset with appropriate warning about the loading time-->
                                         <div class="col-xs-4">
                                             <div class="row">
-                                                <button type="button" class="btn btn-danger" ng-click="getFullResults()">Use Full Dataset</button>
+                                                <button type="button" class="btn btn-primary" ng-click="getFullResults()">Use Full Dataset</button>
                                             </div>
                                             <div class="row">
                                                 <p>Warning: There are {{numResults}} results.
@@ -378,12 +411,12 @@
                 <!--Well for the download CSV functionality-->
                 <div class="well">
                     <h1 class="h4">Export CSV</h1>
-                    <button class="btn" ng-click="downloadCSV()">Download CSV</button>
+                    <button class="btn btn-default" ng-click="downloadCSV()">Download CSV</button>
                 </div>
                 <!--Well containing the user ratings system modal-->
                 <div class="well">
                     <h1 class="h4">User Ratings</h1>
-                    <button class="btn" data-toggle="modal" data-target="#userModal">View Users</button>
+                    <button class="btn btn-default" data-toggle="modal" data-target="#userModal">View Users</button>
                     <!--User Ratings Modal-->
                     <div id="userModal" class="modal fade" role="dialog">
                         <div class="modal-dialog modal-lg">
@@ -432,6 +465,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -440,7 +476,7 @@
                 <!--Well containing the user ratings system modal-->
                 <div class="well">
                     <h1 class="h4">Algorithm Settings</h1>
-                    <button class="btn" data-toggle="modal" data-target="#settingsModal">View Settings</button>
+                    <button class="btn btn-default" data-toggle="modal" data-target="#settingsModal">View Settings</button>
                     <!--User Ratings Modal-->
                     <div id="settingsModal" class="modal fade" role="dialog">
                         <div class="modal-dialog modal-lg">
@@ -491,9 +527,12 @@
                                                 After updating these values, all information about classified photos will be removed.
                                                 The algorithm will then run again with the new settings. It could take up to an hour to finish.
                                             </p>
-                                            <button class="btn btn-danger" ng-click="updateAlgorithmSettings(algorithmSettings);">Update and rerun algorithm</button>
+                                            <button class="btn btn-primary" ng-click="updateAlgorithmSettings(algorithmSettings);">Update and rerun algorithm</button>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
