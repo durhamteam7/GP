@@ -136,10 +136,10 @@
                     <div class="row" ng-if="filterData.type=='slider'">
                         <rzslider rz-slider-model="filterData.minValue" rz-slider-high="filterData.maxValue" rz-slider-options="filterData.options"></rzslider>
                         <div class="col-md-6">
-                            <input type="number" class="form-control" step="1" ng-model="filterData.minValue" />
+                            <input type="number" min=0 class="form-control" step="1" ng-model="filterData.minValue"/>
                         </div>
                         <div class="col-md-6">
-                            <input type="number" class="form-control" step="1" ng-model="filterData.maxValue" />
+                            <input type="number" min=0 class="form-control" step="1" ng-model="filterData.maxValue"/>
                         </div>
                     </div>
                     <div class="row" ng-if="filterData.type=='dateTime'">
@@ -296,7 +296,7 @@
                 <!--Well containing graphs modal button-->
                 <div class="well" ng-controller="GraphsController">
                     <h1 class="h4">Graphs</h1>
-                    <button type="button" class="btn" data-toggle="modal" data-target="#graphModal">Open Graph Editor</button>
+                    <button type="button" class="btn" data-toggle="modal" data-target="#graphModal" ng-click="makeData();">Open Graph Editor</button>
 
                     <!-- Graphs Modal -->
                     <div id="graphModal" class="modal fade" role="dialog">
@@ -309,7 +309,9 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div google-chart chart="chartObject" style="{{chartStyle}}"></div>
+                                        <div class="col-xs-12">
+                                            <div google-chart chart="chartObject" style="{{chartStyle}}" id="chart"></div>
+                                        </div>
                                     </div>
 
                                     <div class="row">
@@ -331,8 +333,7 @@
                                                         <select class="form-control ng-pristine ng-valid" id="x-axis" ng-model="xName" ng-change="chartSelectionChange();makeData();">
                                                             <option ng-hide="1" ng-repeat-start="(catName,filterCat) in filters" ng-value="filterName">
                                                             </option>
-                                                            <option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)'>{{readable(filterName)}}</option>
-
+                                                            <option ng-repeat-end ng-repeat="(filterName,filterData) in filterCat" ng-value='(catName + "." + filterName)' ng-selected="filterName=='species'">{{readable(filterName)}}</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -370,6 +371,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!--Well for the download CSV functionality-->
                 <div class="well">
                     <h1 class="h4">Export CSV</h1>
@@ -548,8 +550,5 @@
 
             </div>
         </div>
-
-
     </body>
-
 </html>

@@ -3,6 +3,25 @@ var adminApp = angular.module('adminDash', ['utilities','serverComms','rzModule'
 var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/"; //root of all img URLs
 
 
+adminApp.service('sharedProperties', function () {
+    /**
+     * @memberof sharedProperties
+     * @property fullResults
+     * @description Array of every result matched by the query
+     * @type array
+     */
+    var fullResults = [];
+
+    return {
+        getFullResults: function() {
+            return fullResults;
+        },
+        setFullResults: function(value) {
+            fullResults = value;
+        }
+    }
+});
+
 /** Main Controller for the admin app. Stores and manipulates data from mammalweb db
  * @memberof adminApp
  * @ngdoc controller
@@ -10,7 +29,7 @@ var mammalwebBaseURL = "http://www.mammalweb.org/biodivimages/"; //root of all i
  * @param $scope {service} controller scope
  * @param ajax {factory} ajax methods for server
  */
-adminApp.controller('MainController', ['$scope', 'ajax', function($scope, serverComm) {
+adminApp.controller('MainController', ['$scope', 'ajax', 'sharedProperties', function($scope, serverComm, sharedProperties) {
     /**
      * @memberof MainController
      * @property results
@@ -26,14 +45,6 @@ adminApp.controller('MainController', ['$scope', 'ajax', function($scope, server
      * @type array
      */
     $scope.options = {};
-
-    /**
-     * @memberof MainController
-     * @property fullResults
-     * @description Array of every result matched by the query
-     * @type array
-     */
-    $scope.fullResults = [];
 
     /**
      * @memberof MainController
@@ -133,6 +144,7 @@ adminApp.controller('MainController', ['$scope', 'ajax', function($scope, server
                 var parts = result.Photo.dirname.split("/");
                 $scope.results[i].Photo.URL = mammalwebBaseURL + parts[parts.length - 2] + "/" + parts[parts.length - 1] + "/" + result.Photo.filename;
             }
+            sharedProperties.setFullResults([]);
             $("#loader").fadeOut("slow");
         });
     };
@@ -261,7 +273,10 @@ adminApp.controller('MainController', ['$scope', 'ajax', function($scope, server
  * @name GraphsController
  * @param $scope {service} controller scope
  */
-adminApp.controller('GraphsController', ['$scope', 'ajax', function($scope, serverComm) {
+adminApp.controller('GraphsController', ['$scope', '$timeout', 'ajax', 'sharedProperties', function($scope, $timeout, serverComm, sharedProperties) {
+
+    $scope.xName = "Classification.species";
+    $scope.yName = "countOfXaxis";
 
     /**
      * @memberof GraphsController
@@ -299,7 +314,7 @@ adminApp.controller('GraphsController', ['$scope', 'ajax', function($scope, serv
     $scope.getFullResults = function() {
         $("#loader").fadeTo("fast", 0.7);
         serverComm.getFullPhotos($scope.filters, $scope.isSequence).success(function(data) {
-            $scope.fullResults = data.rows;
+            sharedProperties.setFullResults(data.rows);
             $scope.makeData();
             $("#loader").fadeOut("slow");
         });
@@ -310,154 +325,158 @@ adminApp.controller('GraphsController', ['$scope', 'ajax', function($scope, serv
      * @function makeData
      */
     $scope.makeData = function() {
-        console.log($scope.fullResults);
+        $timeout(function() {
+          console.log(sharedProperties.getFullResults());
+          console.log($scope.xName);
+          console.log($scope.yName);
 
-        //if havn't pulled full results then copy in existing ones
-        if ($scope.fullResults.length === 0) {
-            $scope.fullResults = $scope.results;
-        }
+          //if haven't pulled full results then copy in existing ones
+          if (sharedProperties.getFullResults().length === 0) {
+              sharedProperties.setFullResults($scope.results);
+          }
 
-        //Stop if an axis hasn't been chosen
-        if (typeof $scope.xName == "undefined" || typeof $scope.yName == "undefined") {
-            return;
-        }
+          //Stop if an axis hasn't been chosen
+          if (typeof $scope.xName == "undefined" || typeof $scope.yName == "undefined") {
+              return;
+          }
 
-				//Map for filter type to GoogleCharts data type
-        var typeMap = {
-            "checkboxes": "string",
-            "slider": "number",
-            "boolean": "string",
-            "dateTime": "datetime",
-            "coord": "number"
-        };
+    			//Map for filter type to GoogleCharts data type
+          var typeMap = {
+              "checkboxes": "string",
+              "slider": "number",
+              "boolean": "string",
+              "dateTime": "datetime",
+              "coord": "number"
+          };
 
-        if ($scope.yName == "countOfXaxis") {
-            //Case for when the user picks the COUNTOF(xvariable) choice for the y axis
+          if ($scope.yName == "countOfXaxis") {
+              //Case for when the user picks the COUNTOF(xvariable) choice for the y axis
 
-            // Setup global chart parameters
-            xNameSplit = $scope.xName.split(".");
-            $scope.chartObject.options.hAxis.title = $scope.readable(xNameSplit[1]);
-            $scope.chartObject.options.vAxis.title = "Count of " + $scope.readable(xNameSplit[1]);
-            $scope.chartObject.options.title = "Graph of "+$scope.readable(xNameSplit[1])+" against Count of "+$scope.readable(xNameSplit[1]);
-            var xField = $scope.filters[xNameSplit[0]][xNameSplit[1]];
-            $scope.chartObject.data.cols = [{
-                id: "x",
-                label: $scope.readable(xNameSplit[1]),
-                type: typeMap[xField.type]
-            }, {
-                id: "y",
-                label: "Count of " + $scope.readable(xNameSplit[1]),
-                type: "number"
-            }];
-            $scope.chartObject.data.rows = [];
+              // Setup global chart parameters
+              xNameSplit = $scope.xName.split(".");
+              $scope.chartObject.options.hAxis.title = $scope.readable(xNameSplit[1]);
+              $scope.chartObject.options.vAxis.title = "Count of " + $scope.readable(xNameSplit[1]);
+              $scope.chartObject.options.title = "Graph of "+$scope.readable(xNameSplit[1])+" against Count of "+$scope.readable(xNameSplit[1]);
+              var xField = $scope.filters[xNameSplit[0]][xNameSplit[1]];
+              $scope.chartObject.data.cols = [{
+                  id: "x",
+                  label: $scope.readable(xNameSplit[1]),
+                  type: typeMap[xField.type]
+              }, {
+                  id: "y",
+                  label: "Count of " + $scope.readable(xNameSplit[1]),
+                  type: "number"
+              }];
+              $scope.chartObject.data.rows = [];
 
 
-            //build dictionary to count occurances of each x value
-            dataDict = {};
-            for (var i in $scope.fullResults) {
-                if (Array.isArray($scope.fullResults[i][xNameSplit[0]])) {
-                    for (var j = 0; j < $scope.fullResults[i][xNameSplit[0]].length; j++) {
-                        xValue = getValue($scope.fullResults[i][xNameSplit[0]][j][xNameSplit[1]], xField);
-                        if (dataDict.hasOwnProperty(xValue)) {
-                            dataDict[xValue] += 1;
-                        } else {
-                            dataDict[xValue] = 1;
-                        }
-                    }
-                }
-								else{
-                    xValue = getValue($scope.fullResults[i][xNameSplit[0]][xNameSplit[1]], xField);
-                    if (dataDict.hasOwnProperty(xValue)) {
-                        dataDict[xValue] += 1;
-                    } else {
-                        dataDict[xValue] = 1;
-                    }
-                }
+              //build dictionary to count occurances of each x value
+              dataDict = {};
+              for (var i in sharedProperties.getFullResults()) {
+                  if (Array.isArray(sharedProperties.getFullResults()[i][xNameSplit[0]])) {
+                      for (var j = 0; j < sharedProperties.getFullResults()[i][xNameSplit[0]].length; j++) {
+                          xValue = getValue(sharedProperties.getFullResults()[i][xNameSplit[0]][j][xNameSplit[1]], xField);
+                          if (dataDict.hasOwnProperty(xValue)) {
+                              dataDict[xValue] += 1;
+                          } else {
+                              dataDict[xValue] = 1;
+                          }
+                      }
+                  }
+    							else{
+                      xValue = getValue(sharedProperties.getFullResults()[i][xNameSplit[0]][xNameSplit[1]], xField);
+                      if (dataDict.hasOwnProperty(xValue)) {
+                          dataDict[xValue] += 1;
+                      } else {
+                          dataDict[xValue] = 1;
+                      }
+                  }
 
-            }
+              }
 
-            //Convert to rows
-            for (var key in dataDict) {
-                $scope.chartObject.data.rows.push({
-                    c: [{v: key}, {v: dataDict[key]}]
-                });
-            }
-        } else { //Case of 2 normal variables
+              //Convert to rows
+              for (var key in dataDict) {
+                  $scope.chartObject.data.rows.push({
+                      c: [{v: key}, {v: dataDict[key]}]
+                  });
+              }
+          } else { //Case of 2 normal variables
 
-            //split axis names into [tableName,fieldName]
-            xNameSplit = $scope.xName.split(".");
-            yNameSplit = $scope.yName.split(".");
+              //split axis names into [tableName,fieldName]
+              xNameSplit = $scope.xName.split(".");
+              yNameSplit = $scope.yName.split(".");
 
-            //set axis titles
-            $scope.chartObject.options.vAxis.title = $scope.readable(yNameSplit[1]);
-            $scope.chartObject.options.hAxis.title = $scope.readable(xNameSplit[1]);
-            $scope.chartObject.options.title = "Graph of "+$scope.readable(xNameSplit[1])+" against "+$scope.readable(yNameSplit[1]);
+              //set axis titles
+              $scope.chartObject.options.vAxis.title = $scope.readable(yNameSplit[1]);
+              $scope.chartObject.options.hAxis.title = $scope.readable(xNameSplit[1]);
+              $scope.chartObject.options.title = "Graph of "+$scope.readable(xNameSplit[1])+" against "+$scope.readable(yNameSplit[1]);
 
-            //check types of variables
-            var xField = $scope.filters[xNameSplit[0]][xNameSplit[1]];
-            var yField = $scope.filters[yNameSplit[0]][yNameSplit[1]];
+              //check types of variables
+              var xField = $scope.filters[xNameSplit[0]][xNameSplit[1]];
+              var yField = $scope.filters[yNameSplit[0]][yNameSplit[1]];
 
-            //Set headings and types
-            $scope.chartObject.data.cols = [{
-                id: "x",
-                label: $scope.readable(xNameSplit[1]),
-                type: typeMap[xField.type]
-            }, {
-                id: "y",
-                label: $scope.readable(yNameSplit[1]),
-                type: typeMap[yField.type]
-            }];
+              //Set headings and types
+              $scope.chartObject.data.cols = [{
+                  id: "x",
+                  label: $scope.readable(xNameSplit[1]),
+                  type: typeMap[xField.type]
+              }, {
+                  id: "y",
+                  label: $scope.readable(yNameSplit[1]),
+                  type: typeMap[yField.type]
+              }];
 
-            //Empty data rows
-            $scope.chartObject.data.rows = [];
+              //Empty data rows
+              $scope.chartObject.data.rows = [];
 
-            for (var i = 0; i < $scope.fullResults.length; i++) {
-                //Deal with data containing arrays
-                loopX = 1;
-                loopY = 1;
+              for (var i = 0; i < sharedProperties.getFullResults().length; i++) {
+                  //Deal with data containing arrays
+                  loopX = 1;
+                  loopY = 1;
 
-                xChanged = false;
-                yChanged = false;
+                  xChanged = false;
+                  yChanged = false;
 
-                //Set loop conditions to deal with the case of many-to-many relationships in the db
-                // e.g. if we allow multiple classifications we need to repeat the rows over each classification
-                if (Array.isArray($scope.fullResults[i][xNameSplit[0]])) {
-                    loopX = $scope.fullResults[i][xNameSplit[0]].length;
-                } else {
-                    $scope.fullResults[i][xNameSplit[0]] = [$scope.fullResults[i][xNameSplit[0]]];
-                    xChanged = true;
-                }
-                if (Array.isArray($scope.fullResults[i][yNameSplit[0]])) {
-                    loopY = $scope.fullResults[i][yNameSplit[0]].length;
-                } else {
-                    $scope.fullResults[i][yNameSplit[0]] = [$scope.fullResults[i][yNameSplit[0]]];
-                    yChanged = true;
-                }
+                  //Set loop conditions to deal with the case of many-to-many relationships in the db
+                  // e.g. if we allow multiple classifications we need to repeat the rows over each classification
+                  if (Array.isArray(sharedProperties.getFullResults()[i][xNameSplit[0]])) {
+                      loopX = sharedProperties.getFullResults()[i][xNameSplit[0]].length;
+                  } else {
+                      sharedProperties.getFullResults()[i][xNameSplit[0]] = [sharedProperties.getFullResults()[i][xNameSplit[0]]];
+                      xChanged = true;
+                  }
+                  if (Array.isArray(sharedProperties.getFullResults()[i][yNameSplit[0]])) {
+                      loopY = sharedProperties.getFullResults()[i][yNameSplit[0]].length;
+                  } else {
+                      sharedProperties.getFullResults()[i][yNameSplit[0]] = [sharedProperties.getFullResults()[i][yNameSplit[0]]];
+                      yChanged = true;
+                  }
 
-                //Add rows
-                for (var j = 0; j < loopX; j++) {
-                    for (var k = 0; k < loopY; k++) {
-                        xValue = getValue($scope.fullResults[i][xNameSplit[0]][j][xNameSplit[1]], xField);
-                        yValue = getValue($scope.fullResults[i][yNameSplit[0]][k][yNameSplit[1]], yField);
-                        $scope.chartObject.data.rows.push({
-                            c: [{
-                                v: xValue
-                            }, {
-                                v: yValue
-                            }]
-                        });
-                    }
-                }
+                  //Add rows
+                  for (var j = 0; j < loopX; j++) {
+                      for (var k = 0; k < loopY; k++) {
+                          xValue = getValue(sharedProperties.getFullResults()[i][xNameSplit[0]][j][xNameSplit[1]], xField);
+                          yValue = getValue(sharedProperties.getFullResults()[i][yNameSplit[0]][k][yNameSplit[1]], yField);
+                          $scope.chartObject.data.rows.push({
+                              c: [{
+                                  v: xValue
+                              }, {
+                                  v: yValue
+                              }]
+                          });
+                      }
+                  }
 
-                //Restore data structure of $scope.fullResults
-                if (xChanged) {
-                    $scope.fullResults[i][xNameSplit[0]] = $scope.fullResults[i][xNameSplit[0]][0];
-                }
-                if (yChanged) {
-                    $scope.fullResults[i][yNameSplit[0]] = $scope.fullResults[i][yNameSplit[0]][0];
-                }
-            }
-        }
+                  //Restore data structure of $scope.fullResults
+                  if (xChanged) {
+                      sharedProperties.getFullResults()[i][xNameSplit[0]] = sharedProperties.getFullResults()[i][xNameSplit[0]][0];
+                  }
+                  if (yChanged) {
+                      sharedProperties.getFullResults()[i][yNameSplit[0]] = sharedProperties.getFullResults()[i][yNameSplit[0]][0];
+                  }
+              }
+          }
+        }, 700);
     };
 
     /**
@@ -475,7 +494,7 @@ adminApp.controller('GraphsController', ['$scope', 'ajax', function($scope, serv
      * @description options and data passed to GoogleCharts module
      */
     $scope.chartObject = {
-        "type": "Table",
+        "type": "PieChart",
         "displayed": true,
         "data": {
             "cols": [
@@ -499,6 +518,7 @@ adminApp.controller('GraphsController', ['$scope', 'ajax', function($scope, serv
             "hAxis": {
                 "title": "Yaxis"
             }
+
         },
         "formatters": {}
     };
