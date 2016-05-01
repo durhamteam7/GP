@@ -1,4 +1,4 @@
-angular.module('app').directive('chordDiagram', ['$window', 'matrixFactory',
+angular.module('userDash').directive('chordDiagram', ['$window', 'matrixFactory',
 
 function ($window, matrixFactory) {
 
@@ -76,7 +76,7 @@ function ($window, matrixFactory) {
 
       var groups = container.selectAll("g.group")
         .data(matrix.groups(), function (d) { return d._id; });
-      
+
       var gEnter = groups.enter()
         .append("g")
         .attr("class", "group");
@@ -85,7 +85,7 @@ function ($window, matrixFactory) {
         .style("pointer-events", "none")
         .style("fill", function (d) { return colors(d._id); })
         .attr("d", arc);
- 
+
       gEnter.append("text")
         .attr("dy", ".35em")
         .on("click", groupClick)
@@ -106,7 +106,7 @@ function ($window, matrixFactory) {
           d.angle = (d.startAngle + d.endAngle) / 2;
           var r = "rotate(" + (d.angle * 180 / Math.PI - 90) + ")";
           var t = " translate(" + (innerRadius + 26) + ")";
-          return r + t + (d.angle > Math.PI ? " rotate(180)" : " rotate(0)"); 
+          return r + t + (d.angle > Math.PI ? " rotate(180)" : " rotate(0)");
         })
         .attr("text-anchor", function (d) {
           return d.angle > Math.PI ? "end" : "begin";
@@ -185,7 +185,7 @@ function ($window, matrixFactory) {
     }
 
     resize();
-      
+
     $window.addEventListener("resize", function () {
       resize();
     });
@@ -197,6 +197,3 @@ function ($window, matrixFactory) {
   };
 
 }]);
-
-
-

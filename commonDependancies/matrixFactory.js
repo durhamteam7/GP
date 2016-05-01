@@ -1,4 +1,4 @@
-angular.module('app').factory('matrixFactory', [function () {
+angular.module('userDash').factory('matrixFactory', [function () {
 
   var chordMatrix = function () {
 
@@ -121,7 +121,7 @@ angular.module('app').factory('matrixFactory', [function () {
 
     matrix.groupTween = function (d3_arc) {
       return function (d, i) {
-        var tween; 
+        var tween;
         var cached = layoutCache.groups[d._id];
 
         if (cached) {
@@ -171,11 +171,11 @@ angular.module('app').factory('matrixFactory', [function () {
           }
 
           tween = d3.interpolateObject({
-            source: { 
+            source: {
               startAngle: cached.source.startAngle,
               endAngle: cached.source.startAngle
             },
-            target: { 
+            target: {
               startAngle: cached.target.startAngle,
               endAngle: cached.target.startAngle
             }
@@ -206,7 +206,7 @@ angular.module('app').factory('matrixFactory', [function () {
         m.gdata  = g.data;
         m.gvalue = d.value;
       }
-      m.mtotal = _matrix.reduce(function (m1, n1) { 
+      m.mtotal = _matrix.reduce(function (m1, n1) {
         return m1 + n1.reduce(function (m2, n2) { return m2 + n2; }, 0);
       }, 0);
       return m;

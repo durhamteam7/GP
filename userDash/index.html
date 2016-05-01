@@ -19,6 +19,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.js"></script>
     <script src="http://bouil.github.io/angular-google-chart/ng-google-chart.js"></script>
     <script src="../commonDependancies/checklistModel.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.1/foundation.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
     <script src="https://cdn.rawgit.com/diosney/angular-bootstrap-datetimepicker-directive/master/angular-bootstrap-datetimepicker-directive.js"></script>
@@ -177,6 +181,7 @@
                 <ul class="nav navbar-nav">
                     <li ng-class="{ active: isActive('/map')}"><a ui-sref="map">Map <span class="sr-only">(current)</span></a></li>
                     <li ng-class="{ active: isActive('/slideshow')}"><a ui-sref="slideshow">Slideshow</a></li>
+                    <li ng-class="{ active: isActive('/chord')}"><a ui-sref="chord">Chord Diagram</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="javascript:void()" ng-click="timelineOpen=!timelineOpen"><span ng-if="isActive('/map')" class="glyphicon glyphicon-calendar"></span></a></li>

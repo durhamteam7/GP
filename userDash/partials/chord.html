@@ -1,0 +1,27 @@
+<div ng-cloak ng-controller="chordController" style="color:white !important">
+  <style>
+  text{
+    fill:white !important
+  }
+  </style>
+  <div class="container">
+      <div class="row">
+          <div class="col-xs-8 col-xs-offset-2" role="content">
+            <article>
+              <chord-diagram></chord-diagram>
+              <h6 class="text-center">Mammal association </h6>
+            </article>
+          </div>
+      </div>
+          <div class="row">
+          <fieldset id="tooltip" class="row secondary">
+            <div class="col-xs-12 columns">
+              <h6>{{ tooltip.tvalue }} occurances of{{ tooltip.sname }} in the same site as  {{ tooltip.tname }}
+            </div>
+          </fieldset>
+      </div>
+  </div>
+  <script>
+    $(document).foundation();
+  </script>
+</div>
