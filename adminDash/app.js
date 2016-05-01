@@ -476,7 +476,7 @@ adminApp.controller('GraphsController', ['$scope', '$timeout', 'ajax', 'sharedPr
                   }
               }
           }
-        }, 500);
+        }, 700);
     };
 
     /**
@@ -485,7 +485,7 @@ adminApp.controller('GraphsController', ['$scope', '$timeout', 'ajax', 'sharedPr
      * @type string
      * @description CSS styles to be passed to GoogleCharts module
      */
-    $scope.chartStyle = "width:800px;height:300px;";
+    $scope.chartStyle = "height:300px;width:100%";
 
     /**
      * @memberof GraphsController
@@ -517,13 +517,8 @@ adminApp.controller('GraphsController', ['$scope', '$timeout', 'ajax', 'sharedPr
             },
             "hAxis": {
                 "title": "Yaxis"
-            },
-            "chartArea": {
-              "left": 20,
-              "top": 0,
-              "width": '300px',
-              "height": '100px'
             }
+
         },
         "formatters": {}
     };
