@@ -40,7 +40,7 @@ var mapController = function($scope, $filter) {
         html += '<a href="' + url + '" target="_blank"><img width=200 src="' + url + '"></a></div>';
         html += '<b>' + $scope.getOptionName(item.Classification[0].species) + '</b><br>';
         html += item.Site.site_name + '<br>';
-        html += $filter('date')(item.taken, 'dd/MM/yyyy HH:mm') + '';
+        html += $filter('date')(item.Photo.taken, 'dd/MM/yyyy HH:mm') + '';
         return html;
     };
 
