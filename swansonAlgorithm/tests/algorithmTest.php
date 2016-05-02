@@ -145,12 +145,12 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                         array('species' => 'badger'), );
         $res5 = array('deer' => 2, 'badger' => 1);
 
-        $this->assertEquals(array(), self::$s->tally_votes('species', $empty_array));
-        $this->assertEquals($res, self::$s->tally_votes('species', $array));
-        $this->assertEquals($res2, self::$s->tally_votes('species', $array2));
-        $this->assertEquals($res3, self::$s->tally_votes('species', $array3));
-        $this->assertEquals($res4, self::$s->tally_votes('species', $array4));
-        $this->assertEquals($res5, self::$s->tally_votes('species', $array5));
+        $this->assertEquals(array(), self::$s->tallyVotes('species', $empty_array));
+        $this->assertEquals($res, self::$s->tallyVotes('species', $array));
+        $this->assertEquals($res2, self::$s->tallyVotes('species', $array2));
+        $this->assertEquals($res3, self::$s->tallyVotes('species', $array3));
+        $this->assertEquals($res4, self::$s->tallyVotes('species', $array4));
+        $this->assertEquals($res5, self::$s->tallyVotes('species', $array5));
     }
 
     public function testHighest_vote()
@@ -176,12 +176,12 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                         array('species' => 'badger'), );
         $res5 = array('deer' => 2, 'badger' => 1);
 
-        $this->assertEquals(0, self::$s->highest_vote('species', $empty_array));
-        $this->assertEquals(1, self::$s->highest_vote('species', $array));
-        $this->assertEquals(1, self::$s->highest_vote('species', $array2));
-        $this->assertEquals(2, self::$s->highest_vote('species', $array3));
-        $this->assertEquals(1, self::$s->highest_vote('species', $array4));
-        $this->assertEquals(2, self::$s->highest_vote('species', $array5));
+        $this->assertEquals(0, self::$s->highestVote('species', $empty_array));
+        $this->assertEquals(1, self::$s->highestVote('species', $array));
+        $this->assertEquals(1, self::$s->highestVote('species', $array2));
+        $this->assertEquals(2, self::$s->highestVote('species', $array3));
+        $this->assertEquals(1, self::$s->highestVote('species', $array4));
+        $this->assertEquals(2, self::$s->highestVote('species', $array5));
     }
 
     public function testDecide_on()
@@ -207,21 +207,21 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                         array('species' => 'badger'), );
         $res5 = array('deer' => 2, 'badger' => 1);
 
-        $this->assertEquals('', self::$s->decide_on('species', $empty_array));
-        $this->assertEquals('', self::$s->decide_on('species', $array));
-        $this->assertEquals('badger', self::$s->decide_on('species', $array2));
-        $this->assertEquals('dog', self::$s->decide_on('species', $array3));
-        $this->assertEquals('cat', self::$s->decide_on('species', $array4));
-        $this->assertEquals('deer', self::$s->decide_on('species', $array5));
+        $this->assertEquals('', self::$s->decideOn('species', $empty_array));
+        $this->assertEquals('', self::$s->decideOn('species', $array));
+        $this->assertEquals('badger', self::$s->decideOn('species', $array2));
+        $this->assertEquals('dog', self::$s->decideOn('species', $array3));
+        $this->assertEquals('cat', self::$s->decideOn('species', $array4));
+        $this->assertEquals('deer', self::$s->decideOn('species', $array5));
     }
 
     public function testCalculate_pielou()
     {
         $empty_array = array();
-        $this->assertEquals(0, self::$s->calculate_pielou($empty_array));
+        $this->assertEquals(0, self::$s->calculatePielou($empty_array));
 
         $array = array(0);
-        $this->assertEquals(0, self::$s->calculate_pielou($array));
+        $this->assertEquals(0, self::$s->calculatePielou($array));
 
         $array2 = array(2, 3, 4, 2);
         $lns = log(4);
@@ -231,7 +231,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                           (2 / 11) * log(2 / 11), );
         $r = -array_sum($plnplist);
         $res = $r / $lns;
-        $this->assertEquals($res, self::$s->calculate_pielou($array2));
+        $this->assertEquals($res, self::$s->calculatePielou($array2));
 
         $array3 = array(2, 2, 2, 2);
         $lns2 = log(4);
@@ -241,7 +241,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                            (2 / 8) * log(2 / 8), );
         $r2 = -array_sum($plnplist2);
         $res2 = $r2 / $lns2;
-        $this->assertEquals(1, self::$s->calculate_pielou($array3));
+        $this->assertEquals(1, self::$s->calculatePielou($array3));
     }
 
     public function testFraction_support()
@@ -251,10 +251,10 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $array2 = array(0 => 1, 1 => 1, 2 => 1);
         $array3 = array(1 => 1, 2 => 1, 3 => 2);
 
-        $this->assertEquals(0, self::$s->fraction_support($empty_array));
-        $this->assertEquals(1, self::$s->fraction_support($array));
-        $this->assertEquals(1 / 3, self::$s->fraction_support($array2));
-        $this->assertEquals(0.5, self::$s->fraction_support($array3));
+        $this->assertEquals(0, self::$s->fractionSupport($empty_array));
+        $this->assertEquals(1, self::$s->fractionSupport($array));
+        $this->assertEquals(1 / 3, self::$s->fractionSupport($array2));
+        $this->assertEquals(0.5, self::$s->fractionSupport($array3));
     }
 
     public function testFraction_blanks()
@@ -264,10 +264,10 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $array2 = array(86 => 1);
         $array3 = array(0 => 1, 1 => 1, 86 => 2);
 
-        $this->assertEquals(0, self::$s->fraction_blanks($empty_array));
-        $this->assertEquals(0, self::$s->fraction_blanks($array));
-        $this->assertEquals(1, self::$s->fraction_blanks($array2));
-        $this->assertEquals(0.5, self::$s->fraction_blanks($array3));
+        $this->assertEquals(0, self::$s->fractionBlanks($empty_array));
+        $this->assertEquals(0, self::$s->fractionBlanks($array));
+        $this->assertEquals(1, self::$s->fractionBlanks($array2));
+        $this->assertEquals(0.5, self::$s->fractionBlanks($array3));
     }
 
     public function testGetUserCorrectnessRate()
