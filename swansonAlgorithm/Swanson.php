@@ -215,20 +215,20 @@ class Swanson
             }
 
             $photo_id = $subject[0]['photo_id'];
-            $number_of_classifications = count($subject);
+            $num_classifications = count($subject);
 
             /* Decide the winners */
-            $species = $this->decide_on('species', $subject);
-            $gender = $this->decide_on('gender', $subject);
-            $age = $this->decide_on('age', $subject);
-            $number = $this->decide_on('number', $subject);
+            $species = $this->decideOn('species', $subject);
+            $gender = $this->decideOn('gender', $subject);
+            $age = $this->decideOn('age', $subject);
+            $number = $this->decideOn('number', $subject);
             $retired = false;
 
 						/**
              * First Retirement Condition - Blank
              * Are the 5 first classifications blank?
 						 */
-            if ($number_of_classifications == $this->blank_condition) {
+            if ($num_classifications == $this->blank_condition) {
                 $all_blank = true;
                 foreach ($subject as $c) {
                     if ($c['species'] != $this->blank_animal) {
@@ -244,7 +244,7 @@ class Swanson
              * Second Retirement Condition - Consensus
              * Are there 10 agreeing classifications? (Including blanks)
 						 */
-            if ($this->highest_vote('species', $subject) >= $this->consensus_condition) {
+            if ($this->highestVote('species', $subject) >= $this->consensus_condition) {
                 $retired = true;
             }
 
@@ -252,13 +252,13 @@ class Swanson
              * Third Retirement Condition - Complete
              * Are there 25 or more classifications?
 						 */
-            if ($number_of_classifications >= $this->complete_condition) {
+            if ($num_classifications >= $this->complete_condition) {
                 $retired = true;
             }
 
-            $votes = $this->tally_votes('species', $subject);
+            $votes = $this->tallyVotes('species', $subject);
             $nlist = array_values($votes);
-            $evenness = $this->calculate_pielou($nlist);
+            $evenness = $this->calculatePielou($nlist);
 
 						/**
              * Fourth Retirement Condition - No Consensus
@@ -269,10 +269,10 @@ class Swanson
             }
 
 						/* calculate the fraction support */
-						$fraction_support = $this->fraction_support($votes);
+						$fraction_support = $this->fractionSupport($votes);
 
 						/* calculate the fraction blanks */
-						$fraction_blanks = $this->fraction_blanks($votes);
+						$fraction_blanks = $this->fractionBlanks($votes);
 
             /**
 						 * The array 'output' will store all the specification values of the image
@@ -281,7 +281,7 @@ class Swanson
             $output = array(
                 'photo_id' => $photo_id,
                 'retired' => $retired,
-                'number_of_classifications' => $number_of_classifications,
+                'number_of_classifications' => $num_classifications,
                 'species' => $species,
                 'gender' => $gender,
                 'age' => $age,
@@ -307,7 +307,7 @@ class Swanson
          * for the photos which have yet to be retired (decided).
          */
 
-        $i = 0; /* A counter to keep track of the number of images we classify. */
+        $count = 0; /* A counter to keep track of the number of images we classify. */
         $updateClassifications = 'INSERT INTO Classification '.
                                 '(photo_id, number_of_classifications, species, gender, age, number, evenness, fraction_support, fraction_blanks, timestamp) '.
                                 'VALUES ';
@@ -335,7 +335,7 @@ class Swanson
                 $updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now()),";
 
 								/* Increment after every classification of image */
-                ++$i;
+                ++$count;
             }
         }
 
@@ -348,11 +348,9 @@ class Swanson
          * if it wasn't, and echo the appropriate message depending on the answer.
          */
 
-        if ($i > 0) {
+        if ($count > 0) {
             if ($this->mysqli->query($updateClassifications) === true) {
                 /* echo "Record updated successfully\n"; */
-            } else {
-                /* echo "Error updating record: " . $this->mysqli->error . "\n"; */
             }
         }
     }
@@ -365,7 +363,7 @@ class Swanson
      *
      * @return array A dictionary with species as the key and the number of votes the species received as value
      */
-    public function tally_votes($key, $subject)
+    public function tallyVotes($key, $subject)
     {
         $vote_table = array();
 
@@ -394,9 +392,9 @@ class Swanson
      *
      * @return int The highest number of votes an element has received
      */
-    public function highest_vote($key, $subject)
+    public function highestVote($key, $subject)
     {
-        $votes = $this->tally_votes($key, $subject);
+        $votes = $this->tallyVotes($key, $subject);
         if (count($votes) > 0) {
             arsort($votes);
             $keys = array_keys($votes);
@@ -414,9 +412,9 @@ class Swanson
      *
      * @return string of the winning species|gender|age|number for said key
      */
-    public function decide_on($key, $subject)
+    public function decideOn($key, $subject)
     {
-        $votes = $this->tally_votes($key, $subject);
+        $votes = $this->tallyVotes($key, $subject);
         $winner = '';
         if (count($votes) > 0) {
             arsort($votes);
@@ -435,7 +433,7 @@ class Swanson
      *
      * @return float pielou evenness index or 0 for unanimous vote
      */
-    public function calculate_pielou($nlist)
+    public function calculatePielou($nlist)
     {
         if (count($nlist) < 2) {
             return 0;
@@ -466,7 +464,7 @@ class Swanson
      *
      * @return float The fraction of support for the most voted answer
      */
-    public function fraction_support($votes)
+    public function fractionSupport($votes)
     {
         if (count($votes) <= 0) {
             return 0;
@@ -491,22 +489,21 @@ class Swanson
      *
      * @return float the fraction of votes that are blank
      */
-    public function fraction_blanks($votes)
+    public function fractionBlanks($votes)
     {
         if (count($votes) <= 0) {
             return 0;
         }
 
         $sum = array_sum(array_values($votes));
+        $num = 0;
 
         if (array_key_exists($this->blank_animal, $votes)) {
-            $n = $votes[$this->blank_animal];
-        } else {
-            $n = 0;
+            $num = $votes[$this->blank_animal];
         }
 
         if ($sum != 0) {
-            return $n / $sum;
+            return $num / $sum;
         }
         return 0;
     }
@@ -676,9 +673,6 @@ class Swanson
             while ($row = $result->fetch_assoc()) {
                 $gold_standard[] = $row;
             }
-        } else {
-            /* echo "0 results"; */
-            /* echo "\n"; */
         }
 
         return $gold_standard;
@@ -708,9 +702,6 @@ class Swanson
             while ($row = $result->fetch_assoc()) {
                 $classifications[$row['photo_id']] = $row['species'];
             }
-        } else {
-            echo '0 results <br>';
-            echo "\n";
         }
 
         /**
@@ -724,7 +715,7 @@ class Swanson
         $different = 0;
         $notClassified = 0;
 
-        $different_classifications = array();
+        $dif_classifications = array();
 
         for ($x = 0; $x < count($gold_standard); ++$x) {
             $photo_id = $gold_standard[$x]['photo_id'];
@@ -735,7 +726,7 @@ class Swanson
                         ++$same;
                     } else {
                         ++$different;
-                        $different_classifications[] = $photo_id;
+                        $dif_classifications[] = $photo_id;
                     }
                 } else {
                     ++$notClassified;
@@ -796,12 +787,12 @@ class Swanson
             $gender_rate = $this->getUserCorrectnessRate('gender', $subject, $classifications);
             $age_rate = $this->getUserCorrectnessRate('age', $subject, $classifications);
             $number_rate = $this->getUserCorrectnessRate('number', $subject, $classifications);
-            $number_of_classifications = count($subject);
+            $num_classifications = count($subject);
 
 						/**
              * echo "$person_id has $species_rate, $gender_rate, $age_rate, $number_rate";
              * echo "\n";
-             * echo "on " . $number_of_classifications . " classifications";
+             * echo "on " . $num_classifications . " classifications";
              * echo "\n";
 						 */
 
@@ -815,7 +806,7 @@ class Swanson
                     'gender_rate' => $gender_rate,
                     'age_rate' => $age_rate,
                     'number_rate' => $number_rate,
-                    'number_of_classifications' => $number_of_classifications,
+                    'number_of_classifications' => $num_classifications,
             );
 
             /**
@@ -833,7 +824,7 @@ class Swanson
          * database via the 'updatePersonStats' variable.
          */
 
-        $i = 0;
+        $count = 0;
 
         $updatePersonStats = 'INSERT INTO PersonStats '.
                               '(person_id, species_rate, gender_rate, age_rate, number_rate, number_of_classifications) '.
@@ -855,7 +846,7 @@ class Swanson
              * Concatenating properties of subject (including person_id) with the current contents of the database.
              */
             $updatePersonStats .= "('$thePerson_id', '$theSpecies_rate', '$theGender_rate', '$theAge_rate', '$theNumber_rate', '$theNumber_of_classifications'),";
-            ++$i;
+            ++$count;
         }
         /* Remove the last comma */
         $updatePersonStats = substr($updatePersonStats, 0, -1).'';
@@ -868,11 +859,9 @@ class Swanson
          * if it wasn't, and echo the appropriate message depending on the answer.
          */
 
-        if ($i > 0) {
+        if ($count > 0) {
             if ($this->mysqli->query($updatePersonStats) === true) {
                 /* echo "Record updated successfully\n"; */
-            } else {
-                /* echo 'Error updating record: '.$this->mysqli->error."\n"; */
             }
         }
     }
@@ -899,8 +888,7 @@ class Swanson
             if (array_key_exists($photo_id, $classifications)) {
                 $c = $classifications[$photo_id];
             }
-            $sSpecies = $s[$key];
-            $cSpecies = $c[$key];
+
             if ($c != null) {
                 if ($s[$key] == $c[$key]) {
                     $correct += 1;
@@ -946,16 +934,12 @@ class Swanson
       	') ENGINE=InnoDB DEFAULT CHARSET=latin1;';
         if ($this->mysqli->query($createTable) === true) {
             /* echo "Classification table created successfully\n"; */
-        } else {
-            /* echo "Error creating Classification table: " . $this->mysqli->error . "\n"; */
         }
 
         $alterTable = 'ALTER TABLE `Classification` '.
                 'ADD CONSTRAINT `Classification_ibfk_1` FOREIGN KEY (`photo_id`) REFERENCES `Photo` (`photo_id`) ON DELETE CASCADE ON UPDATE CASCADE;';
         if ($this->mysqli->query($alterTable) === true) {
             /* echo "Classification table altered successfully\n"; */
-        } else {
-            /* echo "Error altering Classification table: " . $this->mysqli->error . "\n"; */
         }
 
         /* Creating PersonStats table */
@@ -968,8 +952,6 @@ class Swanson
         ');';
         if ($this->mysqli->query($createTable) === true) {
             /* echo "PersonStats table created successfully\n"; */
-        } else {
-            /* echo "Error creating PersonStats table: " . $this->mysqli->error . "\n"; */
         }
 
         /* Creating AlgorithmSettings table */
@@ -982,8 +964,6 @@ class Swanson
         ');';
         if ($this->mysqli->query($createTable) === true) {
             /* echo "AlgorithmSettings table created successfully\n"; */
-        } else {
-            /* echo "Error creating AlgorithmSettings table: " . $this->mysqli->error . "\n"; */
         }
 
         /* Creating Favourites table */
@@ -993,8 +973,6 @@ class Swanson
         ');';
         if ($this->mysqli->query($createTable) === true) {
             /* echo "Favourites table created successfully\n"; */
-        } else {
-            /* echo "Error creating Favourites table: " . $this->mysqli->error . "\n"; */
         }
     }
 
@@ -1010,9 +988,6 @@ class Swanson
 
         if ($this->mysqli->query($emptyTable) === true) {
             /* echo "Record updated successfully"; */
-            /* echo "\n"; */
-        } else {
-            /* echo "Error updating record: " . $this->mysqli->error; */
             /* echo "\n"; */
         }
     }
