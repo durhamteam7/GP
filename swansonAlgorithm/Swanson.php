@@ -47,57 +47,57 @@ class Swanson
      *
      * @var int
      */
-    private $blank_condition;        /* 5 in Swanson */
+    private $blankCondition;        /* 5 in Swanson */
     /**
      * The number of classifications that need to agree to retire photo.
      *
      * @var int
      */
-    private $consensus_condition;    /* 10 in Swanson */
+    private $consensusCondition;    /* 10 in Swanson */
     /**
      * The maximum number of classifications needed before we retire photo.
      *
      * @var int
      */
-    private $complete_condition;     /* 25 in Swanson */
+    private $completeCondition;     /* 25 in Swanson */
     /**
      * Defines a minimum evenness value: any photo with a greater than or equal evenness will be retired.
      *
      * @var float
      */
-    private $agreement_condition;    /* 1.0 in Swanson */
+    private $agreementCondition;    /* 1.0 in Swanson */
 
     /**
      * The database value for a blank classification.
      *
      * @var int
      */
-    private $blank_animal = 86;
+    private $blankAnimal = 86;
 
     /**
      * Determines whether we want to limit our animal select statement or not.
      *
      * @var bool
      */
-    private $animal_limiting = false; /* will be false in the end */
+    private $animalLimiting = false; /* will be false in the end */
     /**
      * The limit on the animal select query.
      *
      * @var int
      */
-    private $get_animal_limit = 1;
+    private $getAnimalLimit = 1;
     /**
      * Determines whether we want to limit our photo select statement or not.
      *
      * @var bool
      */
-    private $photo_limiting = false; /* will be false in the end */
+    private $photoLimiting = false; /* will be false in the end */
     /**
      * The limit on the photo select query.
      *
      * @var int
      */
-    private $get_photo_limit = 1;
+    private $getPhotoLimit = 1;
 
     public function __construct()
     {
@@ -134,18 +134,18 @@ class Swanson
             $servername = 'mysql.dur.ac.uk';
             $username = 'nobody';
             $password = '';
-            $db = 'Cljdw32_MammalWeb';
+            $database = 'Cljdw32_MammalWeb';
 
             /* Create connection */
-            $this->mysqli = new mysqli($servername, $username, $password, $db);
+            $this->mysqli = new mysqli($servername, $username, $password, $database);
         } else if ($this->env == 1) {
             $servername = 'db4free.net';
             $username = 'mammalweb';
             $password = 'aliSwans0n';
-            $db = 'mammalweb';
+            $database = 'mammalweb';
 
             /* Create connection */
-            $this->mysqli = new mysqli($servername, $username, $password, $db);
+            $this->mysqli = new mysqli($servername, $username, $password, $database);
         }
 
         /* Check connection */
@@ -172,15 +172,15 @@ class Swanson
               }
 
               /* Set our variables to the values in the DB */
-              $this->blank_condition = $settings['blank_condition'];
-              $this->consensus_condition = $settings['consensus_condition'];
-              $this->complete_condition = $settings['complete_condition'];
-              $this->agreement_condition = $settings['agreement_condition'];
+              $this->blankCondition = $settings['blank_condition'];
+              $this->consensusCondition = $settings['consensus_condition'];
+              $this->completeCondition = $settings['complete_condition'];
+              $this->agreementCondition = $settings['agreement_condition'];
           }
     }
 
     public function getAlgorithmSettings() {
-        return array($this->blank_condition, $this->consensus_condition, $this->complete_condition, $this->agreement_condition);
+        return array($this->blankCondition, $this->consensusCondition, $this->completeCondition, $this->agreementCondition);
     }
 
     public function closeDB()
@@ -196,10 +196,10 @@ class Swanson
     public function main($data)
     {
         /**
-				 * This array 'all_outputs' will contain all arrays of the image
+				 * This array 'allOutputs' will contain all arrays of the image
          * values once the while loop below has completed.
 				 */
-        $all_outputs = array();
+        $allOutputs = array();
 
         while (count($data) > 0) {
             /* This loop populates the 'subject' variable with all classifications for one photo */
@@ -215,7 +215,7 @@ class Swanson
             }
 
             $photo_id = $subject[0]['photo_id'];
-            $num_classifications = count($subject);
+            $numClassifications = count($subject);
 
             /* Decide the winners */
             $species = $this->decideOn('species', $subject);
@@ -228,14 +228,14 @@ class Swanson
              * First Retirement Condition - Blank
              * Are the 5 first classifications blank?
 						 */
-            if ($num_classifications == $this->blank_condition) {
-                $all_blank = true;
+            if ($numClassifications == $this->blankCondition) {
+                $allBlank = true;
                 foreach ($subject as $c) {
-                    if ($c['species'] != $this->blank_animal) {
-                        $all_blank = false;
+                    if ($c['species'] != $this->blankAnimal) {
+                        $allBlank = false;
                     }
                 }
-                if ($all_blank) {
+                if ($allBlank) {
                     $retired = true;
                 }
             }
@@ -244,7 +244,7 @@ class Swanson
              * Second Retirement Condition - Consensus
              * Are there 10 agreeing classifications? (Including blanks)
 						 */
-            if ($this->highestVote('species', $subject) >= $this->consensus_condition) {
+            if ($this->highestVote('species', $subject) >= $this->consensusCondition) {
                 $retired = true;
             }
 
@@ -252,7 +252,7 @@ class Swanson
              * Third Retirement Condition - Complete
              * Are there 25 or more classifications?
 						 */
-            if ($num_classifications >= $this->complete_condition) {
+            if ($numClassifications >= $this->completeCondition) {
                 $retired = true;
             }
 
@@ -264,7 +264,7 @@ class Swanson
              * Fourth Retirement Condition - No Consensus
              * Is the agreement too low?
 						 */
-            if ($evenness >= $this->agreement_condition) {
+            if ($evenness >= $this->agreementCondition) {
                 $retired = false;
             }
 
@@ -281,7 +281,7 @@ class Swanson
             $output = array(
                 'photo_id' => $photo_id,
                 'retired' => $retired,
-                'number_of_classifications' => $num_classifications,
+                'number_of_classifications' => $numClassifications,
                 'species' => $species,
                 'gender' => $gender,
                 'age' => $age,
@@ -291,12 +291,12 @@ class Swanson
                 'fraction_blanks' => $fraction_blanks,
             );
             /**
-             * The array 'all_outputs' will be the container for each image and therefore its
+             * The array 'allOutputs' will be the container for each image and therefore its
              * properties. By keeping all the images and their respective properties in this array,
              * we will be able to access and tranfer all properties and values of each feature at once
              * and insert them into our database more efficiently.
              */
-            array_push($all_outputs, $output);
+            array_push($allOutputs, $output);
         }
 
         /**
@@ -311,7 +311,7 @@ class Swanson
         $updateClassification = 'INSERT INTO Classification '.
                                 '(photo_id, number_of_classifications, species, gender, age, number, evenness, fraction_support, fraction_blanks, timestamp) '.
                                 'VALUES ';
-        foreach ($all_outputs as $output) {
+        foreach ($allOutputs as $output) {
         /**
          * Retired images will have all their properties stored in local variables and then contatenated into the
          * 'updateClassification' variable's contents to be stored in the database.
@@ -319,20 +319,20 @@ class Swanson
             if ($output['retired']) {
                 /* Will only classify 'retired' photos */
 
-                $Cphoto_id = $output['photo_id'];
+                $CPhotoID = $output['photo_id'];
                 $CNumClassifications = $output['number_of_classifications'];
-                $Cspecies = $output['species'];
-                $Cgender = $output['gender'];
-                $Cage = $output['age'];
-                $Cnumber = $output['number'];
-                $Cevenness = $output['evenness'];
+                $CSpecies = $output['species'];
+                $CGender = $output['gender'];
+                $CAge = $output['age'];
+                $CNumber = $output['number'];
+                $CEvenness = $output['evenness'];
                 $CFractionSupport = $output['fraction_support'];
-                $Cfraction_blanks = $output['fraction_blanks'];
+                $CFractionBlanks = $output['fraction_blanks'];
 
                 /**
                  * Concatenating properties of image (including ID) with the current contents of the database.
                  */
-                $updateClassification .= "('$Cphoto_id', '$CNumClassifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$CFractionSupport', '$Cfraction_blanks', now()),";
+                $updateClassification .= "('$CPhotoID', '$CNumClassifications', '$CSpecies', '$CGender', '$CAge', '$CNumber', '$CEvenness', '$CFractionSupport', '$CFractionBlanks', now()),";
 
 								/* Increment after every classification of image */
                 ++$count;
@@ -365,20 +365,20 @@ class Swanson
      */
     public function tallyVotes($key, $subject)
     {
-        $vote_table = array();
+        $voteTable = array();
 
         foreach ($subject as $entry) {
             if (array_key_exists($key, $entry)) {
                 $value = $entry[$key];
 
-                if (!array_key_exists($value, $vote_table)) {
-                    $vote_table[$value] = 0;
+                if (!array_key_exists($value, $voteTable)) {
+                    $voteTable[$value] = 0;
                 }
 
-                $vote_table[$value] = $vote_table[$value] + 1;
+                $voteTable[$value] = $voteTable[$value] + 1;
             }
         }
-        return $vote_table;
+        return $voteTable;
     }
 
     /**
@@ -471,9 +471,9 @@ class Swanson
 
         arsort($votes);
         $keys = array_keys($votes);
-        $first_value = $votes[$keys[0]];
+        $firstValue = $votes[$keys[0]];
         if ($sum != 0) {
-            return $first_value / $sum;
+            return $firstValue / $sum;
         }
 				return 0;
     }
@@ -495,8 +495,8 @@ class Swanson
         $sum = array_sum(array_values($votes));
         $num = 0;
 
-        if (array_key_exists($this->blank_animal, $votes)) {
-            $num = $votes[$this->blank_animal];
+        if (array_key_exists($this->blankAnimal, $votes)) {
+            $num = $votes[$this->blankAnimal];
         }
 
         if ($sum != 0) {
@@ -564,23 +564,23 @@ class Swanson
     {
         /* QUERY */
         $sql = 'SELECT * FROM Photo ORDER BY photo_id ASC';
-        if ($this->photo_limiting) {
-            $sql .= " LIMIT $this->get_photo_limit";
+        if ($this->photoLimiting) {
+            $sql .= " LIMIT $this->getPhotoLimit";
         }
         $sql .= ';';
 
         /* execute query */
         $result = $this->mysqli->query($sql);
 
-        $photo_ids = array();
+        $photoIDs = array();
 
         /* process result */
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                $photo_ids[] = $row['photo_id'];
+                $photoIDs[] = $row['photo_id'];
             }
         }
-        return $photo_ids;
+        return $photoIDs;
     }
 
     /**
@@ -597,31 +597,31 @@ class Swanson
         /* execute query */
         $result = $this->mysqli->query($sql);
 
-        $person_stats = array();
+        $personStats = array();
 
         /* process result */
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                $person_stats[] = $row;
+                $personStats[] = $row;
             }
         }
-        return $person_stats;
+        return $personStats;
     }
 
     /**
      * Gets information about all the animals.
      *
      * @param array[] $classified all the classified information
-     * @param array[] $photo_ids  photo IDs of the images
+     * @param array[] $photoIDs  photo IDs of the images
      *
      * @return array[] containing all of the information about the animlas
      */
-    public function getAnimals($classified, $photo_ids)
+    public function getAnimals($classified, $photoIDs)
     {
         /* QUERY */
             $sql = 'SELECT * FROM Animal ORDER BY photo_id ASC';
-        if ($this->animal_limiting) {
-            $sql .= " LIMIT $this->get_animal_limit";
+        if ($this->animalLimiting) {
+            $sql .= " LIMIT $this->getAnimalLimit";
         }
         $sql .= ';';
 
@@ -636,7 +636,7 @@ class Swanson
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     if (!in_array($row['photo_id'], $classified)) {
-                        if (in_array($row['photo_id'], $photo_ids)) {
+                        if (in_array($row['photo_id'], $photoIDs)) {
                             $data[] = $row;
                         }
                     }
@@ -756,8 +756,8 @@ class Swanson
             return $item1['person_id'] < $item2['person_id'] ? -1 : 1;
         });
 
-        /* This array 'all_outputs' will contain all arrays of the $subject once the while loop below has completed. */
-        $all_outputs = array();
+        /* This array 'allOutputs' will contain all arrays of the $subject once the while loop below has completed. */
+        $allOutputs = array();
 
         while (count($all_data) > 0) {
 						/**
@@ -779,12 +779,12 @@ class Swanson
             $gender_rate = $this->getUserCorrectnessRate('gender', $subject, $classifications);
             $age_rate = $this->getUserCorrectnessRate('age', $subject, $classifications);
             $number_rate = $this->getUserCorrectnessRate('number', $subject, $classifications);
-            $num_classifications = count($subject);
+            $numClassifications = count($subject);
 
 						/**
              * echo "$person_id has $species_rate, $gender_rate, $age_rate, $number_rate";
              * echo "\n";
-             * echo "on " . $num_classifications . " classifications";
+             * echo "on " . $numClassifications . " classifications";
              * echo "\n";
 						 */
 
@@ -798,16 +798,16 @@ class Swanson
                     'gender_rate' => $gender_rate,
                     'age_rate' => $age_rate,
                     'number_rate' => $number_rate,
-                    'number_of_classifications' => $num_classifications,
+                    'number_of_classifications' => $numClassifications,
             );
 
             /**
-             * The array 'all_outputs' will be the container for each $output and therefore its
+             * The array 'allOutputs' will be the container for each $output and therefore its
              * properties. By keeping all the $output arrays and their respective properties in this array,
              * we will be able to access and tranfer all properties and values of each feature at once
              * and insert them into our database more efficiently.
              */
-            array_push($all_outputs, $output);
+            array_push($allOutputs, $output);
         }
 
         /**
@@ -822,7 +822,7 @@ class Swanson
                               '(person_id, species_rate, gender_rate, age_rate, number_rate, number_of_classifications) '.
                               'VALUES ';
 
-        foreach ($all_outputs as $output) {
+        foreach ($allOutputs as $output) {
             /**
              * Outputs will have all their properties stored in local variables and then contatenated into the
              * 'updatePersonStats' variable's contents to be stored in the database.
@@ -904,7 +904,7 @@ class Swanson
      * Classifications contains: classifications_id, photo_id, species, gender, age, number,
      * evenness, fraction_support, fraction_blanks, timestamp, number_of_classifications
      *
-     * PersonStats contains: person_stats_id, person_id, species_rate, gender_rate, age_rate, number_rate
+     * PersonStats contains: personStats, person_id, species_rate, gender_rate, age_rate, number_rate
      */
     public function createTables()
     {
@@ -969,14 +969,14 @@ class Swanson
     }
 
     /**
-     * Clears all data from the table specified in $table_name
+     * Clears all data from the table specified in $tableName
      * and informs you of whether or not it has been successful.
      *
-     * @param string $table_name the name of the table to empty
+     * @param string $tableName the name of the table to empty
      */
-    public function emptyTable($table_name)
+    public function emptyTable($tableName)
     {
-        $emptyTable = "TRUNCATE $table_name;";
+        $emptyTable = "TRUNCATE $tableName;";
 
         if ($this->mysqli->query($emptyTable) === true) {
             /* echo "Record updated successfully"; */
