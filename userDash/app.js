@@ -347,6 +347,7 @@ var chordController = function ($scope) {
               }
             }
           }
+
           console.log(siteDict);
 
           console.log($scope.master);
@@ -366,6 +367,8 @@ userApp.controller('dataController', ['$scope', '$location', '$timeout', 'ajax',
 
     $scope.person_id = 310;
 
+    $scope.datasetSize = 100;
+
     $scope.results = []; //contains the results from the server
     $scope.options = {};
 
@@ -378,10 +381,14 @@ userApp.controller('dataController', ['$scope', '$location', '$timeout', 'ajax',
     $scope.filterOpen = {};
 
     $scope.$watch('filtersOpen', function(newVal, oldVal) {
-    $timeout(function() {
-        $scope.$broadcast('rzSliderForceRender');
-    },700);
-});
+        $timeout(function() {
+            $scope.$broadcast('rzSliderForceRender');
+        },700);
+    });
+
+    $scope.$watch('datasetSize', function(newVal, oldVal) {
+        $scope.getResults();
+    });
 
     //PAGE functions
     $scope.currentPage = 1;
@@ -407,7 +414,7 @@ userApp.controller('dataController', ['$scope', '$location', '$timeout', 'ajax',
 
     $scope.getResults = function() {
         $("#loader").fadeTo("fast", 0.7);
-        serverComm.getPhotos($scope.filters, 1, 100,true,$scope.person_id,$scope.isFavourites).success(function(data) {
+        serverComm.getPhotos($scope.filters, 1, $scope.datasetSize, true, $scope.person_id,$scope.isFavourites).success(function(data) {
             console.log("Data:", data);
             $scope.results = data.rows;
             $scope.numResults = data.count;

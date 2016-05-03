@@ -235,8 +235,8 @@
                     <li ng-class="{ active: isActive('/chord')}"><a ui-sref="chord">Chord Diagram</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="javascript:void()" ng-click="timelineOpen=!timelineOpen"><span ng-if="isActive('/map')" class="glyphicon glyphicon-calendar"></span></a></li>
-                    <li><a href="javascript:void()" ng-click="filtersOpen=!filtersOpen"><span class="glyphicon glyphicon-filter"></span></a></li>
+                    <li><a href="javascript:void()" ng-click="timelineOpen=!timelineOpen;"><span ng-if="isActive('/map')" class="glyphicon glyphicon-calendar"></span></a></li>
+                    <li><a href="javascript:void()" ng-click="filtersOpen=!filtersOpen;"><span class="glyphicon glyphicon-filter"></span></a></li>
                 </ul>
 
             </div>
@@ -332,6 +332,16 @@
         </div>
         </span>
         </span>
+
+        <div>
+            <h4>Dataset size</h4>
+            <select ng-model="datasetSize" class="form-control" id="sel1">
+                <option>10</option>
+                <option selected>100</option>
+                <option>1000</option>
+            </select>
+            <p class="help-block">Warning! Might take a long time to load</p>
+        </div>
     </div>
     </div>
 
