@@ -519,7 +519,7 @@ class Swanson
         /* execute query */
         $result = $this->mysqli->query($sql);
 
-        $classified = [];
+        $classified = array();
 
         /* process result */
         if ($result->num_rows > 0) {
@@ -544,7 +544,7 @@ class Swanson
         /* execute query */
         $result = $this->mysqli->query($sql);
 
-    		$classifications = [];
+    		$classifications = array();
 
         /* process result */
         if ($result->num_rows > 0) {
@@ -572,7 +572,7 @@ class Swanson
         /* execute query */
         $result = $this->mysqli->query($sql);
 
-        $photoIDs = [];
+        $photoIDs = array();
 
         /* process result */
         if ($result->num_rows > 0) {
@@ -597,7 +597,7 @@ class Swanson
         /* execute query */
         $result = $this->mysqli->query($sql);
 
-        $personStats = [];
+        $personStats = array();
 
         /* process result */
         if ($result->num_rows > 0) {
@@ -629,8 +629,8 @@ class Swanson
         $result = $this->mysqli->query($sql);
 
         if (count($result) > 0) {
-            $data = [];
-            $all_data = [];
+            $data = array();
+            $all_data = array();
 
             /* process result */
             if ($result->num_rows > 0) {
@@ -663,7 +663,7 @@ class Swanson
         /* execute query */
         $result = $this->mysqli->query($sql);
 
-        $gold_standard = [];
+        $gold_standard = array();
 
         /* process result */
         if ($result->num_rows > 0) {
@@ -692,7 +692,7 @@ class Swanson
         /* execute query */
         $result = $this->mysqli->query($sql);
 
-        $classifications = [];
+        $classifications = array();
 
         /* process result into an array with the photo_id as the key and the species as the value */
         if ($result->num_rows > 0) {
