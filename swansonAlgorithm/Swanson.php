@@ -519,7 +519,7 @@ class Swanson
         /* execute query */
         $result = $this->mysqli->query($sql);
 
-        $classified = [];
+        $classified = array();
 
         /* process result */
         if ($result->num_rows > 0) {
@@ -544,7 +544,7 @@ class Swanson
         /* execute query */
         $result = $this->mysqli->query($sql);
 
-    		$classifications = [];
+    		$classifications = array();
 
         /* process result */
         if ($result->num_rows > 0) {
@@ -572,7 +572,7 @@ class Swanson
         /* execute query */
         $result = $this->mysqli->query($sql);
 
-        $photo_ids = [];
+        $photo_ids = array();
 
         /* process result */
         if ($result->num_rows > 0) {
@@ -597,7 +597,7 @@ class Swanson
         /* execute query */
         $result = $this->mysqli->query($sql);
 
-        $person_stats = [];
+        $person_stats = array();
 
         /* process result */
         if ($result->num_rows > 0) {
@@ -629,8 +629,8 @@ class Swanson
         $result = $this->mysqli->query($sql);
 
         if (count($result) > 0) {
-            $data = [];
-            $all_data = [];
+            $data = array();
+            $all_data = array();
 
             /* process result */
             if ($result->num_rows > 0) {
@@ -643,7 +643,7 @@ class Swanson
                     $all_data[] = $row;
                 }
             }
-            return [$data, $all_data];
+            return array($data, $all_data);
         }
 
         return;
@@ -663,7 +663,7 @@ class Swanson
         /* execute query */
         $result = $this->mysqli->query($sql);
 
-        $gold_standard = [];
+        $gold_standard = array();
 
         /* process result */
         if ($result->num_rows > 0) {
@@ -692,7 +692,7 @@ class Swanson
         /* execute query */
         $result = $this->mysqli->query($sql);
 
-        $classifications = [];
+        $classifications = array();
 
         /* process result into an array with the photo_id as the key and the species as the value */
         if ($result->num_rows > 0) {
@@ -773,13 +773,6 @@ class Swanson
                     }
                 }
             }
-            /* sorts the subject based no the photo_id */
-            /*
-             * usort($subject, function ($item1, $item2) {
-             *     if ($item1['photo_id'] == $item2['photo_id']) return 0;
-             *     return $item1['photo_id'] < $item2['photo_id'] ? -1 : 1;
-             * });
-    				 */
 
             $person_id = $subject[0]['person_id'];
             $species_rate = $this->getUserCorrectnessRate('species', $subject, $classifications);

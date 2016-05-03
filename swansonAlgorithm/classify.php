@@ -35,3 +35,5 @@ $person_stats = $s->getPersonStats();
 
 # compare against fold standard set
 $s->goldClassifiedComparison();
+
+echo "algorithm finished";
