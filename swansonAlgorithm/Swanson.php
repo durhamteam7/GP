@@ -115,9 +115,9 @@ class Swanson
         return $this->env;
     }
 
-    public function setEnv($e)
+    public function setEnv($environment)
     {
-        $this->env = $e;
+        $this->env = $environment;
     }
 
     public function getConn()
@@ -319,20 +319,20 @@ class Swanson
             if ($output['retired']) {
                 /* Will only classify 'retired' photos */
 
-                $CPhotoID = $output['photo_id'];
-                $CNumClassifications = $output['number_of_classifications'];
-                $CSpecies = $output['species'];
-                $CGender = $output['gender'];
-                $CAge = $output['age'];
-                $CNumber = $output['number'];
-                $CEvenness = $output['evenness'];
-                $CFractionSupport = $output['fraction_support'];
-                $CFractionBlanks = $output['fraction_blanks'];
+                $cPhotoID = $output['photo_id'];
+                $cNumClassifications = $output['number_of_classifications'];
+                $cSpecies = $output['species'];
+                $cGender = $output['gender'];
+                $cAge = $output['age'];
+                $cNumber = $output['number'];
+                $cEvenness = $output['evenness'];
+                $cFractionSupport = $output['fraction_support'];
+                $cFractionBlanks = $output['fraction_blanks'];
 
                 /**
                  * Concatenating properties of image (including ID) with the current contents of the database.
                  */
-                $updateClassification .= "('$CPhotoID', '$CNumClassifications', '$CSpecies', '$CGender', '$CAge', '$CNumber', '$CEvenness', '$CFractionSupport', '$CFractionBlanks', now()),";
+                $updateClassification .= "('$cPhotoID', '$cNumClassifications', '$cSpecies', '$cGender', '$cAge', '$cNumber', '$cEvenness', '$cFractionSupport', '$cFractionBlanks', now()),";
 
 								/* Increment after every classification of image */
                 ++$count;
@@ -630,7 +630,7 @@ class Swanson
 
         if (count($result) > 0) {
             $data = array();
-            $all_data = array();
+            $allData = array();
 
             /* process result */
             if ($result->num_rows > 0) {
@@ -640,10 +640,10 @@ class Swanson
                             $data[] = $row;
                         }
                     }
-                    $all_data[] = $row;
+                    $allData[] = $row;
                 }
             }
-            return array($data, $all_data);
+            return array($data, $allData);
         }
 
         return;
@@ -663,16 +663,16 @@ class Swanson
         /* execute query */
         $result = $this->mysqli->query($sql);
 
-        $gold_standard = array();
+        $goldStandard = array();
 
         /* process result */
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                $gold_standard[] = $row;
+                $goldStandard[] = $row;
             }
         }
 
-        return $gold_standard;
+        return $goldStandard;
     }
 
     /**
@@ -684,7 +684,7 @@ class Swanson
      */
     public function goldClassifiedComparison()
     {
-        $gold_standard = $this->getGoldStandard();
+        $goldStandard = $this->getGoldStandard();
 
         /* query to get the species and photo_id for each classified image */
         $sql = 'SELECT species, photo_id FROM Classification;';
@@ -712,20 +712,20 @@ class Swanson
         $different = 0;
         $notClassified = 0;
 
-        $dif_classifications = array();
+        $difClassifications = array();
 
-        for ($x = 0; $x < count($gold_standard); ++$x) {
-            $photo_id = $gold_standard[$x]['photo_id'];
+        for ($x = 0; $x < count($goldStandard); ++$x) {
+            $photo_id = $goldStandard[$x]['photo_id'];
             /* Ignore "Don't know" classifications */
-            if (!in_array($gold_standard[$x]['species'], array(96, 97))) {
+            if (!in_array($goldStandard[$x]['species'], array(96, 97))) {
                 if (array_key_exists($photo_id, $classifications)) {
-                    if ($classifications[$photo_id] == $gold_standard[$x]['species']) {
+                    if ($classifications[$photo_id] == $goldStandard[$x]['species']) {
                         ++$same;
-                    } else if ($classifications[$photo_id] != $gold_standard[$x]['species']) {
+                    } else if ($classifications[$photo_id] != $goldStandard[$x]['species']) {
                         # code...
                     } {
                         ++$different;
-                        $dif_classifications[] = $photo_id;
+                        $difClassifications[] = $photo_id;
                     }
                 } else if (!array_key_exists($photo_id, $classifications)) {
                     ++$notClassified;
@@ -740,15 +740,15 @@ class Swanson
     /**
      * Populates the PersonStats for each user using all of the classifications.
      *
-     * @param array[] $all_data        contains all the information from the Animal table
+     * @param array[] $allData        contains all the information from the Animal table
      * @param array[] $classifications is an array of all the classifications
      */
-    public function rateUsers($all_data, $classifications)
+    public function rateUsers($allData, $classifications)
     {
 				/**
-         *  Sorts the all_data array based on person_id
+         *  Sorts the allData array based on person_id
 				 */
-        usort($all_data, function ($item1, $item2) {
+        usort($allData, function ($item1, $item2) {
             if ($item1['person_id'] == $item2['person_id']) {
                 return 0;
             }
@@ -759,30 +759,30 @@ class Swanson
         /* This array 'allOutputs' will contain all arrays of the $subject once the while loop below has completed. */
         $allOutputs = array();
 
-        while (count($all_data) > 0) {
+        while (count($allData) > 0) {
 						/**
              * populate the subject variable with all classifications for one photo
              * subject will contain all rows with that photo_id
 						 */
-            $subject = array(array_pop($all_data));
-            if (count($all_data) > 0) {
-                while ($all_data[count($all_data) - 1]['person_id'] == $subject[0]['person_id']) {
-                    $subject[] = array_pop($all_data);
-                    if (count($all_data) <= 0) {
+            $subject = array(array_pop($allData));
+            if (count($allData) > 0) {
+                while ($allData[count($allData) - 1]['person_id'] == $subject[0]['person_id']) {
+                    $subject[] = array_pop($allData);
+                    if (count($allData) <= 0) {
                         break;
                     }
                 }
             }
 
-            $person_id = $subject[0]['person_id'];
-            $species_rate = $this->getUserCorrectnessRate('species', $subject, $classifications);
-            $gender_rate = $this->getUserCorrectnessRate('gender', $subject, $classifications);
-            $age_rate = $this->getUserCorrectnessRate('age', $subject, $classifications);
-            $number_rate = $this->getUserCorrectnessRate('number', $subject, $classifications);
+            $personID = $subject[0]['person_id'];
+            $speciesRate = $this->getUserCorrectnessRate('species', $subject, $classifications);
+            $genderRate = $this->getUserCorrectnessRate('gender', $subject, $classifications);
+            $ageRate = $this->getUserCorrectnessRate('age', $subject, $classifications);
+            $numberRate = $this->getUserCorrectnessRate('number', $subject, $classifications);
             $numClassifications = count($subject);
 
 						/**
-             * echo "$person_id has $species_rate, $gender_rate, $age_rate, $number_rate";
+             * echo "$personID has $speciesRate, $genderRate, $ageRate, $numberRate";
              * echo "\n";
              * echo "on " . $numClassifications . " classifications";
              * echo "\n";
@@ -793,11 +793,11 @@ class Swanson
              * for the photo that has previously been calculated.
              */
             $output = array(
-                    'person_id' => $person_id,
-                    'species_rate' => $species_rate,
-                    'gender_rate' => $gender_rate,
-                    'age_rate' => $age_rate,
-                    'number_rate' => $number_rate,
+                    'person_id' => $personID,
+                    'species_rate' => $speciesRate,
+                    'gender_rate' => $genderRate,
+                    'age_rate' => $ageRate,
+                    'number_rate' => $numberRate,
                     'number_of_classifications' => $numClassifications,
             );
 
@@ -827,17 +827,17 @@ class Swanson
              * Outputs will have all their properties stored in local variables and then contatenated into the
              * 'updatePersonStats' variable's contents to be stored in the database.
              */
-            $thePerson_id = $output['person_id'];
-            $theSpecies_rate = $output['species_rate'];
-            $theGender_rate = $output['gender_rate'];
-            $theAge_rate = $output['age_rate'];
-            $theNumber_rate = $output['number_rate'];
-            $theNumber_of_classifications = $output['number_of_classifications'];
+            $thePersonID = $output['person_id'];
+            $theSpeciesRate = $output['species_rate'];
+            $theGenderRate = $output['gender_rate'];
+            $theAgeRate = $output['age_rate'];
+            $theNumberRate = $output['number_rate'];
+            $theNumClassifications = $output['number_of_classifications'];
 
             /**
              * Concatenating properties of subject (including person_id) with the current contents of the database.
              */
-            $updatePersonStats .= "('$thePerson_id', '$theSpecies_rate', '$theGender_rate', '$theAge_rate', '$theNumber_rate', '$theNumber_of_classifications'),";
+            $updatePersonStats .= "('$thePersonID', '$theSpeciesRate', '$theGenderRate', '$theAgeRate', '$theNumberRate', '$theNumClassifications'),";
             ++$count;
         }
         /* Remove the last comma */
