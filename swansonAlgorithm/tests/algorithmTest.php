@@ -9,7 +9,7 @@ require 'vendor/autoload.php';
 class SwansonTest extends PHPUnit_Framework_TestCase
 {
     // contains the object handle of the string class
-    private static $s;
+    private static $swanson;
 
     private static $classified;
     private static $photoIDs;
@@ -20,15 +20,15 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
         echo "\n\n";
-        self::$s = new Swanson();
+        self::$swanson = new Swanson();
         echo "class loaded\n";
-        self::$classified = self::$s->getClassified();
+        self::$classified = self::$swanson->getClassified();
         echo "get classified done\n";
-        self::$photoIDs = self::$s->getPhotos();
+        self::$photoIDs = self::$swanson->getPhotos();
         echo "get photos done\n";
-        self::$photoData = self::$s->getAnimals(self::$classified, self::$photoIDs);
+        self::$photoData = self::$swanson->getAnimals(self::$classified, self::$photoIDs);
         echo "get animals done\n";
-        self::$classifications = self::$s->getClassifications();
+        self::$classifications = self::$swanson->getClassifications();
         echo "get classifications done\n";
         echo "\n";
     }
@@ -36,39 +36,39 @@ class SwansonTest extends PHPUnit_Framework_TestCase
     public static function tearDownAfterClass()
     {
         // delete your instance
-        unset($s);
+        unset($swanson);
     }
 
     public function getEnv()
     {
-        $this->assertEquals(1, self::$s->getEnv());
+        $this->assertEquals(1, self::$swanson->getEnv());
     }
 
     public function setEnv()
     {
-        self::$s->setEnv(0);
-        $this->assertEquals(0, self::$s->getEnv());
+        self::$swanson->setEnv(0);
+        $this->assertEquals(0, self::$swanson->getEnv());
     }
 
     // tests if the database connection is set up
     public function testSetupDB()
     {
-        #self::$s->setEnv(2);
-        #echo "testing env = " . self::$s->getEnv();
-        #$this->assertEquals(false, self::$s->setupDB());
+        #self::$swanson->setEnv(2);
+        #echo "testing env = " . self::$swanson->getEnv();
+        #$this->assertEquals(false, self::$swanson->setupDB());
 
-        #self::$s->setEnv(0);
-        #echo "testing env = " . self::$s->getEnv();
-        #$this->assertEquals(true, self::$s->setupDB());
+        #self::$swanson->setEnv(0);
+        #echo "testing env = " . self::$swanson->getEnv();
+        #$this->assertEquals(true, self::$swanson->setupDB());
 
-        self::$s->setEnv(1);
-        #echo "testing env = " . self::$s->getEnv();
-        $this->assertEquals(true, self::$s->setupDB());
+        self::$swanson->setEnv(1);
+        #echo "testing env = " . self::$swanson->getEnv();
+        $this->assertEquals(true, self::$swanson->setupDB());
     }
 
     public function testMain()
     {
-        self::$s->main(self::$photoData[0]);
+        self::$swanson->main(self::$photoData[0]);
         $this->assertEquals(true, true);
 
         $data = array(
@@ -118,7 +118,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                   'timestamp' => '',
           ),
         );
-        self::$s->main($data);
+        self::$swanson->main($data);
         $this->assertEquals(true, true);
     }
 
@@ -145,12 +145,12 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                         array('species' => 'badger'), );
         $res5 = array('deer' => 2, 'badger' => 1);
 
-        $this->assertEquals(array(), self::$s->tallyVotes('species', $emptyArray));
-        $this->assertEquals($res, self::$s->tallyVotes('species', $array));
-        $this->assertEquals($res2, self::$s->tallyVotes('species', $array2));
-        $this->assertEquals($res3, self::$s->tallyVotes('species', $array3));
-        $this->assertEquals($res4, self::$s->tallyVotes('species', $array4));
-        $this->assertEquals($res5, self::$s->tallyVotes('species', $array5));
+        $this->assertEquals(array(), self::$swanson->tallyVotes('species', $emptyArray));
+        $this->assertEquals($res, self::$swanson->tallyVotes('species', $array));
+        $this->assertEquals($res2, self::$swanson->tallyVotes('species', $array2));
+        $this->assertEquals($res3, self::$swanson->tallyVotes('species', $array3));
+        $this->assertEquals($res4, self::$swanson->tallyVotes('species', $array4));
+        $this->assertEquals($res5, self::$swanson->tallyVotes('species', $array5));
     }
 
     public function testHighestVote()
@@ -171,12 +171,12 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                         array('species' => 'deer'),
                         array('species' => 'badger'), );
 
-        $this->assertEquals(0, self::$s->highestVote('species', $emptyArray));
-        $this->assertEquals(1, self::$s->highestVote('species', $array));
-        $this->assertEquals(1, self::$s->highestVote('species', $array2));
-        $this->assertEquals(2, self::$s->highestVote('species', $array3));
-        $this->assertEquals(1, self::$s->highestVote('species', $array4));
-        $this->assertEquals(2, self::$s->highestVote('species', $array5));
+        $this->assertEquals(0, self::$swanson->highestVote('species', $emptyArray));
+        $this->assertEquals(1, self::$swanson->highestVote('species', $array));
+        $this->assertEquals(1, self::$swanson->highestVote('species', $array2));
+        $this->assertEquals(2, self::$swanson->highestVote('species', $array3));
+        $this->assertEquals(1, self::$swanson->highestVote('species', $array4));
+        $this->assertEquals(2, self::$swanson->highestVote('species', $array5));
     }
 
     public function testDecideOn()
@@ -197,21 +197,21 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                         array('species' => 'deer'),
                         array('species' => 'badger'), );
 
-        $this->assertEquals('', self::$s->decideOn('species', $emptyArray));
-        $this->assertEquals('', self::$s->decideOn('species', $array));
-        $this->assertEquals('badger', self::$s->decideOn('species', $array2));
-        $this->assertEquals('dog', self::$s->decideOn('species', $array3));
-        $this->assertEquals('cat', self::$s->decideOn('species', $array4));
-        $this->assertEquals('deer', self::$s->decideOn('species', $array5));
+        $this->assertEquals('', self::$swanson->decideOn('species', $emptyArray));
+        $this->assertEquals('', self::$swanson->decideOn('species', $array));
+        $this->assertEquals('badger', self::$swanson->decideOn('species', $array2));
+        $this->assertEquals('dog', self::$swanson->decideOn('species', $array3));
+        $this->assertEquals('cat', self::$swanson->decideOn('species', $array4));
+        $this->assertEquals('deer', self::$swanson->decideOn('species', $array5));
     }
 
     public function testCalculatePielou()
     {
         $emptyArray = array();
-        $this->assertEquals(0, self::$s->calculatePielou($emptyArray));
+        $this->assertEquals(0, self::$swanson->calculatePielou($emptyArray));
 
         $array = array(0);
-        $this->assertEquals(0, self::$s->calculatePielou($array));
+        $this->assertEquals(0, self::$swanson->calculatePielou($array));
 
         $array2 = array(2, 3, 4, 2);
         $lns = log(4);
@@ -221,9 +221,10 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                           (2 / 11) * log(2 / 11), );
         $rrr = -array_sum($plnplist);
         $res = $rrr / $lns;
-        $this->assertEquals($res, self::$s->calculatePielou($array2));
+        $this->assertEquals($res, self::$swanson->calculatePielou($array2));
 
         $array3 = array(2, 2, 2, 2);
+        /*
         $lns2 = log(4);
         $plnplist2 = array((2 / 8) * log(2 / 8),
                            (2 / 8) * log(2 / 8),
@@ -231,7 +232,8 @@ class SwansonTest extends PHPUnit_Framework_TestCase
                            (2 / 8) * log(2 / 8), );
         $rr2 = -array_sum($plnplist2);
         $res2 = $rr2 / $lns2;
-        $this->assertEquals(1, self::$s->calculatePielou($array3));
+        */
+        $this->assertEquals(1, self::$swanson->calculatePielou($array3));
     }
 
     public function testFractionSupport()
@@ -241,10 +243,10 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $array2 = array(0 => 1, 1 => 1, 2 => 1);
         $array3 = array(1 => 1, 2 => 1, 3 => 2);
 
-        $this->assertEquals(0, self::$s->fractionSupport($emptyArray));
-        $this->assertEquals(1, self::$s->fractionSupport($array));
-        $this->assertEquals(1 / 3, self::$s->fractionSupport($array2));
-        $this->assertEquals(0.5, self::$s->fractionSupport($array3));
+        $this->assertEquals(0, self::$swanson->fractionSupport($emptyArray));
+        $this->assertEquals(1, self::$swanson->fractionSupport($array));
+        $this->assertEquals(1 / 3, self::$swanson->fractionSupport($array2));
+        $this->assertEquals(0.5, self::$swanson->fractionSupport($array3));
     }
 
     public function testFractionBlanks()
@@ -254,49 +256,49 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $array2 = array(86 => 1);
         $array3 = array(0 => 1, 1 => 1, 86 => 2);
 
-        $this->assertEquals(0, self::$s->fractionBlanks($emptyArray));
-        $this->assertEquals(0, self::$s->fractionBlanks($array));
-        $this->assertEquals(1, self::$s->fractionBlanks($array2));
-        $this->assertEquals(0.5, self::$s->fractionBlanks($array3));
+        $this->assertEquals(0, self::$swanson->fractionBlanks($emptyArray));
+        $this->assertEquals(0, self::$swanson->fractionBlanks($array));
+        $this->assertEquals(1, self::$swanson->fractionBlanks($array2));
+        $this->assertEquals(0.5, self::$swanson->fractionBlanks($array3));
     }
 
     public function testGetUserCorrectnessRate()
     {
-        $subject = array();
-        $subject2 = array();
-        $subject3 = array();
-        $this->assertEquals(0, self::$s->getUserCorrectnessRate('species', $subject, self::$classifications));
-        $this->assertEquals(0, self::$s->getUserCorrectnessRate('species', $subject2, self::$classifications));
-        $this->assertEquals(0, self::$s->getUserCorrectnessRate('species', $subject3, self::$classifications));
+        $swansonubject = array();
+        $swansonubject2 = array();
+        $swansonubject3 = array();
+        $this->assertEquals(0, self::$swanson->getUserCorrectnessRate('species', $swansonubject, self::$classifications));
+        $this->assertEquals(0, self::$swanson->getUserCorrectnessRate('species', $swansonubject2, self::$classifications));
+        $this->assertEquals(0, self::$swanson->getUserCorrectnessRate('species', $swansonubject3, self::$classifications));
     }
 
     public function testGetClassified()
     {
-        self::$s->getClassified();
+        self::$swanson->getClassified();
         $this->assertTrue(count(self::$classified) > 0);
     }
 
     public function testGetClassifications()
     {
-        self::$s->getClassifications();
+        self::$swanson->getClassifications();
         $this->assertTrue(count(self::$classifications) > 0);
     }
 
     public function testGetPhotos()
     {
-        self::$s->getPhotos();
+        self::$swanson->getPhotos();
         $this->assertTrue(count(self::$photoIDs) > 0);
     }
 
     public function testGetPersonStats()
     {
-        $personStats = self::$s->getPersonStats();
+        $personStats = self::$swanson->getPersonStats();
         $this->assertTrue(count($personStats) > 0);
     }
 
     public function testGetAnimals()
     {
-        self::$s->getAnimals(self::$classified, self::$photoIDs);
+        self::$swanson->getAnimals(self::$classified, self::$photoIDs);
         $this->assertTrue(self::$photoData !== null);
         #$this->data = $photoData[0];
         #$this->all_data = $photoData[1];
@@ -306,25 +308,25 @@ class SwansonTest extends PHPUnit_Framework_TestCase
 
     public function testGetGoldStandard()
     {
-        $gold = self::$s->getGoldStandard();
+        $gold = self::$swanson->getGoldStandard();
         $this->assertTrue(count($gold) > 0);
     }
 
     public function testGoldClassifiedComparison()
     {
-        self::$s->goldClassifiedComparison();
+        self::$swanson->goldClassifiedComparison();
         $this->assertEquals(true, true);
     }
 
     public function testRateUsers()
     {
-        self::$s->rateUsers(self::$photoData[1], self::$classifications);
+        self::$swanson->rateUsers(self::$photoData[1], self::$classifications);
         $this->assertEquals(true, true);
     }
 
     public function testCreateTables()
     {
-        self::$s->createTables();
+        self::$swanson->createTables();
         $this->assertEquals(true, true);
     }
 
@@ -334,27 +336,23 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $createTable = 'CREATE TABLE IF NOT EXISTS Test ('.
             'test_id INT NOT NULL PRIMARY KEY'.
         ');';
-        if (self::$s->getConn()->query($createTable) === true) {
-            #echo "Test table created successfully\n";
-        } else {
-            echo 'Error creating Test table: '.self::$s->getConn()->error."\n";
+        if (self::$swanson->getConn()->query($createTable) === false) {
+            echo 'Error creating Test table: '.self::$swanson->getConn()->error."\n";
         }
 
         $insert = "INSERT INTO Test VALUES ('1');";
-        if (self::$s->getConn()->query($insert) === true) {
-            #echo "Insert successful\n";
-        } else {
-            echo 'Error inserting: '.self::$s->getConn()->error."\n";
+        if (self::$swanson->getConn()->query($insert) === false) {
+            echo 'Error inserting: '.self::$swanson->getConn()->error."\n";
         }
 
         // empty table
-        self::$s->emptyTable('Test');
+        self::$swanson->emptyTable('Test');
 
         // select everything from our new table
-        $select = 'SELECT * FROM Test;';
+        $swansonelect = 'SELECT * FROM Test;';
 
                 // execute query
-                $result = self::$s->getConn()->query($select);
+                $result = self::$swanson->getConn()->query($swansonelect);
                 // process result
 
         // test to see if table was emptied
