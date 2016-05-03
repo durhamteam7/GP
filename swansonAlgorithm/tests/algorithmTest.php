@@ -122,7 +122,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, true);
     }
 
-    public function testTally_votes()
+    public function testTallyVotes()
     {
         $emptyArray = array();
 
@@ -153,7 +153,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($res5, self::$s->tallyVotes('species', $array5));
     }
 
-    public function testHighest_vote()
+    public function testHighestVote()
     {
         $emptyArray = array();
 
@@ -179,7 +179,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(2, self::$s->highestVote('species', $array5));
     }
 
-    public function testDecide_on()
+    public function testDecideOn()
     {
         $emptyArray = array();
 
@@ -205,7 +205,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('deer', self::$s->decideOn('species', $array5));
     }
 
-    public function testCalculate_pielou()
+    public function testCalculatePielou()
     {
         $emptyArray = array();
         $this->assertEquals(0, self::$s->calculatePielou($emptyArray));
@@ -234,7 +234,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, self::$s->calculatePielou($array3));
     }
 
-    public function testFraction_support()
+    public function testFractionSupport()
     {
         $emptyArray = array();
         $array = array(0 => 1);
@@ -247,7 +247,7 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0.5, self::$s->fractionSupport($array3));
     }
 
-    public function testFraction_blanks()
+    public function testFractionBlanks()
     {
         $emptyArray = array();
         $array = array(0 => 1);
