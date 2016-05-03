@@ -48,6 +48,10 @@ serverCommsModule.factory('ajax', ['$http', function($http) {
         setFavourite: function(person_id,photo_id,isSet){
           body = {"person_id":person_id,"photo_id":photo_id};
           return $http.post(urls[env] + 'favourite?isSet='+isSet,body).success(function() {});
+        },
+        runAlgorithm: function() {
+            console.log("running algorithm");
+            return $http.get(urls[env] + 'runAlgorithm').success(function() {});
         }
     };
 }]);

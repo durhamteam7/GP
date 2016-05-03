@@ -251,7 +251,10 @@ adminApp.controller('MainController', ['$scope', 'ajax', 'sharedProperties', fun
     $scope.updateAlgorithmSettings = function(settings) {
         $("#loader").fadeTo("fast", 0.7);
         serverComm.updateAlgorithmSettings(settings).success(function() {
-            $("#loader").fadeOut("slow");
+            // Send a request to run the algorithm
+            serverComm.runAlgorithm().success(function() {
+                $("#loader").fadeOut("slow");
+            });
         });
     };
 
