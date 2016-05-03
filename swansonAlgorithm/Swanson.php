@@ -302,37 +302,37 @@ class Swanson
         /**
          * Finally, we loop through the array of all image's values and classify the photos all at once, row-by-row.
          * We will classify a photo if it has been retired (decided) and then transfer the values/properties etc. into the
-         * database via the 'updateClassifications' variable.
+         * database via the 'updateClassification' variable.
          * The consequence of only classfying retired photos is that we do not store evenness values etc.
          * for the photos which have yet to be retired (decided).
          */
 
         $count = 0; /* A counter to keep track of the number of images we classify. */
-        $updateClassifications = 'INSERT INTO Classification '.
+        $updateClassification = 'INSERT INTO Classification '.
                                 '(photo_id, number_of_classifications, species, gender, age, number, evenness, fraction_support, fraction_blanks, timestamp) '.
                                 'VALUES ';
         foreach ($all_outputs as $output) {
         /**
          * Retired images will have all their properties stored in local variables and then contatenated into the
-         * 'updateClassifications' variable's contents to be stored in the database.
+         * 'updateClassification' variable's contents to be stored in the database.
          */
             if ($output['retired']) {
                 /* Will only classify 'retired' photos */
 
                 $Cphoto_id = $output['photo_id'];
-                $Cnumber_of_classifications = $output['number_of_classifications'];
+                $CNumClassifications = $output['number_of_classifications'];
                 $Cspecies = $output['species'];
                 $Cgender = $output['gender'];
                 $Cage = $output['age'];
                 $Cnumber = $output['number'];
                 $Cevenness = $output['evenness'];
-                $Cfraction_support = $output['fraction_support'];
+                $CFractionSupport = $output['fraction_support'];
                 $Cfraction_blanks = $output['fraction_blanks'];
 
                 /**
                  * Concatenating properties of image (including ID) with the current contents of the database.
                  */
-                $updateClassifications .= "('$Cphoto_id', '$Cnumber_of_classifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$Cfraction_support', '$Cfraction_blanks', now()),";
+                $updateClassification .= "('$Cphoto_id', '$CNumClassifications', '$Cspecies', '$Cgender', '$Cage', '$Cnumber', '$Cevenness', '$CFractionSupport', '$Cfraction_blanks', now()),";
 
 								/* Increment after every classification of image */
                 ++$count;
@@ -340,7 +340,7 @@ class Swanson
         }
 
         /* replace the last character with a semicolon -> ; */
-        $updateClassifications = substr($updateClassifications, 0, -1).';';
+        $updateClassification = substr($updateClassification, 0, -1).';';
 
         /**
          * i.e. A test of if there were images that were retired and so needed to be classified
@@ -349,7 +349,7 @@ class Swanson
          */
 
         if ($count > 0) {
-            if ($this->mysqli->query($updateClassifications) === true) {
+            if ($this->mysqli->query($updateClassification) === true) {
                 /* echo "Record updated successfully\n"; */
             }
         }
@@ -371,14 +371,11 @@ class Swanson
             if (array_key_exists($key, $entry)) {
                 $value = $entry[$key];
 
-                /* already in table */
-                if (array_key_exists($value, $vote_table)) {
-                    $vote_table[$value] = $vote_table[$value] + 1;
+                if (!array_key_exists($value, $vote_table)) {
+                    $vote_table[$value] = 0;
                 }
-                /* not in table yet */
-                else {
-                    $vote_table[$value] = 1;
-                }
+
+                $vote_table[$value] = $vote_table[$value] + 1;
             }
         }
         return $vote_table;
@@ -724,11 +721,13 @@ class Swanson
                 if (array_key_exists($photo_id, $classifications)) {
                     if ($classifications[$photo_id] == $gold_standard[$x]['species']) {
                         ++$same;
-                    } else {
+                    } else if ($classifications[$photo_id] != $gold_standard[$x]['species']) {
+                        # code...
+                    } {
                         ++$different;
                         $dif_classifications[] = $photo_id;
                     }
-                } else {
+                } else if (!array_key_exists($photo_id, $classifications)) {
                     ++$notClassified;
                 }
             }
