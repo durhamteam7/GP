@@ -158,23 +158,18 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $emptyArray = array();
 
         $array = array(array('species' => ''));
-        $res = array('' => 1);
 
         $array2 = array(array('species' => 'badger'));
-        $res2 = array('badger' => 1);
 
         $array3 = array(array('species' => 'dog'),
                         array('species' => 'dog'), );
-        $res3 = array('dog' => 2);
 
         $array4 = array(array('species' => 'deer'),
                         array('species' => 'cat'), );
-        $res4 = array('deer' => 1, 'cat' => 1);
 
         $array5 = array(array('species' => 'deer'),
                         array('species' => 'deer'),
                         array('species' => 'badger'), );
-        $res5 = array('deer' => 2, 'badger' => 1);
 
         $this->assertEquals(0, self::$s->highestVote('species', $emptyArray));
         $this->assertEquals(1, self::$s->highestVote('species', $array));
@@ -189,23 +184,18 @@ class SwansonTest extends PHPUnit_Framework_TestCase
         $emptyArray = array();
 
         $array = array(array('species' => ''));
-        $res = array('' => 1);
 
         $array2 = array(array('species' => 'badger'));
-        $res2 = array('badger' => 1);
 
         $array3 = array(array('species' => 'dog'),
                         array('species' => 'dog'), );
-        $res3 = array('dog' => 2);
 
         $array4 = array(array('species' => 'deer'),
                         array('species' => 'cat'), );
-        $res4 = array('deer' => 1, 'cat' => 1);
 
         $array5 = array(array('species' => 'deer'),
                         array('species' => 'deer'),
                         array('species' => 'badger'), );
-        $res5 = array('deer' => 2, 'badger' => 1);
 
         $this->assertEquals('', self::$s->decideOn('species', $emptyArray));
         $this->assertEquals('', self::$s->decideOn('species', $array));
