@@ -253,8 +253,9 @@ adminApp.controller('MainController', ['$scope', 'ajax', 'sharedProperties', fun
         serverComm.updateAlgorithmSettings(settings).success(function() {
             // Send a request to run the algorithm
             serverComm.runAlgorithm().success(function() {
-                $("#loader").fadeOut("slow");
+
             });
+            $("#loader").fadeOut("slow");
         });
     };
 

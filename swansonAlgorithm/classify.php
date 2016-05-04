@@ -1,5 +1,7 @@
 <?php
 
+$start = microtime(true);
+
 # import algorithm
 require_once 'Swanson.php';
 $s = new Swanson();
@@ -36,4 +38,5 @@ $person_stats = $s->getPersonStats();
 # compare against fold standard set
 $s->goldClassifiedComparison();
 
-echo "algorithm finished";
+$end = microtime(true);
+echo "algorithm finished in " . ($end - $start) . " seconds\n";

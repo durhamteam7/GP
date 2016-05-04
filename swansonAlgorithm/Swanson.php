@@ -33,7 +33,7 @@ class Swanson
      *
      * @var int
      */
-    private $env = 1;
+    private $env = 2;
 
 		/**
      * These variables control which photos get retired.
@@ -146,11 +146,19 @@ class Swanson
 
             /* Create connection */
             $this->mysqli = new mysqli($servername, $username, $password, $database);
+        } else if ($this->env == 2) {
+            $servername = 'localhost';
+            $username = 'root';
+            $password = 'piccu';
+            $database = 'mammalweb';
+
+            /* Create connection */
+            $this->mysqli = new mysqli($servername, $username, $password, $database);
         }
 
         /* Check connection */
         if ($this->mysqli->connect_error) {
-            /* echo "Connection failed: " . $this->mysqli->connect_error; */
+            echo "Connection failed: " . $this->mysqli->connect_error;
             return false;
         }
         return true;
@@ -176,7 +184,17 @@ class Swanson
               $this->consensusCondition = $settings['consensus_condition'];
               $this->completeCondition = $settings['complete_condition'];
               $this->agreementCondition = $settings['agreement_condition'];
+
+              echo "Algorithm settings \n";
+              echo "blank_condition: " . $this->blankCondition . "\n";
+              echo "consensus_condition " . $this->consensusCondition . "\n";
+              echo "complete_condition: " . $this->completeCondition . "\n";
+              echo "agreement_condition: " . $this->agreementCondition . "\n";
+
+              return true;
           }
+          echo "No algorithm settings found";
+          return false;
     }
 
     public function getAlgorithmSettings() {
@@ -723,7 +741,6 @@ class Swanson
                         ++$same;
                     } else if ($classifications[$photo_id] != $gold_standard[$x]['species']) {
                         # code...
-                    } {
                         ++$different;
                         $dif_classifications[] = $photo_id;
                     }
@@ -733,7 +750,8 @@ class Swanson
             }
         }
         if (($same + $different) > 0) {
-            /* echo "Correctness against gold standard = " . ($same / ($same + $different)); */
+            echo "Number of gold standard classifications " . ($same + $different) . "\n";
+            echo "Correctness against gold standard = " . (($same / ($same + $different)) * 100) . "%\n";
         }
     }
 
@@ -956,6 +974,12 @@ class Swanson
         ');';
         if ($this->mysqli->query($createTable) === true) {
             /* echo "AlgorithmSettings table created successfully\n"; */
+        }
+
+        $insert = 'INSERT INTO AlgorithmSettings '.
+                'VALUES (1, 1, 1, 2, 1);';
+        if ($this->mysqli->query($alterTable) === true) {
+            /* echo "Classification table altered successfully\n"; */
         }
 
         /* Creating Favourites table */
