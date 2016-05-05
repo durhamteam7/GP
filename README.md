@@ -34,12 +34,24 @@ Unit tests written using [PHPUnit](https://phpunit.de/) and are located in swans
 phpunit swansonAlgorithm/tests --bootstrap vendor/autoload.php
 ```
 
+The node backend is available at [mammalWebNode](https://github.com/durhamteam7/mammalWebNode)
+
+```
+git clone https://github.com/durhamteam7/mammalWebNode.git
+cd mammalWebNode
+npm install
+npm start
+```
+
 # Documentation
 The project is documented using [Angular-JSDoc](https://github.com/allenhwkim/angular-jsdoc) and [phpDocumentor](https://www.phpdoc.org/)
 
 A browsable HTML version of this documentation for all parts of the project can be created by running the ./createDocs.sh bash file. (Note: requires npm to get dependancies). Docs will be found in the /docs folder.
 
 # License
->You can check out the full license [here](http://www.gnu.org/licenses/agpl-3.0.en.html)
 
-This project is licensed under the terms of the **GNU AGPLv3** license.
+Credit to team7 (Thomas Hudson, Tom Robson, Linus Ericsson, Mat Pardoe, Ram Gupta, Caitlin McArdle)
+
+>This project is licensed under the terms of the **GNU AGPLv3** license.
+You can check out the full license [here](http://www.gnu.org/licenses/agpl-3.0.en.html)
+
